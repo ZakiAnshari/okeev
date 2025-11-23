@@ -17,6 +17,7 @@ return new class extends Migration
             // MAIN INFO
             $table->string('brand')->nullable();
             $table->string('model_name');
+            $table->string('category');
             $table->string('slug')->nullable();
             $table->integer('miles')->nullable();
             $table->enum('type', ['electric', 'hybrid', 'fuel'])->default('Electric');
@@ -36,7 +37,7 @@ return new class extends Migration
             $table->boolean('featured')->default(false);
 
             // IMAGES
-            $table->string('image_wallpaper')->nullable();       // front wallpaper image
+            $table->string('image_wallpaper');       // front wallpaper image
             $table->string('image');                 // main product image
             // DETAIL IMAGES
             $table->string('image_detail_1');

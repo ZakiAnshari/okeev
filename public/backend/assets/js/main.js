@@ -116,3 +116,145 @@ let menu, animate;
   // Auto update menu collapsed/expanded based on the themeConfig
   window.Helpers.setCollapsed(true, false);
 })();
+
+
+
+
+    function restoreWallpaperIfExist() {
+        if (imageWallpaperInput.files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imageWallpaperPreview.src = e.target.result;
+                imageWallpaperPreview.style.display = "block";
+                removeWallpaperBtn.style.display = "inline-block";
+            };
+            reader.readAsDataURL(imageWallpaperInput.files[0]);
+        }
+    }
+
+    restoreWallpaperIfExist();
+
+
+    const wallpaperInput = document.getElementById("imageWallpaperInput");
+    const wallpaperPreview = document.getElementById("imageWallpaperPreview");
+    const removeWallpaperBtn = document.getElementById("removeWallpaperBtn");
+
+    wallpaperInput.addEventListener("change", function() {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                wallpaperPreview.src = e.target.result;
+                wallpaperPreview.style.display = "block";
+                removeWallpaperBtn.style.display = "inline-block";
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removeWallpaperBtn.addEventListener("click", function() {
+        wallpaperInput.value = "";
+        wallpaperPreview.src = "#";
+        wallpaperPreview.style.display = "none";
+        removeWallpaperBtn.style.display = "none";
+    });
+
+
+document.querySelectorAll('.rupiah').forEach((input) => {
+    input.addEventListener('input', function () {
+        // Ambil angka saja
+        let angka = this.value.replace(/[^0-9]/g, '');
+
+        // Format ke titik ribuan
+        this.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    });
+});
+
+
+
+
+document.querySelectorAll(".img-input").forEach(input => {
+    input.addEventListener("change", function() {
+        const file = this.files[0];
+        const previewId = this.dataset.preview;
+        const removeId = this.dataset.remove;
+        const tempId = this.dataset.temp;
+
+        const preview = document.getElementById(previewId);
+        const removeBtn = document.getElementById(removeId);
+        const tempInput = document.getElementById(tempId);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+                removeBtn.style.display = "inline-block";
+
+                // Simpan URL ke input hidden
+                tempInput.value = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
+document.querySelectorAll(".btn-danger.btn-sm").forEach(btn => {
+    btn.addEventListener("click", function() {
+        const img = this.previousElementSibling;
+        img.src = "#";
+        img.style.display = "none";
+        this.style.display = "none";
+
+        const tempId = this.id.replace("remove", "temp");
+        const tempInput = document.getElementById(tempId);
+        if (tempInput) tempInput.value = "";
+    });
+});
+
+document.querySelectorAll('.img-input').forEach(input => {
+
+    input.addEventListener('change', function () {
+        const file = this.files[0];
+        const previewID = this.dataset.preview;
+        const removeID = this.dataset.remove;
+
+        const preview = document.getElementById(previewID);
+        const removeBtn = document.getElementById(removeID);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+                removeBtn.style.display = "inline-block";
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+});
+
+document.querySelectorAll('.btn-danger').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const id = this.id.replace("remove", "");
+        const preview = document.getElementById("preview" + id);
+
+        let inputField;
+
+        if (id === "Main") {
+            inputField = document.getElementById("mainImage");
+        } else {
+            inputField = document.getElementById("detailImg" + id);
+        }
+
+        inputField.value = "";
+        preview.src = "#";
+        preview.style.display = "none";
+        this.style.display = "none";
+    });
+});
+

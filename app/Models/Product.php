@@ -15,6 +15,7 @@ class Product extends Model
         // MAIN INFO
         'brand',
         'model_name',
+        'category',
         'slug',
         'miles',
         'type',
