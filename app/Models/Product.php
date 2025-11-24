@@ -42,7 +42,29 @@ class Product extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('name_category')
+            ->generateSlugsFrom('model_name')
             ->saveSlugsTo('slug');
+    }
+
+    
+
+    public function technologies()
+    {
+        return $this->hasMany(Technology::class, 'product_id', 'id');
+    }
+    
+    public function features()
+    {
+        return $this->hasMany(Feature::class, 'product_id', 'id');
+    }
+
+    public function colors()
+    {
+        return $this->hasMany(Color::class, 'product_id', 'id');
+    }
+
+    public function specifications()
+    {
+        return $this->hasMany(Specification::class, 'product_id', 'id');
     }
 }

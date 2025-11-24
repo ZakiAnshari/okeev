@@ -21,4 +21,6 @@ class Brand extends Model
             ->generateSlugsFrom('name_brand')
             ->saveSlugsTo('slug');
     }
+
+    
 }

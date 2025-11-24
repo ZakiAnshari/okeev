@@ -4,10 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ColorController;
+use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\SpecificationController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -45,9 +49,31 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product/{slug}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::post('/product/{slug}/edit', [ProductController::class, 'update'])->name('product.update');
     Route::get('/product-destroy/{slug}', [ProductController::class, 'destroy'])->name('product.destroy');
-
-
-
+    Route::get('/product-show/{slug}', [ProductController::class, 'show'])->name('product.show');
+    //technologies
+    Route::get('/product/{slug}/technologies', [TechnologyController::class, 'index'])->name('technologies.index');
+    Route::post('/product-add/{slug}/technologies', [TechnologyController::class, 'store'])->name('technologies.store');
+    Route::get('/product/{product_slug}/technologies/{id}/edit', [TechnologyController::class, 'edit'])->name('technologies.edit');
+    Route::post('/product/{product_slug}/technologies/{id}/edit', [TechnologyController::class, 'update'])->name('technologies.update');
+    Route::get('/product/{product_slug}/technologies/{technologies}', [TechnologyController::class, 'destroy'])->name('technologies.destroy');
+    //FEATURE
+    Route::get('/product/{slug}/features', [FeatureController::class, 'index'])->name('features.index');
+    Route::post('/product-add/{slug}/features', [FeatureController::class, 'store'])->name('features.store');
+    Route::get('/product/{product_slug}/features/{id}/edit', [FeatureController::class, 'edit'])->name('features.edit');
+    Route::post('/product/{product_slug}/features/{id}/edit', [FeatureController::class, 'update'])->name('features.update');
+    Route::get('/product/{product_slug}/features/{features}', [FeatureController::class, 'destroy'])->name('features.destroy');
+    //COLOR
+    Route::get('/product/{slug}/colors', [ColorController::class, 'index'])->name('colors.index');
+    Route::post('/product-add/{slug}/colors', [ColorController::class, 'store'])->name('colors.store');
+    Route::get('/product/{product_slug}/colors/{id}/edit', [ColorController::class, 'edit'])->name('colors.edit');
+    Route::post('/product/{product_slug}/colors/{id}/edit', [ColorController::class, 'update'])->name('colors.update');
+    Route::get('/product/{product_slug}/colors/{colors}', [ColorController::class, 'destroy'])->name('colors.destroy');
+    //SPECIFICATION
+    Route::get('/product/{slug}/specifications', [SpecificationController::class, 'index'])->name('specifications.index');
+    Route::post('/product-add/{slug}/specifications', [SpecificationController::class, 'store'])->name('specifications.store');
+    Route::get('/product/{product_slug}/specifications/{id}/edit', [SpecificationController::class, 'edit'])->name('specifications.edit');
+    Route::post('/product/{product_slug}/specifications/{id}/edit', [SpecificationController::class, 'update'])->name('specifications.update');
+    Route::get('/product/{product_slug}/specifications/{specifications}', [SpecificationController::class, 'destroy'])->name('specifications.destroy');
 
 
 

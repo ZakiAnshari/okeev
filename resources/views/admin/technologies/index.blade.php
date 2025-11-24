@@ -19,7 +19,7 @@
                             @endif
                             <div class="d-flex align-items-center mb-3">
                                 <!-- Tombol Kembali -->
-                                <a class="me-3" href="{{ route('cars.show', $electric_car->id) }}">
+                                <a class="me-3" href="{{ route('product.show', $product->slug) }}">
                                     <button class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                             data-bs-toggle="tooltip" title="Kembali">
                                         <i class="bi bi-arrow-left fs-5 mx-1"></i>
@@ -67,7 +67,7 @@
                                             <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <hr>
-                                        <form action="{{ route('technologies.store', $electric_car->id) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('technologies.store', $product->slug) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="row">
@@ -130,31 +130,36 @@
                                 </thead>
 
                                 <tbody>
-                                    @forelse ($technologies as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
-                                
-                                            <td class="text-center">
-                                                <!-- Edit -->
-                                                <a href="{{ route('technologies.edit', [$electric_car->id, $item->id]) }}" 
-                                                class="btn btn-icon btn-outline-primary">
-                                                        <i class="bx bx-edit-alt"></i>
-                                                </a>
-                                                <!-- Delete -->
-                                                <a href="javascript:void(0)" onclick="confirmDeleteTechnologyCar({{ $electric_car->id }}, {{ $item->id }}, '{{ $item->name }}')">
-                                                    <button class="btn btn-icon btn-outline-danger" title="Hapus">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="8" class="text-center">Data Kosong</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
+                                @forelse ($technologies as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->name }}</td>
+
+                                        <td class="text-center">
+
+                                            <!-- Edit -->
+                                            <a href="{{ route('technologies.edit', [$product->slug, $item->id]) }}" 
+                                            class="btn btn-icon btn-outline-primary" 
+                                            title="Edit">
+                                                <i class="bx bx-edit-alt"></i>
+                                            </a>
+
+
+                                            <!-- Delete -->
+                                            <button class="btn btn-icon btn-outline-danger"
+                                                    onclick="confirmDeleteTechnology('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->name }}')"
+                                                    title="Hapus">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center">Data Kosong</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+
 
                             </table>
                             <!-- Pagination -->
@@ -168,7 +173,7 @@
         </div>
 </div>
  <script>
-    function confirmDeleteTechnologyCar(electricCarId, technologyId, name) {
+    function confirmDeleteTechnology(product, technologyId, name) {
         Swal.fire({
             title: 'Yakin ingin menghapus?',
             text: `"${name}" akan dihapus secara permanen!`,
@@ -180,7 +185,7 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = `/cars/${electricCarId}/technologies/${technologyId}`;
+                window.location.href = `/product/${product}/technologies/${technologyId}`;
             }
         });
     }

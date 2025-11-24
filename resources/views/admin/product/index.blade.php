@@ -147,24 +147,23 @@
 
                                                 <!-- PRICES -->
                                                 <div class="col-lg-6 mb-3">
-                                                    <label class="form-label">Regular Price</label>
-                                                    <input type="text" name="regular_price" class="form-control rupiah" value="{{ old('regular_price') }}" >
+                                                    <label class="form-label">Harga</label>
+                                                    <input type="text" name="regular_price" class="form-control" id="regular_price" value="{{ old('regular_price') }}">
                                                     @error('regular_price')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-lg-6 mb-3">
+                                          
+
+
+                                                {{-- <div class="col-lg-6 mb-3">
                                                     <label class="form-label">Sale Price</label>
                                                     <input type="text" name="sale_price" class="form-control rupiah" value="{{ old('sale_price') }}" >
                                                     @error('sale_price')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
-                                                </div>
-
-
-
-
+                                                </div> --}}
 
                                                 <!-- INVENTORY -->
                                                 <div class="col-lg-6 mb-3">
@@ -188,122 +187,118 @@
 
                                                 <!-- FLAGS -->
                                                 <div class="col-lg-6 mb-3">
-                                                    <label class="form-label d-block">Featured</label>
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" name="featured" id="featured" value="1" {{ old('featured') ? 'checked' : '' }} >
-                                                        <label class="form-check-label" for="featured">Tandai sebagai Featured</label>
-                                                    </div>
+                                                    <label class="form-label d-block" for="featured">Featured</label>
+                                                    <select name="featured" id="featured" class="form-select">
+                                                        <option value="0" {{ old('featured') == 0 ? 'selected' : '' }}>Tidak</option>
+                                                        <option value="1" {{ old('featured') == 1 ? 'selected' : '' }}>Ya (Featured)</option>
+                                                    </select>
                                                 </div>
 
-                                             <!-- WALLPAPER -->
-<div class="col-lg-6 mb-3">
-    <label class="form-label">Wallpaper Image</label>
 
-    <input type="file" name="image_wallpaper" class="form-control img-input"
-           data-preview="imageWallpaperPreview" data-remove="removeWallpaperBtn"
-           data-temp="temp_wallpaper">
+                                            <!-- WALLPAPER -->
+                                            <div class="col-lg-6 mb-3">
+                                                <label class="form-label">Wallpaper Image</label>
 
-    <input type="hidden" name="temp_wallpaper" id="temp_wallpaper"
-           value="{{ old('temp_wallpaper') }}">
+                                                <input type="file" name="image_wallpaper" class="form-control img-input"
+                                                    data-preview="imageWallpaperPreview" data-remove="removeWallpaperBtn"
+                                                    data-temp="temp_wallpaper">
 
-    <div class="mt-2" style="position: relative; display: inline-block;">
-        <img id="imageWallpaperPreview"
-             src="{{ old('temp_wallpaper') ?? '#' }}"
-             style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_wallpaper') ? '' : 'display:none' }}">
+                                                <input type="hidden" name="temp_wallpaper" id="temp_wallpaper"
+                                                    value="{{ old('temp_wallpaper') }}">
 
-        <button type="button" id="removeWallpaperBtn" class="btn btn-danger btn-sm"
-                style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_wallpaper') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
-    </div>
-</div>
+                                                <div class="mt-2" style="position: relative; display: inline-block;">
+                                                    <img id="imageWallpaperPreview"
+                                                        src="{{ old('temp_wallpaper') ?? '#' }}"
+                                                        style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_wallpaper') ? '' : 'display:none' }}">
 
-<!-- MAIN IMAGE -->
-<div class="col-lg-3 mb-3">
-    <label class="form-label">Main Image</label>
+                                                    <button type="button" id="removeWallpaperBtn" class="btn btn-danger btn-sm"
+                                                            style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_wallpaper') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
+                                                </div>
+                                            </div>
 
-    <input type="file" name="image" class="form-control img-input"
-           data-preview="previewMain" data-remove="removeMain"
-           data-temp="temp_main">
+                                            <!-- MAIN IMAGE -->
+                                            <div class="col-lg-6 mb-3">
+                                                <label class="form-label">Main Image</label>
 
-    <input type="hidden" name="temp_main" id="temp_main"
-           value="{{ old('temp_main') }}">
+                                                <input type="file" name="image" class="form-control img-input"
+                                                    data-preview="previewMain" data-remove="removeMain"
+                                                    data-temp="temp_main">
 
-    <div class="mt-2" style="position: relative; display:inline-block;">
-        <img id="previewMain"
-             src="{{ old('temp_main') ?? '#' }}"
-             style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_main') ? '' : 'display:none' }}">
+                                                <input type="hidden" name="temp_main" id="temp_main"
+                                                    value="{{ old('temp_main') }}">
 
-        <button type="button" id="removeMain" class="btn btn-danger btn-sm"
-                style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_main') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
-    </div>
-</div>
+                                                <div class="mt-2" style="position: relative; display:inline-block;">
+                                                    <img id="previewMain"
+                                                        src="{{ old('temp_main') ?? '#' }}"
+                                                        style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_main') ? '' : 'display:none' }}">
 
-<!-- DETAIL 1 -->
-<div class="col-lg-3 mb-3">
-    <label class="form-label">Detail Image 1</label>
+                                                    <button type="button" id="removeMain" class="btn btn-danger btn-sm"
+                                                            style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_main') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
+                                                </div>
+                                            </div>
 
-    <input type="file" name="image_detail_1" class="form-control img-input"
-           data-preview="preview1" data-remove="remove1"
-           data-temp="temp_1">
+                                            <!-- DETAIL 1 -->
+                                            <div class="col-lg-4 mb-3">
+                                                <label class="form-label">Detail Image 1</label>
 
-    <input type="hidden" name="temp_1" id="temp_1"
-           value="{{ old('temp_1') }}">
+                                                <input type="file" name="image_detail_1" class="form-control img-input"
+                                                    data-preview="preview1" data-remove="remove1"
+                                                    data-temp="temp_1">
 
-    <div class="mt-2" style="position:relative;display:inline-block;">
-        <img id="preview1"
-             src="{{ old('temp_1') ?? '#' }}"
-             style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_1') ? '' : 'display:none' }}">
+                                                <input type="hidden" name="temp_1" id="temp_1"
+                                                    value="{{ old('temp_1') }}">
 
-        <button type="button" id="remove1" class="btn btn-danger btn-sm"
-                style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_1') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
-    </div>
-</div>
+                                                <div class="mt-2" style="position:relative;display:inline-block;">
+                                                    <img id="preview1"
+                                                        src="{{ old('temp_1') ?? '#' }}"
+                                                        style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_1') ? '' : 'display:none' }}">
 
-<!-- DETAIL 2 -->
-<div class="col-lg-3 mb-3">
-    <label class="form-label">Detail Image 2</label>
+                                                    <button type="button" id="remove1" class="btn btn-danger btn-sm"
+                                                            style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_1') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
+                                                </div>
+                                            </div>
 
-    <input type="file" name="image_detail_2" class="form-control img-input"
-           data-preview="preview2" data-remove="remove2"
-           data-temp="temp_2">
+                                            <!-- DETAIL 2 -->
+                                            <div class="col-lg-4 mb-3">
+                                                <label class="form-label">Detail Image 2</label>
 
-    <input type="hidden" name="temp_2" id="temp_2"
-           value="{{ old('temp_2') }}">
+                                                <input type="file" name="image_detail_2" class="form-control img-input"
+                                                    data-preview="preview2" data-remove="remove2"
+                                                    data-temp="temp_2">
 
-    <div class="mt-2" style="position:relative;display:inline-block;">
-        <img id="preview2"
-             src="{{ old('temp_2') ?? '#' }}"
-             style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_2') ? '' : 'display:none' }}">
+                                                <input type="hidden" name="temp_2" id="temp_2"
+                                                    value="{{ old('temp_2') }}">
 
-        <button type="button" id="remove2" class="btn btn-danger btn-sm"
-                style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_2') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
-    </div>
-</div>
+                                                <div class="mt-2" style="position:relative;display:inline-block;">
+                                                    <img id="preview2"
+                                                        src="{{ old('temp_2') ?? '#' }}"
+                                                        style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_2') ? '' : 'display:none' }}">
 
-<!-- DETAIL 3 -->
-<div class="col-lg-3 mb-3">
-    <label class="form-label">Detail Image 3</label>
+                                                    <button type="button" id="remove2" class="btn btn-danger btn-sm"
+                                                            style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_2') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
+                                                </div>
+                                            </div>
 
-    <input type="file" name="image_detail_3" class="form-control img-input"
-           data-preview="preview3" data-remove="remove3"
-           data-temp="temp_3">
+                                            <!-- DETAIL 3 -->
+                                            <div class="col-lg-4 mb-3">
+                                                <label class="form-label">Detail Image 3</label>
 
-    <input type="hidden" name="temp_3" id="temp_3"
-           value="{{ old('temp_3') }}">
+                                                <input type="file" name="image_detail_3" class="form-control img-input"
+                                                    data-preview="preview3" data-remove="remove3"
+                                                    data-temp="temp_3">
 
-    <div class="mt-2" style="position:relative;display:inline-block;">
-        <img id="preview3"
-             src="{{ old('temp_3') ?? '#' }}"
-             style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_3') ? '' : 'display:none' }}">
+                                                <input type="hidden" name="temp_3" id="temp_3"
+                                                    value="{{ old('temp_3') }}">
 
-        <button type="button" id="remove3" class="btn btn-danger btn-sm"
-                style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_3') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
-    </div>
-</div>
+                                                <div class="mt-2" style="position:relative;display:inline-block;">
+                                                    <img id="preview3"
+                                                        src="{{ old('temp_3') ?? '#' }}"
+                                                        style="width:90px;height:90px;border:1px solid #ccc;border-radius:6px;{{ old('temp_3') ? '' : 'display:none' }}">
 
-
-
-
-
+                                                    <button type="button" id="remove3" class="btn btn-danger btn-sm"
+                                                            style="position:absolute;top:-8px;right:-8px;display:{{ old('temp_3') ? 'inline-block' : 'none' }};border-radius:50%;width:24px;height:24px">×</button>
+                                                </div>
+                                            </div>
                                             </div>
                                         </div>
 
@@ -312,7 +307,7 @@
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
-                                    </form>
+                                        </form>
 
 
                                     </div>
@@ -331,6 +326,7 @@
                                             <th>Model</th>
                                             <th>Harga</th>
                                             <th>Stock</th>
+                                            <th>Unit</th>
                                             <th style="width: 100px; text-align: center;">Aksi</th>
                                         </tr>
                                 </thead>
@@ -343,7 +339,7 @@
                                             <td>{{ $item->category }}</td>
                                             <td>{{ $item->model_name }}</td>
                                             <td>Rp {{ number_format($item->regular_price, 0, ',', '.') }}</td>
-
+                                            
                                             <td>
                                                 @if ($item->stock_status == 'in_stock')
                                                     <span class="badge bg-label-success">In Stock</span>
@@ -351,21 +347,24 @@
                                                     <span class="badge bg-label-danger">Out of Stock</span>
                                                 @endif
                                             </td>
-
+                                            <td>{{ $item->quantity  }}</td>
 
                                             <td class="text-center">
-                                                <a href="{{ url('category/' . $item->slug . '/edit') }}" 
+                                                <a href="{{ url('product-show/' . $item->slug) }}" class="btn btn-icon btn-outline-info" title="Detail">
+                                                    <i class="bx bx-show"></i>
+                                                </a>
+                                                <a href="{{ url('product/' . $item->slug . '/edit') }}" 
                                                 class="btn btn-icon btn-outline-primary" 
                                                 title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </a>
 
-                                                <a href="javascript:void(0)" 
-                                                onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}')">
-                                                    <button class="btn btn-icon btn-outline-danger" title="Hapus">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </a>
+                                                    <a href="javascript:void(0)" 
+                                                    onclick="confirmDeleteproduct('{{ $item->slug }}', '{{ $item->model_name }}')">
+                                                        <button class="btn btn-icon btn-outline-danger" title="Hapus">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </a>
 
                                             </td>
                                         </tr>
@@ -388,10 +387,10 @@
 </div>
 
 <script>
-    function confirmDeleteCategory(slug, name_category) {
+    function confirmDeleteproduct(slug, model_name ) {
         Swal.fire({
             title: 'Yakin ingin menghapus?',
-            text: `"${name_category}" akan dihapus secara permanen!`,
+            text: `"${model_name}" akan dihapus secara permanen!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -401,7 +400,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // Arahkan ke route GET untuk destroy
-                window.location.href = `/category-destroy/${slug}`;
+                window.location.href = `/product-destroy/${slug}`;
             }
         });
     }
@@ -455,6 +454,22 @@
 
         // Event listener saat dropdown berubah
         categoryType.addEventListener('change', toggleFields);
+    });
+</script>
+
+      <script>
+    const input = document.getElementById('regular_price');
+
+    input.addEventListener('input', function (e) {
+        let value = this.value.replace(/\./g, ""); // hapus semua titik
+
+        // cegah input selain angka
+        if (!/^\d*$/.test(value)) {
+            value = value.replace(/\D/g, "");
+        }
+
+        // format ke ribuan
+        this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     });
 </script>
     

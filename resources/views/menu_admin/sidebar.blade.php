@@ -28,12 +28,12 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('category*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ Request::is('category*') ? 'active' : '' }}">
             <a href="/category" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Brand"> Category</div>
             </a>
-        </li>
+        </li> --}}
 
         <li class="menu-item {{ Request::is('product*') ? 'active' : '' }}">
             <a href="/product" class="menu-link">

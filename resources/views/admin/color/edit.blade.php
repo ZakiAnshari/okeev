@@ -7,7 +7,7 @@
     <div class="card">
         <!-- Tombol kembali -->
         <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-            <a class="mx-4 my-4" href="{{ route('colors.index', $electric_car->id) }}">
+            <a class="mx-4 my-4" href="{{ route('features.index', $product->slug) }}">
                 <button class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                     data-bs-toggle="tooltip" title="Kembali">
                     <i class="bi bi-arrow-left fs-5 mx-1"></i>
@@ -32,11 +32,11 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('colors.update', [$electric_car->id, $colors->id]) }}" 
+                <form action="{{ route('colors.update', [$product->slug, $colors->id]) }}" 
                     method="POST" 
                     enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
 
                     <div class="row">
                         <div class="col-lg-6">
@@ -105,8 +105,8 @@
                     <!-- Modal Preview -->
                   
 
-                    <div class="text-end mt-4">
-                        <a href="{{ route('colors.index', $electric_car->id) }}" class="btn btn-outline-secondary">Batal</a>
+                   <div class="text-end mt-4">
+                        <a href="{{ route('colors.index', $product->id) }}" class="btn btn-outline-secondary">Batal</a>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
 

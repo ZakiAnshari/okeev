@@ -8,7 +8,6 @@
                 <span class="text-muted fw-light me-1"></span> Brand Logo
             </h4>
 
-
             <div class="col">
                 <div class="card">
                     <div class="card-body">

@@ -19,7 +19,7 @@
                             @endif
                             <div class="d-flex align-items-center mb-3">
                                 <!-- Tombol Kembali -->
-                                <a class="me-3" href="{{ route('cars.show', $electric_car->id) }}">
+                                <a class="me-3" href="{{ route('product.show', $product->slug) }}">
                                     <button class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                             data-bs-toggle="tooltip" title="Kembali">
                                         <i class="bi bi-arrow-left fs-5 mx-1"></i>
@@ -64,7 +64,7 @@
                                             <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <hr>
-                                        <form action="{{ route('specifications.store', $electric_car->id) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('specifications.store', $product->slug) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="row">
@@ -110,9 +110,6 @@
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-
-
-
                                                         <!-- Title -->
                                                         <div class="mb-3">
                                                             <label class="form-label">Title</label>
@@ -162,25 +159,22 @@
                                             <td>{{ $loop->iteration }}</td>
 
                                             <!-- SECTION -->
-                                            <td>{{ ucfirst(str_replace('_', ' ', $item->section)) }}</td>
-
+                                            <td>{{ $item->section }}</td>
                                             <!-- TITLE -->
                                             <td>{{ $item->title }}</td>
                                             <td>{{ $item->value }}</td>
                                             <td class="text-center">
                                                 <!-- Edit -->
-                                                <a href="{{ route('specifications.edit', [$electric_car->id, $item->id]) }}" 
+                                                <a href="{{ route('specifications.edit', [$product->slug, $item->id]) }}" 
                                                 class="btn btn-icon btn-outline-primary">
-                                                    <i class="bx bx-edit-alt"></i>
+                                                        <i class="bx bx-edit-alt"></i>
                                                 </a>
-
                                                 <!-- Delete -->
-                                                <a href="javascript:void(0)" 
-                                                onclick="confirmDeleteSpecification({{ $electric_car->id }}, {{ $item->id }}, '{{ $item->title }}')">
-                                                    <button class="btn btn-icon btn-outline-danger" title="Hapus">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </a>
+                                                <button class="btn btn-icon btn-outline-danger"
+                                                    onclick="confirmDeleteSpecification('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->title }}')"
+                                                    title="Hapus">
+                                                <i class="bx bx-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty
@@ -202,10 +196,10 @@
         </div>
 </div>
 <script>
-    function confirmDeleteSpecification(electricCarId, technologyId, name) {
+    function confirmDeleteSpecification(slug, id, title) {
         Swal.fire({
             title: 'Yakin ingin menghapus?',
-            text: `"${name}" akan dihapus secara permanen!`,
+            text: `"${title}" akan dihapus secara permanen!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -214,11 +208,13 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = `/cars/${electricCarId}/specifications/${technologyId}`;
+                window.location.href = `/product/${slug}/specifications/${id}`;
             }
         });
     }
 </script>
+
+
 
 @include('sweetalert::alert')
 @endsection

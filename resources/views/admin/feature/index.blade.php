@@ -19,14 +19,12 @@
                             @endif
                             <div class="d-flex align-items-center mb-3">
                                 <!-- Tombol Kembali -->
-                                <a class="me-3" href="{{ route('cars.show', $electric_car->id) }}">
+                                <a class="me-3" href="{{ route('product.show', $product->slug) }}">
                                     <button class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                             data-bs-toggle="tooltip" title="Kembali">
                                         <i class="bi bi-arrow-left fs-5 mx-1"></i>
                                     </button>
                                 </a>
-
-
                                 <!-- Judul -->
                                 <h5 class="mb-0">Features List</h5>
                             </div>
@@ -67,7 +65,7 @@
                                             <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <hr>
-                                        <form action="{{ route('features.store', $electric_car->id) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('features.store', $product->slug) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="row">
@@ -134,16 +132,16 @@
                                             <td>{{ $item->name }}</td>
                                             <td class="text-center">
                                                 <!-- Edit -->
-                                                <a href="{{ route('features.edit', [$electric_car->id, $item->id]) }}" 
+                                                <a href="{{ route('features.edit', [$product->slug, $item->id]) }}" 
                                                 class="btn btn-icon btn-outline-primary">
                                                         <i class="bx bx-edit-alt"></i>
                                                 </a>
                                                 <!-- Delete -->
-                                                <a href="javascript:void(0)" onclick="confirmDeleteFeatureCar({{ $electric_car->id }}, {{ $item->id }}, '{{ $item->name }}')">
-                                                    <button class="btn btn-icon btn-outline-danger" title="Hapus">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </a>
+                                                <button class="btn btn-icon btn-outline-danger"
+                                                    onclick="confirmDeleteFeature('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->name }}')"
+                                                    title="Hapus">
+                                                <i class="bx bx-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty
@@ -164,8 +162,8 @@
             </div>
         </div>
 </div>
-<script>
-    function confirmDeleteFeatureCar(electricCarId, technologyId, name) {
+ <script>
+    function confirmDeleteFeature(product, featureId, name) {
         Swal.fire({
             title: 'Yakin ingin menghapus?',
             text: `"${name}" akan dihapus secara permanen!`,
@@ -177,7 +175,7 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = `/cars/${electricCarId}/features/${technologyId}`;
+                window.location.href = `/product/${product}/features/${featureId}`;
             }
         });
     }

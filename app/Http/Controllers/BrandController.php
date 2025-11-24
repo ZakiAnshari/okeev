@@ -115,7 +115,6 @@ class BrandController extends Controller
 
     public function destroy($slug)
     {
-
         $brands = Brand::where('slug', $slug)->firstOrFail();
         $brands->delete();
 

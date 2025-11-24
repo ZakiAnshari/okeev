@@ -7,12 +7,13 @@
     <div class="card">
         <!-- Tombol kembali -->
         <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-            <a class="mx-4 my-4" href="{{ route('technologies.index', $electric_car->id) }}">
-                <button class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                    data-bs-toggle="tooltip" title="Kembali">
-                    <i class="bi bi-arrow-left fs-5 mx-1"></i>
-                </button>
+            <a href="{{ route('technologies.index', $product->slug) }}" 
+            class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center mx-4 my-4"
+            data-bs-toggle="tooltip" 
+            title="Kembali">
+                <i class="bi bi-arrow-left fs-5 me-1"></i> Kembali
             </a>
+
             <h4 class="fw-bold d-flex align-items-center my-4">
                 Edit Technology
                 <i class="bx bx-cog mx-2 text-primary" style="font-size: 1.5rem;"></i>
@@ -33,11 +34,11 @@
                     </div>
                 @endif
 
-                <form action="{{ route('technologies.update', [$electric_car->id, $technology->id]) }}" 
+                <form action="{{ route('technologies.update', [$product->slug, $technology->id]) }}" 
                       method="POST" 
                       enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
 
                     <div class="mb-3">
                         <label class="form-label">Nama Teknologi</label>
@@ -79,7 +80,10 @@
                     </div>
 
                     <div class="text-end mt-4">
-                        <a href="{{ route('technologies.index', $electric_car->id) }}" class="btn btn-outline-secondary">Batal</a>
+                        <a href="{{ route('technologies.index', $product->slug) }}" class="btn btn-outline-secondary">
+                            Batal
+                        </a>
+
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
 
