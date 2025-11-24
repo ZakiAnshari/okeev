@@ -15,6 +15,9 @@ use App\Http\Controllers\SpecificationController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+    Route::get('/cars/{slug}', [LandingPageController::class, 'showBrand'])->name('landing.cars');
+
+
     Route::get('/wuling', [LandingPageController::class, 'wuling'])->name('wuling');
     Route::get('/detailwuling', [LandingPageController::class, 'detailwuling'])->name('detailwuling');
     Route::get('/testdrive', [LandingPageController::class, 'testdrive'])->name('testdrive');

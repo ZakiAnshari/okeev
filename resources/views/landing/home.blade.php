@@ -152,34 +152,22 @@
 
         <!-- === VEHICLE ICONS === -->
         <div id="vehicle-logos" class="brand-grid">
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/1.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/2.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/3.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/4.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/5.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/6.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/7.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/8.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/9.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/10.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/11.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/logo/12.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
+
+
+        @foreach($brands as $brand)
+            <div class="brand-box">
+                <img src="{{ asset('storage/' . $brand->image) }}" class="img-fluid" alt="{{ $brand->name_brand }}">
+            </div>
+        @endforeach
+
+
+        
+      
         </div>
 
         <!-- === ELECTRIC ICONS === -->
         <div id="electric-logos" class="d-none brand-grid">
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/13.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/14.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/15.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/16.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/17.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/18.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/19.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/20.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/21.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/22.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/23.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
-          <div class="brand-box"><img src="{{ asset('front_end/assets/images/24.png') }}" class="img-fluid" alt="Vehicle Brand"></div>
+         
         </div>
 
         <!-- Switch -->

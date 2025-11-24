@@ -180,24 +180,22 @@
                                                     <h6 class="fw-bold mb-3">Electric Cars
                                                     </h6>
                                                     <div class="row">
-                                                        <div class="col-6">
-                                                            <ul class="list-unstyled">
-                                                                <li><a href="#" class="dropdown-item">Build Your Dream</a></li>
-                                                                <li><a href="/wuling" class="dropdown-item">Wuling</a></li>
-                                                                <li><a href="#" class="dropdown-item">BMW</a></li>
-                                                                <li><a href="#" class="dropdown-item">Mercedes Benz</a></li>
-                                                                <li><a href="#" class="dropdown-item">Chery</a></li>
-                                                            </ul>
-                                                        </div>
+                                                        @foreach($brandChunks as $chunk)
+                                                            <div class="col-6 col-md-4">
+                                                                <ul class="list-unstyled">
+                                                                    @foreach($chunk as $brand)
+                                                                        <li>
+                                                                            <a href="{{ route('landing.cars', $brand->slug) }}" class="dropdown-item">
+                                                                                {{ $brand->name_brand }}
+                                                                            </a>
+                                                                        </li>
+                                                                    @endforeach
 
-                                                        <div class="col-6">
-                                                            <ul class="list-unstyled">
-                                                                <li><a href="#" class="dropdown-item">Denza</a></li>
-                                                                <li><a href="#" class="dropdown-item">Vinfast</a></li>
-                                                                <li><a href="#" class="dropdown-item">Polytron</a></li>
-                                                            </ul>
-                                                        </div>
+                                                                </ul>
+                                                            </div>
+                                                        @endforeach
                                                     </div>
+
                                                 </div>
 
                                                 <!-- Divider -->

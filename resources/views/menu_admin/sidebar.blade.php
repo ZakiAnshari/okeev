@@ -44,21 +44,27 @@
 
 
 
-        <li class="menu-item {{ Request::is('cars*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ Request::is('cars*') ? 'active' : '' }}">
             <a href="/cars" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-car"></i>
                 <div data-i18n="Analytics">Electric Cars</div>
             </a>
-        </li>
+        </li> --}}
 
-        <li class="menu-item {{ Request::is('motorcycles*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ Request::is('motorcycles*') ? 'active' : '' }}">
             <a href="/motorcycles" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cycling"></i>
                 <div data-i18n="Analytics">Electric Motorcycles</div>
             </a>
+        </li> --}}
+
+        <li class="menu-item {{ Request::is('test-drive-booking*') ? 'active' : '' }}">
+            <a href="/test-drive-booking" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <div data-i18n="Test Drive Booking">Orders</div>
+            </a>
         </li>
 
-       
 
         <li class="menu-item {{ Request::is('test-drive-booking*') ? 'active' : '' }}">
             <a href="/test-drive-booking" class="menu-link">

@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
 {
     public function index()
     {
-        return view('landing.home');
+        $brands = Brand::orderBy('name_brand')->get();
+        $brandChunks = $brands->chunk(4); // 4 item per kolom
+
+        return view('landing.home', compact('brands', 'brandChunks'));
     }
 
     public function wuling()
