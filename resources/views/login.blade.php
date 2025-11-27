@@ -172,7 +172,7 @@
                             <!-- Register Link -->
                             <div class="text-center" style="font-size: 13px;">
                                 Don't have an account yet?
-                                <a href="#" style="color: #00e7ff; font-weight: 600;">Register</a>
+                                <a href="/register" style="color: #00e7ff; font-weight: 600;">Register</a>
                             </div>
                         </form>
                         <!-- /Form -->

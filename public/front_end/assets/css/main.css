@@ -1,4 +1,115 @@
 /* Contack section */
+  .custom-input {
+        background: #111a30 !important;
+        border: none !important;
+        color: #fff !important;
+    }
+    .custom-input::placeholder {
+        color: #8a93a8 !important;
+    }
+    .custom-input:focus {
+        box-shadow: 0 0 0 2px #00f2ea33 !important;
+    }
+
+    @media (max-width: 576px) {
+        h2 {
+            font-size: 32px !important;
+        }
+    }
+
+    .contact-section {
+    margin-top: 150px;
+    }
+
+    @media (max-width: 576px) {
+        .contact-section {
+            margin-top: 50px;
+        }
+    }
+.profile-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #23f3d9;
+}
+
+.profile-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+   .topbar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ==================== SEARCH BOX ==================== */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 30px;
+    width: 260px;
+    gap: 8px;
+}
+
+.search-box i {
+    font-size: 18px;
+    color: #777;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    font-size: 14px;
+    color: #444;
+}
+
+/* ==================== ICON BUTTON ==================== */
+.icon-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-btn {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #23f3d9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #23f3d9;
+    font-size: 22px;
+    position: relative;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.icon-btn:hover {
+    background: #23f3d9;
+    color: white;
+}
+
+/* ==================== NOTIF DOT ==================== */
+.icon-btn.notif .dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 9px;
+    height: 9px;
+    background: red;
+    border-radius: 50%;
+}
+
 .contact-section {
     margin-top: 150px;
 }

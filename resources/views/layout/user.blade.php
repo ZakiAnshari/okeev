@@ -7,7 +7,7 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/front_end/assets/images/favicon.svg') }}" />
-    <!-- ========================= CSS here ========================= -->
+    
     <link rel="stylesheet" href="{{ asset('/front_end/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('/front_end/assets/css/LineIcons.2.0.css') }}" />
     <link rel="stylesheet" href="{{ asset('/front_end/assets/css/animate.css') }}" />
@@ -149,7 +149,7 @@
                     <div class="nav-inner">
                         <!-- Start Navbar -->
                         <nav class="navbar navbar-expand-lg">
-                            <a href="/" class="d-inline-block">
+                             <a href="/" class="d-inline-block">
                             <img 
                                 src="{{ asset('front_end/assets/images/logo/logo.png') }}" 
                                 alt="Logo"
@@ -163,116 +163,128 @@
                                 <span class="toggler-icon"></span>
                                 <span class="toggler-icon"></span>
                             </button>
+                                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                    <ul id="nav" class="navbar-nav ms-auto">
+                                        <li class="nav-item dropdown position-static">
+                                            <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                Vehicle
+                                            </a>
+                                            <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
+                                                <div class="row"> 
+                                                    <div class="col-lg-6 col-md-6 mb-4">
+                                                        <h6 class="fw-bold mb-3">Electric Cars
+                                                        </h6>
+                                                        <div class="row">
+                                                            @foreach($brandChunks as $chunk)
+                                                                <div class="col-6 col-md-4">
+                                                                    <ul class="list-unstyled">
+                                                                        @foreach($chunk as $brand)
+                                                                            <li>
+                                                                                <a href="{{ route('landing.cars', $brand->slug) }}" class="dropdown-item">
+                                                                                    {{ $brand->brand }}
+                                                                                </a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
 
-                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                                <ul id="nav" class="navbar-nav ms-auto">
-                                    <li class="nav-item dropdown position-static">
-                                        <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            Vehicle
-                                        </a>
+                                                
+                                                    <div class="col-lg-1 d-none d-lg-flex justify-content-center">
+                                                        <div style="width:1px; background:#d1d1d1; height:100%;"></div>
+                                                    </div>
 
-                                        <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
+                                                
+                                                    <div class="col-lg-5 col-md-6">
+                                                        <h6 class="fw-bold mb-3">Electric Motorcycles</h6>
+                                                        <div class="row">
 
-                                            <div class="row"> 
-                                                <!-- Electric Cars -->
-                                                <div class="col-lg-6 col-md-6 mb-4">
-                                                    <h6 class="fw-bold mb-3">Electric Cars
-                                                    </h6>
-                                                    <div class="row">
-                                                        @foreach($brandChunks as $chunk)
-                                                            <div class="col-6 col-md-4">
+                                                            <div class="col-6">
                                                                 <ul class="list-unstyled">
-                                                                    @foreach($chunk as $brand)
-                                                                        <li>
-                                                                            <a href="{{ route('landing.cars', $brand->slug) }}" class="dropdown-item">
-                                                                                {{ $brand->name_brand }}
-                                                                            </a>
-                                                                        </li>
-                                                                    @endforeach
-
+                                                                    <li><a href="#" class="dropdown-item">Polytron</a></li>
                                                                 </ul>
                                                             </div>
-                                                        @endforeach
-                                                    </div>
 
-                                                </div>
-
-                                                <!-- Divider -->
-                                                <div class="col-lg-1 d-none d-lg-flex justify-content-center">
-                                                    <div style="width:1px; background:#d1d1d1; height:100%;"></div>
-                                                </div>
-
-                                                <!-- Electric Motorcycles -->
-                                                <div class="col-lg-5 col-md-6">
-                                                    <h6 class="fw-bold mb-3">Electric Motorcycles</h6>
-                                                    <div class="row">
-
-                                                        <div class="col-6">
-                                                            <ul class="list-unstyled">
-                                                                <li><a href="#" class="dropdown-item">Polytron</a></li>
-                                                                <li><a href="#" class="dropdown-item">Vinfast</a></li>
-                                                                <li><a href="#" class="dropdown-item">U-Winfly</a></li>
-                                                                <li><a href="#" class="dropdown-item">Maka</a></li>
-                                                                <li><a href="#" class="dropdown-item">Alva</a></li>
-                                                            </ul>
+                                                            <div class="col-6">
+                                                                <ul class="list-unstyled">
+                                                                    <li><a href="#" class="dropdown-item">Sellis</a></li>
+                                                                    <li><a href="#" class="dropdown-item">Yadea</a></li>
+                                                                    <li><a href="#" class="dropdown-item">Volta</a></li>
+                                                                </ul>
+                                                            </div>
                                                         </div>
-
-                                                        <div class="col-6">
-                                                            <ul class="list-unstyled">
-                                                                <li><a href="#" class="dropdown-item">Sellis</a></li>
-                                                                <li><a href="#" class="dropdown-item">Yadea</a></li>
-                                                                <li><a href="#" class="dropdown-item">Volta</a></li>
-                                                            </ul>
-                                                        </div>
-
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </li>
 
+                                        <li class="nav-item">
+                                            <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
+                                                data-bs-target="#submenu-electric" aria-expanded="false">
+                                                Electric
+                                            </a>
+                                            <ul class="sub-menu collapse" id="submenu-electric">
+                                                <li class="nav-item"><a href="#">Electric 1</a></li>
+                                                <li class="nav-item"><a href="#">Electric 2</a></li>
+                                                <li class="nav-item"><a href="#">Electric 3</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/about">About OKEEV</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/contact">Contact</a>
+                                        </li>
+
+                                        
+                        
+                                    </ul>
+                                    <div class="button add-list-button">
+                                        <div class="button-group">
+                                            @guest
+                                                <a href="/login" class="btn-login">Login</a>
+                                            @endguest
+                                            
+                                            {{-- <a href="#" class="btn-download">
+                                                Download App   <i class="bx bx-download me-2 fs-4"></i>
+                                            </a> --}}
+                                        </div>
+                                    </div>
+                                    {{-- SUDAH LOGIN --}}
+                                    <div class="topbar-wrapper">
+                                            @auth
+                                            <!-- Search -->
+                                            <div class="search-box">
+                                                <i class="bx bx-search"></i>
+                                                <input type="text" placeholder="Search Vehicle / electric">
                                             </div>
 
-                                        </div>
-                                    </li>
+                                            <!-- Icon Buttons -->
+                                            <div class="icon-box">
+                                                <a href="/login" class="icon-btn">
+                                                    <i class="bx bx-shopping-bag"></i>
+                                                </a>
+                                                <a href="/notification" class="icon-btn notif">
+                                                    <i class="bx bx-bell"></i>
+                                                    <span class="dot"></span>
+                                                </a>
+                                                <!-- PROFILE -->
+                                                <a href="{{ route('profil.show', optional(Auth::user())->slug ?? 'guest') }}" class="profile-box">
+                                                    <img src="{{ asset('front_end/assets/images/Group 21.png') }}" alt="Profile">
+                                                </a>
 
-                                    <li class="nav-item">
-                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
-                                            data-bs-target="#submenu-electric" aria-expanded="false">
-                                            Electric
-                                        </a>
-                                        <ul class="sub-menu collapse" id="submenu-electric">
-                                            <li class="nav-item"><a href="#">Electric 1</a></li>
-                                            <li class="nav-item"><a href="#">Electric 2</a></li>
-                                            <li class="nav-item"><a href="#">Electric 3</a></li>
-                                        </ul>
-                                    </li>
+                                            </div>
+                                            @endauth
+                                    </div>
 
-                                    <li class="nav-item">
-                                        <a href="#">About OKEEV</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="/contact">Contact</a>
-                                    </li>
-
-                                    <!-- Mobile Buttons -->
-                                    <li class="d-lg-none">
-                                        <a href="/login" class="btn-login">Login</a>
-                                        {{-- <a href="#" class="btn-download">
-                                            Download App <i class="lni lni-cloud-upload"></i>
-                                        </a> --}}
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- Desktop Buttons -->
-                            <div class="button add-list-button">
-                                <div class="button-group">
-                                    <a href="/login" class="btn-login">Login</a>
-                                    {{-- <a href="#" class="btn-download">
-                                        Download App   <i class="bx bx-download me-2 fs-4"></i>
-                                    </a> --}}
                                 </div>
-                            </div>
+
+                                
                         </nav>
                         <!-- End Navbar -->
                     </div>
@@ -281,7 +293,6 @@
         </div>
     </header>
     <!-- End Header Area -->
-
 
     @yield('content')
 
@@ -293,7 +304,6 @@
                         <a href="/">
                                     <img src="{{ asset('front_end/assets/images/logo/logo.png') }}" alt="Logo">
                                 </a>
-
                     </div>
                     <p class="text-secondary small">
                         Lorem ipsum dolor sit amet consectetur. Velit fermentum mi consectetur egestas in mauris. Enim orci volutpat nullam ac sed dolor etiam nulla fringilla. Laoreet sagittis elementum elit ipsum cras aenean malesuada.

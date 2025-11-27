@@ -5,11 +5,10 @@
 <section class="py-5 contact-section">
     <div class="container">
         <div class="row g-5 align-items-start">
-
             <!-- LEFT CONTENT -->
             <div class="col-lg-6">
                 <h2 class="fw-bold mb-3" style="color:#232b44; font-size: 42px;">Contact Us</h2>
-                <p class="C sectmb-4" style="color:#6c748a;">
+                <p class="C sectmb-4 mb-4" style="color:#6c748a;">
                     Lorem ipsum dolor sit amet consectetur. Id condimentum sed elit sagittis senectus feugiat.
                     Congue erat sem tincidunt nulla sed mattis. Velit et gravida sit.
                 </p>
@@ -83,35 +82,45 @@
     </div>
 </section>
 
-<style>
-    .custom-input {
-        background: #111a30 !important;
-        border: none !important;
-        color: #fff !important;
-    }
-    .custom-input::placeholder {
-        color: #8a93a8 !important;
-    }
-    .custom-input:focus {
-        box-shadow: 0 0 0 2px #00f2ea33 !important;
-    }
+{{-- PETA --}}
+<!-- SECTION PETA -->
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <!-- Div Map -->
+                <div id="map" style="height: 450px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    @media (max-width: 576px) {
-        h2 {
-            font-size: 32px !important;
-        }
-    }
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    .contact-section {
-    margin-top: 150px;
-    }
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    @media (max-width: 576px) {
-        .contact-section {
-            margin-top: 50px;
-        }
-    }
+<script>
+    // Koordinat alamat:
+    const lat = -6.421413;
+    const lng = 106.830986;
 
-</style>
+    // Inisialisasi peta
+    const map = L.map('map').setView([lat, lng], 17);
+
+    // Tile Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 29,
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    // Marker
+    L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup('Jl. Cinere Residence Blk. F5 No.30<br>Jatimulya, Depok')
+        .openPopup();
+</script>
+
 
 @endsection
