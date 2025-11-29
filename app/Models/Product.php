@@ -12,29 +12,16 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        // MAIN INFO
-        'brand',
+        'category_id',
+        'brand_id',
         'model_name',
-        'category',
         'slug',
         'miles',
-        'type',
         'seats',
-        'cc',
-        // PRICES
-        'regular_price',
-        'sale_price',
-        // INVENTORY
-        'quantity',
+        'price',
         'stock_status',
-        // FLAGS
         'featured',
-        // IMAGES
-        'image_wallpaper',
-        'image',
-        'image_detail_1',
-        'image_detail_2',
-        'image_detail_3',
+        'description',
     ];
 
 
@@ -42,10 +29,26 @@ class Product extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('brand')
+            ->generateSlugsFrom('model_name')
             ->saveSlugsTo('slug');
     }
 
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+
+      // 🔥 Relasi: satu product milik satu category
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
     
 
     public function technologies()

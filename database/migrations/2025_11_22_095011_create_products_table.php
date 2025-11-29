@@ -14,36 +14,25 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
 
-            // MAIN INFO
-            $table->string('brand')->nullable();
+            // CATEGORY
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            // BRAND
+            $table->unsignedBigInteger('brand_id');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+
             $table->string('model_name');
-            $table->string('category');
             $table->string('slug')->nullable();
             $table->integer('miles')->nullable();
-            $table->enum('type', ['electric', 'hybrid', 'fuel'])->default('Electric');
             $table->integer('seats')->nullable();
-            $table->string('cc')->nullable();
-
             // PRICES
-            $table->bigInteger('regular_price')->nullable();
-            $table->bigInteger('sale_price')->nullable();
-
+            $table->bigInteger('price');
             // INVENTORY
-            $table->integer('quantity')->default(0);
-            $table->enum('stock_status', ['in_stock', 'out_of_stock'])
-                ->default('in_stock');
-
+            $table->enum('stock_status', ['in_stock', 'out_of_stock'])->default('in_stock');
+            $table->text('description')->nullable();
             // FLAGS
             $table->boolean('featured')->default(false);
-
-            // IMAGES
-            $table->string('image_wallpaper');       // front wallpaper image
-            $table->string('image');                 // main product image
-            // DETAIL IMAGES
-            $table->string('image_detail_1');
-            $table->string('image_detail_2');
-            $table->string('image_detail_3');
-
+            
             $table->timestamps();
         });
     }

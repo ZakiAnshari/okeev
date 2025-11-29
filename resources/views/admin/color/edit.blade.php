@@ -7,12 +7,13 @@
     <div class="card">
         <!-- Tombol kembali -->
         <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-            <a class="mx-4 my-4" href="{{ route('features.index', $product->slug) }}">
+            <a class="mx-4 my-4" href="{{ route('product.show', $product->slug) }}?tab=color">
                 <button class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                     data-bs-toggle="tooltip" title="Kembali">
                     <i class="bi bi-arrow-left fs-5 mx-1"></i>
                 </button>
             </a>
+            
             <h4 class="fw-bold d-flex align-items-center my-4">
                 Edit color
                 <i class="bx bx-cog mx-2 text-primary" style="font-size: 1.5rem;"></i>

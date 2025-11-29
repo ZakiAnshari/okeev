@@ -21,4 +21,9 @@ class Category extends Model
             ->generateSlugsFrom('name_category')
             ->saveSlugsTo('slug');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
 }

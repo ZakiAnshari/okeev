@@ -22,5 +22,11 @@ class Brand extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
+    }
+
+
     
 }

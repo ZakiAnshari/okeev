@@ -12,11 +12,13 @@
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <!-- Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet" />
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/fonts/boxicons.css') }}" />
     <!-- Core CSS -->
@@ -30,9 +32,22 @@
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
     <!-- Helpers -->
     <script src="{{ asset('/backend/assets/vendor/js/helpers.js') }}"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('/backend/assets/js/config.js') }}"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        .select2-container {
+            display: block !important;
+            width: 100% !important;
+        }
+        .select2-container .select2-dropdown {
+            z-index: 999999 !important;
+        }
+        .select2-container .select2-selection {
+            z-index: 999999 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -210,26 +225,6 @@
     });
     </script>
     
-    {{-- Untuk Menampilkan Gambar ketika Form --}}
-    {{-- <script>
-        const imageInput = document.getElementById('imageInput');
-        const imagePreview = document.getElementById('imagePreview');
-
-        imageInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.setAttribute('src', e.target.result);
-                    imagePreview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            } else {
-                imagePreview.style.display = 'none';
-            }
-        });
-    </script> --}}
-
     {{-- MENAMPILKAN CLOSE KECIL --}}
     <script>
     const imageInput = document.getElementById("imageInput");
@@ -262,7 +257,49 @@
         removeBtn.style.display = "none";
     });
     </script>
+    {{-- SCRIPT UNTUK MENYEMBUNYIKAN FORM SEAT DAN MILES --}}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const categorySelect = document.getElementById("category_id");
+    const seatsDiv = document.getElementById("seats_div");
+    const milesDiv = document.getElementById("miles_div");
+    const descriptionDiv = document.getElementById("description_div");
+
+    function toggleFields() {
+        const category = categorySelect.value;
+
+        // Seats hanya tampil di category_id = 1
+        seatsDiv.style.display = (category == "1") ? "block" : "none";
+
+        // Miles hilang di category_id 3 dan 4
+        milesDiv.style.display = (category == "3" || category == "4") ? "none" : "block";
+
+        // Deskripsi hanya tampil di category_id 3 dan 4
+        descriptionDiv.style.display = (category == "3" || category == "4") ? "block" : "none";
+    }
+
+    // Saat halaman pertama kali dibuka
+    toggleFields();
+
+    // Saat user memilih kategori
+    categorySelect.addEventListener("change", toggleFields);
+});
+</script>
+
+<script src="{{ asset('/backend/assets/vendor/libs/jquery/jquery.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.select2').select2({
+        theme: 'bootstrap4',
+        placeholder: "Pilih kategori",
+        allowClear: true,
+        width: '100%',
+        dropdownParent: $('.select2').closest('.col-lg-6')
+    });
+});
+</script>
 
 </body>
-
 </html>

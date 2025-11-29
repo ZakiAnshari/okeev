@@ -51,10 +51,10 @@ class FeatureController extends Controller
         ]);
 
         // Alert sukses
-        Alert::success('Success', 'Technology berhasil ditambahkan');
+        Alert::success('Success', 'Feature berhasil ditambahkan');
 
         // Redirect ke index teknologi
-        return redirect()->route('features.index', $product->slug);
+        return redirect()->route('product.show', $product->slug)->with('tab', 'feature');
     }
 
     public function edit($product_slug, $id)
@@ -67,47 +67,47 @@ class FeatureController extends Controller
                                 ->where('product_id', $product->id)
                                 ->firstOrFail();
 
-        return view('admin.feature.edit', compact('product', 'features'));
+        return view('admin.feature.edit', compact('product', 'features'))->with('tab', 'feature');
     }
 
     public function update(Request $request, $slug, $id)
-{
-    // Ambil produk berdasarkan slug
-    $product = Product::where('slug', $slug)->firstOrFail();
+    {
+        // Ambil produk berdasarkan slug
+        $product = Product::where('slug', $slug)->firstOrFail();
 
-    // Ambil feature yang ingin diupdate
-    $feature = Feature::where('id', $id)
-                      ->where('product_id', $product->id)
-                      ->firstOrFail();
+        // Ambil feature yang ingin diupdate
+        $feature = Feature::where('id', $id)
+                        ->where('product_id', $product->id)
+                        ->firstOrFail();
 
-    // Validasi input
-    $validated = $request->validate([
-        'name'        => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+        // Validasi input
+        $validated = $request->validate([
+            'name'        => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    // Upload gambar baru jika ada
-    if ($request->hasFile('image')) {
-        // Hapus file lama jika ada
-        if ($feature->image && Storage::disk('public')->exists($feature->image)) {
-            Storage::disk('public')->delete($feature->image);
+        // Upload gambar baru jika ada
+        if ($request->hasFile('image')) {
+            // Hapus file lama jika ada
+            if ($feature->image && Storage::disk('public')->exists($feature->image)) {
+                Storage::disk('public')->delete($feature->image);
+            }
+
+            $feature->image = $request->file('image')->store('image', 'public');
         }
 
-        $feature->image = $request->file('image')->store('image', 'public');
-    }
+        // Update data feature
+        $feature->name = $validated['name'];
+        $feature->description = $validated['description'] ?? null;
+        $feature->save();
 
-    // Update data feature
-    $feature->name = $validated['name'];
-    $feature->description = $validated['description'] ?? null;
-    $feature->save();
+        // Alert sukses
+        Alert::success('Success', 'Feature berhasil diupdate');
 
-    // Alert sukses
-    Alert::success('Success', 'Feature berhasil diupdate');
-
-    // Redirect ke index feature
-    return redirect()->route('features.index', $product->slug);
-    }
+        // Redirect ke index feature
+        return redirect()->route('product.show', $product->slug)->with('tab', 'feature');
+        }
 
     public function destroy($product_slug, $feature_id)
     {
@@ -131,7 +131,7 @@ class FeatureController extends Controller
         Alert::success('Success', 'Feature berhasil dihapus');
 
         // Redirect ke index feature
-        return redirect()->route('features.index', $product->slug);
+        return redirect()->route('product.show', $product->slug)->with('tab', 'feature');
     }
 
 }

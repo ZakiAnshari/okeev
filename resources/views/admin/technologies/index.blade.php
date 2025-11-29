@@ -46,18 +46,18 @@
                                 </form>
                                 <div class="d-flex gap-2">
                                 <!-- Tombol Tambah -->
-                                    <div class="d-flex justify-content-end">
+                                    {{-- <div class="d-flex justify-content-end">
                                         <button type="button"
                                             class="btn btn-outline-success account-image-reset d-flex align-items-center"
                                             data-bs-toggle="modal" data-bs-target="#addCarModal">
                                             <i class="bx bx-plus me-2 d-block"></i>
                                             <span>Tambah</span>
                                         </button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <!-- Modal tambah Data -->
-                            <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true">
+                            {{-- <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
 
@@ -118,7 +118,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <!-- Table Data -->
                             <table class="table table-bordered">
                                 <thead>
@@ -158,9 +158,7 @@
                                         <td colspan="8" class="text-center">Data Kosong</td>
                                     </tr>
                                 @endforelse
-                            </tbody>
-
-
+                                </tbody>
                             </table>
                             <!-- Pagination -->
                             {{-- <div class="d-flex justify-content-end mt-3">

@@ -27,3 +27,5 @@ bootstrap.Popover.prototype.show = (original => {
 })(bootstrap.Popover.prototype.show)
 
 export { bootstrap }
+
+

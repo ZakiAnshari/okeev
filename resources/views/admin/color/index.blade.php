@@ -112,14 +112,8 @@
                                                                 border: 1px solid #ccc;
                                                             ">
                                                     </div>
-
-
                                                     </div>
-
                                                 </div>
-
-
-
                                             </div>
                                             <!-- Footer -->
                                             <div class="modal-footer">

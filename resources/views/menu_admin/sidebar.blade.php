@@ -28,12 +28,12 @@
             </a>
         </li>
 
-        {{-- <li class="menu-item {{ Request::is('category*') ? 'active' : '' }}">
+        <li class="menu-item {{ Request::is('category*') ? 'active' : '' }}">
             <a href="/category" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Brand"> Category</div>
             </a>
-        </li> --}}
+        </li>
 
         <li class="menu-item {{ Request::is('product*') ? 'active' : '' }}">
             <a href="/product" class="menu-link">
@@ -41,22 +41,6 @@
                 <div data-i18n="Brand">Product</div>
             </a>
         </li>
-
-
-
-        {{-- <li class="menu-item {{ Request::is('cars*') ? 'active' : '' }}">
-            <a href="/cars" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-car"></i>
-                <div data-i18n="Analytics">Electric Cars</div>
-            </a>
-        </li> --}}
-
-        {{-- <li class="menu-item {{ Request::is('motorcycles*') ? 'active' : '' }}">
-            <a href="/motorcycles" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-cycling"></i>
-                <div data-i18n="Analytics">Electric Motorcycles</div>
-            </a>
-        </li> --}}
 
         <li class="menu-item {{ Request::is('test-drive-booking*') ? 'active' : '' }}">
             <a href="/test-drive-booking" class="menu-link">

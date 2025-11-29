@@ -53,7 +53,7 @@ class TechnologyController extends Controller
         Alert::success('Success', 'Technology berhasil ditambahkan');
 
         // Redirect ke index teknologi
-        return redirect()->route('technologies.index', $product->slug);
+        return redirect()->route('product.show', $product->slug)->with('tab', 'technology');
     }
 
     public function edit($product_slug, $id)
@@ -108,30 +108,30 @@ class TechnologyController extends Controller
     // Redirect ke index teknologi
     return redirect()->route('technologies.index', $product->slug);
 }
-   public function destroy($product_slug, $technology_id)
-{
-    // Ambil produk
-    $product = Product::where('slug', $product_slug)->firstOrFail();
+    public function destroy($product_slug, $technology_id)
+    {
+        // Ambil produk
+        $product = Product::where('slug', $product_slug)->firstOrFail();
 
-    // Ambil teknologi
-    $technology = Technology::where('id', $technology_id)
-                            ->where('product_id', $product->id)
-                            ->firstOrFail();
+        // Ambil teknologi
+        $technology = Technology::where('id', $technology_id)
+                                ->where('product_id', $product->id)
+                                ->firstOrFail();
 
-    // Hapus file gambar jika ada
-    if ($technology->image && Storage::disk('public')->exists($technology->image)) {
-        Storage::disk('public')->delete($technology->image);
+        // Hapus file gambar jika ada
+        if ($technology->image && Storage::disk('public')->exists($technology->image)) {
+            Storage::disk('public')->delete($technology->image);
+        }
+
+        // Hapus data teknologi
+        $technology->delete();
+
+        // Alert sukses
+        Alert::success('Success', 'Technology berhasil dihapus');
+
+        // Redirect ke index teknologi produk
+        return redirect()->route('product.show', $product->slug);
     }
-
-    // Hapus data teknologi
-    $technology->delete();
-
-    // Alert sukses
-    Alert::success('Success', 'Technology berhasil dihapus');
-
-    // Redirect ke index teknologi produk
-    return redirect()->route('technologies.index', $product->slug);
-}
 
 
 }

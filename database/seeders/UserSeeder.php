@@ -10,7 +10,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
-   public function run(): void
+    public function run(): void
 {
     // Buat role Admin dan User
     $roles = [

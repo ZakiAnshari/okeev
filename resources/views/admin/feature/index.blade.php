@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                             <!-- Table Data -->
-                            <table class="table table-bordered">
+                            {{-- <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
@@ -151,7 +151,7 @@
                                     @endforelse
                                 </tbody>
 
-                            </table>
+                            </table> --}}
                             <!-- Pagination -->
                             {{-- <div class="d-flex justify-content-end mt-3">
                                 {{ $features->appends(request()->input())->links('pagination::bootstrap-4') }}
@@ -162,24 +162,7 @@
             </div>
         </div>
 </div>
- <script>
-    function confirmDeleteFeature(product, featureId, name) {
-        Swal.fire({
-            title: 'Yakin ingin menghapus?',
-            text: `"${name}" akan dihapus secara permanen!`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = `/product/${product}/features/${featureId}`;
-            }
-        });
-    }
-</script>
+
 
 @include('sweetalert::alert')
 @endsection

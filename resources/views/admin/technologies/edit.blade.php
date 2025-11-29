@@ -7,7 +7,7 @@
     <div class="card">
         <!-- Tombol kembali -->
         <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-            <a href="{{ route('technologies.index', $product->slug) }}" 
+            <a href="{{ route('product.show', $product->slug) }}" 
             class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center mx-4 my-4"
             data-bs-toggle="tooltip" 
             title="Kembali">
@@ -80,10 +80,7 @@
                     </div>
 
                     <div class="text-end mt-4">
-                        <a href="{{ route('technologies.index', $product->slug) }}" class="btn btn-outline-secondary">
-                            Batal
-                        </a>
-
+                     
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
 
