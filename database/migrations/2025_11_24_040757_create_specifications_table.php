@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('specifications', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('product_id')
-                  ->constrained('products')
-                  ->onDelete('cascade');
-              $table->string('section');
-
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             // Judul spesifikasi (contoh: Battery Type, Wheelbase, Width)
             $table->string('title');
-
-            // Isi spesifikasi
+              // Label spesifikasi (contoh: Dimensions, Wheelbase, Battery Type)
+            $table->string('label');
+            // Nilai spesifikasi (contoh: "2,974 x 1,505 x 1,631 mm")
             $table->text('value');
             $table->timestamps();
         });

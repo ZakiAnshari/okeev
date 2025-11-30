@@ -189,19 +189,43 @@ class ProductController extends Controller
             return redirect()->route('product.index');
         }
 
-        public function show($slug)
-        {
-            // Ambil produk + semua gambar terkait
-            $product = Product::with('images')->where('slug', $slug)->firstOrFail();
+public function show($slug)
+{
+    // Ambil produk + relasi gambar
+    $product = Product::with('images')->where('slug', $slug)->firstOrFail();
 
-            // Ambil relasi dengan pagination
-            $technologies = $product->technologies()->paginate(3);
-            $features     = $product->features()->paginate(3);
-            $colors       = $product->colors()->paginate(3);
+    // Tab aktif (default = technology)
+    $activeTab = request()->get('tab', 'technology');
 
-            // Kirim semua data ke view
-            return view('admin.product.show', compact('product', 'technologies', 'features', 'colors'));
-        }
+    // Pagination tiap relasi
+    $technologies = $product->technologies()
+        ->paginate(3, ['*'], 'tech_page')
+        ->appends(['tab' => 'technology']);
+
+    $features = $product->features()
+        ->paginate(3, ['*'], 'feature_page')
+        ->appends(['tab' => 'feature']);
+
+    $colors = $product->colors()
+        ->paginate(3, ['*'], 'color_page')
+        ->appends(['tab' => 'color']);
+
+    $specifications = $product->specifications()
+        ->paginate(3, ['*'], 'spec_page')
+        ->appends(['tab' => 'spesification']);
+
+    return view('admin.product.show', compact(
+        'product',
+        'technologies',
+        'features',
+        'colors',
+        'specifications',
+        'activeTab'
+    ));
+}
+
+
+
 
 
 

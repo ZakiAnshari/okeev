@@ -1,7 +1,7 @@
 @extends('layout.admin')
 @section('title', 'Category')
 @section('content')
-<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <h4 class="fw-bold d-flex align-items-center my-4">
                 <i class="bx bx-category me-2 text-primary" style="font-size: 1.5rem;"></i>
@@ -19,45 +19,36 @@
                                     <ul class="mb-0">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
-                                        @endforeach 
+                                        @endforeach
                                     </ul>
                                 </div>
                             @endif
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-end">
                                 <!-- Form Search -->
-                                <form method="GET" class="d-flex align-items-center my-3" style="max-width: 350px;">
-                                    <div class="input-group shadow-sm" style="height: 38px; width: 100%;">
-                                        <input type="text" name="search" value="{{ request('search') }}"
-                                        class="form-control border-end-0 py-2 px-3"
-                                        placeholder="Cari nama category..." aria-label="Search">
 
-                                        <button class="btn btn-outline-primary px-3" type="submit"
-                                            style="font-size: 0.9rem;">
-                                            <i class="bx bx-search"></i>
+                                <div class="d-flex gap-2  mb-3">
+                                    <!-- Tombol Tambah -->
+                                    <div class="d-flex  ">
+                                        <button type="button"
+                                            class="btn btn-outline-success account-image-reset d-flex align-items-center"
+                                            data-bs-toggle="modal" data-bs-target="#addCarModal">
+                                            <i class="bx bx-plus me-2 d-block"></i>
+                                            <span>Tambah</span>
                                         </button>
                                     </div>
-                                </form>
-                                <div class="d-flex gap-2">
-                                <!-- Tombol Tambah -->
-                                <div class="d-flex justify-content-end">
-                                    <button type="button"
-                                        class="btn btn-outline-success account-image-reset d-flex align-items-center"
-                                        data-bs-toggle="modal" data-bs-target="#addCarModal">
-                                        <i class="bx bx-plus me-2 d-block"></i>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
                                 </div>
                             </div>
                             <!-- Modal tambah Data -->
-                            <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel"
+                                aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
 
                                         <!-- Header -->
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addCarModalLabel">Tambah Category </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <hr>
                                         <form action="category-add" method="POST" enctype="multipart/form-data">
@@ -81,7 +72,8 @@
 
                                             <!-- Footer -->
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Save</button>
                                             </div>
 
@@ -90,11 +82,8 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                             <!-- Table Data -->
-                            <table class="table table-bordered">
+                            <table id="categoryTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
@@ -104,68 +93,56 @@
                                 </thead>
 
                                 <tbody>
-                                    @forelse ($categorys as $item)
+                                    @foreach ($categorys as $item)
                                         <tr>
-                                         <td>{{ ($categorys->currentPage() - 1) * $categorys->perPage() + $loop->iteration }}</td>
-
+                                            <td></td> {{-- auto-number by DataTables --}}
                                             <td>{{ $item->name_category }}</td>
-                                        
-
                                             <td class="text-center">
-                                                <a href="{{ url('category/' . $item->slug . '/edit') }}" 
-                                                class="btn btn-icon btn-outline-primary" 
-                                                title="Edit">
+                                                <a href="{{ url('category/' . $item->slug . '/edit') }}"
+                                                    class="btn btn-icon btn-outline-primary" title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </a>
 
-                                                <a href="javascript:void(0)" 
-                                                onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}')">
+                                                <a href="javascript:void(0)"
+                                                    onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}')">
                                                     <button class="btn btn-icon btn-outline-danger" title="Hapus">
                                                         <i class="bx bx-trash"></i>
                                                     </button>
                                                 </a>
-
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="8" class="text-center">Data Kosong</td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
-                            <!-- Pagination -->
-                            <div class="d-flex justify-content-end mt-3">
-                                {{ $categorys->appends(request()->input())->links('pagination::bootstrap-4') }}
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
+    </div>
 
-<script>
-    function confirmDeleteCategory(slug, name_category) {
-        Swal.fire({
-            title: 'Yakin ingin menghapus?',
-            text: `"${name_category}" akan dihapus secara permanen!`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Arahkan ke route GET untuk destroy
-                window.location.href = `/category-destroy/${slug}`;
-            }
-        });
-    }
-</script>
+    <script>
+        function confirmDeleteCategory(slug, name_category) {
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: `"${name_category}" akan dihapus secara permanen!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Arahkan ke route GET untuk destroy
+                    window.location.href = `/category-destroy/${slug}`;
+                }
+            });
+        }
+    </script>
 
 
-    
-@include('sweetalert::alert')
+
+    @include('sweetalert::alert')
 @endsection

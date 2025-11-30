@@ -8,8 +8,8 @@ class Specification extends Model
 {
     protected $fillable = [
         'product_id',
-        'section',
         'title',
+        'label',
         'value',
     ];
 

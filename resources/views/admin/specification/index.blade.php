@@ -171,10 +171,11 @@
                                                 </a>
                                                 <!-- Delete -->
                                                 <button class="btn btn-icon btn-outline-danger"
-                                                    onclick="confirmDeleteSpecification('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->title }}')"
+                                                    onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->title }}', 'specification')"
                                                     title="Hapus">
-                                                <i class="bx bx-trash"></i>
+                                                    <i class="bx bx-trash"></i>
                                                 </button>
+
                                             </td>
                                         </tr>
                                     @empty

@@ -13,12 +13,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <!-- Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+        rel="stylesheet" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/fonts/boxicons.css') }}" />
     <!-- Core CSS -->
@@ -30,9 +32,12 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
     <!-- Helpers -->
     <script src="{{ asset('/backend/assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('/backend/assets/js/config.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -41,9 +46,11 @@
             display: block !important;
             width: 100% !important;
         }
+
         .select2-container .select2-dropdown {
             z-index: 999999 !important;
         }
+
         .select2-container .select2-selection {
             z-index: 999999 !important;
         }
@@ -121,9 +128,9 @@
                     <footer class="content-footer footer bg-footer-theme">
                         <div
                             class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                        <div class="mb-2 mb-md-0">
-                            PT Okeev
-                        </div>
+                            <div class="mb-2 mb-md-0">
+                                PT Okeev
+                            </div>
 
                             <div>
                                 <script>
@@ -198,108 +205,248 @@
     </script>
     {{-- FORMAT RUPIAH --}}
     <script>
-    function formatRupiah(angka) {
-        let number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa  = split[0].length % 3,
-            rupiah  = split[0].substr(0, sisa),
-            ribuan  = split[0].substr(sisa).match(/\d{3}/g);
+        function formatRupiah(angka) {
+            let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/g);
 
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
         }
 
-        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-        return rupiah;
-    }
+        document.getElementById('price').addEventListener('keyup', function(e) {
+            this.value = formatRupiah(this.value);
+        });
 
-    document.getElementById('price').addEventListener('keyup', function (e) {
-        this.value = formatRupiah(this.value);
-    });
-
-    // Convert back to plain number before submit
-    document.querySelector('form').addEventListener('submit', function () {
-        const input = document.getElementById('price');
-        input.value = input.value.replace(/\./g, '').replace(/,/g, '.');
-    });
+        // Convert back to plain number before submit
+        document.querySelector('form').addEventListener('submit', function() {
+            const input = document.getElementById('price');
+            input.value = input.value.replace(/\./g, '').replace(/,/g, '.');
+        });
     </script>
-    
+
     {{-- MENAMPILKAN CLOSE KECIL --}}
     <script>
-    const imageInput = document.getElementById("imageInput");
-    const imagePreview = document.getElementById("imagePreview");
-    const removeBtn = document.getElementById("removeImageBtn");
+        const imageInput = document.getElementById("imageInput");
+        const imagePreview = document.getElementById("imagePreview");
+        const removeBtn = document.getElementById("removeImageBtn");
 
-    imageInput.addEventListener("change", function() {
-        const file = this.files[0];
+        imageInput.addEventListener("change", function() {
+            const file = this.files[0];
 
-        if (file) {
-            const reader = new FileReader();
+            if (file) {
+                const reader = new FileReader();
 
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = "block";
-                removeBtn.style.display = "inline-block";
-            };
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block";
+                    removeBtn.style.display = "inline-block";
+                };
 
-            reader.readAsDataURL(file);
-        }
-    });
+                reader.readAsDataURL(file);
+            }
+        });
 
-    removeBtn.addEventListener("click", function() {
-        // Reset input file
-        imageInput.value = "";
+        removeBtn.addEventListener("click", function() {
+            // Reset input file
+            imageInput.value = "";
 
-        // Hilangkan preview dan tombol
-        imagePreview.src = "#";
-        imagePreview.style.display = "none";
-        removeBtn.style.display = "none";
-    });
+            // Hilangkan preview dan tombol
+            imagePreview.src = "#";
+            imagePreview.style.display = "none";
+            removeBtn.style.display = "none";
+        });
     </script>
     {{-- SCRIPT UNTUK MENYEMBUNYIKAN FORM SEAT DAN MILES --}}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
 
-    const categorySelect = document.getElementById("category_id");
-    const seatsDiv = document.getElementById("seats_div");
-    const milesDiv = document.getElementById("miles_div");
-    const descriptionDiv = document.getElementById("description_div");
+            const categorySelect = document.getElementById("category_id");
+            const seatsDiv = document.getElementById("seats_div");
+            const milesDiv = document.getElementById("miles_div");
+            const descriptionDiv = document.getElementById("description_div");
 
-    function toggleFields() {
-        const category = categorySelect.value;
+            function toggleFields() {
+                const category = categorySelect.value;
 
-        // Seats hanya tampil di category_id = 1
-        seatsDiv.style.display = (category == "1") ? "block" : "none";
+                // Seats hanya tampil di category_id = 1
+                seatsDiv.style.display = (category == "1") ? "block" : "none";
 
-        // Miles hilang di category_id 3 dan 4
-        milesDiv.style.display = (category == "3" || category == "4") ? "none" : "block";
+                // Miles hilang di category_id 3 dan 4
+                milesDiv.style.display = (category == "3" || category == "4") ? "none" : "block";
 
-        // Deskripsi hanya tampil di category_id 3 dan 4
-        descriptionDiv.style.display = (category == "3" || category == "4") ? "block" : "none";
-    }
+                // Deskripsi hanya tampil di category_id 3 dan 4
+                descriptionDiv.style.display = (category == "3" || category == "4") ? "block" : "none";
+            }
 
-    // Saat halaman pertama kali dibuka
-    toggleFields();
+            // Saat halaman pertama kali dibuka
+            toggleFields();
 
-    // Saat user memilih kategori
-    categorySelect.addEventListener("change", toggleFields);
-});
-</script>
+            // Saat user memilih kategori
+            categorySelect.addEventListener("change", toggleFields);
+        });
+    </script>
 
-<script src="{{ asset('/backend/assets/vendor/libs/jquery/jquery.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('.select2').select2({
-        theme: 'bootstrap4',
-        placeholder: "Pilih kategori",
-        allowClear: true,
-        width: '100%',
-        dropdownParent: $('.select2').closest('.col-lg-6')
-    });
-});
-</script>
+    <script src="{{ asset('/backend/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4',
+                placeholder: "Pilih kategori",
+                allowClear: true,
+                width: '100%',
+                dropdownParent: $('.select2').closest('.col-lg-6')
+            });
+        });
+    </script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor_value'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    {{-- INI SCRIPT UNTUK SPESIFIACTIO FORM --}}
+    <script>
+        let index = 1;
+
+        function addRow() {
+            let table = document.querySelector('#spec_table tbody');
+
+            let row = `
+                                                                    <tr>
+                                                                        <td><input type="text" name="specs[${index}][label]" class="form-control" placeholder="Label"></td>
+                                                                        <td><input type="text" name="specs[${index}][value]" class="form-control" placeholder="Nilai"></td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">x</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                `;
+
+            table.insertAdjacentHTML('beforeend', row);
+            index++;
+        }
+
+        function removeRow(button) {
+            button.closest('tr').remove();
+        }
+    </script>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+{{-- SCRIPT PRODUCT --}}
+<script>
+    $(document).ready(function() {
+        let table = $('#productTable').DataTable({
+            responsive: true,
+            autoWidth: false,
+            pageLength: 10,
+            ordering: true,
+            columnDefs: [{
+                    targets: 0,
+                    orderable: false
+                }, // No
+                {
+                    targets: -1,
+                    orderable: false
+                }, // Aksi
+            ]
+        });
+
+        // Auto-numbering ulang setiap pagination / sorting
+        table.on('order.dt search.dt', function() {
+            let i = 1;
+
+            table.cells(null, 0, {
+                search: 'applied',
+                order: 'applied'
+            }).every(function() {
+                this.data(i++);
+            });
+        }).draw();
+    });
+</script>
+{{-- SCRIPT CATEGORY --}}
+<script>
+    $(document).ready(function() {
+        let table = $('#categoryTable').DataTable({
+            responsive: true,
+            autoWidth: false,
+            pageLength: 10,
+            ordering: true,
+            columnDefs: [{
+                    targets: 0,
+                    orderable: false
+                }, // No
+                {
+                    targets: -1,
+                    orderable: false
+                }, // Aksi
+            ]
+        });
+
+        // Auto numbering kolom "No"
+        table.on('order.dt search.dt', function() {
+            let i = 1;
+
+            table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                })
+                .every(function() {
+                    this.data(i++);
+                });
+        }).draw();
+    });
+</script>
+{{-- SCRIP BRAND --}}
+<script>
+    $(document).ready(function() {
+
+        $('.datatable').each(function() {
+
+            let table = $(this).DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 10,
+                ordering: true,
+                columnDefs: [{
+                        targets: 0,
+                        orderable: false
+                    }, // Kolom No
+                    {
+                        targets: -1,
+                        orderable: false
+                    }, // Kolom Aksi
+                ]
+            });
+
+            // Auto numbering
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+
+                table.cells(null, 0, {
+                        search: 'applied',
+                        order: 'applied'
+                    })
+                    .every(function() {
+                        this.data(i++);
+                    });
+            }).draw();
+
+        });
+
+    });
+</script>
+
 </html>
