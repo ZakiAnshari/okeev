@@ -448,5 +448,96 @@
 
     });
 </script>
+<!-- Script tambah row POWER-->
+<script>
+    let powerIndex = 1;
+
+    function addPowerRow() {
+        const table = document.getElementById('power_table').getElementsByTagName('tbody')[0];
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+                                <td><input type="text" name="powers[${powerIndex}][label]" class="form-control"></td>
+                                <td><input type="text" name="powers[${powerIndex}][nilai]" class="form-control"></td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">-</button>
+                                </td>
+                            `;
+
+        table.appendChild(row);
+        powerIndex++;
+    }
+
+    function removeRow(btn) {
+        btn.closest('tr').remove();
+    }
+</script>
+<!-- Script tambah row Dimensi-->
+<script>
+    let dimensiIndex = 1;
+
+    function addDimensiRow() {
+        const table = document.getElementById('dimensi_table').getElementsByTagName('tbody')[0];
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td><input type="text" name="dimensis[${dimensiIndex}][label]" class="form-control"></td>
+            <td><input type="text" name="dimensis[${dimensiIndex}][nilai]" class="form-control"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">-</button></td>
+        `;
+
+        table.appendChild(row);
+        dimensiIndex++;
+    }
+
+    function removeRow(btn) {
+        btn.closest('tr').remove();
+    }
+</script>
+<!-- Script tambah row khusus Suspensi -->
+<script>
+    let suspensiIndex = 1;
+
+    function addSuspensiRow() {
+        const table = document.getElementById('suspensi_table').getElementsByTagName('tbody')[0];
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td><input type="text" name="suspensis[${suspensiIndex}][label]" class="form-control"></td>
+            <td><input type="text" name="suspensis[${suspensiIndex}][nilai]" class="form-control"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">-</button></td>
+        `;
+
+        table.appendChild(row);
+        suspensiIndex++;
+    }
+
+    function removeRow(btn) {
+        btn.closest('tr').remove();
+    }
+</script>
+<!-- Script tambah row untuk Fitur -->
+{{-- SCRIPT TAMBAH/HAPUS BARIS FITUR --}}
+<script>
+    let fiturIndex = 1;
+
+    function addFiturRow() {
+        const tableBody = document.getElementById('fitur_table').getElementsByTagName('tbody')[0];
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td><input type="text" name="fiturs[${fiturIndex}][label]" class="form-control"></td>
+            <td><input type="text" name="fiturs[${fiturIndex}][nilai]" class="form-control"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">-</button></td>
+        `;
+
+        tableBody.appendChild(row);
+        fiturIndex++;
+    }
+
+    function removeRow(button) {
+        button.closest('tr').remove();
+    }
+</script>
 
 </html>

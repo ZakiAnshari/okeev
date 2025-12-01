@@ -21,37 +21,37 @@ class SpecificationController extends Controller
         return view('admin.specification.index', compact('product', 'specifications'));
     }
 
-   public function store(Request $request, $slug)
-{
-    // Ambil produk berdasarkan slug
-    $product = Product::where('slug', $slug)->firstOrFail();
+    public function store(Request $request, $slug)
+    {
+        // Ambil produk berdasarkan slug
+        $product = Product::where('slug', $slug)->firstOrFail();
 
-    // Validasi input
-    $validated = $request->validate([
-        'title' => 'required|string|max:255',
+        // Validasi input
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
 
-        // wajib array
-        'specs' => 'required|array',
+            // wajib array
+            'specs' => 'required|array',
 
-        // setiap baris wajib memiliki label dan value
-        'specs.*.label' => 'required|string|max:255',
-        'specs.*.value' => 'required|string|max:255',
-    ]);
-
-    // simpan banyak row
-    foreach ($validated['specs'] as $spec) {
-        Specification::create([
-            'product_id' => $product->id,
-            'title'      => $validated['title'],
-            'label'      => $spec['label'],   // sesuaikan nama field di database kalau ada
-            'value'      => $spec['value'],
+            // setiap baris wajib memiliki label dan value
+            'specs.*.label' => 'required|string|max:255',
+            'specs.*.value' => 'required|string|max:255',
         ]);
+
+        // simpan banyak row
+        foreach ($validated['specs'] as $spec) {
+            Specification::create([
+                'product_id' => $product->id,
+                'title'      => $validated['title'],
+                'label'      => $spec['label'],   // sesuaikan nama field di database kalau ada
+                'value'      => $spec['value'],
+            ]);
+        }
+
+        Alert::success('Success', 'Specification berhasil ditambahkan');
+
+        return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
     }
-
-    Alert::success('Success', 'Specification berhasil ditambahkan');
-
-    return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
-}
 
 
 
@@ -62,8 +62,8 @@ class SpecificationController extends Controller
 
         // Ambil teknologi berdasarkan ID dan pastikan milik produk tersebut
         $specifications = Specification::where('id', $id)
-                                ->where('product_id', $product->id)
-                                ->firstOrFail();
+            ->where('product_id', $product->id)
+            ->firstOrFail();
 
         return view('admin.specification.edit', compact('product', 'specifications'));
     }
@@ -75,8 +75,8 @@ class SpecificationController extends Controller
 
         // Cari specification milik product tersebut
         $spec = Specification::where('id', $id)
-                    ->where('product_id', $product->id)
-                    ->firstOrFail();
+            ->where('product_id', $product->id)
+            ->firstOrFail();
 
         // Validasi input
         $validated = $request->validate([
@@ -99,20 +99,18 @@ class SpecificationController extends Controller
 
 
 
-public function destroy($product_slug, $id)
-{
-    $product = Product::where('slug', $product_slug)->firstOrFail();
+    public function destroy($product_slug, $id)
+    {
+        $product = Product::where('slug', $product_slug)->firstOrFail();
 
-    $spec = Specification::where('id', $id)
-        ->where('product_id', $product->id)
-        ->firstOrFail();
+        $spec = Specification::where('id', $id)
+            ->where('product_id', $product->id)
+            ->firstOrFail();
 
-    $spec->delete();
+        $spec->delete();
 
-    Alert::success('Success', 'Specification berhasil dihapus.');
+        Alert::success('Success', 'Specification berhasil dihapus.');
 
-    return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
-}
-
-
+        return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
+    }
 }

@@ -17,44 +17,103 @@
                 <!-- Tombol Aksi Kanan -->
                 <div class="d-flex gap-2 mx-4 my-4">
                     <!-- Technology -->
-                    <div class="d-flex justify-content-end">
-                        <button type="button"
-                            class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#technologyModal">
-                            <i class="bi bi-plus-circle fs-5 me-2"></i>
-                            <span>Technology</span>
-                        </button>
-                    </div>
-
-                    <!-- Feature -->
-                    <div class="d-flex justify-content-end">
-                        <button type="button"
-                            class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#FeatureModal">
-                            <i class="bi bi-plus-circle fs-5 me-2"></i>
-                            <span>Feature</span>
-                        </button>
-                    </div>
-
+                    @if ($product->category_id == 1)
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#technologyModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Technology</span>
+                            </button>
+                        </div>
+                        <!-- Feature -->
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#FeatureModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Feature</span>
+                            </button>
+                        </div>
+                    @endif
                     <!-- Color -->
-                    <div class="d-flex justify-content-end">
-                        <button type="button"
-                            class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#ColorModal">
-                            <i class="bi bi-plus-circle fs-5 me-2"></i>
-                            <span>Color</span>
-                        </button>
-                    </div>
+                    @if (in_array($product->category_id, [1, 2]))
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#ColorModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Color</span>
+                            </button>
+                        </div>
+                    @endif
+                    <!-- Power -->
+                    @if ($product->category_id == 2)
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#PowerModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Power</span>
+                            </button>
+                        </div>
+                    @endif
+                    <!-- Dimensi -->
+                    @if ($product->category_id == 2)
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#DimensiModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Dimensi</span>
+                            </button>
+                        </div>
+                    @endif
 
-                    <!-- Specification -->
-                    <div class="d-flex justify-content-end">
-                        <button type="button"
-                            class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#SpecificationModal">
-                            <i class="bi bi-plus-circle fs-5 me-2"></i>
-                            <span>Specification</span>
-                        </button>
-                    </div>
+                    @if ($product->category_id == 2)
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#SuspensiModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Suspensi</span>
+                            </button>
+                        </div>
+                    @endif
+                    @if ($product->category_id == 2)
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#FiturModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Fitur</span>
+                            </button>
+                        </div>
+                    @endif
+
+                    @if ($product->category_id == 1)
+                        <!-- Specification -->
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#SpecificationModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Specification</span>
+                            </button>
+                        </div>
+                    @endif
+
+                    {{-- DETAILS --}}
+                    @if (!in_array($product->category_id, [1, 2]))
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#DetailModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i>
+                                <span>Detail</span>
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -353,6 +412,291 @@
                             </div>
                         </div>
 
+                        {{-- MODAL TAMBAH UNTUK POWER --}}
+                        <div class="modal fade" id="PowerModal" tabindex="-1" aria-labelledby="PowerModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <!-- Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="PowerModalLabel">Tambah Power</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <hr>
+                                    <form action="{{ route('powers.store', $product->slug) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table table-bordered" id="power_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Label</th>
+                                                                <th>Nilai</th>
+                                                                <th width="50">#</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" name="powers[0][label]"
+                                                                        class="form-control"
+                                                                        value="{{ old('powers.0.label') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="powers[0][nilai]"
+                                                                        class="form-control"
+                                                                        value="{{ old('powers.0.nilai') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-success btn-sm"
+                                                                        onclick="addPowerRow()">+</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- MODAL TAMBAH UNTUK DIMENSI --}}
+                        <div class="modal fade" id="DimensiModal" tabindex="-1" aria-labelledby="DimensiModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <!-- Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="DimensiModalLabel">Tambah Dimensi</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <hr>
+                                    <form action="{{ route('dimensis.store', $product->slug) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table table-bordered" id="dimensi_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Label</th>
+                                                                <th>Nilai</th>
+                                                                <th width="50">#</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" name="dimensis[0][label]"
+                                                                        class="form-control"
+                                                                        value="{{ old('dimensis.0.label') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="dimensis[0][nilai]"
+                                                                        class="form-control"
+                                                                        value="{{ old('dimensis.0.nilai') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-success btn-sm"
+                                                                        onclick="addDimensiRow()">+</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- MODAL TAMBAH UNTUK SUSPENSI --}}
+                        <div class="modal fade" id="SuspensiModal" tabindex="-1" aria-labelledby="SuspensiModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <!-- Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="SuspensiModalLabel">Tambah Suspensi</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <hr>
+                                    <form action="{{ route('suspensis.store', $product->slug) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table table-bordered" id="suspensi_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Label</th>
+                                                                <th>Nilai</th>
+                                                                <th width="50">#</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" name="suspensis[0][label]"
+                                                                        class="form-control"
+                                                                        value="{{ old('suspensis.0.label') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="suspensis[0][nilai]"
+                                                                        class="form-control"
+                                                                        value="{{ old('suspensis.0.nilai') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-success btn-sm"
+                                                                        onclick="addSuspensiRow()">+</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- MODAL TAMBAH UNTUK FITUR --}}
+                        <div class="modal fade" id="FiturModal" tabindex="-1" aria-labelledby="FiturModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <!-- Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="FiturModalLabel">Tambah Fitur</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <hr>
+                                    <form action="{{ route('fiturs.store', $product->slug) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <table class="table table-bordered" id="fitur_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Label</th>
+                                                                <th>Nilai</th>
+                                                                <th width="50">#</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" name="fiturs[0][label]"
+                                                                        class="form-control"
+                                                                        value="{{ old('fiturs.0.label') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="fiturs[0][nilai]"
+                                                                        class="form-control"
+                                                                        value="{{ old('fiturs.0.nilai') }}">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-success btn-sm"
+                                                                        onclick="addFiturRow()">+</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- MODAL UNTUK DETAIL --}}
+                        <div class="modal fade" id="DetailModal" tabindex="-1" aria-labelledby="DetailModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <!-- Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="DetailModalLabel">Tambah Detail</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <hr>
+                                    <form action="{{ route('details.store', $product->slug) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="row  justify-content-center">
+                                                <div class="col-lg-8 mb-3">
+                                                    <label class="form-label">Label</label>
+                                                    <input type="text" name="label" class="form-control"
+                                                        value="{{ old('label') }}">
+                                                    @error('label')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col-lg-8 mb-3">
+                                                    <label class="form-label">Nilai</label>
+                                                    <textarea name="nilai" id="nilai-editor">{{ old('nilai') }}</textarea>
+                                                    @error('nilai')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+
+                                                <!-- CKEditor 5 CDN -->
+                                                <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+                                                <script>
+                                                    ClassicEditor
+                                                        .create(document.querySelector('#nilai-editor'))
+                                                        .catch(error => console.error(error));
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <!-- Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Kartu Kiri (Profile & Gambar) -->
                         <div class="col-lg-4 mb-4">
                             <div class="card h-100 border border-1 border-secondary rounded-3">
@@ -441,46 +785,110 @@
                         <div class="col-lg-8">
                             <div class="nav-align-top mb-4">
                                 @php
-                                    $activeTab = session('tab', request('tab', 'technology'));
+                                    if (!in_array($product->category_id, [1, 2])) {
+                                        $defaultTab = 'detail';
+                                    } else {
+                                        $defaultTab = $product->category_id == 2 ? 'color' : 'technology';
+                                    }
+                                    $activeTab = session('tab', request('tab', $defaultTab));
                                 @endphp
+
+
                                 <ul class="nav nav-pills mb-3" role="tablist">
-                                    <li class="nav-item">
-                                        <button type="button"
-                                            class="nav-link d-flex align-items-center {{ $activeTab == 'technology' ? 'active' : '' }}"
-                                            data-bs-toggle="tab" data-bs-target="#navs-pills-top-home">
-                                            <i class="bi bi-cpu fs-5 me-2"></i>
-                                            Technology
-                                        </button>
-                                    </li>
+                                    {{-- INI ADALAH TOMBOL TAP DARI CAR --}}
+                                    @if ($product->category_id == 1)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'technology' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-home">
+                                                <i class="bi bi-cpu fs-5 me-2"></i>
+                                                Technology
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if ($product->category_id == 1)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'feature' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile">
+                                                <i class="bi bi-stars fs-5 me-2"></i>
+                                                Feature
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if (in_array($product->category_id, [1, 2]))
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'color' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-color">
+                                                <i class="bi bi-palette fs-5 me-2"></i>
+                                                Color
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if ($product->category_id == 1)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'spesification' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-spesification">
+                                                <i class="bi bi-list-check fs-5 me-2"></i>
+                                                Specification
+                                            </button>
+                                        </li>
+                                    @endif
 
-                                    <li class="nav-item">
-                                        <button type="button"
-                                            class="nav-link d-flex align-items-center {{ $activeTab == 'feature' ? 'active' : '' }}"
-                                            data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile">
-                                            <i class="bi bi-stars fs-5 me-2"></i>
-                                            Feature
-                                        </button>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <button type="button"
-                                            class="nav-link d-flex align-items-center {{ $activeTab == 'color' ? 'active' : '' }}"
-                                            data-bs-toggle="tab" data-bs-target="#navs-pills-top-color">
-                                            <i class="bi bi-palette fs-5 me-2"></i>
-                                            Color
-                                        </button>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <button type="button"
-                                            class="nav-link d-flex align-items-center {{ $activeTab == 'spesification' ? 'active' : '' }}"
-                                            data-bs-toggle="tab" data-bs-target="#navs-pills-top-spesification">
-                                            <i class="bi bi-list-check fs-5 me-2"></i>
-                                            Specification
-                                        </button>
-                                    </li>
+                                    {{-- INI ADALAH TOMBOL TAP DARI MOTOR --}}
+                                    @if ($product->category_id == 2)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'power' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-power">
+                                                <i class="bi bi-lightning-charge fs-5 me-2"></i>
+                                                Power
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if ($product->category_id == 2)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'dimensi' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-dimensi">
+                                                <i class="bi bi-rulers fs-5 me-2"></i>
+                                                Dimensi
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if ($product->category_id == 2)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'suspensi' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-suspensi">
+                                                <i class="bx bx-cog fs-5 me-2"></i>
+                                                Suspensi
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if ($product->category_id == 2)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'fitur' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-fitur">
+                                                <i class="bx bx-list-check fs-5 me-2"></i>
+                                                Fitur
+                                            </button>
+                                        </li>
+                                    @endif
+                                    @if (!in_array($product->category_id, [1, 2]))
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'detail' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-fitur">
+                                                <i class="bx bx-info-circle fs-5 me-2"></i>
+                                                Detail
+                                            </button>
+                                        </li>
+                                    @endif
                                 </ul>
-
 
                                 <div class="tab-content">
                                     {{-- TEKNOLOGI TABLE --}}
@@ -541,7 +949,8 @@
                                             <tbody>
                                                 @forelse ($features as $item)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ ($features->currentPage() - 1) * $features->perPage() + $loop->iteration }}
+                                                        </td>
                                                         <td>{{ $item->name }}</td>
                                                         <td class="text-center">
                                                             <!-- Edit -->
@@ -584,7 +993,9 @@
                                             <tbody>
                                                 @forelse ($colors as $item)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ ($colors->currentPage() - 1) * $colors->perPage() + $loop->iteration }}
+                                                        </td>
+
                                                         <td>{{ $item->name }}</td>
                                                         <td>
                                                             <div
@@ -638,7 +1049,8 @@
                                                 <tbody>
                                                     @forelse ($specifications as $item)
                                                         <tr>
-                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ ($specifications->currentPage() - 1) * $specifications->perPage() + $loop->iteration }}
+                                                            </td>
 
                                                             <!-- SECTION -->
                                                             <td>{{ $item->title }}</td>
@@ -675,17 +1087,228 @@
                                         </div>
 
                                     </div>
+                                    {{-- POWER TABLE --}}
+                                    <div class="tab-pane fade {{ $activeTab == 'power' ? 'show active' : '' }}"
+                                        id="navs-pills-top-power" role="tabpanel">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5px;">No</th>
+                                                    <th>Label</th>
+                                                    <th style="width: 100px; text-align: center;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($powers as $item)
+                                                    <tr>
+                                                        <td>{{ ($powers->currentPage() - 1) * $powers->perPage() + $loop->iteration }}
+                                                        </td>
+                                                        <td>{{ $item->label }}</td>
+                                                        <td class="text-center">
+                                                            <!-- Edit -->
+                                                            <a href="{{ route('powers.edit', [$product->slug, $item->id]) }}"
+                                                                class="btn btn-icon btn-outline-primary">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </a>
+                                                            <!-- Delete -->
+                                                            <button class="btn btn-icon btn-outline-danger"
+                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'powers')"
+                                                                title="Hapus">
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">Data Power Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            {{ $powers->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                        </div>
+                                    </div>
+                                    {{-- DIMENSI TABLE --}}
+                                    <div class="tab-pane fade {{ $activeTab == 'dimensi' ? 'show active' : '' }}"
+                                        id="navs-pills-top-dimensi" role="tabpanel">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5px;">No</th>
+                                                    <th>Label</th>
+                                                    <th style="width: 100px; text-align: center;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($dimensis as $item)
+                                                    <tr>
+                                                        <td>{{ ($dimensis->currentPage() - 1) * $dimensis->perPage() + $loop->iteration }}
+                                                        </td>
+                                                        <td>{{ $item->label }}</td>
+                                                        <td class="text-center">
+                                                            <!-- Edit -->
+                                                            <a href="{{ route('dimensis.edit', [$product->slug, $item->id]) }}"
+                                                                class="btn btn-icon btn-outline-primary">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </a>
+                                                            <!-- Delete -->
+                                                            <button class="btn btn-icon btn-outline-danger"
+                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'dimensis')"
+                                                                title="Hapus">
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">Data Dimensi Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                        </table>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            {{ $dimensis->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                        </div>
+                                    </div>
+                                    {{-- SUSPENSI TABLE --}}
+                                    <div class="tab-pane fade {{ $activeTab == 'suspensi' ? 'show active' : '' }}"
+                                        id="navs-pills-top-suspensi" role="tabpanel">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5px;">No</th>
+                                                    <th>Label</th>
+                                                    <th style="width: 100px; text-align: center;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($suspensis as $item)
+                                                    <tr>
+                                                        <td>{{ ($suspensis->currentPage() - 1) * $suspensis->perPage() + $loop->iteration }}
+                                                        </td>
+                                                        <td>{{ $item->label }}</td>
+                                                        <td class="text-center">
+                                                            <!-- Edit -->
+                                                            <a href="{{ route('suspensis.edit', [$product->slug, $item->id]) }}"
+                                                                class="btn btn-icon btn-outline-primary">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </a>
+                                                            <!-- Delete -->
+                                                            <button class="btn btn-icon btn-outline-danger"
+                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'suspensis')"
+                                                                title="Hapus">
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">Data Suspensi Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                        </table>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            {{ $suspensis->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                        </div>
+                                    </div>
+                                    {{-- FITUR TABLE --}}
+                                    <div class="tab-pane fade {{ $activeTab == 'fitur' ? 'show active' : '' }}"
+                                        id="navs-pills-top-fitur" role="tabpanel">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5px;">No</th>
+                                                    <th>Label</th>
+                                                    <th style="width: 100px; text-align: center;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($fiturs as $item)
+                                                    <tr>
+                                                        <td>{{ ($fiturs->currentPage() - 1) * $fiturs->perPage() + $loop->iteration }}
+                                                        </td>
+                                                        <td>{{ $item->label }}</td>
+                                                        <td class="text-center">
+                                                            <!-- Edit -->
+                                                            <a href="{{ route('fiturs.edit', [$product->slug, $item->id]) }}"
+                                                                class="btn btn-icon btn-outline-primary">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </a>
+                                                            <!-- Delete -->
+                                                            <button class="btn btn-icon btn-outline-danger"
+                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'fiturs')"
+                                                                title="Hapus">
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">Data Fitur Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                        </table>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            {{ $fiturs->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                        </div>
+                                    </div>
+
+                                    {{-- DETAIL TABLE --}}
+                                    <div class="tab-pane fade {{ $activeTab == 'detail' ? 'show active' : '' }}"
+                                        id="navs-pills-top-fitur" role="tabpanel">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5px;">No</th>
+                                                    <th>Label</th>
+                                                    <th style="width: 100px; text-align: center;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($details as $item)
+                                                    <tr>
+                                                        <td>{{ ($fiturs->currentPage() - 1) * $details->perPage() + $loop->iteration }}
+                                                        </td>
+                                                        <td>{{ $item->label }}</td>
+                                                        <td class="text-center">
+                                                            <!-- Edit -->
+                                                            <a href="{{ route('details.edit', [$product->slug, $item->id]) }}"
+                                                                class="btn btn-icon btn-outline-primary">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </a>
+                                                            <!-- Delete -->
+                                                            <button class="btn btn-icon btn-outline-danger"
+                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'details')"
+                                                                title="Hapus">
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">Data Detail Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                        </table>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            {{ $details->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
     {{-- SCRIPT PENGHPAUSAN --}}
-
     <script>
         function confirmDelete(product, itemId, name, type) {
             Swal.fire({

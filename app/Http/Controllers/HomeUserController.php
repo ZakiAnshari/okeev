@@ -10,14 +10,14 @@ class HomeUserController extends Controller
 {
 
 
-      public function index()
+    public function index()
     {
         // Ambil semua brand unik beserta slug dan image dari tabel Product
         $brands = Product::select('brand', 'slug', 'image')
-                        ->orderBy('brand', 'asc')
-                        ->get()
-                        ->unique('brand') // pastikan hanya satu brand per nama
-                        ->values();
+            ->orderBy('brand', 'asc')
+            ->get()
+            ->unique('brand') // pastikan hanya satu brand per nama
+            ->values();
 
         // Pecah menjadi chunks untuk grid, misal 4 per kolom
         $brandChunks = $brands->chunk(4);
@@ -27,14 +27,14 @@ class HomeUserController extends Controller
 
 
     public function showProfile($slug)
-    
+
     {
 
-            $brands = Product::select('brand', 'slug', 'image')
-                        ->orderBy('brand', 'asc')
-                        ->get()
-                        ->unique('brand') // pastikan hanya satu brand per nama
-                        ->values();
+        $brands = Product::select('brand', 'slug', 'image')
+            ->orderBy('brand', 'asc')
+            ->get()
+            ->unique('brand') // pastikan hanya satu brand per nama
+            ->values();
 
         // Pecah menjadi chunks untuk grid, misal 4 per kolom
         $brandChunks = $brands->chunk(4);
@@ -42,5 +42,4 @@ class HomeUserController extends Controller
 
         return view('home.profil', compact('brands', 'brandChunks'));
     }
-
 }

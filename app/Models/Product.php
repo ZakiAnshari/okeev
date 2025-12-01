@@ -24,13 +24,37 @@ class Product extends Model
         'description',
     ];
 
-
     use HasSlug;
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('model_name')
             ->saveSlugsTo('slug');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(Detail::class, 'product_id', 'id');
+    }
+    
+    public function fiturs()
+    {
+        return $this->hasMany(Fitur::class, 'product_id', 'id');
+    }
+
+    public function suspensis()
+    {
+        return $this->hasMany(Suspensi::class, 'product_id', 'id');
+    }
+
+    public function dimensis()
+    {
+        return $this->hasMany(Dimensi::class, 'product_id', 'id');
+    }
+
+    public function powers()
+    {
+        return $this->hasMany(Power::class, 'product_id', 'id');
     }
 
     public function brand()
@@ -43,19 +67,18 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-
-      // 🔥 Relasi: satu product milik satu category
+    // 🔥 Relasi: satu product milik satu category
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-    
+
 
     public function technologies()
     {
         return $this->hasMany(Technology::class, 'product_id', 'id');
     }
-    
+
     public function features()
     {
         return $this->hasMany(Feature::class, 'product_id', 'id');

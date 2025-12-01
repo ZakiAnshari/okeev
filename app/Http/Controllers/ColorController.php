@@ -23,38 +23,38 @@ class ColorController extends Controller
     }
 
     public function store(Request $request, $slug)
-{
-    // Ambil produk berdasarkan slug
-    $product = Product::where('slug', $slug)->firstOrFail();
+    {
+        // Ambil produk berdasarkan slug
+        $product = Product::where('slug', $slug)->firstOrFail();
 
-    // Validasi input
-    $validated = $request->validate([
-        'name'  => 'required|string|max:255',
-        'hex'   => 'required|string|max:7', // #FFFFFF
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+        // Validasi input
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'hex'   => 'required|string|max:7', // #FFFFFF
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    // Upload gambar jika ada
-    $imagePath = null;
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('color', 'public'); 
-        // disimpan di: storage/app/public/color/…
+        // Upload gambar jika ada
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('color', 'public');
+            // disimpan di: storage/app/public/color/…
+        }
+
+        // Simpan color
+        Color::create([
+            'product_id' => $product->id,
+            'name'       => $validated['name'],
+            'hex'        => $validated['hex'],
+            'image'      => $imagePath,
+        ]);
+
+        // Alert sukses
+        Alert::success('Success', 'Color berhasil ditambahkan');
+
+        // Redirect ke index color
+        return redirect()->route('product.show', $product->slug)->with('tab', 'color');
     }
-
-    // Simpan color
-    Color::create([
-        'product_id' => $product->id,
-        'name'       => $validated['name'],
-        'hex'        => $validated['hex'],
-        'image'      => $imagePath,
-    ]);
-
-    // Alert sukses
-    Alert::success('Success', 'Color berhasil ditambahkan');
-
-    // Redirect ke index color
-    return redirect()->route('product.show', $product->slug)->with('tab', 'color');
-}
 
 
     public function edit($product_slug, $id)
@@ -64,8 +64,8 @@ class ColorController extends Controller
 
         // Ambil teknologi berdasarkan ID dan pastikan milik produk tersebut
         $colors = Color::where('id', $id)
-                                ->where('product_id', $product->id)
-                                ->firstOrFail();
+            ->where('product_id', $product->id)
+            ->firstOrFail();
 
         return view('admin.color.edit', compact('product', 'colors'))->with('tab', 'color');
     }
@@ -77,8 +77,8 @@ class ColorController extends Controller
 
         // Ambil color yang ingin diupdate
         $color = Color::where('id', $id)
-                        ->where('product_id', $product->id)
-                        ->firstOrFail();
+            ->where('product_id', $product->id)
+            ->firstOrFail();
 
         // Validasi input
         $validated = $request->validate([
@@ -116,8 +116,8 @@ class ColorController extends Controller
 
         // Ambil color yang ingin dihapus
         $colors = Color::where('id', $color_id)
-                    ->where('product_id', $product->id)
-                    ->firstOrFail();
+            ->where('product_id', $product->id)
+            ->firstOrFail();
 
         // Hapus file gambar jika ada
         if ($colors->image && Storage::disk('public')->exists($colors->image)) {
@@ -133,6 +133,4 @@ class ColorController extends Controller
         // Redirect ke index color
         return redirect()->route('product.show', $product->slug)->with('tab', 'color');
     }
-
-
 }
