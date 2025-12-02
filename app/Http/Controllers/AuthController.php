@@ -14,25 +14,25 @@ class AuthController extends Controller
         return view('register');
     }
 
-   public function registerprocess(Request $request)
-{
-    $validated = $request->validate([
-        'name'          => 'required|string|max:255',
-        'username'      => 'required|string|max:255|unique:users,username',
-        'contact'       => 'required|string|max:20',
-        'email'         => 'required|email|max:255|unique:users,email',
-        'jenis_kelamin' => 'required',
-        'password'      => 'required|string|min:6|confirmed',
-    ]);
+    public function registerprocess(Request $request)
+    {
+        $validated = $request->validate([
+            'name'          => 'required|string|max:255',
+            'username'      => 'required|string|max:255|unique:users,username',
+            'contact'       => 'required|string|max:20',
+            'email'         => 'required|email|max:255|unique:users,email',
+            'jenis_kelamin' => 'required',
+            'password'      => 'required|string|min:6|confirmed',
+        ]);
 
-    $validated['password'] = Hash::make($validated['password']);
-    $validated['role_id'] = 2;
+        $validated['password'] = Hash::make($validated['password']);
+        $validated['role_id'] = 2;
 
-    User::create($validated);
+        User::create($validated);
 
-    alert()->success('Registrasi Berhasil', 'Silakan login');
-    return redirect()->route('login');
-}
+        alert()->success('Registrasi Berhasil', 'Silakan login');
+        return redirect()->route('login');
+    }
 
     public function login()
     {
@@ -40,52 +40,54 @@ class AuthController extends Controller
     }
 
     public function authenticating(Request $request)
-{
-    // Validasi input username dan password
-    $credentials = $request->validate([
-        'username' => ['required', 'string'],
-        'password' => ['required'],
-    ], [
-        'username.required' => 'Username harus diisi!',
-        'password.required' => 'Password harus diisi!',
-    ]);
+    {
+        // Validasi input username dan password
+        $credentials = $request->validate([
+            'username' => ['required', 'string'],
+            'password' => ['required'],
+        ], [
+            'username.required' => 'Username harus diisi!',
+            'password.required' => 'Password harus diisi!',
+        ]);
 
-    // Cari user berdasarkan username
-    $user = User::where('username', $request->username)->first();
+        // Cari user berdasarkan username
+        $user = User::where('username', $request->username)->first();
 
-    if (!$user) {
-        toast('Username tidak ditemukan', 'error')
-            ->position('top-end')->autoClose(3000)->width('fit-content');
-        return back()->withInput();
+        if (!$user) {
+            toast('Username tidak ditemukan', 'error')
+                ->position('top-end')->autoClose(3000)->width('fit-content');
+            return back()->withInput();
+        }
+
+        // Cek password
+        if (!Hash::check($request->password, $user->password)) {
+            toast('Password salah', 'error')
+                ->position('top-end')->autoClose(3000)->width('fit-content');
+            return back()->withInput();
+        }
+
+        // Login user
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        alert()->success('Berhasil Login', 'Selamat datang di Okeev');
+
+        // Arahkan sesuai role_id
+        switch ($user->role_id) {
+            case 1:
+                return redirect()->intended('/dashboard');
+
+            case 2:
+                return redirect()->intended('/home');
+
+            default:
+                // Jika role tidak dikenal → logout sebagai pengaman
+                Auth::logout();
+                return redirect('/login')->with('error', 'Anda tidak memiliki akses.');
+
+                
+        }
     }
-
-    // Cek password
-    if (!Hash::check($request->password, $user->password)) {
-        toast('Password salah', 'error')
-            ->position('top-end')->autoClose(3000)->width('fit-content');
-        return back()->withInput();
-    }
-
-    // Login user
-    Auth::login($user);
-    $request->session()->regenerate();
-
-    alert()->success('Berhasil Login', 'Selamat datang di Okeev');
-
-    // Arahkan sesuai role_id
-    switch ($user->role_id) {
-        case 1:
-            return redirect()->intended('/dashboard');
-        
-        case 2:
-            return redirect()->intended('/home');
-
-        default:
-            // Jika role tidak dikenal → logout sebagai pengaman
-            Auth::logout();
-            return redirect('/login')->with('error', 'Anda tidak memiliki akses.');
-    }
-}
 
 
     // LOGOUT ADMIN

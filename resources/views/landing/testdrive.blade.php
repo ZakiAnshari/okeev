@@ -2,88 +2,152 @@
 @section('title', 'testdrive')
 @section('content')
 
-<br><br><br><br>
-<section class="test-drive-section ">
-    <div class="container">
-        
-        <div class="header-title">
-            <a href="/detailwuling" class="text-decoration-none text-dark me-2">
-            <i class="bx bx-arrow-back"></i>
-            </a>
-            Test Drive
-        </div>
+    <br><br><br><br>
+    <section class="test-drive-section ">
+        <div class="container">
 
 
-        <div class="row g-4">
-            
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="image-container">
-                    <img src="front_end/assets/images/Pristine_White 1.png" alt="New Air Ev Lite Long Range" class="car-image">
-                </div>
+            <div class="header-title">
+                <a href="{{ route('landing.product', $product->slug) }}" class="text-decoration-none text-dark me-2">
+                    <i class="bx bx-arrow-back me-2"></i> Test Drive
+                </a>
             </div>
 
-            <div class="col-lg-6  p-5">
-                <h4 class="fw-semibold mb-4">New Air Ev Lite Long Range</h4>
-                
-                <form class="form-grid">
-                    <div class="row g-4">
-                        
-                        <div class="col-6">
-                            <input type="text" class="form-control form-control-minimal" placeholder="First Name" required>
-                        </div>
-                        <div class="col-6">
-                            <input type="text" class="form-control form-control-minimal" placeholder="Second Name" required>
-                        </div>
-                        
-                        <div class="col-6">
-                            <input type="tel" class="form-control form-control-minimal" placeholder="Telp" required>
-                        </div>
-                        <div class="col-6">
-                            <input type="email" class="form-control form-control-minimal" placeholder="Email" required>
+
+
+            <div class="row g-4">
+
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="image-container">
+                        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                            <div class="carousel-inner">
+                                @foreach ($product->images as $key => $image)
+                                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $image->image) }}" class="d-block w-100 car-image"
+                                            alt="{{ $product->model_name }}">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <style>
+                                .carousel-item {
+                                    height: 300px;
+                                    /* bebas atur */
+                                }
+
+                                .carousel-item img.car-image {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: contain;
+                                    /* atau cover */
+
+                                    /* biar rapi */
+                                    padding: 10px;
+                                    /* opsional */
+                                }
+                            </style>
+                            <!-- prev arrow -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+
+                            <!-- next arrow -->
+                            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+
+                            <!-- indicators -->
+                            <div class="carousel-indicators">
+                                @foreach ($product->images as $key => $image)
+                                    <button type="button" data-bs-target="#productCarousel"
+                                        data-bs-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}"
+                                        aria-current="{{ $key === 0 ? 'true' : 'false' }}">
+                                    </button>
+                                @endforeach
+                            </div>
+
                         </div>
 
-                        <div class="col-12">
-                            <input type="text" class="form-control form-control-minimal" placeholder="City" required>
-                        </div>
-                        
-                        
-                        <div class="col-12 mt-4 form-group-icon">
-                            <input type="text" class="form-control form-control-minimal" placeholder="Choose Dealer" required>
-                        </div>
-
-                        <div class="col-12 mt-5">
-                            <button type="submit" class="btn btn-test-drive w-100">Test Drive</button>
-                        </div>
-
-                        <div class="col-12 mt-3 text-center">
-                            <small class="text-muted">We will send this data to your email address.</small>
-                        </div>
-                        
                     </div>
-                </form>
+
+                </div>
+
+                <div class="col-lg-6  p-5">
+                    <h4 class="fw-semibold mb-4">{{ $product->model_name }}</h4>
+
+                    <form action="{{ route('testdrive.store', $product->slug) }}" method="POST" class="form-grid">
+                        @csrf
+
+                        <div class="row g-4">
+
+                            <div class="col-6">
+                                <input type="text" name="first_name" class="form-control form-control-minimal"
+                                    placeholder="First Name" required>
+                            </div>
+
+                            <div class="col-6">
+                                <input type="text" name="second_name" class="form-control form-control-minimal"
+                                    placeholder="Second Name" required>
+                            </div>
+
+                            <div class="col-6">
+                                <input type="tel" name="telp" class="form-control form-control-minimal"
+                                    placeholder="Telp" required>
+                            </div>
+
+                            <div class="col-6">
+                                <input type="email" name="email" class="form-control form-control-minimal"
+                                    placeholder="Email" required>
+                            </div>
+
+                            <div class="col-12">
+                                <input type="text" name="city" class="form-control form-control-minimal"
+                                    placeholder="City" required>
+                            </div>
+
+                            <div class="col-12 mt-4 form-group-icon">
+                                <input type="text" name="dealer" class="form-control form-control-minimal"
+                                    placeholder="Choose Dealer" required>
+                            </div>
+
+                            <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-test-drive w-100">Test Drive</button>
+                            </div>
+
+                            <div class="col-12 mt-3 text-center">
+                                <small class="text-muted">We will send this data to your email address.</small>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+
             </div>
-            
         </div>
-    </div>
-</section>
+    </section>
 
 
-<style>
+    <style>
         /* CSS Kustom untuk Efek Mirip Gambar */
         .test-drive-section {
             padding: 40px 0;
-            background-color: #f8f8f8;
+
         }
 
         /* Styling Kontainer Gambar */
         .image-container {
-            border: 1px solid #cceeff; /* Garis tepi biru muda */
+
+            /* Garis tepi biru muda */
             padding: 10px;
             background-color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%; /* Penting agar container mengisi tinggi kolom */
+            height: 100%;
+            /* Penting agar container mengisi tinggi kolom */
         }
 
         .car-image {
@@ -95,7 +159,8 @@
         /* Styling Input Minimalis */
         .form-control-minimal {
             border: none;
-            border-bottom: 1px solid #ccc; /* Hanya garis bawah */
+            border-bottom: 1px solid #ccc;
+            /* Hanya garis bawah */
             border-radius: 0;
             padding: 8px 0;
             box-shadow: none;
@@ -104,7 +169,8 @@
         }
 
         .form-control-minimal:focus {
-            border-color: #0d6efd; /* Warna garis bawah saat fokus */
+            border-color: #0d6efd;
+            /* Warna garis bawah saat fokus */
             box-shadow: none;
         }
 
@@ -114,7 +180,8 @@
         }
 
         .form-group-icon .form-control-minimal {
-            padding-right: 25px; /* Beri ruang untuk ikon */
+            padding-right: 25px;
+            /* Beri ruang untuk ikon */
             cursor: pointer;
         }
 
@@ -124,7 +191,8 @@
             top: 50%;
             transform: translateY(-50%);
             color: #777;
-            pointer-events: none; /* Biarkan klik tembus ke input */
+            pointer-events: none;
+            /* Biarkan klik tembus ke input */
             font-size: 1rem;
         }
 
@@ -137,13 +205,15 @@
             font-weight: bold;
             padding: 12px 24px;
             font-size: 1.2rem;
-            border-radius: 50px; /* Bentuk oval/pil */
+            border-radius: 50px;
+            /* Bentuk oval/pil */
             transition: opacity 0.3s;
         }
 
         .btn-test-drive:hover {
             opacity: 0.9;
-            color: white; /* Pertahankan warna teks */
+            color: white;
+            /* Pertahankan warna teks */
         }
 
         /* Styling Header "Test Drive" */
@@ -155,8 +225,9 @@
 
         /* Responsivitas Grid Form */
         @media (max-width: 768px) {
-            .form-grid > div {
-                margin-bottom: 20px; /* Tambahkan jarak antar input di layar kecil */
+            .form-grid>div {
+                margin-bottom: 20px;
+                /* Tambahkan jarak antar input di layar kecil */
             }
         }
     </style>

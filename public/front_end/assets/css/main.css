@@ -1,3 +1,567 @@
+              .product-img-wrapper {
+                        background: #f5f5f7;
+                        /* warna abu seperti contoh gambar */
+                        border-radius: 0px;
+                        padding: 15px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 200px;
+                        /* pastikan semuanya sama tinggi */
+                    }
+
+                    .product-img {
+                        max-height: 100%;
+                        max-width: 100%;
+                        object-fit: contain;
+                    }
+              /* Agar gambar rapi & sama besar */
+            .product-img {
+                width: 100%;
+                height: 180px;
+                /* bisa kamu sesuaikan 160–220px */
+                object-fit: contain;
+
+                padding: 10px;
+            }
+
+            .card-hover {
+                transition: 0.25s ease;
+            }
+
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15) !important;
+            }
+            .card-hover {
+                transition: 0.25s ease;
+            }
+
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15) !important;
+            }
+           .thumb:hover {
+                    cursor: pointer;
+                    transform: scale(1.05);
+                    transition: 0.2s;
+                }
+         .credit-section {
+            background: #ffffff;
+        }
+
+        .credit-title {
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .powered span {
+            color: #37d99e;
+            font-weight: 600;
+        }
+
+        .sub-text {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* BOX BIRU TUA */
+        .credit-box {
+            background: #1b2c47;
+            color: white;
+        }
+
+        /* Judul Tengah */
+        .credit-subtitle {
+            font-size: 15px;
+            color: #cfd9ea;
+            letter-spacing: 0.5px;
+        }
+
+        .credit-amount {
+            color: #32e081;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .desc-text {
+            color: #cbd4e6;
+            font-size: 14px;
+        }
+
+        /* Input */
+        .credit-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #cfd9ea;
+            margin-bottom: 5px;
+        }
+
+        .credit-input {
+            height: 45px;
+            border-radius: 4px;
+            border: none;
+            padding-left: 12px;
+            font-size: 14px;
+        }
+
+        /* Catatan */
+        .note-box {
+            font-size: 13px;
+            color: #cfd4e6;
+            margin-top: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .credit-input {
+                height: 42px;
+                font-size: 13px;
+            }
+
+            .credit-amount {
+                font-size: 22px;
+            }
+        }
+          .spec-list {
+            display: none;
+        }
+
+        .spec-list.active {
+            display: block;
+        }
+
+        .nav-link.active {
+            color: #00C092;
+            font-weight: bold;
+            border-bottom: 2px solid #00C092;
+        }
+
+        .spec-box {
+            border: 1px solid #E5E5E5;
+            border-radius: 16px;
+            padding: 35px 40px;
+            background: #fff;
+        }
+
+        /* Nav style */
+        .tech-nav .nav-link {
+            color: #444;
+            font-weight: 500;
+
+        }
+
+        .tech-nav .nav-link.active {
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .spec-box {
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            .tech-nav .nav-link {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+
+        .spec-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9e9e9;
+            padding: 10px 0;
+        }
+
+        .spec-title {
+            font-weight: 500;
+            color: #444;
+            font-size: 15px;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: #000;
+            text-align: right;
+            font-size: 15px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .spec-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .spec-value {
+                text-align: left;
+                margin-top: 4px;
+            }
+        }
+      .color-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            max-width: 240px;
+        }
+
+        .color-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.1);
+            border-color: #00C092;
+        }
+
+        .color-circle.active {
+            border-color: #00C092;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* otomatis pindah ke baris baru jika penuh */
+            justify-content: center;
+            /* rata tengah */
+            gap: 12px;
+            /* jarak antar lingkaran */
+            max-width: 240px;
+            /* atur lebar maksimal satu “baris” */
+        }
+
+        .color-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.1);
+            border-color: #00C092;
+        }
+
+        .color-circle.active {
+            border-color: #00C092;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Kotak warna */
+        .car-preview {
+            width: 100%;
+            /* memenuhi lebar kolom */
+            max-width: 400px;
+            /* bisa disesuaikan */
+            height: 400px;
+            /* tinggi tetap sama untuk semua gambar */
+            object-fit: cover;
+            /* memotong gambar agar menyesuaikan kontainer */
+            border-radius: 8px;
+            /* opsional agar rapi */
+            transition: all 0.3s ease;
+            /* smooth saat berubah */
+        }
+
+
+        .color-box {
+            border: 1px solid #E6E6E6;
+        }
+
+        /* Bulatan warna */
+        .color-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.12);
+            border-color: #999;
+        }
+
+        /* Responsif Mobil */
+        .car-preview {
+            max-width: 480px;
+        }
+
+        /* Responsif lebih kecil */
+        @media (max-width: 768px) {
+            .color-circle {
+                width: 45px;
+                height: 45px;
+            }
+
+            .car-preview {
+                max-width: 100%;
+            }
+        }
+   .feature-image {
+            width: 100%;
+            /* memenuhi lebar kolom */
+            height: 300px;
+            /* tinggi tetap agar semua gambar seragam */
+            object-fit: cover;
+            /* menyesuaikan gambar, tetap proporsional */
+            border-radius: 0.5rem;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease;
+        }
+
+        .tech-item {
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item.active {
+            color: #00C092;
+            font-weight: bold;
+        }
+
+.tab-content {
+            font-size: 1rem;
+            /* ukuran default, bisa diganti 1.1rem atau 1.2rem */
+            line-height: 1.8;
+            /* jarak antar baris lebih nyaman dibaca */
+            color: #495057;
+            /* teks utama lebih kontras */
+        }
+
+        .tab-content h5 {
+            font-size: 1.25rem;
+            /* judul lebih menonjol */
+            margin-bottom: 0.75rem;
+        }
+
+        .tab-content p {
+            font-size: 1.05rem;
+            /* paragraf lebih besar dari default */
+        }
+
+        .tech-image {
+            width: 100%;
+            /* memenuhi kolom */
+            height: 300px;
+            /* tinggi tetap, sesuaikan kebutuhan */
+            object-fit: cover;
+            /* memotong atau menyesuaikan gambar agar proporsional */
+            border-radius: 0.5rem;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            /* sembunyikan semua konten awal */
+        }
+
+        .tab-content.active {
+            display: block;
+            /* tampilkan konten aktif */
+        }
+
+        .tab-item {
+            cursor: pointer;
+        }
+
+        .tab-item.active {
+            font-weight: 700;
+            border-bottom: 2px solid #00C092;
+            /* highlight tab aktif */
+        }
+
+        /* Desktop – rapikan jarak item */
+        .tech-nav {
+            gap: 28px;
+        }
+
+        /* HP – jadikan scroll horizontal */
+        @media (max-width: 768px) {
+            .tech-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                flex-wrap: nowrap;
+                gap: 20px;
+                padding-bottom: 6px;
+            }
+
+            .tech-nav::-webkit-scrollbar {
+                height: 5px;
+            }
+
+            .tech-nav::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 10px;
+            }
+        }
+
+        /* Top Nav */
+        .tech-nav .nav-link {
+            color: #7A7A7A;
+            font-size: 15px;
+            padding: 8px 14px;
+        }
+
+        .tech-nav .nav-link.active {
+            color: #00A8FF;
+            font-weight: 600;
+            border-bottom: 2px solid #00A8FF;
+        }
+
+        /* Bottom Tabs */
+        .tab-item {
+            font-size: 15px;
+            padding-bottom: 5px;
+            cursor: pointer;
+            color: #8A8A8A;
+        }
+
+        .tab-item.active {
+            color: #00C092;
+            font-weight: 700;
+            border-bottom: 2px solid #00C092;
+        }
+
+        /* Responsive tweak */
+        @media (max-width: 992px) {
+            .tech-tabs {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tech-image {
+                margin-top: 20px;
+            }
+
+            .tech-nav {
+                flex-wrap: wrap;
+            }
+        }
+  .line-tech {
+            height: 2px;
+            background: #DADADA;
+        }
+
+        .tech-nav {
+            gap: 50px;
+            /* boleh disesuaikan */
+        }
+
+        /* ============================================================
+                                                                                                                           MAIN IMAGE WRAPPER
+                                                                                                                        ============================================================= */
+        .main-img-box {
+            background: #F5F5F5;
+            border-radius: 12px;
+            height: 392px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-img {
+            max-height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        /* ============================================================
+                                                                                                                           THUMBNAILS
+                                                                                                                        ============================================================= */
+        .thumb-container {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: 1fr;
+        }
+
+        .thumbnail-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .thumbnail-img:hover {
+            transform: scale(1.03);
+            opacity: 0.9;
+        }
+
+        /* ============================================================
+                                                                                                                           BUTTON GRADIENT
+                                                                                                                        ============================================================= */
+        .order-btn {
+            background: linear-gradient(90deg, #00C6FF 0%, #00E676 100%);
+            border-radius: 8px;
+        }
+
+        /* ============================================================
+                                                                                                                           RESPONSIVE OPTIMIZATION
+                                                                                                                        ============================================================= */
+        @media (max-width: 991px) {
+            .main-img-box {
+                height: auto;
+                padding: 0;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .thumb-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 kolom thumbnail */
+                gap: 12px;
+            }
+
+            .thumbnail-img {
+                height: 140px;
+                /* proporsional dan tidak pecah */
+                object-fit: cover;
+            }
+
+            /* Biar gambar utama & thumbnail tetap sejajar */
+            .main-image-col {
+                margin-bottom: 0;
+            }
+        }
+
+
+        /* Mobile */
+        @media (max-width: 576px) {
+            .thumb-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .thumbnail-img {
+                height: 95px;
+            }
+        }
 /* Contack section */
   .custom-input {
         background: #111a30 !important;

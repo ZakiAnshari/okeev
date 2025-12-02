@@ -29,7 +29,7 @@ Route::middleware(['role_not_one'])->group(function () {
 
     Route::get('/wuling', [LandingPageController::class, 'wuling'])->name('wuling');
     Route::get('/detailwuling', [LandingPageController::class, 'detailwuling'])->name('detailwuling');
-    Route::get('/testdrive', [LandingPageController::class, 'testdrive'])->name('testdrive');
+
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
     Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
 });
@@ -37,7 +37,6 @@ Route::middleware(['role_not_one'])->group(function () {
 Route::middleware('redirectIfAuth')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticating']);
-
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'registerprocess'])->name('register-store');
 });
@@ -46,9 +45,12 @@ Route::middleware('redirectIfAuth')->group(function () {
 Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/home', [HomeUserController::class, 'index']);
     Route::get('/home', [HomeUserController::class, 'index']);
-
     Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])
         ->name('profil.show');
+
+    Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])
+        ->name('landing.product.testdrive');
+    Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });

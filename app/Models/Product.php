@@ -32,11 +32,16 @@ class Product extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function testdrives()
+    {
+        return $this->hasMany(Testdrive::class, 'product_id', 'id');
+    }
+
     public function details()
     {
         return $this->hasMany(Detail::class, 'product_id', 'id');
     }
-    
+
     public function fiturs()
     {
         return $this->hasMany(Fitur::class, 'product_id', 'id');

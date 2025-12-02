@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ class BrandController extends Controller
         // Ambil input pencarian dan jumlah item per halaman
         $search = $request->input('search');
         $paginate = $request->input('itemsPerPage', 5); // default 5
-
+        $categories = Category::orderBy('name_category')->get();
         // Query awal
         $query = Brand::query();
 
@@ -33,15 +34,16 @@ class BrandController extends Controller
         // Eksekusi query + paginasi
         $brands = $query->paginate($paginate)->withQueryString();
 
-        return view('admin.brand.index', compact('user', 'brands'));
+        return view('admin.brand.index', compact('user', 'brands', 'categories'));
     }
 
     public function store(Request $request)
     {
         // Validasi input sesuai model
         $validated = $request->validate([
-            'name_brand' => 'required|string|max:255|unique:brands,name_brand',
-            'image'      => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'name_brand'  => 'required|string|max:255|unique:brands,name_brand',
+            'category_id' => 'required|exists:categories,id', // validasi category_id
+            'image'       => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Upload gambar ke folder images
@@ -52,13 +54,15 @@ class BrandController extends Controller
 
         // Simpan ke database
         Brand::create([
-            'name_brand' => $validated['name_brand'],
-            'image'      => $imagePath
+            'name_brand'  => $validated['name_brand'],
+            'category_id' => $validated['category_id'], // simpan category_id
+            'image'       => $imagePath
         ]);
 
         Alert::success('Success', 'Brand berhasil ditambahkan');
         return back();
     }
+
 
 
 

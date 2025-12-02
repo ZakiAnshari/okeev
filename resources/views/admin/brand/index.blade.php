@@ -58,6 +58,25 @@
 
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
+                                                            <label class="form-label">Category</label>
+                                                            <select name="category_id" class="form-control">
+                                                                <option value="">-- Pilih Category --</option>
+                                                                @foreach ($categories as $category)
+                                                                    <option value="{{ $category->id }}"
+                                                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                                        {{ $category->name_category }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('category_id')
+                                                                <small class="text-danger">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
                                                             <label class="form-label">Brand Name</label>
                                                             <input type="text" name="name_brand" class="form-control"
                                                                 value="{{ old('name_brand') }}">

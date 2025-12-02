@@ -2,7 +2,8 @@
     <div class="app-brand justify-content-center">
         <a href="index.html" class="app-brand-link gap-2">
             <div style="display: flex; justify-content: center; align-items: center; width: 100px; height: 88px;">
-                <img src="{{ asset('/front_end/assets/images/logo_okeev.png') }}" alt="App Logo" style="object-fit: contain;">
+                <img src="{{ asset('/front_end/assets/images/logo_okeev.png') }}" alt="App Logo"
+                    style="object-fit: contain;">
             </div>
         </a>
     </div>
@@ -21,17 +22,17 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('brands*') ? 'active' : '' }}">
-            <a href="/brands" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-purchase-tag-alt"></i>
-                <div data-i18n="Brand"> Brand</div>
-            </a>
-        </li>
-
         <li class="menu-item {{ Request::is('category*') ? 'active' : '' }}">
             <a href="/category" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Brand"> Category</div>
+            </a>
+        </li>
+        
+        <li class="menu-item {{ Request::is('brands*') ? 'active' : '' }}">
+            <a href="/brands" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-purchase-tag-alt"></i>
+                <div data-i18n="Brand"> Brand</div>
             </a>
         </li>
 
@@ -61,31 +62,30 @@
             <a href="/contact" class="menu-link position-relative">
                 <i class="menu-icon tf-icons bx bx-envelope"></i>
 
-                {{-- @if($unreadMessages > 0)
+                {{-- @if ($unreadMessages > 0)
                     <span class="badge-notif">{{ $unreadMessages }}</span>
                 @endif --}}
 
                 <div data-i18n="Contact">Messages</div>
             </a>
         </li>
-<style>
-    .badge-notif {
-    position: absolute;
-    top: 2px;
-    left: 22px;
-    background: red;
-    color: white;
-    font-size: 10px;
-    padding: 2px 5px;
-    border-radius: 50%;
-    min-width: 16px;
-    height: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-</style>
+        <style>
+            .badge-notif {
+                position: absolute;
+                top: 2px;
+                left: 22px;
+                background: red;
+                color: white;
+                font-size: 10px;
+                padding: 2px 5px;
+                border-radius: 50%;
+                min-width: 16px;
+                height: 16px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
 
 
         {{-- User --}}

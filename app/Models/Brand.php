@@ -11,7 +11,8 @@ class Brand extends Model
     protected $fillable = [
         'name_brand',
         'slug',
-        'image'
+        'image',
+        'category_id',
     ];
 
     use HasSlug;
@@ -27,6 +28,11 @@ class Brand extends Model
         return $this->hasMany(Product::class, 'brand_id');
     }
 
+    public function categories()
+    {
+        return $this->belongsTo(Category::class, 'brand_id');
+    }
 
-    
+  
+   
 }
