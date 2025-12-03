@@ -108,9 +108,15 @@
                             </div>
 
                             <div class="col-12 mt-4 form-group-icon">
-                                <input type="text" name="dealer" class="form-control form-control-minimal"
-                                    placeholder="Choose Dealer" required>
+                                <select name="dealer" class="form-control form-control-minimal" required>
+                                    <option value="" selected disabled>Choose Dealer</option>
+                                    <option value="Dealer A">Dealer A</option>
+                                    <option value="Dealer B">Dealer B</option>
+                                    <option value="Dealer C">Dealer C</option>
+                                    <option value="Dealer D">Dealer D</option>
+                                </select>
                             </div>
+
 
                             <div class="col-12 mt-5">
                                 <button type="submit" class="btn btn-test-drive w-100">Test Drive</button>

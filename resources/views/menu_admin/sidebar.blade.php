@@ -51,10 +51,10 @@
         </li>
 
 
-        <li class="menu-item {{ Request::is('test-drive-booking*') ? 'active' : '' }}">
-            <a href="/test-drive-booking" class="menu-link">
+        <li class="menu-item {{ Request::is('test-drive*') ? 'active' : '' }}">
+            <a href="/test-drive" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar-check"></i>
-                <div data-i18n="Test Drive Booking">Test Drive Booking</div>
+                <div data-i18n="Test Drive Booking">Test Drive</div>
             </a>
         </li>
 

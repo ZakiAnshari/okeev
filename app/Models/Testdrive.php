@@ -14,7 +14,9 @@ class Testdrive extends Model
         'email',
         'city',
         'dealer',
+        'status',   // tambahkan ini
     ];
+
 
     /**
      * Relasi ke produk

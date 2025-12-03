@@ -15,6 +15,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeUserController;
 use App\Http\Controllers\SuspensiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TestDriveController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\SpecificationController;
@@ -73,6 +74,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/category/{slug}/edit', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/{slug}/edit', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category-destroy/{slug}', [CategoryController::class, 'destroy'])->name('category.destroy');
+    // TEST DRIVE
+    Route::get('/test-drive', [TestDriveController::class, 'index'])->name('testdrive.index');
+    Route::get('/test-drive-show/{id}', [TestDriveController::class, 'show'])->name('testdrive.show');
+    Route::get('/test-drive-destroy/{id}', [TestDriveController::class, 'destroy'])->name('testdrive.destroy');
+
+
+
+
 
 
     //PRODUK

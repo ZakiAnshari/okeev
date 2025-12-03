@@ -22,9 +22,8 @@ class LandingPageController extends Controller
         // Chunk untuk grid
         $brandChunks = $brands->chunk(4);
 
-        return view('landing.home', compact('products', 'brands', 'brandChunks','product'));
+        return view('landing.home', compact('products', 'brands', 'brandChunks', 'product'));
     }
-
 
     public function showBrand($slug)
     {
@@ -37,7 +36,6 @@ class LandingPageController extends Controller
 
         // Ambil semua produk yang memiliki brand yang sama
         $products = Product::where('brand_id', $brand->id)->get();
-
         return view('landing.brand-detail', compact('brand', 'products', 'brandChunks'));
     }
 
@@ -162,28 +160,31 @@ class LandingPageController extends Controller
 
     public function contact()
     {
-        $brands = Product::select('brand', 'slug', 'image')
-            ->orderBy('brand', 'asc')
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image')
+            ->orderBy('name_brand', 'asc')
             ->get()
-            ->unique('brand') // pastikan hanya satu brand per nama
+            ->unique('name_brand')
             ->values();
 
-        // Pecah menjadi chunks untuk grid, misal 4 per kolom
+        // Pecah menjadi 4 item per kolom
         $brandChunks = $brands->chunk(4);
+
         return view('landing.contact', compact('brands', 'brandChunks'));
     }
 
 
+
     public function about()
     {
-        $brands = Product::select('brand', 'slug', 'image')
-            ->orderBy('brand', 'asc')
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image')
+            ->orderBy('name_brand', 'asc')
             ->get()
-            ->unique('brand') // pastikan hanya satu brand per nama
+            ->unique('name_brand')
             ->values();
 
-        // Pecah menjadi chunks untuk grid, misal 4 per kolom
+        // Pecah menjadi chunks untuk grid (4 per baris)
         $brandChunks = $brands->chunk(4);
+
         return view('landing.about', compact('brands', 'brandChunks'));
     }
 }

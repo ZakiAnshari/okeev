@@ -8,6 +8,7 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/front_end/assets/images/favicon.svg') }}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('/front_end/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('/front_end/assets/css/LineIcons.2.0.css') }}" />
@@ -149,7 +150,7 @@
     <!-- Start Header Area -->
 
     @include('layout.partials.header')
-   
+
     <!-- End Header Area -->
 
     @yield('content')

@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('city');
             $table->string('dealer');
 
+            // Tambahan status
+            $table->enum('status', ['pending', 'approved', 'done', 'canceled'])->default('pending');
+
             $table->timestamps();
         });
     }
