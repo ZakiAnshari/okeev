@@ -14,11 +14,8 @@ class ColorController extends Controller
     {
         // Ambil produk berdasarkan slug
         $product = Product::where('slug', $slug)->firstOrFail();
-
         // Ambil semua teknologi milik produk
         $colors = $product->colors;
-
-
         return view('admin.color.index', compact('product', 'colors'));
     }
 

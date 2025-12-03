@@ -5,11 +5,11 @@
     <section class="wallpaper-section position-relative ">
         <img src="{{ asset('front_end/assets/images/backgroundwuing.png') }}" alt="Wallpaper" class="wallpaper-img">
 
-        <div class="container">
+        {{-- <div class="container">
             <div class="logo-left">
                 <img src="{{ asset('front_end/assets/images/logowuling.png') }}" alt="Logo" class="logo-img">
             </div>
-        </div>
+        </div> --}}
     </section>
 
     @if (in_array($brand->category_id, [3, 4]))
@@ -91,7 +91,14 @@
     @else
         <section>
             <div class="container">
-                <h4 class="mb-4">Mobil yang tersedia</h4>
+                @if ($products->count() > 0)
+                    @if ($brand->category_id == 1)
+                        <h4 class="mb-4">Mobil yang tersedia</h4>
+                    @elseif ($brand->category_id == 2)
+                        <h4 class="mb-4">Motor yang tersedia</h4>
+                    @endif
+                @endif
+
                 <div class="row">
                     @forelse($products as $product)
                         <div class="col-12 col-md-6 col-lg-3 mb-4">
@@ -168,7 +175,7 @@
                     @empty
                         <p class="text-center">Tidak ada produk untuk brand ini.</p>
                     @endforelse
-
+                    <br><br>
                 </div>
             </div>
         </section>

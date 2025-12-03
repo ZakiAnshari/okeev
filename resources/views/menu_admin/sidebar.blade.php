@@ -62,30 +62,12 @@
             <a href="/contact" class="menu-link position-relative">
                 <i class="menu-icon tf-icons bx bx-envelope"></i>
 
-                {{-- @if ($unreadMessages > 0)
-                    <span class="badge-notif">{{ $unreadMessages }}</span>
-                @endif --}}
+    
 
                 <div data-i18n="Contact">Messages</div>
             </a>
         </li>
-        <style>
-            .badge-notif {
-                position: absolute;
-                top: 2px;
-                left: 22px;
-                background: red;
-                color: white;
-                font-size: 10px;
-                padding: 2px 5px;
-                border-radius: 50%;
-                min-width: 16px;
-                height: 16px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        </style>
+      
 
 
         {{-- User --}}

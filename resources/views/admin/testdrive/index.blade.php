@@ -19,12 +19,56 @@
                             @endif
                             <div class="d-flex align-items-center mb-3">
                                 <!-- Tombol Kembali -->
-
-
-
                                 <!-- Judul -->
                                 <h5 class="mb-0">TestDrive List</h5>
                             </div>
+                            <!-- Modal Ubah Status -->
+                            {{-- <div class="modal fade" id="modalStatus{{ $item->id }}" tabindex="-1"
+                                aria-labelledby="modalStatusLabel{{ $item->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalStatusLabel{{ $item->id }}">
+                                                Ubah Status Test Drive
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <form action="" method="POST">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <div class="modal-body">
+                                                <label for="status" class="form-label">Pilih Status Baru:</label>
+                                                <select name="status" id="status" class="form-select">
+                                                    <option value="pending"
+                                                        {{ $item->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="approved"
+                                                        {{ $item->status == 'approved' ? 'selected' : '' }}>Approved
+                                                    </option>
+                                                    <option value="rejected"
+                                                        {{ $item->status == 'rejected' ? 'selected' : '' }}>Rejected
+                                                    </option>
+                                                    <option value="completed"
+                                                        {{ $item->status == 'completed' ? 'selected' : '' }}>Completed
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Tutup</button>
+
+                                                <button type="submit" class="btn btn-primary">
+                                                    Simpan Perubahan
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div> --}}
 
                             <!-- Table Data -->
                             <table class="table table-bordered">
@@ -34,6 +78,8 @@
                                         <th>Nama</th>
                                         <th>Telepon</th>
                                         <th>Email</th>
+                                        <th>Tanggal Masuk</th>
+                                        <th>Status</th>
                                         <th style="width: 100px; text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
@@ -45,16 +91,34 @@
                                             <td>{{ $item->first_name }}</td>
                                             <td>{{ $item->telp }}</td>
                                             <td>{{ $item->email }}</td>
+                                            <td>{{ $item->created_at->format('F d, Y') }}</td>
+
+                                            <th>
+                                                <span
+                                                    class="badge 
+                                                        @if ($item->status == 'pending') bg-warning
+                                                        @elseif($item->status == 'approved') bg-primary
+                                                        @elseif($item->status == 'done') bg-success
+                                                        @else bg-danger @endif
+                                                    ">
+                                                    {{ ucfirst($item->status) }}
+                                                </span>
+                                            </th>
 
                                             <td class="text-center">
+                                                <!-- Tombol Ubah Status -->
+                                                <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#modalStatus{{ $item->id }}">
+                                                    <i class="bx bx-edit"></i> Ubah Status
+                                                </button>
                                                 <a href="{{ url('test-drive-show/' . $item->id) }}"
                                                     class="btn btn-icon btn-outline-info" title="Detail">
                                                     <i class="bx bx-show"></i>
                                                 </a>
-                                                <button class="btn btn-icon btn-outline-danger" onclick=""
+                                                {{-- <button class="btn btn-icon btn-outline-danger" onclick=""
                                                     title="Hapus">
                                                     <i class="bx bx-trash"></i>
-                                                </button>
+                                                </button> --}}
                                             </td>
                                         </tr>
                                     @empty

@@ -24,8 +24,16 @@
                             <div class="card h-100">
                                 <div class="card-body position-relative">
                                     <div class="position-absolute end-0 top-0 p-3">
-                                        <span class="badge bg-primary">z</span>
+                                        <span
+                                            class="badge 
+                                            @if ($testdrives->status == 'pending') bg-warning 
+                                            @elseif($testdrives->status == 'approved') bg-primary
+                                            @elseif($testdrives->status == 'done') bg-success
+                                            @else bg-danger @endif ">
+                                                {{ ucfirst($testdrives->status) }}
+                                        </span>
                                     </div>
+                                    <br>
                                     <div class="text-center mt-3">
                                         <div class="chat-avatar d-inline-flex mx-auto mb-3">
                                             <img src="{{ asset('backend/assets/img/avatars/' . (Auth::user()->jenis_kelamin === 'Perempuan' ? '6.png' : '1.png')) }}"
@@ -54,54 +62,47 @@
                                 </div>
 
                                 <div class="card-body">
+                                    <div class="row">
 
-                                    <!-- Nama Lengkap -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Nama Lengkap</label>
-                                        <input type="text" class="form-control"
-                                            value="{{ $testdrives->first_name }} {{ $testdrives->second_name }}" readonly>
+                                        <!-- Nama Lengkap -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Nama Lengkap</label>
+                                            <input type="text" class="form-control"
+                                                value="{{ $testdrives->first_name }} {{ $testdrives->second_name }}"
+                                                readonly>
+                                        </div>
+
+                                        <!-- Telepon -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Nomor Telepon</label>
+                                            <input type="text" class="form-control" value="{{ $testdrives->telp }}"
+                                                readonly>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="text" class="form-control" value="{{ $testdrives->email }}"
+                                                readonly>
+                                        </div>
+
+                                        <!-- Kota -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Kota</label>
+                                            <input type="text" class="form-control" value="{{ $testdrives->city }}"
+                                                readonly>
+                                        </div>
+
+                                        <!-- Dealer -->
+                                        <div class="col-lg-6 mb-3">
+                                            <label class="form-label">Dealer</label>
+                                            <input type="text" class="form-control" value="{{ $testdrives->dealer }}"
+                                                readonly>
+                                        </div>
+
                                     </div>
-
-                                    <!-- Telepon -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Nomor Telepon</label>
-                                        <input type="text" class="form-control" value="{{ $testdrives->telp }}" readonly>
-                                    </div>
-
-                                    <!-- Email -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input type="text" class="form-control" value="{{ $testdrives->email }}"
-                                            readonly>
-                                    </div>
-
-                                    <!-- Kota -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Kota</label>
-                                        <input type="text" class="form-control" value="{{ $testdrives->city }}" readonly>
-                                    </div>
-
-                                    <!-- Dealer -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Dealer</label>
-                                        <input type="text" class="form-control" value="{{ $testdrives->dealer }}"
-                                            readonly>
-                                    </div>
-
-                                    <!-- Status -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Status</label>
-                                        <span
-                                            class="badge 
-                                        @if ($testdrives->status == 'pending') bg-warning 
-                                        @elseif($testdrives->status == 'approved') bg-primary
-                                        @elseif($testdrives->status == 'done') bg-success
-                                        @else bg-danger @endif">
-                                            {{ ucfirst($testdrives->status) }}
-                                        </span>
-                                    </div>
-
                                 </div>
+
                             </div>
                         </div>
 
@@ -116,16 +117,17 @@
                                 <!-- Gambar Produk -->
                                 @if ($testdrives->product->image)
                                     <div class="text-center mb-3">
-                                        <img src="{{ asset('storage/' . $testdrives->product->image) }}" alt="Product Image"
-                                            class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">
+                                        <img src="{{ asset('storage/' . $testdrives->product->image) }}"
+                                            alt="Product Image" class="img-fluid rounded"
+                                            style="max-height: 150px; object-fit: cover;">
                                     </div>
                                 @endif
 
                                 <!-- Nama Produk -->
                                 <div class="mb-3">
                                     <label class="form-label">Nama Mobil</label>
-                                    <input type="text" class="form-control" value="{{ $testdrives->product->model_name }}"
-                                        readonly>
+                                    <input type="text" class="form-control"
+                                        value="{{ $testdrives->product->model_name }}" readonly>
                                 </div>
 
                                 <!-- Brand -->

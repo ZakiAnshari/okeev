@@ -18,12 +18,14 @@
                         </button>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
+                                
                                 <li class="nav-item dropdown position-static">
                                     <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         Vehicle
                                     </a>
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
+                                        
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 mb-4">
                                                 <h6 class="fw-bold mb-3">Electric Cars</h6>
@@ -102,6 +104,10 @@
 
                                 <li class="nav-item">
                                     <a href="/about">About OKEEV</a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a href="/about">News</a>
                                 </li>
 
                                 <li class="nav-item">

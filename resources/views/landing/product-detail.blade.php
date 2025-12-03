@@ -128,8 +128,6 @@
                                     </div>
 
                                 </div>
-
-
                                 <!-- Thumbnails -->
                                 <div class="d-flex gap-3 justify-content-center">
                                     @foreach ($product->images->take(6) as $image)
@@ -147,7 +145,6 @@
                                 <h4 class="fw-bold text-primary mb-3" style="color:#00AEEF !important;">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </h4>
-
                                 <p class="text-secondary">
                                     {!! $product->description !!}
                                 </p>
@@ -352,6 +349,7 @@
 
 
     {{-- INI FEATURE UNTUK CATEGORI 1 --}}
+
     @if ($product->category_id == 1)
         <section class="py-5">
             <div class="container">
@@ -463,57 +461,58 @@
                 </div>
 
                 {{-- COLOR --}}
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-5">
-                        <div class="p-4 border rounded-4 shadow-sm text-center">
+                @if ($product->colors->isNotEmpty())
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-5">
+                            <div class="p-4 border rounded-4 shadow-sm text-center">
 
-                            <!-- Warna -->
-                            <div class="d-flex flex-column align-items-center">
-                                <div class="d-flex flex-wrap justify-content-center gap-4 mb-3 color-container">
-                                    @forelse($product->colors as $index => $color)
-                                        <div class="color-circle {{ $index === 0 ? 'active' : '' }}"
-                                            data-index="{{ $index }}" data-name="{{ $color->name }}"
-                                            data-image="{{ asset('storage/' . $color->image) }}"
-                                            style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%);">
-                                        </div>
-                                    @empty
-                                        <p class="text-muted"></p>
-                                    @endforelse
+                                <!-- Warna -->
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="d-flex flex-wrap justify-content-center gap-4 mb-3 color-container">
+                                        @forelse($product->colors as $index => $color)
+                                            <div class="color-circle {{ $index === 0 ? 'active' : '' }}"
+                                                data-index="{{ $index }}" data-name="{{ $color->name }}"
+                                                data-image="{{ asset('storage/' . $color->image) }}"
+                                                style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%);">
+                                            </div>
+                                        @empty
+                                            <p class="text-muted"></p>
+                                        @endforelse
+                                    </div>
+
+                                    <p class="fw-semibold fs-6 mt-2" id="color-name">
+                                        @if ($product->colors->isNotEmpty())
+                                            {{ $product->colors->first()->name }}
+                                        @endif
+                                    </p>
                                 </div>
 
-                                <p class="fw-semibold fs-6 mt-2" id="color-name">
-                                    @if ($product->colors->isNotEmpty())
-                                        {{ $product->colors->first()->name }}
-                                    @endif
-                                </p>
                             </div>
 
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="row mt-4">
-                            <div class="col-6 pe-1">
-                                <button class="btn btn-outline-primary w-100 py-2 rounded-3">
-                                    Test Drive
-                                </button>
-                            </div>
-                            <div class="col-6 ps-1">
-                                <button class="btn btn-primary w-100 py-2 rounded-3"
-                                    style="background: linear-gradient(to right, #0094ff, #00e6a8); border: none;">
-                                    Order Now
-                                </button>
+                            <!-- Buttons -->
+                            <div class="row mt-4">
+                                <div class="col-6 pe-1">
+                                    <button class="btn btn-outline-primary w-100 py-2 rounded-3">
+                                        Test Drive
+                                    </button>
+                                </div>
+                                <div class="col-6 ps-1">
+                                    <button class="btn btn-primary w-100 py-2 rounded-3"
+                                        style="background: linear-gradient(to right, #0094ff, #00e6a8); border: none;">
+                                        Order Now
+                                    </button>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Gambar Mobil -->
+                        <div class="col-lg-7 text-center">
+                            <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
+                                class="img-fluid car-preview" id="car-preview" alt="Car">
+                        </div>
+
                     </div>
-
-                    <!-- Gambar Mobil -->
-                    <div class="col-lg-7 text-center">
-                        <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
-                            class="img-fluid car-preview" id="car-preview" alt="Car">
-                    </div>
-
-                </div>
-
+                @endif
             </div>
         </section>
     @endif
@@ -645,7 +644,8 @@
                         <p><strong>Important note:</strong> Requirements may vary from bank to bank. This calculation is
                             purely
                             a simulation.</p>
-                        <p>For cars outside Jakarta, the above calculation is not binding. Additional shipping costs are not
+                        <p>For cars outside Jakarta, the above calculation is not binding. Additional shipping costs are
+                            not
                             included.</p>
                         <p>The above calculation applies to a minimum down payment of IDR 10,000,000.</p>
                     </div>
@@ -842,4 +842,5 @@
             </div>
         </section>
     @endif
+
 @endsection
