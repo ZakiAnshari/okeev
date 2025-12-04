@@ -187,4 +187,18 @@ class LandingPageController extends Controller
 
         return view('landing.about', compact('brands', 'brandChunks'));
     }
+
+    public function news()
+    {
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image')
+            ->orderBy('name_brand', 'asc')
+            ->get()
+            ->unique('name_brand')
+            ->values();
+
+        // Pecah menjadi chunks untuk grid (4 per baris)
+        $brandChunks = $brands->chunk(4);
+
+        return view('landing.news', compact('brands', 'brandChunks'));
+    }
 }

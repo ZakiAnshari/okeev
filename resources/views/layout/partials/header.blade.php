@@ -18,14 +18,14 @@
                         </button>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
-                                
+
                                 <li class="nav-item dropdown position-static">
                                     <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         Vehicle
                                     </a>
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
-                                        
+
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 mb-4">
                                                 <h6 class="fw-bold mb-3">Electric Cars</h6>
@@ -105,14 +105,15 @@
                                 <li class="nav-item">
                                     <a href="/about">About OKEEV</a>
                                 </li>
-                                
+
                                 <li class="nav-item">
-                                    <a href="/about">News</a>
+                                    <a href="/news">News</a>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="/contact">Contact</a>
                                 </li>
+
                             </ul>
                             <div class="button add-list-button">
                                 <div class="button-group">
@@ -135,13 +136,26 @@
                                     </div>
                                     <!-- Icon Buttons -->
                                     <div class="icon-box">
-                                        <a href="/login" class="icon-btn">
-                                            <i class="bx bx-shopping-bag"></i>
+                                        <a href="/cart" class="icon-btn position-relative">
+                                            <i class="bx bx-shopping-bag fs-3"></i>
+
+                                            <!-- Badge jumlah item -->
+                                            <span id="cartCount"
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                                style="font-size:12px;">
+                                                0
+                                            </span>
                                         </a>
-                                        <a href="/notification" class="icon-btn notif">
-                                            <i class="bx bx-bell"></i>
-                                            <span class="dot"></span>
+
+                                        <a href="javascript:void(0)" class="icon-btn notif position-relative"
+                                            data-bs-toggle="modal" data-bs-target="#notificationModal">
+
+                                            <i class="bx bx-bell fs-4"></i>
+                                            <span class="rounded-circle bg-danger position-absolute top-0 end-0 p-1"
+                                                style="width:8px; height:8px;"></span>
                                         </a>
+
+
                                         <!-- PROFILE -->
                                         <a href="{{ route('profil.show', optional(Auth::user())->slug ?? 'guest') }}"
                                             class="profile-box">

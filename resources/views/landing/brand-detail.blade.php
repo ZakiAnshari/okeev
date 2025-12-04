@@ -15,13 +15,43 @@
     @if (in_array($brand->category_id, [3, 4]))
         <div class="container my-4">
             <div class="d-flex gap-3 mb-4">
-                <button type="button" class="btn btn-dark rounded-3 px-4 py-2 filter-btn" data-category="3">
+
+                <button type="button" class="btn btn-primary rounded-3 px-4 py-2 filter-btn" data-category="3">
                     Laptop
                 </button>
-                <button type="button" class="btn btn-outline-secondary rounded-3 px-4 py-2 filter-btn" data-category="4">
+
+                <button type="button" class="btn btn-primary rounded-3 px-4 py-2 filter-btn" data-category="4">
                     Handphone
                 </button>
+
             </div>
+            <style>
+                .filter-btn {
+                    background-color: #30445C;
+                    border-color: #30445C;
+                    color: white;
+                    opacity: 0.6;
+                    /* tombol default tampak tidak aktif */
+                }
+
+                .filter-btn.active {
+                    opacity: 1;
+                    background-color: #1f2f43;
+                    /* warna aktif */
+                    border-color: #1f2f43;
+                }
+            </style>
+
+            <script>
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    });
+                });
+            </script>
+
+
 
             <div class="row g-3" id="product-container">
                 @foreach ($products as $product)

@@ -86,7 +86,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <a href="/cart"
+                        <a href=""
                             class="btn btn-outline-success w-100 py-2 d-flex justify-content-center align-items-center">
                             <i class="bx bx-cart me-2"></i>
                             Add to Cart

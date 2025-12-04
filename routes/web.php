@@ -27,9 +27,10 @@ Route::middleware(['role_not_one'])->group(function () {
 
     Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
     Route::get('/about', [LandingPageController::class, 'about'])->name('about');
+    Route::get('/news', [LandingPageController::class, 'news'])->name('news');
 
-    Route::get('/wuling', [LandingPageController::class, 'wuling'])->name('wuling');
-    Route::get('/detailwuling', [LandingPageController::class, 'detailwuling'])->name('detailwuling');
+    // Route::get('/wuling', [LandingPageController::class, 'wuling'])->name('wuling');
+    // Route::get('/detailwuling', [LandingPageController::class, 'detailwuling'])->name('detailwuling');
 
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
     Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
@@ -45,13 +46,11 @@ Route::middleware('redirectIfAuth')->group(function () {
 // AKSES USER
 Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/home', [HomeUserController::class, 'index']);
-    Route::get('/home', [HomeUserController::class, 'index']);
-    Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])
-        ->name('profil.show');
-
-    Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])
-        ->name('landing.product.testdrive');
+    Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])->name('profil.show');
+    Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
+
+    Route::get('/cart', [HomeUserController::class, 'cart']);
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });

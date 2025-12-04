@@ -230,7 +230,7 @@
                         <!-- CARD -->
                         <div class="row">
                             @forelse($products as $product)
-                                <div class="col-12 col-md-6 col-lg-3 mb-4">
+                                <div class="col-lg-4">
                                     @if (in_array($product->category_id, [1, 2]))
                                         <div class="vehicle-card rounded shadow-sm h-100"
                                             style="border: 1px solid #F1F1F1 !important;">
@@ -330,5 +330,5 @@
             </div>
         </section>
     @endif
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
 @endsection
