@@ -12,6 +12,7 @@ class Brand extends Model
         'name_brand',
         'slug',
         'image',
+        'wallpaper',
         'category_id',
     ];
 
@@ -32,7 +33,4 @@ class Brand extends Model
     {
         return $this->belongsTo(Category::class, 'brand_id');
     }
-
-  
-   
 }

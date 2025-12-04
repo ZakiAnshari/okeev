@@ -56,7 +56,7 @@
                                             <div class="modal-body">
                                                 <div class="row">
 
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-12">
                                                         <div class="mb-3">
                                                             <label class="form-label">Category</label>
                                                             <select name="category_id" class="form-control">
@@ -74,8 +74,7 @@
                                                         </div>
                                                     </div>
 
-
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-12">
                                                         <div class="mb-3">
                                                             <label class="form-label">Brand Name</label>
                                                             <input type="text" name="name_brand" class="form-control"
@@ -85,46 +84,79 @@
                                                             @enderror
                                                         </div>
                                                     </div>
+
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label">Image Brand</label>
+                                                            <label class="form-label fw-semibold">Logo Brand</label>
                                                             <input type="file" name="image" class="form-control"
-                                                                id="imageInput">
+                                                                id="imageInput" accept="image/*">
 
                                                             @error('image')
                                                                 <small class="text-danger">{{ $message }}</small>
                                                             @enderror
-                                                        </div>
 
-                                                        <!-- Preview + Remove -->
-                                                        <div class="d-flex align-items-center mt-3">
 
-                                                            <div style="position: relative; display: inline-block;">
-                                                                <!-- Gambar kecil -->
-                                                                <img id="imagePreview" src="#" alt="Preview"
-                                                                    style="width: 90px; height: 90px; object-fit: cover; border-radius: 6px; display:none; border:1px solid #ccc;">
-
-                                                                <!-- Tombol close kecil yang elegan -->
-                                                                <button type="button" id="removeImageBtn"
-                                                                    class="btn btn-sm btn-danger"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        top: -8px;
-                                                                        right: -8px;
-                                                                        width: 24px;
-                                                                        height: 24px;
-                                                                        padding: 0;
-                                                                        border-radius: 50%;
-                                                                        display: none;
-                                                                        font-weight: bold;
-                                                                    ">
-                                                                    ×
-                                                                </button>
-                                                            </div>
-
+                                                            {{-- Keterangan --}}
+                                                            <small class="text-muted d-block mt-1">
+                                                                • Maksimal ukuran file <strong>2MB</strong><br>
+                                                                • Format diperbolehkan: <strong>JPG, JPEG, PNG</strong><br>
+                                                                • Logo akan tampil di halaman brand dan bagian navigasi
+                                                            </small>
                                                         </div>
                                                     </div>
 
+                                                    <script>
+                                                        const imageInput = document.getElementById('imageInput');
+                                                        const imagePreview = document.getElementById('imagePreview');
+
+                                                        imageInput.addEventListener('change', function() {
+                                                            const file = this.files[0];
+                                                            if (file) {
+                                                                const reader = new FileReader();
+                                                                reader.onload = function(e) {
+                                                                    imagePreview.src = e.target.result;
+                                                                    imagePreview.style.display = 'block';
+                                                                }
+                                                                reader.readAsDataURL(file);
+                                                            }
+                                                        });
+                                                    </script>
+
+
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label fw-semibold">Wallpaper</label>
+
+                                                            {{-- Preview Wallpaper Jika Ada --}}
+                                                            @if (!empty($brand->wallpaper))
+                                                                <div class="mb-2">
+                                                                    <img src="{{ asset('storage/' . $brand->wallpaper) }}"
+                                                                        alt="Wallpaper Preview"
+                                                                        class="img-fluid rounded border"
+                                                                        style="max-height: 180px;">
+                                                                </div>
+                                                            @endif
+
+                                                            {{-- Input File --}}
+                                                            <input type="file" name="wallpaper"
+                                                                class="form-control @error('wallpaper') is-invalid @enderror"
+                                                                accept="image/*">
+
+                                                            {{-- Error Message --}}
+                                                            @error('wallpaper')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
+
+                                                            {{-- Keterangan --}}
+                                                            <small class="text-muted mt-1">
+                                                                • Maksimal ukuran file <strong>10MB</strong><br>
+                                                                • Format yang diperbolehkan: <strong>JPG, JPEG,
+                                                                    PNG</strong><br>
+                                                                • Wallpaper digunakan untuk tampilan detail brand
+                                                            </small>
+                                                        </div>
+                                                    </div>
 
 
                                                 </div>
@@ -147,7 +179,7 @@
 
 
                             <!-- Table Data -->
-                            <table id="brandTable" class="table table-bordered datatable">
+                            <table id="brandTable" class="table table-bordered ">
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
@@ -156,25 +188,20 @@
                                         <th style="width: 100px; text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     @forelse ($brands as $item)
                                         <tr>
-                                            <td></td> <!-- Kosong karena akan diisi otomatis oleh DataTables -->
-
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name_brand }}</td>
-
                                             <td>
                                                 <img src="{{ asset('storage/' . $item->image) }}" alt="Brand Image"
                                                     style="width: 80px; height: auto; object-fit: cover; border-radius: 5px;">
                                             </td>
-
                                             <td class="text-center">
                                                 <a href="{{ route('brands.edit', $item->slug) }}"
                                                     class="btn btn-icon btn-outline-primary" title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </a>
-
                                                 <a href="javascript:void(0)"
                                                     onclick="confirmDeletebrand('{{ $item->slug }}', '{{ $item->name_brand }}')">
                                                     <button class="btn btn-icon btn-outline-danger" title="Hapus">
@@ -185,11 +212,12 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="8" class="text-center">Data Brand Kosong</td>
+                                            <td colspan="4" class="text-center">Data Brand Kosong</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+
 
                         </div>
                     </div>

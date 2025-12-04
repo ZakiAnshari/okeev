@@ -68,6 +68,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/brands/{slug}/edit', [BrandController::class, 'edit'])->name('brands.edit');
     Route::post('/brands/{slug}/edit', [BrandController::class, 'update'])->name('brands.update');
     Route::get('/brands-destroy/{slug}', [BrandController::class, 'destroy'])->name('brands.destroy');
+    Route::get('/get-brands/{category_id}', [BrandController::class, 'getBrandsByCategory']);
+
     // CATEGORY
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::post('/category-add', [CategoryController::class, 'store'])->name('category.store');

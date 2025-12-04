@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name_brand');
             $table->string('slug')->nullable();
-            $table->string('image')->nullable();  // Gambar fitur
+            $table->string('image')->nullable();
+            $table->string('wallpaper')->nullable();
             $table->timestamps();
         });
     }

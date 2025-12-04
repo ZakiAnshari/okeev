@@ -39,29 +39,32 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input sesuai model
+        // Validasi input
         $validated = $request->validate([
             'name_brand'  => 'required|string|max:255|unique:brands,name_brand',
-            'category_id' => 'required|exists:categories,id', // validasi category_id
+            'category_id' => 'required|exists:categories,id',
             'image'       => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'wallpaper'   => 'required|image|mimes:jpg,jpeg,png|max:10240', // max 10MB
         ]);
 
-        // Upload gambar ke folder images
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-        }
+        // Upload image umum
+        $imagePath = $request->file('image')->store('images', 'public');
+
+        // Upload wallpaper slider
+        $wallpaperPath = $request->file('wallpaper')->store('wallpapers', 'public');
 
         // Simpan ke database
         Brand::create([
             'name_brand'  => $validated['name_brand'],
-            'category_id' => $validated['category_id'], // simpan category_id
-            'image'       => $imagePath
+            'category_id' => $validated['category_id'],
+            'image'       => $imagePath,
+            'wallpaper'   => $wallpaperPath,
         ]);
 
         Alert::success('Success', 'Brand berhasil ditambahkan');
         return back();
     }
+
 
 
 
@@ -77,11 +80,13 @@ class BrandController extends Controller
                 ->with('error', 'Data brand tidak ditemukan.');
         }
 
-        // Kirim ke view
-        return view('admin.brand.edit', [
-            'brands' => $brands
-        ]);
+        // Ambil semua kategori untuk select option
+        $categories = Category::orderBy('name_category')->get();
+
+        // Kirim data ke view
+        return view('admin.brand.edit', compact('brands', 'categories'));
     }
+
 
 
     public function update(Request $request, $slug)
@@ -89,13 +94,19 @@ class BrandController extends Controller
         // Ambil data brand berdasarkan slug
         $brand = Brand::where('slug', $slug)->firstOrFail();
 
-        // Validasi: name_brand tidak boleh sama dengan brand lain
+        // Validasi input
         $validated = $request->validate([
             'name_brand' => 'required|string|max:255|unique:brands,name_brand,' . $brand->id,
+            'category_id' => 'required|exists:categories,id',
+
             'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'wallpaper'  => 'nullable|image|mimes:jpg,jpeg,png|max:10240', // 10MB
         ]);
 
-        // Jika ada upload gambar baru
+        /* ------------------------------------
+        HANDLE IMAGE UPDATE
+    ------------------------------------ */
+
         if ($request->hasFile('image')) {
 
             // Hapus gambar lama jika ada
@@ -103,15 +114,39 @@ class BrandController extends Controller
                 Storage::disk('public')->delete($brand->image);
             }
 
-            // Upload gambar baru → folder images
+            // Upload baru
             $validated['image'] = $request->file('image')->store('images', 'public');
         } else {
-            // Jika tidak mengupload → tetap pakai yang lama
             $validated['image'] = $brand->image;
         }
 
-        // Update data
-        $brand->update($validated);
+        /* ------------------------------------
+        HANDLE WALLPAPER UPDATE
+    ------------------------------------ */
+
+        if ($request->hasFile('wallpaper')) {
+
+            // Hapus wallpaper lama jika ada
+            if ($brand->wallpaper) {
+                Storage::disk('public')->delete($brand->wallpaper);
+            }
+
+            // Upload baru
+            $validated['wallpaper'] = $request->file('wallpaper')->store('wallpapers', 'public');
+        } else {
+            $validated['wallpaper'] = $brand->wallpaper;
+        }
+
+        /* ------------------------------------
+        UPDATE DATA
+    ------------------------------------ */
+
+        $brand->update([
+            'name_brand'  => $validated['name_brand'],
+            'category_id' => $validated['category_id'],
+            'image'       => $validated['image'],
+            'wallpaper'   => $validated['wallpaper'],
+        ]);
 
         Alert::success('Success', 'Brand berhasil diperbarui.');
         return redirect()->route('brands.index');
@@ -125,4 +160,6 @@ class BrandController extends Controller
         Alert::success('Success', 'Data berhasil di Hapus');
         return redirect()->route('brands.index');
     }
+
+    
 }

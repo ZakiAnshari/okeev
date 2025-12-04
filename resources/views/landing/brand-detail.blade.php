@@ -3,7 +3,7 @@
 @section('content')
     <!-- Wallpaper Section -->
     <section class="wallpaper-section position-relative ">
-        <img src="{{ asset('front_end/assets/images/backgroundwuing.png') }}" alt="Wallpaper" class="wallpaper-img">
+        <img src="{{ asset('storage/' . $brand->wallpaper) }}" alt="Wallpaper" class="wallpaper-img">
 
         {{-- <div class="container">
             <div class="logo-left">
