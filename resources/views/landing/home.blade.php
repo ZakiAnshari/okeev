@@ -75,17 +75,22 @@
     </section>
 
     {{-- SECTION 3 --}}
-    <section class="why-choose-us-section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Why Choose Us ?</h2>
+    <section class="why-choose-us-section position-relative">
+
+        <!-- Gambar sebagai background -->
+        <img src="{{ asset('front_end/assets/images/Union.png') }}" alt="Background" class="bg-union-img">
+
+        <div class="container position-relative">
+            <div class="text-start mb-5">
+                <h4 class="section-title" style="color: #30445C">Why Choose Us ?</h4>
             </div>
+
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="single-choose-feature">
                         <div class="feature-header d-flex align-items-center" style="margin: 0px">
                             <div class="feature-icon me-3">
-                                <img src="{{ asset('front_end/assets/images/logo/icon1.png') }}" alt="Ikon Lightning">
+                                <img src="{{ asset('front_end/assets/images/logo/icon1.png') }}" alt="">
                             </div>
                             <h3 style="margin: 0px">Pilihan Merek & Model Lengkap</h3>
                         </div>
@@ -98,10 +103,9 @@
                     <div class="single-choose-feature">
                         <div class="feature-header d-flex align-items-center" style="margin: 0px">
                             <div class="feature-icon me-3">
-                                <img src="{{ asset('front_end/assets/images/logo/icon2.png') }}" alt="Ikon Lightning">
+                                <img src="{{ asset('front_end/assets/images/logo/icon2.png') }}" alt="">
                             </div>
-                            <h3 style="margin: 0px">Test Drive Kendaraan
-                                yang di inginkan</h3>
+                            <h3 style="margin: 0px">Test Drive Kendaraan yang di inginkan</h3>
                         </div>
                         <hr>
                         <p>Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.</p>
@@ -112,7 +116,7 @@
                     <div class="single-choose-feature">
                         <div class="feature-header d-flex align-items-center" style="margin: 0px">
                             <div class="feature-icon me-3">
-                                <img src="{{ asset('front_end/assets/images/logo/icon3.png') }}" alt="Ikon Lightning">
+                                <img src="{{ asset('front_end/assets/images/logo/icon3.png') }}" alt="">
                             </div>
                             <h3 style="margin: 0px">Komitmen pada Lingkungan</h3>
                         </div>
@@ -121,9 +125,36 @@
                             hijau.</p>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </section>
+    <style>
+        .bg-union-img {
+            position: absolute;
+            top: 80px;
+            /* Pas dengan bagian mulai background biru */
+            transform: translateX(-50%);
+            /* Tetap rata agar tidak kabur bentuknya */
+            width: 128%;
+            /* Melebar pas seperti contoh */
+            height: 65%;
+            z-index: 0;
+        }
+
+        .why-choose-us-section .container {
+            position: relative;
+            z-index: 2;
+            /* Konten di depan gambar */
+        }
+
+        .why-choose-us-section {
+            padding: 80px 0;
+            overflow: hidden;
+            /* Biar gambar tidak keluar area */
+        }
+    </style>
 
     {{-- SECTION 4 --}}
     <section class="py-5 bg-white">

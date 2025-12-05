@@ -1024,10 +1024,12 @@ p {
    WHY CHOOSE US SECTION
    ==================== */
 .why-choose-us-section {
-    background-color: #2b3b52; /* warna biru gelap solid */
+    /* background-color: #2b3b52; warna biru gelap solid */
     padding: 50px;
     width: 100%;
     text-align: center;
+}
+
 }
 
 .section-title {
