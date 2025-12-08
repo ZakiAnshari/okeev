@@ -161,5 +161,10 @@ class BrandController extends Controller
         return redirect()->route('brands.index');
     }
 
-    
+    public function getBrands($category_id)
+    {
+        $brands = Brand::where('category_id', $category_id)->get();
+
+        return response()->json($brands);
+    }
 }

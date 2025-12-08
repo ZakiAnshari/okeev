@@ -15,6 +15,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
+    public function getBrands($category_id)
+    {
+        $brands = Brand::where('category_id', $category_id)->get();
+
+        return response()->json($brands);
+    }
+
     public function index(Request $request)
     {
         $search = $request->search;

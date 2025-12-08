@@ -13,11 +13,20 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string(column: 'name_category');
+            $table->unsignedBigInteger('category_position_id'); // FK
+
+            $table->string('name_category');
             $table->string('slug')->nullable();
             $table->timestamps();
+
+            // Relasi FK
+            $table->foreign('category_position_id')
+                ->references('id')
+                ->on('category_positions')
+                ->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

@@ -16,105 +16,84 @@
 
                 <!-- Tombol Aksi Kanan -->
                 <div class="d-flex gap-2 mx-4 my-4">
-                    <!-- Technology -->
-                    @if ($product->category_id == 1)
+                    @php
+                        $categoryId = $product->category_id;
+                    @endphp
+
+                    {{-- Jika category_id = 1 --}}
+                    @if ($categoryId == 1)
                         <div class="d-flex justify-content-end">
                             <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                class="btn btn-outline-success border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#technologyModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Technology</span>
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Technology</span>
                             </button>
                         </div>
-                        <!-- Feature -->
                         <div class="d-flex justify-content-end">
                             <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                class="btn btn-outline-danger border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#FeatureModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Feature</span>
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Feature</span>
                             </button>
                         </div>
-                    @endif
-                    <!-- Color -->
-                    @if (in_array($product->category_id, [1, 2]))
                         <div class="d-flex justify-content-end">
                             <button type="button"
                                 class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#ColorModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Color</span>
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Color</span>
                             </button>
                         </div>
-                    @endif
-                    <!-- Power -->
-                    @if ($product->category_id == 2)
                         <div class="d-flex justify-content-end">
                             <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#PowerModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Power</span>
-                            </button>
-                        </div>
-                    @endif
-                    <!-- Dimensi -->
-                    @if ($product->category_id == 2)
-                        <div class="d-flex justify-content-end">
-                            <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#DimensiModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Dimensi</span>
-                            </button>
-                        </div>
-                    @endif
-
-                    @if ($product->category_id == 2)
-                        <div class="d-flex justify-content-end">
-                            <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#SuspensiModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Suspensi</span>
-                            </button>
-                        </div>
-                    @endif
-                    @if ($product->category_id == 2)
-                        <div class="d-flex justify-content-end">
-                            <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#FiturModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Fitur</span>
-                            </button>
-                        </div>
-                    @endif
-
-                    @if ($product->category_id == 1)
-                        <!-- Specification -->
-                        <div class="d-flex justify-content-end">
-                            <button type="button"
-                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                class="btn btn-outline-warning border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#SpecificationModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Specification</span>
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Specification</span>
                             </button>
                         </div>
-                    @endif
 
-                    {{-- DETAILS --}}
-                    @if (!in_array($product->category_id, [1, 2]))
+                        {{-- Jika category_id = 2 --}}
+                    @elseif($categoryId == 2)
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#ColorModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Color</span>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-danger border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#PowerModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Power</span>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-success border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#DimensiModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Dimensi</span>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-warning border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#SuspensiModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Suspensi</span>
+                            </button>
+                        </div>
+
+                        {{-- Category_id lainnya --}}
+                    @else
                         <div class="d-flex justify-content-end">
                             <button type="button"
                                 class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#DetailModal">
-                                <i class="bi bi-plus-circle fs-5 me-2"></i>
-                                <span>Detail</span>
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Detail</span>
                             </button>
                         </div>
                     @endif
                 </div>
+
             </div>
 
             <!-- Body Card -->
@@ -785,110 +764,102 @@
                         <div class="col-lg-8">
                             <div class="nav-align-top mb-4">
                                 @php
-                                    if (!in_array($product->category_id, [1, 2])) {
+                                    $categoryId = $product->category_id;
+
+                                    if (!in_array($categoryId, [1, 2])) {
                                         $defaultTab = 'detail';
                                     } else {
-                                        $defaultTab = $product->category_id == 2 ? 'color' : 'technology';
+                                        $defaultTab = $categoryId == 1 ? 'technology' : 'color';
                                     }
+
                                     $activeTab = session('tab', request('tab', $defaultTab));
                                 @endphp
 
-
                                 <ul class="nav nav-pills mb-3" role="tablist">
-                                    {{-- INI ADALAH TOMBOL TAP DARI CAR --}}
-                                    @if ($product->category_id == 1)
+
+                                    {{-- CATEGORY 1 --}}
+                                    @if ($categoryId == 1)
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'technology' ? 'active' : '' }}"
-                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-home">
-                                                <i class="bi bi-cpu fs-5 me-2"></i>
-                                                Technology
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-technology">
+                                                <i class="bi bi-cpu fs-5 me-2"></i> Technology
                                             </button>
                                         </li>
-                                    @endif
-                                    @if ($product->category_id == 1)
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'feature' ? 'active' : '' }}"
-                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile">
-                                                <i class="bi bi-stars fs-5 me-2"></i>
-                                                Feature
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-feature">
+                                                <i class="bi bi-stars fs-5 me-2"></i> Feature
                                             </button>
                                         </li>
-                                    @endif
-                                    @if (in_array($product->category_id, [1, 2]))
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'color' ? 'active' : '' }}"
                                                 data-bs-toggle="tab" data-bs-target="#navs-pills-top-color">
-                                                <i class="bi bi-palette fs-5 me-2"></i>
-                                                Color
+                                                <i class="bi bi-palette fs-5 me-2"></i> Color
                                             </button>
                                         </li>
-                                    @endif
-                                    @if ($product->category_id == 1)
                                         <li class="nav-item">
                                             <button type="button"
-                                                class="nav-link d-flex align-items-center {{ $activeTab == 'spesification' ? 'active' : '' }}"
-                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-spesification">
-                                                <i class="bi bi-list-check fs-5 me-2"></i>
-                                                Specification
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'specification' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-specification">
+                                                <i class="bi bi-list-check fs-5 me-2"></i> Specification
                                             </button>
                                         </li>
                                     @endif
 
-                                    {{-- INI ADALAH TOMBOL TAP DARI MOTOR --}}
-                                    @if ($product->category_id == 2)
+                                    {{-- CATEGORY 2 --}}
+                                    @if ($categoryId == 2)
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'color' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-color">
+                                                <i class="bi bi-palette fs-5 me-2"></i> Color
+                                            </button>
+                                        </li>
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'power' ? 'active' : '' }}"
                                                 data-bs-toggle="tab" data-bs-target="#navs-pills-top-power">
-                                                <i class="bi bi-lightning-charge fs-5 me-2"></i>
-                                                Power
+                                                <i class="bi bi-lightning-charge fs-5 me-2"></i> Power
                                             </button>
                                         </li>
-                                    @endif
-                                    @if ($product->category_id == 2)
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'dimensi' ? 'active' : '' }}"
                                                 data-bs-toggle="tab" data-bs-target="#navs-pills-top-dimensi">
-                                                <i class="bi bi-rulers fs-5 me-2"></i>
-                                                Dimensi
+                                                <i class="bi bi-rulers fs-5 me-2"></i> Dimensi
                                             </button>
                                         </li>
-                                    @endif
-                                    @if ($product->category_id == 2)
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'suspensi' ? 'active' : '' }}"
                                                 data-bs-toggle="tab" data-bs-target="#navs-pills-top-suspensi">
-                                                <i class="bx bx-cog fs-5 me-2"></i>
-                                                Suspensi
+                                                <i class="bx bx-cog fs-5 me-2"></i> Suspensi
                                             </button>
                                         </li>
-                                    @endif
-                                    @if ($product->category_id == 2)
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'fitur' ? 'active' : '' }}"
                                                 data-bs-toggle="tab" data-bs-target="#navs-pills-top-fitur">
-                                                <i class="bx bx-list-check fs-5 me-2"></i>
-                                                Fitur
+                                                <i class="bx bx-list-check fs-5 me-2"></i> Fitur
                                             </button>
                                         </li>
                                     @endif
-                                    @if (!in_array($product->category_id, [1, 2]))
+
+                                    {{-- CATEGORY LAINNYA --}}
+                                    {{-- @if (!in_array($categoryId, [1, 2]))
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'detail' ? 'active' : '' }}"
-                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-fitur">
-                                                <i class="bx bx-info-circle fs-5 me-2"></i>
-                                                Detail
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-detail">
+                                                <i class="bx bx-info-circle fs-5 me-2"></i> Detail
                                             </button>
                                         </li>
-                                    @endif
+                                    @endif --}}
                                 </ul>
+
 
                                 <div class="tab-content">
                                     {{-- TEKNOLOGI TABLE --}}

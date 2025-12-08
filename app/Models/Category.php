@@ -11,6 +11,7 @@ class Category extends Model
     protected $fillable = [
         'name_category',
         'slug',
+        'category_position_id',
     ];
 
 
@@ -28,6 +29,10 @@ class Category extends Model
     }
     public function brands()
     {
-        return $this->hasMany(Brand::class,'category_id', 'id');
+        return $this->hasMany(Brand::class, 'category_id', 'id');
+    }
+    public function position()
+    {
+        return $this->belongsTo(CategoryPosition::class, 'category_position_id');
     }
 }

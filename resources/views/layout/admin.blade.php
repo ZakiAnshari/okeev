@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    {{-- TEXT AREA --}}
+
 
     <!-- Helpers -->
     <script src="{{ asset('/backend/assets/vendor/js/helpers.js') }}"></script>
@@ -539,5 +541,15 @@
         button.closest('tr').remove();
     }
 </script>
+{{-- TEXT AREA --}}
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+{{-- END TEXT AREA --}}
 
 </html>

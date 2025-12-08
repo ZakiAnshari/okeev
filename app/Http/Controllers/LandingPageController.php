@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Testdrive;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -12,18 +13,39 @@ class LandingPageController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        $product = Product::first();
-        // Ambil semua brand unik
+        // Ambil semua product beserta relasi category
+        $products = Product::with('category')->get();
+
+        // Ambil kategori khusus category_position_id = 1 beserta brand-nya
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil kategori khusus category_position_id = 2 beserta brand-nya
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil semua brand (optional, tetap untuk grid)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
             ->get();
 
-        // Chunk untuk grid
+        // Chunk brands untuk grid
         $brandChunks = $brands->chunk(4);
 
-        return view('landing.home', compact('products', 'brands', 'brandChunks', 'product'));
+        // Kirim semua variabel ke view
+        return view('landing.home', compact(
+            'products',
+            'categoriesPosition1',
+            'categoriesPosition2',
+            'brands',
+            'brandChunks'
+        ));
     }
+
 
     public function showBrand($slug)
     {
@@ -34,11 +56,30 @@ class LandingPageController extends Controller
         // Ambil brand berdasarkan slug
         $brand = Brand::where('slug', $slug)->firstOrFail();
 
-        // Ambil semua produk yang memiliki brand yang sama
-        $products = Product::where('brand_id', $brand->id)->get();
-        return view('landing.brand-detail', compact('brand', 'products', 'brandChunks'));
-    }
+        // Ambil semua produk yang memiliki brand yang sama sekaligus load relasi category
+        $products = Product::with('category')
+            ->where('brand_id', $brand->id)
+            ->get();
 
+        // Ambil kategori khusus category_position_id = 1 dan 2 untuk navbar
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        return view('landing.brand-detail', compact(
+            'brand',
+            'products',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2'
+        ));
+    }
 
 
     public function showProduct($productSlug)
@@ -46,6 +87,17 @@ class LandingPageController extends Controller
         // Ambil semua brand untuk navbar
         $brands = Brand::orderBy('name_brand', 'asc')->get();
         $brandChunks = $brands->chunk(4);
+
+        // Ambil kategori khusus category_position_id = 1 dan 2 untuk navbar
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
 
         // Ambil produk berdasarkan slug sekaligus load relasi
         $product = Product::with([
@@ -64,6 +116,7 @@ class LandingPageController extends Controller
         $suspensis = $product->suspensis;
         $fiturs = $product->fiturs;
         $details = $product->details;
+
         // Kirim data ke view
         return view('landing.product-detail', compact(
             'product',
@@ -73,7 +126,9 @@ class LandingPageController extends Controller
             'dimensis',
             'suspensis',
             'fiturs',
-            'details'
+            'details',
+            'categoriesPosition1',
+            'categoriesPosition2'
         ));
     }
 

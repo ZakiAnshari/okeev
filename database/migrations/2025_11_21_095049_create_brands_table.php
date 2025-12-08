@@ -13,13 +13,19 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('category_id'); // <---- WAJIB ADA
             $table->string('name_brand');
             $table->string('slug')->nullable();
             $table->string('image')->nullable();
             $table->string('wallpaper')->nullable();
             $table->timestamps();
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

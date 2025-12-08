@@ -75,6 +75,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/category/{slug}/edit', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/{slug}/edit', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category-destroy/{slug}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+
     // TEST DRIVE
     Route::get('/test-drive', [TestDriveController::class, 'index'])->name('testdrive.index');
     Route::get('/test-drive-show/{id}', [TestDriveController::class, 'show'])->name('testdrive.show');
@@ -92,6 +94,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/product/{slug}/edit', [ProductController::class, 'update'])->name('product.update');
     Route::get('/product-destroy/{slug}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product-show/{slug}', [ProductController::class, 'show'])->name('product.show');
+
+
+    // web.php
+    Route::get('/get-brands/{category_id}', [ProductController::class, 'getBrands']);
+
     //technologies
     Route::get('/product/{slug}/technologies', [TechnologyController::class, 'index'])->name('technologies.index');
     Route::post('/product-add/{slug}/technologies', [TechnologyController::class, 'store'])->name('technologies.store');

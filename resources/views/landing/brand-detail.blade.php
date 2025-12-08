@@ -121,14 +121,7 @@
     @else
         <section>
             <div class="container">
-                @if ($products->count() > 0)
-                    @if ($brand->category_id == 1)
-                        <h4 class="mb-4">Mobil yang tersedia</h4>
-                    @elseif ($brand->category_id == 2)
-                        <h4 class="mb-4">Motor yang tersedia</h4>
-                    @endif
-                @endif
-
+                {{-- <h4 class="mb-4">Motor yang tersedia</h4> --}}
                 <div class="row">
                     @forelse($products as $product)
                         <div class="col-12 col-md-6 col-lg-3 mb-4">
@@ -172,14 +165,18 @@
                                                 <p style="font-weight: 600;" class="small text-black mb-0 fw-semibold">
                                                     Electric</p>
                                             </div>
-                                            @if ($product->category_id == 1)
+
+                                            @if ($product->seats)
                                                 <div class="flex-fill d-flex flex-column align-items-center">
                                                     <img src="{{ asset('front_end/assets/images/1.png') }}" width="21"
                                                         class="mb-1">
                                                     <p style="font-weight: 600;" class="small text-black mb-0 fw-semibold">
-                                                        {{ $product->seats }} Seat</p>
+                                                        {{ $product->seats }} Seat
+                                                    </p>
                                                 </div>
                                             @endif
+
+
                                         </div>
                                         <hr class="my-2">
 

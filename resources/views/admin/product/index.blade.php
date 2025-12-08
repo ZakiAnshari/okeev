@@ -52,134 +52,94 @@
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="row">
+
+                                                    <!-- Category -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Category</label>
-                                                        <select id="category_id" name="category_id" class="form-control ">
+                                                        <select name="category_id" id="category-select" class="form-control"
+                                                            required>
                                                             <option value="">-- Pilih Category --</option>
-                                                            @foreach ($categories as $category)
-                                                                <option value="{{ $category->id }}"
-                                                                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                                                    {{ $category->name_category }}
+                                                            @foreach ($categories as $cat)
+                                                                <option value="{{ $cat->id }}"
+                                                                    data-position="{{ $cat->category_position_id }}">
+                                                                    {{ $cat->name_category }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
+
+
                                                     <!-- Brand -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Brand</label>
-                                                        <select name="brand_id" class="form-control select2">
+                                                        <select name="brand_id" id="brand-select" class="form-control"
+                                                            required>
                                                             <option value="">-- Pilih Brand --</option>
-                                                            @foreach ($brands as $brand)
-                                                                <option value="{{ $brand->id }}"
-                                                                    {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                                                                    {{ $brand->name_brand }}
-                                                                </option>
-                                                            @endforeach
                                                         </select>
-                                                        @error('brand_id')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
                                                     </div>
 
                                                     <!-- Model Name -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Model Name</label>
                                                         <input type="text" name="model_name" class="form-control"
-                                                            value="{{ old('model_name') }}">
-                                                        @error('model_name')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
+                                                            placeholder="Masukkan nama model" required>
                                                     </div>
-
                                                     <!-- Miles -->
-                                                    <div class="col-lg-6 mb-3" id="miles_div">
+                                                    <div class="col-lg-6 mb-3" id="miles-field">
                                                         <label class="form-label">Miles</label>
                                                         <input type="number" name="miles" class="form-control"
-                                                            value="{{ old('miles') }}">
-                                                        @error('miles')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
+                                                            placeholder="Contoh: 12000">
                                                     </div>
 
                                                     <!-- Seats -->
-                                                    <div class="col-lg-6 mb-3" id="seats_div">
+                                                    <div class="col-lg-6 mb-3" id="seats-field">
                                                         <label class="form-label">Seats</label>
                                                         <input type="number" name="seats" class="form-control"
-                                                            value="{{ old('seats') }}">
-                                                        @error('seats')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
+                                                            placeholder="Contoh: 4">
                                                     </div>
 
                                                     <!-- Price -->
                                                     <div class="col-lg-6 mb-3">
-                                                        <label class="form-label">Harga</label>
-                                                        <input type="text" name="price" id="price"
-                                                            class="form-control rupiah" value="{{ old('price') }}">
-                                                        @error('price')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
+                                                        <label class="form-label">Price</label>
+                                                        <input type="text" id="price" name="price"
+                                                            class="form-control" placeholder="Harga produk" required>
                                                     </div>
 
                                                     <!-- Stock Status -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Stock Status</label>
-                                                        <select name="stock_status" class="form-control">
-                                                            <option value="in_stock"
-                                                                {{ old('stock_status') == 'in_stock' ? 'selected' : '' }}>
-                                                                In Stock</option>
-                                                            <option value="out_of_stock"
-                                                                {{ old('stock_status') == 'out_of_stock' ? 'selected' : '' }}>
-                                                                Out of Stock</option>
+                                                        <select name="stock_status" class="form-control" required>
+                                                            <option value="">-- Pilih Status --</option>
+                                                            <option value="in_stock">In Stock</option>
+                                                            <option value="out_of_stock">Out of Stock</option>
                                                         </select>
-                                                        @error('stock_status')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
                                                     </div>
 
                                                     <!-- Featured -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Featured</label>
-                                                        <select name="featured" id="featured" class="form-control">
-                                                            <option value="0"
-                                                                {{ old('featured') == 0 ? 'selected' : '' }}>Tidak</option>
-                                                            <option value="1"
-                                                                {{ old('featured') == 1 ? 'selected' : '' }}>Ya (Featured)
-                                                            </option>
+                                                        <select name="featured" class="form-control">
+                                                            <option value="0">Tidak</option>
+                                                            <option value="1">Ya</option>
                                                         </select>
                                                     </div>
 
                                                     <!-- Description -->
-                                                    <div class="col-12 mb-3" id="description_div">
-                                                        <label class="form-label">Deskripsi Produk</label>
-                                                        <textarea name="description" id="editor">{{ old('description') }}</textarea>
-                                                        @error('description')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
+                                                    <div class="col-12 mb-3" id="description-field">
+                                                        <label class="form-label">Description</label>
+                                                        <textarea name="description" id="editor" class="form-control" rows="4" placeholder="Deskripsi produk"></textarea>
                                                     </div>
 
-                                                    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
-                                                    <script>
-                                                        ClassicEditor
-                                                            .create(document.querySelector('#editor'))
-                                                            .catch(error => console.error(error));
-                                                    </script>
-
-                                                    <!-- Images -->
+                                                    <!-- Multiple Images -->
                                                     <div class="col-12 mb-3">
-                                                        <label class="form-label">Foto Produk (Multiple)</label>
+                                                        <label class="form-label">Images</label>
                                                         <input type="file" name="images[]" class="form-control"
-                                                            multiple accept="image/png, image/jpg, image/jpeg" required>
-
-                                                        <small class="text-muted d-block">Anda dapat memilih lebih dari 1
-                                                            gambar.</small>
-                                                        <small class="text-muted d-block">Jenis file yang diperbolehkan:
-                                                            <strong>PNG, JPG, JPEG</strong>.</small>
-                                                        <small class="text-muted d-block">Ukuran file maksimal: <strong>2MB
-                                                                per gambar</strong>.</small>
+                                                            multiple>
+                                                        <small class="text-muted">
+                                                            Maksimal 5 file. Format gambar: JPG, PNG, atau JPEG. Ukuran
+                                                            maksimal per file 2MB.
+                                                        </small>
                                                     </div>
-
-
                                                 </div>
                                             </div>
 
@@ -249,11 +209,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
-                            <!-- Pagination -->
-                            {{-- <div class="d-flex justify-content-end mt-3">
-                                {{ $products->appends(request()->input())->links('pagination::bootstrap-4') }}
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -280,73 +235,88 @@
             });
         }
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoryType = document.getElementById('category');
-            const seatsDiv = document.getElementById('seats_div');
 
-            // Fungsi toggle
-            function toggleSeats() {
-                if (categoryType.value === 'cars') {
-                    seatsDiv.style.display = 'block';
-                } else {
-                    seatsDiv.style.display = 'none';
-                }
-            }
-
-            // Jalankan saat load untuk old() value
-            toggleSeats();
-
-            // Event listener saat dropdown berubah
-            categoryType.addEventListener('change', toggleSeats);
-        });
-    </script>
-    <!-- JavaScript untuk toggle Seats & CC -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoryType = document.getElementById('category');
-            const seatsDiv = document.getElementById('seats_div'); // dari sebelumnya
-            const ccDiv = document.getElementById('cc_div');
-
-            function toggleFields() {
-                // Seats hanya untuk cars
-                if (categoryType.value === 'cars') {
-                    seatsDiv.style.display = 'block';
-                } else {
-                    seatsDiv.style.display = 'none';
-                }
-
-                // CC hanya untuk motorcycles
-                if (categoryType.value === 'motorcycles') {
-                    ccDiv.style.display = 'block';
-                } else {
-                    ccDiv.style.display = 'none';
-                }
-            }
-
-            // Jalankan saat load untuk old() value
-            toggleFields();
-
-            // Event listener saat dropdown berubah
-            categoryType.addEventListener('change', toggleFields);
-        });
-    </script>
-
+    {{-- FORMAT KE RUPIAH --}}
     <script>
         const input = document.getElementById('regular_price');
-
         input.addEventListener('input', function(e) {
             let value = this.value.replace(/\./g, ""); // hapus semua titik
-
             // cegah input selain angka
             if (!/^\d*$/.test(value)) {
                 value = value.replace(/\D/g, "");
             }
-
             // format ke ribuan
             this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         });
     </script>
+    {{-- INI SCRIPT UNTUK MEBEDAKAN BRAND DI CATEGORY --}}
+    <script>
+        document.getElementById('category-select').addEventListener('change', function() {
+            let categoryId = this.value;
+
+            // Kosongkan dahulu brand
+            let brandSelect = document.getElementById('brand-select');
+            brandSelect.innerHTML = '<option value="">-- Pilih Brand --</option>';
+
+            if (categoryId) {
+                fetch('/get-brands/' + categoryId)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(brand => {
+                            brandSelect.innerHTML +=
+                                `<option value="${brand.id}">${brand.name_brand}</option>`;
+                        });
+                    });
+            }
+        });
+    </script>
+    {{-- SEMBUNYIKAN FORM SESUAI KATEGORI POSITION --}}
+    <script>
+        const categorySelect = document.getElementById('category-select');
+
+        const milesField = document.getElementById('miles-field');
+        const seatsField = document.getElementById('seats-field');
+        const descriptionField = document.getElementById('description-field'); // tambahkan id di div textarea
+
+        function checkFields() {
+            let selectedOption = categorySelect.options[categorySelect.selectedIndex];
+            let positionId = selectedOption.getAttribute('data-position');
+
+            // posisi yang harus disembunyikan untuk miles & seats
+            const hiddenPositions = ["2", "3", "4"];
+
+            if (hiddenPositions.includes(positionId)) {
+                // hide miles
+                milesField.style.display = "none";
+                milesField.querySelector('input').value = "";
+
+                // hide seats
+                seatsField.style.display = "none";
+                seatsField.querySelector('input').value = "";
+            } else {
+                // show miles
+                milesField.style.display = "block";
+
+                // show seats
+                seatsField.style.display = "block";
+            }
+
+            // hide description jika positionId = 1
+            if (positionId === "1") {
+                descriptionField.style.display = "none";
+                descriptionField.querySelector('textarea').value = "";
+            } else {
+                descriptionField.style.display = "block";
+            }
+        }
+
+        categorySelect.addEventListener('change', checkFields);
+
+        // Jalankan ketika halaman pertama di-load
+        checkFields();
+    </script>
+
+
 
 
     @include('sweetalert::alert')

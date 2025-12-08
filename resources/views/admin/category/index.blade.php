@@ -8,8 +8,6 @@
                 <span class="text-muted fw-light me-1"></span> Category
             </h4>
 
-
-
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -55,30 +53,49 @@
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="row justify-content-center">
+                                                    <div class="row">
 
-                                                    <div class="col-lg-8">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Category</label>
-                                                            <input type="text" name="name_category" class="form-control"
-                                                                value="{{ old('name_category') }}">
-                                                            @error('name_category')
-                                                                <small class="text-danger">{{ $message }}</small>
-                                                            @enderror
+                                                        <!-- Select Category Position -->
+                                                        <div class="col-lg-4">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Category Position</label>
+                                                                <select name="category_position_id" class="form-control">
+                                                                    <option value="">-- Pilih Position --</option>
+                                                                    @foreach ($positions as $pos)
+                                                                        <option value="{{ $pos->id }}">
+                                                                            {{ $pos->category_position }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('category_position_id')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                            </div>
                                                         </div>
+
+                                                        <!-- Nama Category -->
+                                                        <div class="col-lg-8">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Nama Category</label>
+                                                                <input type="text" name="name_category"
+                                                                    class="form-control" value="{{ old('name_category') }}">
+
+                                                                @error('name_category')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+
                                                     </div>
+
                                                 </div>
-
                                             </div>
-
                                             <!-- Footer -->
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Save</button>
                                             </div>
-
                                         </form>
-
                                     </div>
                                 </div>
                             </div>
@@ -87,41 +104,58 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
+                                        <th>Posisi</th>
                                         <th>Nama Category</th>
                                         <th style="width: 100px; text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     @foreach ($categorys as $item)
                                         <tr>
                                             <td></td> {{-- auto-number by DataTables --}}
+                                            <td>{{ $item->position->category_position ?? '-' }}</td>
+
                                             <td>{{ $item->name_category }}</td>
+
                                             <td class="text-center">
                                                 <a href="{{ url('category/' . $item->slug . '/edit') }}"
                                                     class="btn btn-icon btn-outline-primary" title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </a>
-
                                                 <a href="javascript:void(0)"
-                                                    onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}')">
+                                                    onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}', '{{ $item->category_position_id }}')">
                                                     <button class="btn btn-icon btn-outline-danger" title="Hapus">
                                                         <i class="bx bx-trash"></i>
                                                     </button>
                                                 </a>
+
+                                                <script>
+                                                    function confirmDeleteCategory(slug, nameCategory, positionId) {
+                                                        const protectedPositions = [1, 2];
+
+                                                        if (protectedPositions.includes(parseInt(positionId))) {
+                                                            alert(`Kategori "${nameCategory}" tidak bisa dihapus karena termasuk kategori penting.`);
+                                                            return false; // hentikan proses
+                                                        }
+
+                                                        if (confirm(`Apakah Anda yakin ingin menghapus kategori "${nameCategory}"?`)) {
+                                                            window.location.href = `/categories/delete/${slug}`;
+                                                        }
+                                                    }
+                                                </script>
+
+
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         function confirmDeleteCategory(slug, name_category) {
             Swal.fire({

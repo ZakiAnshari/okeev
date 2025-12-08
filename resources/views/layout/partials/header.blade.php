@@ -27,55 +27,36 @@
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
 
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 mb-4">
-                                                <h6 class="fw-bold mb-3">Electric Cars</h6>
-                                                <div class="row">
-                                                    @foreach ($brandChunksCategory1 as $chunk)
-                                                        <div class="col-6 col-md-4">
-                                                            <ul class="list-unstyled">
-                                                                @foreach ($chunk as $brand)
-                                                                    @if ($brand->category_id == 1)
+                                            @forelse ($categoriesPosition1 as $category)
+                                                <div class="col-lg-6 col-md-6 mb-4">
+                                                    <!-- Header kategori -->
+                                                    <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
+
+                                                    <!-- Grid brands per kategori -->
+                                                    <div class="row">
+                                                        @foreach ($category->brands->chunk(4) as $chunk)
+                                                            <div class="col-6 col-md-4">
+                                                                <ul class="list-unstyled">
+                                                                    @foreach ($chunk as $brand)
                                                                         <li>
                                                                             <a href="{{ route('landing.cars', $brand->slug) }}"
                                                                                 class="dropdown-item">
                                                                                 {{ $brand->name_brand }}
                                                                             </a>
                                                                         </li>
-                                                                    @endif
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endforeach
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-1 d-none d-lg-flex ">
-                                                <div style="width:1px; background:#d1d1d1; height:100%;"></div>
-                                            </div>
-
-                                            <div class="col-lg-5 col-md-6">
-                                                <h6 class="fw-bold mb-3">Electric Motorcycles</h6>
-                                                {{-- Menu untuk category_id = 2 --}}
-                                                <div class="row">
-                                                    @foreach ($brandChunksCategory2 as $chunk)
-                                                        <div class="col-6 col-md-4">
-                                                            <ul class="list-unstyled">
-                                                                @foreach ($chunk as $brand)
-                                                                    @if ($brand->category_id == 2)
-                                                                        <li>
-                                                                            <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                                class="dropdown-item">
-                                                                                {{ $brand->name_brand }}
-                                                                            </a>
-                                                                        </li>
-                                                                    @endif
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endforeach
+                                            @empty
+                                                <div class="col-12 text-center">
+                                                    <p class="text-muted mb-0">Kategori Vehicle belum tersedia.</p>
                                                 </div>
-
-                                            </div>
+                                            @endforelse
                                         </div>
+
                                     </div>
                                 </li>
 
@@ -85,25 +66,43 @@
                                         Electric
                                     </a>
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaElectric">
-                                        <div class="d-flex flex-wrap justify-content-center">
-                                            @foreach ($brandChunksCategory3 as $chunk)
-                                                @foreach ($chunk as $brand)
-                                                    @if ($brand->category_id == 3)
-                                                        <div class="p-2" style="flex: 0 0 auto; width: 150px;">
-                                                            <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                class="dropdown-item text-center">
-                                                                {{ $brand->name_brand }}
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            @endforeach
+
+                                        <div class="row">
+                                            @forelse ($categoriesPosition2 as $category)
+                                                <div class="col-lg-6 col-md-6 mb-4">
+                                                    <!-- Header kategori -->
+                                                    <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
+
+                                                    <!-- Grid brands per kategori -->
+                                                    <div class="row">
+                                                        @foreach ($category->brands->chunk(4) as $chunk)
+                                                            @foreach ($chunk as $brand)
+                                                                <div class="col-6 col-md-6">
+                                                                    <a href="{{ route('landing.cars', $brand->slug) }}"
+                                                                        class="dropdown-item">
+                                                                        {{ $brand->name_brand }}
+                                                                    </a>
+                                                                </div>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @empty
+                                                <div class="col-12 text-center">
+                                                    <p class="text-muted mb-0">Kategori Electric belum tersedia.</p>
+                                                </div>
+                                            @endforelse
                                         </div>
+
                                     </div>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="/about">About OKEEV</a>
+                                    <a href="/about">Accessories</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/about">About</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -132,7 +131,7 @@
                                     <!-- Search -->
                                     <div class="search-box">
                                         <i class="bx bx-search"></i>
-                                        <input type="text" placeholder="Search Vehicle / electric">
+                                        <input type="text" placeholder="Search">
                                     </div>
                                     <!-- Icon Buttons -->
                                     <div class="icon-box">
