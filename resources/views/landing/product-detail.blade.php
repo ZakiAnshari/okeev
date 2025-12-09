@@ -4,20 +4,19 @@
     <br><br>
     <section class="py-4 mt-5">
         <div class="container">
-
             <!-- Back Button -->
             <div class="header-title">
-                @if (in_array($product->category_id, [1, 2]))
+                @if ($product->category_id == 1)
                     <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
                         <i class="bx bx-arrow-back me-2"></i> Detail Kendaraan
                     </a>
                 @endif
-                @if ($product->category_id == 3)
+                @if ($product->category_id == 2)
                     <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
                         <i class="bx bx-arrow-back me-2"></i> Detail Laptop
                     </a>
                 @endif
-                @if ($product->category_id == 4)
+                @if ($product->category_id == 2)
                     <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
                         <i class="bx bx-arrow-back me-2"></i> Detail Laptop
                     </a>
@@ -25,45 +24,54 @@
             </div>
             {{-- TAMPILAN DETAIL --}}
             @if (in_array($product->category_id, [1, 2]))
-                <div class="row g-4 mt-2 align-items-start">
+                <div class="row g-4 mt-2">
 
                     <!-- Gambar Utama -->
-                    <div class="col-12 col-lg-9">
-                        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner" style="max-height: 395px; background-color: #f8f9fa;">
-                                <!-- background supaya terlihat rapi -->
+                    <div class="col-12">
+                        <div id="productCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
+                            <div class="carousel-inner bg-light rounded" style="max-height: 395px;">
+
                                 @foreach ($product->images as $key => $image)
                                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                        <img src="{{ asset('storage/' . $image->image) }}" class="d-block mx-auto rounded"
-                                            alt="{{ $product->model_name }}"
-                                            style="object-fit: contain; max-height: 395px; ">
+                                        <img src="{{ asset('storage/' . $image->image) }}"
+                                            class="d-block mx-auto img-fluid p-4"
+                                            style="max-height: 395px; object-fit: contain;"
+                                            alt="{{ $product->model_name }}">
                                     </div>
                                 @endforeach
+
                             </div>
 
+                            <!-- Controls -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
+                                <span class="carousel-control-prev-icon"></span>
                             </button>
                             <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
+                                <span class="carousel-control-next-icon"></span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Thumbnail -->
-                    <div class="col-12 col-lg-3">
-                        <div class="thumb-container">
-                            @foreach ($product->images->skip(1)->take(3) as $image)
-                                <img src="{{ asset('storage/' . $image->image) }}" class="thumbnail-img"
-                                    alt="{{ $product->model_name }}">
+                    <div class="col-12">
+                        <div class="row g-3">
+                            @foreach ($product->images as $key => $image)
+                                <div class="col-3">
+                                    <div class="ratio ratio-16x9 shadow-sm rounded overflow-hidden" role="button"
+                                        onclick="bootstrap.Carousel.getInstance(document.getElementById('productCarousel')).to({{ $key }});">
+
+                                        <img src="{{ asset('storage/' . $image->image) }}" class="w-100 h-100"
+                                            style="object-fit: cover;" alt="{{ $product->model_name }}">
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </div>
+
                 </div>
+
 
                 <!-- Detail Kendaraan -->
                 <div class="mt-4">
@@ -71,12 +79,10 @@
                     <h4 class="text-danger fw-bold">
                         IDR {{ number_format($product->price, 0, ',', '.') }}
                     </h4>
-
                 </div>
 
                 <!-- Tombol -->
                 <div class="row mt-4 g-3">
-
                     <div class="col-md-6">
                         <a href="{{ route('landing.product.testdrive', $product->slug) }}"
                             class="btn btn-outline-info w-100 py-2 d-flex justify-content-center align-items-center">
@@ -117,7 +123,6 @@
 
                                 <!-- Main Image -->
                                 <div class="border rounded-4 overflow-hidden shadow-sm p-3 mb-3 text-center">
-
                                     <div style="width: 100%; height: 250px; display: flex; justify-content: center;">
                                         @if ($product->images->isNotEmpty())
                                             <img id="mainImage"
@@ -171,10 +176,8 @@
         </div>
     </section>
 
-
     <section class="py-5">
         <div class="container">
-
             <!-- Top Navigation -->
             <ul class="nav justify-content-center border-bottom pb-2 mb-4 tech-nav">
                 <!-- Tab -->
@@ -349,7 +352,6 @@
 
 
     {{-- INI FEATURE UNTUK CATEGORI 1 --}}
-
     @if ($product->category_id == 1)
         <section class="py-5">
             <div class="container">
@@ -757,7 +759,6 @@
             </div>
         </section>
     @endif
-
 
     {{-- ------------------------------------------------------------ --}}
     @if ($product->category_id == 1)

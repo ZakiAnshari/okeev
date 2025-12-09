@@ -50,7 +50,30 @@ class HomeUserController extends Controller
         // Pecah menjadi chunks untuk grid, misal 4 per kolom
         $brandChunks = $brands->chunk(4);
 
-        return view('home.profil', compact('brands', 'brandChunks'));
+        // Ambil kategori dengan category_position_id = 1 beserta brand-nya
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil kategori dengan category_position_id = 2 (misal untuk Electric Motorcycles)
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil semua brand (optional, jika ingin menampilkan di grid lain)
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
+            ->orderBy('name_brand', 'asc')
+            ->get();
+
+
+        return view('home.profil', compact(
+            'brands',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2',
+        ));
     }
 
     public function cart()

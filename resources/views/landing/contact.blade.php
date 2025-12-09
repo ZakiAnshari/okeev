@@ -2,125 +2,123 @@
 @section('title', 'contact')
 @section('content')
 
-<section class="py-5 contact-section">
-    <div class="container">
-        <div class="row g-5 align-items-start">
-            <!-- LEFT CONTENT -->
-            <div class="col-lg-6">
-                <h2 class="fw-bold mb-3" style="color:#232b44; font-size: 42px;">Contact Us</h2>
-                <p class="C sectmb-4 mb-4" style="color:#6c748a;">
-                    Lorem ipsum dolor sit amet consectetur. Id condimentum sed elit sagittis senectus feugiat.
-                    Congue erat sem tincidunt nulla sed mattis. Velit et gravida sit.
-                </p>
+    <section class="py-5 contact-section">
+        <div class="container">
+            <div class="row g-5 align-items-start">
+                <!-- LEFT CONTENT -->
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-3" style="color:#232b44; font-size: 42px;">Contact Us</h2>
+                    <p class="C sectmb-4 mb-4" style="color:#6c748a;">
+                        Lorem ipsum dolor sit amet consectetur. Id condimentum sed elit sagittis senectus feugiat.
+                        Congue erat sem tincidunt nulla sed mattis. Velit et gravida sit.
+                    </p>
 
-                <ul class="list-unstyled">
-                    <li class="mb-3 d-flex align-items-center gap-2">
-                        <i class="bx bxl-instagram" style="font-size: 24px; color:#00f2ea;"></i>
-                        <span>okeev.ig</span>
-                    </li>
-                    <li class="mb-3 d-flex align-items-center gap-2">
-                        <i class="bx bxl-tiktok" style="font-size: 24px; color:#00f2ea;"></i>
-                        <span>okeev.tiktok</span>
-                    </li>
-                    <li class="mb-3 d-flex align-items-center gap-2">
-                        <i class="bx bxl-xing" style="font-size: 24px; color:#00f2ea;"></i>
-                        <span>okeev.x</span>
-                    </li>
-                </ul>
-            </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-center gap-2">
+                            <i class="bx bxl-instagram" style="font-size: 24px; color:#00f2ea;"></i>
+                            <span>okeev.ig</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center gap-2">
+                            <i class="bx bxl-tiktok" style="font-size: 24px; color:#00f2ea;"></i>
+                            <span>okeev.tiktok</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center gap-2">
+                            <i class="bx bxl-xing" style="font-size: 24px; color:#00f2ea;"></i>
+                            <span>okeev.x</span>
+                        </li>
+                    </ul>
+                </div>
 
-            <!-- RIGHT FORM CARD -->
-            <div class="col-lg-6">
-                <div class="p-4 rounded-4 shadow"
-                    style="background:#1e2a45; border-radius: 12px;">
+                <!-- RIGHT FORM CARD -->
+                <div class="col-lg-6">
+                    <div class="p-4 rounded-4 shadow" style="background:#1e2a45; border-radius: 12px;">
 
-                    <div class="row g-3">
+                        <div class="row g-3">
 
-                        <div class="col-md-6">
-                            <label class="text-light mb-1">Name</label>
-                            <input type="text" class="form-control custom-input" placeholder="Enter your name">
-                        </div>
+                            <div class="col-md-6">
+                                <label class="text-light mb-1">Name</label>
+                                <input type="text" class="form-control custom-input" placeholder="Enter your name">
+                            </div>
 
-                        <div class="col-md-6">
-                            <label class="text-light mb-1">Email</label>
-                            <input type="email" class="form-control custom-input" placeholder="Enter your email">
-                        </div>
+                            <div class="col-md-6">
+                                <label class="text-light mb-1">Email</label>
+                                <input type="email" class="form-control custom-input" placeholder="Enter your email">
+                            </div>
 
-                        <div class="col-md-6">
-                            <label class="text-light mb-1">Phone</label>
-                            <input type="text" class="form-control custom-input" placeholder="+62">
-                        </div>
+                            <div class="col-md-6">
+                                <label class="text-light mb-1">Phone</label>
+                                <input type="text" class="form-control custom-input" placeholder="+62">
+                            </div>
 
-                        <div class="col-md-6">
-                            <label class="text-light mb-1">Subject</label>
-                            <input type="text" class="form-control custom-input" placeholder="Ex. Career">
-                        </div>
+                            <div class="col-md-6">
+                                <label class="text-light mb-1">Subject</label>
+                                <input type="text" class="form-control custom-input" placeholder="Ex. Career">
+                            </div>
 
-                        <div class="col-12">
-                            <label class="text-light mb-1">Message</label>
-                            <textarea class="form-control custom-input" rows="4"
-                                placeholder="Type your message here..."></textarea>
-                        </div>
+                            <div class="col-12">
+                                <label class="text-light mb-1">Message</label>
+                                <textarea class="form-control custom-input" rows="4" placeholder="Type your message here..."></textarea>
+                            </div>
 
-                        <div class="col-12 text-start mt-4">
-                            <button class="btn px-4 py-2 w-auto"
-                                style="
+                            <div class="col-12 text-start mt-4">
+                                <button class="btn px-4 py-2 w-auto"
+                                    style="
                                     background:#00f2ea;
                                     border:none;
                                     font-weight:600;
                                     border-radius:8px;">
-                                Send message
-                            </button>
+                                    Send message
+                                </button>
+                            </div>
+
                         </div>
 
                     </div>
+                </div>
 
+            </div>
+        </div>
+    </section>
+
+    {{-- PETA --}}
+    <!-- SECTION PETA -->
+    <section class="py-4">
+        <div class="container">
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <!-- Div Map -->
+                    <div id="map" style="height: 450px; width: 100%;"></div>
                 </div>
             </div>
-
         </div>
-    </div>
-</section>
+    </section>
 
-{{-- PETA --}}
-<!-- SECTION PETA -->
-<section class="py-4">
-    <div class="container">
-        <div class="card shadow-sm">
-            <div class="card-body p-0">
-                <!-- Div Map -->
-                <div id="map" style="height: 450px; width: 100%;"></div>
-            </div>
-        </div>
-    </div>
-</section>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Koordinat dari Google Maps (Menara Astra)
+        const lat = -6.2075383;
+        const lng = 106.8219314;
 
-<script>
-    // Koordinat alamat:
-    const lat = -6.421413;
-    const lng = 106.830986;
+        // Inisialisasi peta
+        const map = L.map('map').setView([lat, lng], 17);
 
-    // Inisialisasi peta
-    const map = L.map('map').setView([lat, lng], 17);
+        // Tile Layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 29,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
 
-    // Tile Layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 29,
-        attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
-
-    // Marker
-    L.marker([lat, lng])
-        .addTo(map)
-        .bindPopup('Jl. Cinere Residence Blk. F5 No.30<br>Jatimulya, Depok')
-        .openPopup();
-</script>
+        // Marker
+        L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup('Menara Astra<br>Jakarta Pusat')
+            .openPopup();
+    </script>
 
 
 @endsection

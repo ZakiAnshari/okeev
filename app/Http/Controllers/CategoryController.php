@@ -34,7 +34,6 @@ class CategoryController extends Controller
         return view('admin.category.index', compact('user', 'categorys', 'positions'));
     }
 
-
     public function store(Request $request)
     {
         // Validasi input
@@ -53,7 +52,6 @@ class CategoryController extends Controller
         Alert::success('Success', 'Category berhasil ditambahkan');
         return back();
     }
-
 
     public function edit($slug)
     {
@@ -75,7 +73,6 @@ class CategoryController extends Controller
             'positions' => $positions
         ]);
     }
-
 
     public function update(Request $request, $slug)
     {

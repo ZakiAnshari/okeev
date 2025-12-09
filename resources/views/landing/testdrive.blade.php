@@ -83,40 +83,61 @@
                         <div class="row g-4">
 
                             <div class="col-6">
-                                <input type="text" name="first_name" class="form-control form-control-minimal"
-                                    placeholder="First Name" required>
+                                <div class="position-relative">
+                                    <i class="bi bi-person position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+                                    <input type="text" name="first_name" class="form-control form-control-minimal ps-5"
+                                        placeholder="First Name" required>
+                                </div>
                             </div>
 
                             <div class="col-6">
-                                <input type="text" name="second_name" class="form-control form-control-minimal"
-                                    placeholder="Second Name" required>
+                                <div class="position-relative">
+                                    <i
+                                        class="bi bi-person-badge position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+                                    <input type="text" name="second_name" class="form-control form-control-minimal ps-5"
+                                        placeholder="Second Name" required>
+                                </div>
                             </div>
 
                             <div class="col-6">
-                                <input type="tel" name="telp" class="form-control form-control-minimal"
-                                    placeholder="Telp" required>
+                                <div class="position-relative">
+                                    <i
+                                        class="bi bi-telephone position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+                                    <input type="tel" name="telp" class="form-control form-control-minimal ps-5"
+                                        placeholder="Telp" required>
+                                </div>
                             </div>
 
                             <div class="col-6">
-                                <input type="email" name="email" class="form-control form-control-minimal"
-                                    placeholder="Email" required>
+                                <div class="position-relative">
+                                    <i
+                                        class="bi bi-envelope position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+                                    <input type="email" name="email" class="form-control form-control-minimal ps-5"
+                                        placeholder="Email" required>
+                                </div>
                             </div>
 
                             <div class="col-12">
-                                <input type="text" name="city" class="form-control form-control-minimal"
-                                    placeholder="City" required>
+                                <div class="position-relative">
+                                    <i
+                                        class="bi bi-geo-alt position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+                                    <input type="text" name="city" class="form-control form-control-minimal ps-5"
+                                        placeholder="City" required>
+                                </div>
                             </div>
 
-                            <div class="col-12 mt-4 form-group-icon">
-                                <select name="dealer" class="form-control form-control-minimal" required>
-                                    <option value="" selected disabled>Choose Dealer</option>
-                                    <option value="Dealer A">Dealer A</option>
-                                    <option value="Dealer B">Dealer B</option>
-                                    <option value="Dealer C">Dealer C</option>
-                                    <option value="Dealer D">Dealer D</option>
-                                </select>
+                            <div class="col-12 mt-4">
+                                <div class="position-relative">
+                                    <i class="bi bi-shop position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+                                    <select name="dealer" class="form-control form-control-minimal ps-5" required>
+                                        <option value="" selected disabled>Choose Dealer</option>
+                                        <option value="Dealer A">Dealer A</option>
+                                        <option value="Dealer B">Dealer B</option>
+                                        <option value="Dealer C">Dealer C</option>
+                                        <option value="Dealer D">Dealer D</option>
+                                    </select>
+                                </div>
                             </div>
-
 
                             <div class="col-12 mt-5">
                                 <button type="submit" class="btn btn-test-drive w-100">Test Drive</button>
@@ -127,6 +148,7 @@
                             </div>
 
                         </div>
+
                     </form>
 
                 </div>

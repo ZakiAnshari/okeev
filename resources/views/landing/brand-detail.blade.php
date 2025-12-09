@@ -51,8 +51,6 @@
                 });
             </script>
 
-
-
             <div class="row g-3" id="product-container">
                 @foreach ($products as $product)
                     <div class="col-lg-4 col-md-6 product-item" data-category="{{ $product->category_id }}">
@@ -165,7 +163,6 @@
                                                 <p style="font-weight: 600;" class="small text-black mb-0 fw-semibold">
                                                     Electric</p>
                                             </div>
-
                                             @if ($product->seats)
                                                 <div class="flex-fill d-flex flex-column align-items-center">
                                                     <img src="{{ asset('front_end/assets/images/1.png') }}" width="21"
@@ -175,17 +172,13 @@
                                                     </p>
                                                 </div>
                                             @endif
-
-
                                         </div>
                                         <hr class="my-2">
-
                                         <!-- Price & Detail Link -->
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <p class="fw-bold text-danger mb-0">
                                                 IDR {{ number_format($product->price, 0, ',', '.') }}
                                             </p>
-
                                             <a href="{{ route('landing.product', $product->slug) }}"
                                                 class="text-decoration-none fw-semibold d-flex align-items-center"
                                                 style="color: #30445C !important;">
@@ -193,7 +186,6 @@
                                                 <img src="{{ asset('front_end/assets/images/icon.png') }}" width="10"
                                                     class="mb-1 ms-2">
                                             </a>
-
                                         </div>
                                     </div>
                                 </div>

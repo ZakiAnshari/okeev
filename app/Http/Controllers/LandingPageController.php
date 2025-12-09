@@ -46,7 +46,6 @@ class LandingPageController extends Controller
         ));
     }
 
-
     public function showBrand($slug)
     {
         // Ambil semua brand untuk navbar
@@ -80,7 +79,6 @@ class LandingPageController extends Controller
             'categoriesPosition2'
         ));
     }
-
 
     public function showProduct($productSlug)
     {
@@ -132,18 +130,15 @@ class LandingPageController extends Controller
         ));
     }
 
+    // public function wuling()
+    // {
+    //     return view('landing.wuling');
+    // }
 
-
-
-    public function wuling()
-    {
-        return view('landing.wuling');
-    }
-
-    public function detailwuling()
-    {
-        return view('landing.detailwuling');
-    }
+    // public function detailwuling()
+    // {
+    //     return view('landing.detailwuling');
+    // }
 
     public function testdrive($productSlug)
     {
@@ -157,8 +152,24 @@ class LandingPageController extends Controller
         // Ambil produk yang benar berdasarkan slug
         $product = Product::where('slug', $productSlug)->firstOrFail();
 
+        // Ambil kategori khusus category_position_id = 1 dan 2 untuk navbar
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
 
-        return view('landing.testdrive', compact('product', 'brands', 'brandChunks'));
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        return view('landing.testdrive', compact(
+            'product',
+            'brands',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2'
+        ));
     }
 
     public function store(Request $request, $productSlug)
@@ -205,7 +216,44 @@ class LandingPageController extends Controller
         return back();
     }
 
+    public function about()
+    {
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image')
+            ->orderBy('name_brand', 'asc')
+            ->get()
+            ->unique('name_brand')
+            ->values();
 
+        // Ambil kategori khusus category_position_id = 1 beserta brand-nya
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil kategori khusus category_position_id = 2 beserta brand-nya
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil semua brand (optional, tetap untuk grid)
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
+            ->orderBy('name_brand', 'asc')
+            ->get();
+
+        // Chunk brands untuk grid
+        $brandChunks = $brands->chunk(4);
+
+        // Pecah menjadi chunks untuk grid (4 per baris)
+        $brandChunks = $brands->chunk(4);
+
+        return view('landing.about', compact(
+            'brands',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2'
+        ));
+    }
 
 
     public function cart()
@@ -221,26 +269,32 @@ class LandingPageController extends Controller
             ->unique('name_brand')
             ->values();
 
+        // Ambil kategori khusus category_position_id = 1 beserta brand-nya
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil kategori khusus category_position_id = 2 beserta brand-nya
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil semua brand (optional, tetap untuk grid)
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
+            ->orderBy('name_brand', 'asc')
+            ->get();
+
         // Pecah menjadi 4 item per kolom
         $brandChunks = $brands->chunk(4);
 
-        return view('landing.contact', compact('brands', 'brandChunks'));
-    }
-
-
-
-    public function about()
-    {
-        $brands = Brand::select('id', 'name_brand', 'slug', 'image')
-            ->orderBy('name_brand', 'asc')
-            ->get()
-            ->unique('name_brand')
-            ->values();
-
-        // Pecah menjadi chunks untuk grid (4 per baris)
-        $brandChunks = $brands->chunk(4);
-
-        return view('landing.about', compact('brands', 'brandChunks'));
+        return view('landing.contact', compact(
+            'brands',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2'
+        ));
     }
 
     public function news()
@@ -250,10 +304,31 @@ class LandingPageController extends Controller
             ->get()
             ->unique('name_brand')
             ->values();
+        // Ambil kategori khusus category_position_id = 1 beserta brand-nya
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil kategori khusus category_position_id = 2 beserta brand-nya
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil semua brand (optional, tetap untuk grid)
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
+            ->orderBy('name_brand', 'asc')
+            ->get();
 
         // Pecah menjadi chunks untuk grid (4 per baris)
         $brandChunks = $brands->chunk(4);
 
-        return view('landing.news', compact('brands', 'brandChunks'));
+        return view('landing.news', compact(
+            'brands',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2'
+        ));
     }
 }
