@@ -106,7 +106,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="/news">News</a>
+                                    <a href="/News">News</a>
                                 </li>
 
                                 <li class="nav-item">

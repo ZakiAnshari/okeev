@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
@@ -297,7 +298,7 @@ class LandingPageController extends Controller
         ));
     }
 
-    public function news()
+    public function newss()
     {
         $brands = Brand::select('id', 'name_brand', 'slug', 'image')
             ->orderBy('name_brand', 'asc')
@@ -323,10 +324,35 @@ class LandingPageController extends Controller
 
         // Pecah menjadi chunks untuk grid (4 per baris)
         $brandChunks = $brands->chunk(4);
-
+        $news = News::latest()->get();
         return view('landing.news', compact(
             'brands',
             'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2',
+            'news'
+        ));
+    }
+
+    public function newsDetail($slug)
+    {
+        // Ambil 1 data news berdasarkan slug
+        $news = News::where('slug', $slug)->firstOrFail();
+
+        // Ambil kategori posisi 1 dan brand
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        // Ambil kategori posisi 2 dan brand
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+        return view('landing.news-detail', compact(
+            'news',
             'categoriesPosition1',
             'categoriesPosition2'
         ));

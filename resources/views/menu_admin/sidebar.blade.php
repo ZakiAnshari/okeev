@@ -28,7 +28,7 @@
                 <div data-i18n="Brand"> Category</div>
             </a>
         </li>
-        
+
         <li class="menu-item {{ Request::is('brands*') ? 'active' : '' }}">
             <a href="/brands" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-purchase-tag-alt"></i>
@@ -58,17 +58,19 @@
             </a>
         </li>
 
+        <li class="menu-item {{ Request::is('news*') ? 'active' : '' }}">
+            <a href="/news" class="menu-link position-relative">
+                <i class="menu-icon tf-icons bx bxs-news"></i>
+                <div data-i18n="News">News</div>
+            </a>
+        </li>
+
         <li class="menu-item {{ Request::is('contact*') ? 'active' : '' }}">
             <a href="/contact" class="menu-link position-relative">
                 <i class="menu-icon tf-icons bx bx-envelope"></i>
-
-    
-
                 <div data-i18n="Contact">Messages</div>
             </a>
         </li>
-      
-
 
         {{-- User --}}
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Hak Akses</span></li>

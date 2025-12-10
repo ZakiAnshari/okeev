@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
@@ -27,7 +28,9 @@ Route::middleware(['role_not_one'])->group(function () {
 
     Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
     Route::get('/about', [LandingPageController::class, 'about'])->name('about');
-    Route::get('/news', [LandingPageController::class, 'news'])->name('news');
+    Route::get('/News', [LandingPageController::class, 'newss'])->name('newss');
+    Route::get('/News/{slug}', [LandingPageController::class, 'newsDetail'])->name('News.detail');
+
 
     // Route::get('/wuling', [LandingPageController::class, 'wuling'])->name('wuling');
     // Route::get('/detailwuling', [LandingPageController::class, 'detailwuling'])->name('detailwuling');
@@ -49,9 +52,7 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])->name('profil.show');
     Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
-
     Route::get('/cart', [HomeUserController::class, 'cart']);
-
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 
@@ -76,16 +77,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/category/{slug}/edit', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category-destroy/{slug}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
-
     // TEST DRIVE
     Route::get('/test-drive', [TestDriveController::class, 'index'])->name('testdrive.index');
     Route::get('/test-drive-show/{id}', [TestDriveController::class, 'show'])->name('testdrive.show');
     Route::get('/test-drive-destroy/{id}', [TestDriveController::class, 'destroy'])->name('testdrive.destroy');
-
-
-
-
-
 
     //PRODUK
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
@@ -95,8 +90,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product-destroy/{slug}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product-show/{slug}', [ProductController::class, 'show'])->name('product.show');
 
-
-    // web.php
     Route::get('/get-brands/{category_id}', [ProductController::class, 'getBrands']);
 
     //technologies
@@ -159,11 +152,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/product/{product_slug}/details/{id}/edit', [DetailController::class, 'update'])->name('details.update');
     Route::get('/product/{product_slug}/details/{details}', [DetailController::class, 'destroy'])->name('details.destroy');
 
-
-
-
-
-
+    //NEWS
+    Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+    Route::post('/news-add', [NewsController::class, 'store'])->name('news.store');
+    Route::get('/news/{slug}/edit', [NewsController::class, 'edit'])->name('news.edit');
+    Route::post('/news/{slug}/edit', [NewsController::class, 'update'])->name('news.update');
+    Route::get('/news-destroy/{slug}', [NewsController::class, 'destroy'])->name('news.destroy');
 
 
 

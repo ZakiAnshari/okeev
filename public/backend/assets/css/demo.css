@@ -2,7 +2,11 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
-
+                                                        /* Tinggi editor */
+                                                        .ck-editor__editable {
+                                                            min-height: 250px;
+                                                            /* Bisa kamu ganti 400px, 500px dll */
+                                                        }
 .menu .app-brand.demo {
   height: 64px;
   margin-top: 12px;
