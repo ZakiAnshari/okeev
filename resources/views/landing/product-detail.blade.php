@@ -6,21 +6,11 @@
         <div class="container">
             <!-- Back Button -->
             <div class="header-title">
-                @if ($product->category_id == 1)
-                    <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
-                        <i class="bx bx-arrow-back me-2"></i> Detail Kendaraan
-                    </a>
-                @endif
-                @if ($product->category_id == 2)
-                    <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
-                        <i class="bx bx-arrow-back me-2"></i> Detail Laptop
-                    </a>
-                @endif
-                @if ($product->category_id == 2)
-                    <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
-                        <i class="bx bx-arrow-back me-2"></i> Detail Laptop
-                    </a>
-                @endif
+
+                <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
+                    <i class="bx bx-arrow-back me-2"></i> Detail
+                </a>
+
             </div>
             {{-- TAMPILAN DETAIL --}}
             @if (in_array($product->category_id, [1, 2]))
@@ -39,9 +29,7 @@
                                             alt="{{ $product->model_name }}">
                                     </div>
                                 @endforeach
-
                             </div>
-
                             <!-- Controls -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="prev">
@@ -56,22 +44,16 @@
 
                     <!-- Thumbnail -->
                     <div class="col-12">
-                        <div class="row g-3">
-                            @foreach ($product->images as $key => $image)
-                                <div class="col-3">
-                                    <div class="ratio ratio-16x9 shadow-sm rounded overflow-hidden" role="button"
-                                        onclick="bootstrap.Carousel.getInstance(document.getElementById('productCarousel')).to({{ $key }});">
-
-                                        <img src="{{ asset('storage/' . $image->image) }}" class="w-100 h-100"
-                                            style="object-fit: cover;" alt="{{ $product->model_name }}">
-                                    </div>
+                        <div class="image-row-5">
+                            @foreach ($product->images->take(5) as $key => $image)
+                                <div class="thumb-box"
+                                    onclick="bootstrap.Carousel.getInstance(document.getElementById('productCarousel')).to({{ $key }});">
+                                    <img src="{{ asset('storage/' . $image->image) }}" alt="" class="thumb-img">
                                 </div>
                             @endforeach
                         </div>
                     </div>
-
                 </div>
-
 
                 <!-- Detail Kendaraan -->
                 <div class="mt-4">
@@ -92,12 +74,18 @@
                     </div>
 
                     <div class="col-md-6">
-                        <a href=""
-                            class="btn btn-outline-success w-100 py-2 d-flex justify-content-center align-items-center">
-                            <i class="bx bx-cart me-2"></i>
-                            Add to Cart
-                        </a>
-
+                        @if (Auth::check())
+                            <a href="#" class="btn btn-outline-success w-100 py-2 add-to-cart-btn"
+                                data-id="{{ $product->id }}" data-name="{{ $product->model_name }}"
+                                data-price="{{ $product->price }}"
+                                data-image="{{ asset('storage/' . $product->images->first()->image) }}">
+                                <i class="bx bx-cart me-2"></i> Add to Cart
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-outline-success w-100 py-2">
+                                <i class="bx bx-cart me-2"></i> Login to Add
+                            </a>
+                        @endif
                     </div>
 
                     <div class="col-12">
@@ -223,31 +211,7 @@
 
             </ul>
 
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const tabs = document.querySelectorAll(".tech-nav .nav-link");
 
-                    tabs.forEach(tab => {
-                        tab.addEventListener("click", function() {
-                            const text = this.innerText.trim();
-
-                            // Cari H4 atau H5 yang mengandung teks tab
-                            const target = Array.from(document.querySelectorAll("h4, h5"))
-                                .find(el => el.innerText.toLowerCase().includes(text.toLowerCase()));
-
-                            if (target) {
-                                const top = target.getBoundingClientRect().top + window.scrollY;
-                                const offset = 120; // tinggi berhenti
-
-                                window.scrollTo({
-                                    top: top - offset,
-                                    behavior: "smooth"
-                                });
-                            }
-                        });
-                    });
-                });
-            </script>
 
             @if (in_array($product->category_id, [3, 4]))
 
@@ -324,29 +288,7 @@
                     @endforeach
                 </div>
             @endif
-            {{-- JS untuk switch tab dan gambar --}}
-            <script>
-                document.querySelectorAll('.tab-item').forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        const targetId = this.dataset.target;
-                        const imageId = this.dataset.image;
 
-                        // Hapus active dari semua tab dan konten teks
-                        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-                        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-                        // Tambahkan active ke tab dan konten teks yang dipilih
-                        this.classList.add('active');
-                        document.getElementById(targetId).classList.add('active');
-
-                        // Sembunyikan semua gambar
-                        document.querySelectorAll('.tech-image').forEach(img => img.style.display = 'none');
-
-                        // Tampilkan gambar yang sesuai
-                        document.getElementById(imageId).style.display = 'block';
-                    });
-                });
-            </script>
         </div>
     </section>
 
@@ -360,17 +302,6 @@
                     <h4 class="fw-bold me-3 mb-0"> {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature</h4>
                     <div class="flex-grow-1 line-tech"></div>
                 </div>
-                <style>
-                    .line-tech {
-                        height: 2px;
-                        background: #DADADA;
-                    }
-
-                    .tech-nav {
-                        gap: 50px;
-                        /* boleh disesuaikan */
-                    }
-                </style>
 
                 <div class="row align-items-center g-4 mt-1">
 
@@ -391,25 +322,6 @@
                             <p class="text-muted"></p>
                         @endforelse
                     </div>
-                    <style>
-                        .feature-item {
-                            /* warna default */
-                            cursor: pointer;
-                            margin-bottom: 0.5rem;
-                            transition: all 0.3s ease;
-                        }
-
-                        .feature-item:hover {
-                            color: #00C092;
-                            /* efek hover */
-                        }
-
-                        .feature-item.active {
-                            color: #00C092;
-                            /* warna hijau saat active */
-                        }
-                    </style>
-
                     <!-- Right Image -->
                     <div class="col-lg-6 col-md-12">
                         @forelse($product->features as $index => $feature)
@@ -424,30 +336,6 @@
                         @endforelse
                     </div>
                 </div>
-
-                <script>
-                    const descriptionH4 = document.getElementById('feature-description');
-                    const featureImages = document.querySelectorAll('.feature-image');
-
-                    document.querySelectorAll('.feature-item').forEach(item => {
-                        item.addEventListener('click', function() {
-                            const index = this.dataset.index;
-
-                            // Update H4 dengan description feature sesuai index
-                            const feature = @json($product->features);
-                            descriptionH4.innerHTML = feature[index].description;
-
-                            // Hapus active dari semua H5
-                            document.querySelectorAll('.feature-item').forEach(f => f.classList.remove('active'));
-                            this.classList.add('active');
-
-                            // Sembunyikan semua gambar dan tampilkan sesuai index
-                            featureImages.forEach(img => img.style.display = 'none');
-                            const img = document.getElementById(`feature-image-${index}`);
-                            if (img) img.style.display = 'block';
-                        });
-                    });
-                </script>
             </div>
         </section>
     @endif
@@ -518,7 +406,7 @@
             </div>
         </section>
     @endif
-    {{-- INI FEATURE UNTUK CATEGORI 1 --}}
+
     @if ($product->category_id == 1)
         <section class="py-5 container">
             <div class="d-flex align-items-center mb-5">
@@ -760,7 +648,6 @@
         </section>
     @endif
 
-    {{-- ------------------------------------------------------------ --}}
     @if ($product->category_id == 1)
         <section>
             <div class="container mt-5">
@@ -844,4 +731,220 @@
         </section>
     @endif
 
+    <script>
+        const descriptionH4 = document.getElementById('feature-description');
+        const featureImages = document.querySelectorAll('.feature-image');
+
+        document.querySelectorAll('.feature-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const index = this.dataset.index;
+
+                // Update H4 dengan description feature sesuai index
+                const feature = @json($product->features);
+                descriptionH4.innerHTML = feature[index].description;
+
+                // Hapus active dari semua H5
+                document.querySelectorAll('.feature-item').forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+
+                // Sembunyikan semua gambar dan tampilkan sesuai index
+                featureImages.forEach(img => img.style.display = 'none');
+                const img = document.getElementById(`feature-image-${index}`);
+                if (img) img.style.display = 'block';
+            });
+        });
+    </script>
+
+    {{-- ini scrip untuk menambahkan cart  --}}
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+                const name = this.dataset.name;
+                const price = parseInt(this.dataset.price);
+                const image = this.dataset.image;
+
+                let existing = cart.find(p => p.id == id);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        image,
+                        qty: 1
+                    });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartBadge();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: `${name} ditambahkan ke keranjang`,
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+            });
+        });
+
+        function updateCartBadge() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll(".tech-nav .nav-link");
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function() {
+                    const text = this.innerText.trim();
+
+                    // Cari H4 atau H5 yang mengandung teks tab
+                    const target = Array.from(document.querySelectorAll("h4, h5"))
+                        .find(el => el.innerText.toLowerCase().includes(text.toLowerCase()));
+
+                    if (target) {
+                        const top = target.getBoundingClientRect().top + window.scrollY;
+                        const offset = 120; // tinggi berhenti
+
+                        window.scrollTo({
+                            top: top - offset,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.add-to-cart-btn');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Ambil data dari atribut tombol
+                    const productName = this.dataset.name;
+
+                    // Optional: kirim data ke backend via AJAX untuk menambahkan ke cart
+                    fetch('/cart/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                product_id: this.dataset.id,
+                                product_name: this.dataset.name,
+                                price: this.dataset.price,
+                                image: this.dataset.image
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // SweetAlert notifikasi
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: productName +
+                                        ' telah ditambahkan ke keranjang.',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: 'Produk gagal ditambahkan ke keranjang.'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan saat menambahkan produk.'
+                            });
+                        });
+                });
+            });
+        });
+    </script>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+                const name = this.dataset.name;
+                const price = parseInt(this.dataset.price);
+                const image = this.dataset.image;
+
+                // Cek jika sudah ada
+                let existing = cart.find(p => p.id == id);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        image,
+                        qty: 1
+                    });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                // Update badge
+                document.getElementById('cartCount').textContent = cart.reduce((a, b) => a + b.qty, 0);
+
+                // SweetAlert notifikasi
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: `${name} ditambahkan ke keranjang`,
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+            });
+        });
+    </script>
+    {{-- JS untuk switch tab dan gambar --}}
+    <script>
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const imageId = this.dataset.image;
+
+                // Hapus active dari semua tab dan konten teks
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Tambahkan active ke tab dan konten teks yang dipilih
+                this.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+
+                // Sembunyikan semua gambar
+                document.querySelectorAll('.tech-image').forEach(img => img.style.display = 'none');
+
+                // Tampilkan gambar yang sesuai
+                document.getElementById(imageId).style.display = 'block';
+            });
+        });
+    </script>
 @endsection

@@ -61,7 +61,8 @@
                                                             <option value="">-- Pilih Category --</option>
                                                             @foreach ($categories as $cat)
                                                                 <option value="{{ $cat->id }}"
-                                                                    data-position="{{ $cat->category_position_id }}">
+                                                                    data-position="{{ $cat->category_position_id }}"
+                                                                    data-name="{{ $cat->name_category }}">
                                                                     {{ $cat->name_category }}
                                                                 </option>
                                                             @endforeach
@@ -276,32 +277,32 @@
 
         const milesField = document.getElementById('miles-field');
         const seatsField = document.getElementById('seats-field');
-        const descriptionField = document.getElementById('description-field'); // tambahkan id di div textarea
+        const descriptionField = document.getElementById('description-field');
 
         function checkFields() {
             let selectedOption = categorySelect.options[categorySelect.selectedIndex];
             let positionId = selectedOption.getAttribute('data-position');
+            let categoryName = selectedOption.getAttribute('data-name'); // ambil name_category
 
-            // posisi yang harus disembunyikan untuk miles & seats
             const hiddenPositions = ["2", "3", "4"];
 
+            // miles logic
             if (hiddenPositions.includes(positionId)) {
-                // hide miles
                 milesField.style.display = "none";
                 milesField.querySelector('input').value = "";
-
-                // hide seats
-                seatsField.style.display = "none";
-                seatsField.querySelector('input').value = "";
             } else {
-                // show miles
                 milesField.style.display = "block";
-
-                // show seats
-                seatsField.style.display = "block";
             }
 
-            // hide description jika positionId = 1
+            // seats logic: tampil hanya jika name_category = Electric Cars
+            if (!hiddenPositions.includes(positionId) && categoryName === "Electric Cars") {
+                seatsField.style.display = "block";
+            } else {
+                seatsField.style.display = "none";
+                seatsField.querySelector('input').value = "";
+            }
+
+            // description logic
             if (positionId === "1") {
                 descriptionField.style.display = "none";
                 descriptionField.querySelector('textarea').value = "";
@@ -312,12 +313,9 @@
 
         categorySelect.addEventListener('change', checkFields);
 
-        // Jalankan ketika halaman pertama di-load
+        // Jalankan ketika halaman pertama kali dimuat
         checkFields();
     </script>
-
-
-
 
     @include('sweetalert::alert')
 @endsection

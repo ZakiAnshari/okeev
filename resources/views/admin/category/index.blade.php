@@ -23,7 +23,6 @@
                             @endif
                             <div class="d-flex justify-content-end">
                                 <!-- Form Search -->
-
                                 <div class="d-flex gap-2  mb-3">
                                     <!-- Tombol Tambah -->
                                     <div class="d-flex  ">
@@ -41,7 +40,6 @@
                                 aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
-
                                         <!-- Header -->
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addCarModalLabel">Tambah Category </h5>
@@ -54,7 +52,6 @@
                                             <div class="modal-body">
                                                 <div class="row justify-content-center">
                                                     <div class="row">
-
                                                         <!-- Select Category Position -->
                                                         <div class="col-lg-4">
                                                             <div class="mb-3">
@@ -118,10 +115,25 @@
                                             <td>{{ $item->name_category }}</td>
 
                                             <td class="text-center">
-                                                <a href="{{ url('category/' . $item->slug . '/edit') }}"
-                                                    class="btn btn-icon btn-outline-primary" title="Edit">
-                                                    <i class="bx bx-edit-alt"></i>
-                                                </a>
+                                                {{-- EDIT --}}
+                                                @if (in_array($item->id, [1, 2]))
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary"
+                                                        onclick="Swal.fire({
+                                                        icon: 'warning',
+                                                        title: 'Tidak Bisa Diedit',
+                                                        text: 'Data ini penting dan tidak boleh diubah!',
+                                                        confirmButtonColor: '#3085d6',
+                                                    })">
+                                                        <i class="bx bx-edit-alt"></i>
+                                                    </button>
+                                                @else
+                                                    <a href="{{ url('category/' . $item->slug . '/edit') }}"
+                                                        class="btn btn-icon btn-outline-primary" title="Edit">
+                                                        <i class="bx bx-edit-alt"></i>
+                                                    </a>
+                                                @endif
+                                                {{-- AKHIR EDIT --}}
+                                                {{--  HAPUS --}}
                                                 <a href="javascript:void(0)"
                                                     onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}', '{{ $item->category_position_id }}')">
                                                     <button class="btn btn-icon btn-outline-danger" title="Hapus">
@@ -143,6 +155,7 @@
                                                         }
                                                     }
                                                 </script>
+                                                {{-- AKHIR HAPUS --}}
 
 
                                             </td>

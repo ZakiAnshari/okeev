@@ -97,9 +97,45 @@
                                     </div>
                                 </li>
 
-                                <li class="nav-item">
-                                    <a href="/about">Accessories</a>
+                                <li class="nav-item dropdown position-static">
+                                    <a class="nav-link dropdown-toggle" href="#" id="megaAccessories"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Accessories
+                                    </a>
+
+                                    <div class="dropdown-menu w-100 p-4" aria-labelledby="megaAccessories">
+
+                                        <div class="row g-4">
+                                            @forelse ($categoriesPosition2 as $category)
+                                                <div class="col-lg-6 col-md-6">
+                                                    <!-- Judul kategori -->
+                                                    <h6 class="fw-bold mb-3 text-uppercase">
+                                                        {{ $category->name_category }}</h6>
+
+                                                    <!-- Brands -->
+                                                    <div class="row g-2">
+                                                        @foreach ($category->brands->chunk(4) as $chunk)
+                                                            @foreach ($chunk as $brand)
+                                                                <div class="col-6 col-md-6">
+                                                                    <a href="{{ route('landing.cars', $brand->slug) }}"
+                                                                        class="dropdown-item px-0">
+                                                                        {{ $brand->name_brand }}
+                                                                    </a>
+                                                                </div>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @empty
+                                                <div class="col-12 text-center">
+                                                    <p class="text-muted mb-0">Accessories belum tersedia.</p>
+                                                </div>
+                                            @endforelse
+                                        </div>
+
+                                    </div>
                                 </li>
+
 
                                 <li class="nav-item">
                                     <a href="/about">About</a>
@@ -158,7 +194,8 @@
                                         <!-- PROFILE -->
                                         <a href="{{ route('profil.show', optional(Auth::user())->slug ?? 'guest') }}"
                                             class="profile-box">
-                                            <img src="{{ asset('front_end/assets/images/Group 21.png') }}" alt="Profile">
+                                            <img src="{{ asset('front_end/assets/images/Group 21.png') }}"
+                                                alt="Profile">
                                         </a>
                                     </div>
                                 @endauth
@@ -171,3 +208,97 @@
         </div>
     </div>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil cart dari localStorage atau buat baru
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        const cartCountEl = document.getElementById('cartCount');
+        const cartIcon = document.getElementById('cartIcon');
+
+        // Update badge
+        function updateCartBadge() {
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            cartCountEl.textContent = totalQty;
+        }
+
+        updateCartBadge();
+
+        // Add to Cart click
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const id = this.dataset.id;
+                const name = this.dataset.name;
+                const price = parseInt(this.dataset.price);
+                const image = this.dataset.image;
+
+                // Cek apakah item sudah ada di cart
+                let existing = cart.find(p => p.id == id);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        image,
+                        qty: 1
+                    });
+                }
+
+                // Simpan ke localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                // Update badge
+                updateCartBadge();
+
+                // SweetAlert notifikasi
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: `${name} berhasil ditambahkan ke keranjang`,
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+            });
+        });
+
+        // Klik icon cart → tampilkan isi cart
+        cartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (cart.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Keranjang kosong',
+                    text: 'Silakan tambahkan produk terlebih dahulu',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            let html = '<div style="text-align:left;">';
+            cart.forEach(item => {
+                html +=
+                    `<p>${item.name} x ${item.qty} <strong>${formatRupiah(item.price * item.qty)}</strong></p>`;
+            });
+            html += '</div>';
+
+            Swal.fire({
+                title: 'Isi Keranjang',
+                html: html,
+                icon: 'info',
+                showCloseButton: true
+            });
+        });
+
+        // Fungsi format rupiah
+        function formatRupiah(angka) {
+            return "Rp " + angka.toLocaleString("id-ID");
+        }
+    });
+</script>

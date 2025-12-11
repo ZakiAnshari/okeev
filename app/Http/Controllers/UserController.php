@@ -66,6 +66,7 @@ class UserController extends Controller
         Alert::success('Success', 'Data User berhasil ditambahkan');
         return back();
     }
+    
     public function edit($id)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login

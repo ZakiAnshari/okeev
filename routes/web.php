@@ -9,6 +9,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FiturController;
 use App\Http\Controllers\PowerController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DimensiController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ProductController;
@@ -31,12 +32,9 @@ Route::middleware(['role_not_one'])->group(function () {
     Route::get('/News', [LandingPageController::class, 'newss'])->name('newss');
     Route::get('/News/{slug}', [LandingPageController::class, 'newsDetail'])->name('News.detail');
 
-
-    // Route::get('/wuling', [LandingPageController::class, 'wuling'])->name('wuling');
-    // Route::get('/detailwuling', [LandingPageController::class, 'detailwuling'])->name('detailwuling');
-
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
     Route::get('/contact', [LandingPageController::class, 'contact'])->name('contact');
+    Route::post('/contact-add', [LandingPageController::class, 'stores'])->name('contact.store');
 });
 
 Route::middleware('redirectIfAuth')->group(function () {
@@ -46,13 +44,15 @@ Route::middleware('redirectIfAuth')->group(function () {
     Route::post('/register', [AuthController::class, 'registerprocess'])->name('register-store');
 });
 
-// AKSES USER
+// AKSES USER PERLU LOGIN
 Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/home', [HomeUserController::class, 'index']);
     Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])->name('profil.show');
     Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
     Route::get('/cart', [HomeUserController::class, 'cart']);
+    Route::post('/cart/add', [HomeUserController::class, 'addToCart']);
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 
@@ -151,16 +151,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product/{product_slug}/details/{id}/edit', [DetailController::class, 'edit'])->name('details.edit');
     Route::post('/product/{product_slug}/details/{id}/edit', [DetailController::class, 'update'])->name('details.update');
     Route::get('/product/{product_slug}/details/{details}', [DetailController::class, 'destroy'])->name('details.destroy');
-
+    // --------------------
     //NEWS
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');
     Route::post('/news-add', [NewsController::class, 'store'])->name('news.store');
     Route::get('/news/{slug}/edit', [NewsController::class, 'edit'])->name('news.edit');
     Route::post('/news/{slug}/edit', [NewsController::class, 'update'])->name('news.update');
     Route::get('/news-destroy/{slug}', [NewsController::class, 'destroy'])->name('news.destroy');
-
-
-
+    // KONTAK
+    Route::get('/Contact', [ContactController::class, 'index'])->name('Contact.index');
+    Route::post('/Contact-add', [ContactController::class, 'store'])->name('Contact.store');
+    Route::get('/Contact-destroy/{id}', [ContactController::class, 'destroy'])->name('Contact.destroy');
+    Route::get('/Contact-show/{id}', [ContactController::class, 'show'])->name('Contact.show');
 
 
 

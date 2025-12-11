@@ -32,46 +32,63 @@
                 <!-- RIGHT FORM CARD -->
                 <div class="col-lg-6">
                     <div class="p-4 rounded-4 shadow" style="background:#1e2a45; border-radius: 12px;">
+                        <form action="{{ url('contact-add') }}" method="POST">
+                            @csrf
+                            <div class="row g-3">
 
-                        <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="text-light mb-1">Name</label>
+                                    <input type="text" name="name" class="form-control custom-input"
+                                        value="{{ old('name') }}" placeholder="Enter your name">
+                                    @error('name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
 
-                            <div class="col-md-6">
-                                <label class="text-light mb-1">Name</label>
-                                <input type="text" class="form-control custom-input" placeholder="Enter your name">
+                                <div class="col-md-6 mb-3">
+                                    <label class="text-light mb-1">Email</label>
+                                    <input type="email" name="email" class="form-control custom-input"
+                                        value="{{ old('email') }}" placeholder="Enter your email">
+                                    @error('email')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="text-light mb-1">Phone</label>
+                                    <input type="text" name="phone" class="form-control custom-input"
+                                        value="{{ old('phone') }}" placeholder="+62">
+                                    @error('phone')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="text-light mb-1">Subject</label>
+                                    <input type="text" name="subject" class="form-control custom-input"
+                                        value="{{ old('subject') }}" placeholder="Ex. Career">
+                                    @error('subject')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label class="text-light mb-1">Message</label>
+                                    <textarea name="message" class="form-control custom-input" rows="4" placeholder="Type your message here...">{{ old('message') }}</textarea>
+                                    @error('message')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12 text-start mt-4">
+                                    <button type="submit" class="btn px-4 py-2 w-auto"
+                                        style="background:#00f2ea;border:none;font-weight:600;border-radius:8px;">
+                                        Send message
+                                    </button>
+                                </div>
+
                             </div>
-
-                            <div class="col-md-6">
-                                <label class="text-light mb-1">Email</label>
-                                <input type="email" class="form-control custom-input" placeholder="Enter your email">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="text-light mb-1">Phone</label>
-                                <input type="text" class="form-control custom-input" placeholder="+62">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="text-light mb-1">Subject</label>
-                                <input type="text" class="form-control custom-input" placeholder="Ex. Career">
-                            </div>
-
-                            <div class="col-12">
-                                <label class="text-light mb-1">Message</label>
-                                <textarea class="form-control custom-input" rows="4" placeholder="Type your message here..."></textarea>
-                            </div>
-
-                            <div class="col-12 text-start mt-4">
-                                <button class="btn px-4 py-2 w-auto"
-                                    style="
-                                    background:#00f2ea;
-                                    border:none;
-                                    font-weight:600;
-                                    border-radius:8px;">
-                                    Send message
-                                </button>
-                            </div>
-
-                        </div>
+                        </form>
 
                     </div>
                 </div>

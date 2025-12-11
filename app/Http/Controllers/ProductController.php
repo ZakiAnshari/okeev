@@ -18,7 +18,6 @@ class ProductController extends Controller
     public function getBrands($category_id)
     {
         $brands = Brand::where('category_id', $category_id)->get();
-
         return response()->json($brands);
     }
 
@@ -42,9 +41,20 @@ class ProductController extends Controller
         }
 
         // Eksekusi query
-        $products = $query->get(); // atau paginate()
+        $products = $query->get(); // bisa juga ->paginate()
 
-        return view('admin.product.index', compact('user', 'products', 'brands', 'categories'));
+        // Contoh pakai helper shopping: hitung total harga semua produk
+        $items = $products->map(function ($product) {
+            return [
+                'qty' => 1,           // misal qty default 1
+                'price' => $product->price,  // pastikan field price ada di tabel
+            ];
+        })->toArray();
+
+        $totalHarga = countTotal($items); // helper countTotal
+        $totalHargaFormatted = formatRupiah($totalHarga); // helper formatRupiah
+
+        return view('admin.product.index', compact('user', 'products', 'brands', 'categories', 'totalHargaFormatted'));
     }
 
     public function store(Request $request)

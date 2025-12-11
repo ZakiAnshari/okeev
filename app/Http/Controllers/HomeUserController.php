@@ -7,6 +7,8 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeUserController extends Controller
 {
@@ -39,8 +41,6 @@ class HomeUserController extends Controller
             'brands'
         ));
     }
-
-
 
     public function showProfile($slug)
     {
@@ -86,7 +86,42 @@ class HomeUserController extends Controller
         // Pecah menjadi chunks untuk grid, misal 4 per kolom
         $brandChunks = $brands->chunk(4);
 
+        // Ambil kategori dengan category_position_id = 1 beserta brand-nya
+        $categoriesPosition1 = Category::with('brands')
+            ->where('category_position_id', 1)
+            ->orderBy('name_category', 'asc')
+            ->get();
 
-        return view('home.cart', compact('brands', 'brandChunks'));
+        // Ambil kategori dengan category_position_id = 2 (misal untuk Electric Motorcycles)
+        $categoriesPosition2 = Category::with('brands')
+            ->where('category_position_id', 2)
+            ->orderBy('name_category', 'asc')
+            ->get();
+        $products = Product::orderBy('created_at', 'desc')->get();
+
+        return view('home.cart', compact(
+            'brands',
+            'brandChunks',
+            'categoriesPosition1',
+            'categoriesPosition2',
+            'products'
+        ));
+    }
+
+    // HomeUserController.php
+    public function addToCart(Request $request)
+    {
+        // logika menambahkan ke keranjang
+        // Contoh sederhana, bisa disesuaikan dengan implementasi cart-mu
+        $cart = session()->get('cart', []);
+        $cart[$request->product_id] = [
+            "name" => $request->product_name,
+            "price" => $request->price,
+            "image" => $request->image,
+            "quantity" => 1
+        ];
+        session()->put('cart', $cart);
+
+        return response()->json(['success' => true]);
     }
 }

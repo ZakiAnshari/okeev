@@ -82,15 +82,15 @@ class CategoryController extends Controller
         // Validasi (name_category harus unique kecuali untuk id ini)
         $validated = $request->validate([
             'name_category' => 'required|string|max:255|unique:categories,name_category,' . $category->id,
-            'category_position'        => 'required|string|max:255',
+            'category_position_id' => 'required|exists:category_positions,id',
         ]);
 
         // Update data
-        $category->name_category = $validated['name_category'];
-        $category->category_position        = $validated['category_position']; // tambahkan posisi
-
-        // Slug otomatis diperbarui di model jika kamu gunakan mutator
-        $category->save();
+        $category->update([
+            'name_category' => $validated['name_category'],
+            'category_position_id' => $validated['category_position_id'],
+            'slug' => Str::slug($validated['name_category']), // perbarui slug juga
+        ]);
 
         Alert::success('Success', 'Category berhasil diperbarui.');
         return redirect()->route('category.index');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use App\Models\Brand;
+use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Testdrive;
@@ -131,15 +132,6 @@ class LandingPageController extends Controller
         ));
     }
 
-    // public function wuling()
-    // {
-    //     return view('landing.wuling');
-    // }
-
-    // public function detailwuling()
-    // {
-    //     return view('landing.detailwuling');
-    // }
 
     public function testdrive($productSlug)
     {
@@ -262,6 +254,8 @@ class LandingPageController extends Controller
         return view('landing.cart');
     }
 
+
+    // KONTAK
     public function contact()
     {
         $brands = Brand::select('id', 'name_brand', 'slug', 'image')
@@ -297,6 +291,36 @@ class LandingPageController extends Controller
             'categoriesPosition2'
         ));
     }
+    public function stores(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'phone'   => 'nullable|string|max:50',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        // Cek email duplicate
+        if (Contact::where('email', $validated['email'])->exists()) {
+            Alert::error('Gagal', 'Email ini sudah pernah digunakan!');
+            return back()->withInput();
+        }
+
+        // Cek phone duplicate
+        if (!empty($validated['phone']) && Contact::where('phone', $validated['phone'])->exists()) {
+            Alert::error('Gagal', 'Nomor telepon ini sudah pernah digunakan!');
+            return back()->withInput();
+        }
+
+        // Simpan data
+        Contact::create($validated);
+        Alert::success('Berhasil', 'Pesan Anda telah berhasil dikirim.');
+        return back();
+    }
+    // AKHIR KONTAK
+
 
     public function newss()
     {

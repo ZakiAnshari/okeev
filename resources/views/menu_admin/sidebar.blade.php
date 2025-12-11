@@ -65,8 +65,8 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('contact*') ? 'active' : '' }}">
-            <a href="/contact" class="menu-link position-relative">
+        <li class="menu-item {{ Request::is('Contact*') ? 'active' : '' }}">
+            <a href="/Contact" class="menu-link position-relative">
                 <i class="menu-icon tf-icons bx bx-envelope"></i>
                 <div data-i18n="Contact">Messages</div>
             </a>
