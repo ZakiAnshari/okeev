@@ -26,12 +26,11 @@
                                     </a>
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
 
-                                        <div class="row">
+                                        <div class="row position-relative vehicle-divider">
                                             @forelse ($categoriesPosition1 as $category)
-                                                <div class="col-lg-6 col-md-6 mb-4">
+                                                <div class="col-lg-6 col-md-6 mb-4 p-5">
                                                     <!-- Header kategori -->
                                                     <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
-
                                                     <!-- Grid brands per kategori -->
                                                     <div class="row">
                                                         @foreach ($category->brands->chunk(4) as $chunk)
@@ -40,7 +39,7 @@
                                                                     @foreach ($chunk as $brand)
                                                                         <li>
                                                                             <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                                class="dropdown-item">
+                                                                                class="dropdown-item brand-item">
                                                                                 {{ $brand->name_brand }}
                                                                             </a>
                                                                         </li>
@@ -56,6 +55,37 @@
                                                 </div>
                                             @endforelse
                                         </div>
+                                        <style>
+                                            .brand-item {
+                                                font-weight: normal !important;
+                                            }
+
+                                            .vehicle-divider {
+                                                position: relative;
+                                            }
+
+                                            .vehicle-divider::before {
+                                                content: "";
+                                                position: absolute;
+                                                top: 0;
+                                                bottom: 0;
+                                                /* Garis tetap di tengah, tapi diberi margin kiri & kanan */
+                                                left: calc(50% - 1px);
+                                                /* posisi tengah */
+                                                width: 3px;
+                                                background-color: #dcdcdc;
+                                                /* Margin kiri–kanan garis */
+                                                margin-left: -20px;
+                                                margin-right: -20px;
+                                            }
+
+                                            .dropdown-menu {
+                                                background-color: rgba(255, 255, 255, 0.85) !important;
+                                                backdrop-filter: blur(4px);
+                                                /* opsional biar lebih halus */
+                                            }
+                                        </style>
+
 
                                     </div>
                                 </li>
@@ -65,21 +95,19 @@
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         Electric
                                     </a>
+
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaElectric">
 
-                                        <div class="row">
+                                        <div class="row electric-divider">
                                             @forelse ($categoriesPosition2 as $category)
-                                                <div class="col-lg-6 col-md-6 mb-4">
-                                                    <!-- Header kategori -->
+                                                <div class="col-lg-3 col-md-6 mb-4 p-3">
                                                     <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
-
-                                                    <!-- Grid brands per kategori -->
                                                     <div class="row">
                                                         @foreach ($category->brands->chunk(4) as $chunk)
                                                             @foreach ($chunk as $brand)
                                                                 <div class="col-6 col-md-6">
                                                                     <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                        class="dropdown-item">
+                                                                        class="dropdown-item brand-item">
                                                                         {{ $brand->name_brand }}
                                                                     </a>
                                                                 </div>
@@ -89,36 +117,53 @@
                                                 </div>
                                             @empty
                                                 <div class="col-12 text-center">
-                                                    <p class="text-muted mb-0">Kategori Electric belum tersedia.</p>
+                                                    <p class="text-muted mb-0">
+                                                        Electric belum tersedia.</p>
                                                 </div>
                                             @endforelse
+
                                         </div>
+                                        <style>
+                                            /* Hilangkan bold brand */
+                                            .brand-item {
+                                                font-weight: normal !important;
+                                            }
+
+                                            /* Garis pemisah setiap kategori */
+                                            .electric-divider>div {
+                                                border-right: 2px solid #dcdcdc;
+                                            }
+
+                                            /* Hilangkan garis di kolom terakhir */
+                                            .electric-divider>div:last-child {
+                                                border-right: none;
+                                            }
+                                        </style>
+
 
                                     </div>
                                 </li>
 
+
                                 <li class="nav-item dropdown position-static">
-                                    <a class="nav-link dropdown-toggle" href="#" id="megaAccessories"
-                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a style="padding: 35px 0px" class="nav-link dropdown-toggle" href="#"
+                                        id="megaAccessories" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
                                         Accessories
                                     </a>
 
                                     <div class="dropdown-menu w-100 p-4" aria-labelledby="megaAccessories">
+                                        <div class="row g-4 accessories-divider">
+                                            @forelse ($categoriesPosition3 as $category)
+                                                <div class="col-lg-3 col-md-6 mb-4 p-5">
+                                                    <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
 
-                                        <div class="row g-4">
-                                            @forelse ($categoriesPosition2 as $category)
-                                                <div class="col-lg-6 col-md-6">
-                                                    <!-- Judul kategori -->
-                                                    <h6 class="fw-bold mb-3 text-uppercase">
-                                                        {{ $category->name_category }}</h6>
-
-                                                    <!-- Brands -->
                                                     <div class="row g-2">
                                                         @foreach ($category->brands->chunk(4) as $chunk)
                                                             @foreach ($chunk as $brand)
                                                                 <div class="col-6 col-md-6">
                                                                     <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                        class="dropdown-item px-0">
+                                                                        class="dropdown-item px-0 brand-item">
                                                                         {{ $brand->name_brand }}
                                                                     </a>
                                                                 </div>
@@ -132,10 +177,27 @@
                                                 </div>
                                             @endforelse
                                         </div>
+                                        <style>
+                                            /* Garis pemisah antar kategori */
+                                            .accessories-divider>div {
+                                                border-right: 2px solid #dcdcdc;
+                                            }
+
+                                            /* Hilangkan garis di kolom terakhir */
+                                            .accessories-divider>div:last-child {
+                                                border-right: none;
+                                            }
+
+                                            /* Hilangkan bold di brand */
+                                            .brand-item {
+                                                font-weight: normal !important;
+                                            }
+                                        </style>
+
+
 
                                     </div>
                                 </li>
-
 
                                 <li class="nav-item">
                                     <a href="/about">About</a>

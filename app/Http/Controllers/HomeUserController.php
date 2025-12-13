@@ -28,6 +28,12 @@ class HomeUserController extends Controller
             ->where('category_position_id', 2)
             ->orderBy('name_category', 'asc')
             ->get();
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
 
         // Ambil semua brand (optional, jika ingin menampilkan di grid lain)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
@@ -38,6 +44,7 @@ class HomeUserController extends Controller
             'products',
             'categoriesPosition1',
             'categoriesPosition2',
+            'categoriesPosition3',
             'brands'
         ));
     }
@@ -62,6 +69,13 @@ class HomeUserController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         // Ambil semua brand (optional, jika ingin menampilkan di grid lain)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
@@ -73,6 +87,7 @@ class HomeUserController extends Controller
             'brandChunks',
             'categoriesPosition1',
             'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
 
@@ -99,11 +114,19 @@ class HomeUserController extends Controller
             ->get();
         $products = Product::orderBy('created_at', 'desc')->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         return view('home.cart', compact(
             'brands',
             'brandChunks',
             'categoriesPosition1',
             'categoriesPosition2',
+            'categoriesPosition3',
             'products'
         ));
     }

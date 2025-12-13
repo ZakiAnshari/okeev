@@ -2,6 +2,12 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
+  /* Supaya CKEditor tidak melebar ke samping */
+                                                        .ck-editor__editable {
+                                                            white-space: normal !important;
+                                                            overflow-wrap: break-word !important;
+                                                            word-break: break-word !important;
+                                                        }
                                                         /* Tinggi editor */
                                                         .ck-editor__editable {
                                                             min-height: 250px;

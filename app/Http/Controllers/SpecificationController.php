@@ -50,7 +50,7 @@ class SpecificationController extends Controller
 
         Alert::success('Success', 'Specification berhasil ditambahkan');
 
-        return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
+        return redirect()->route('product.show', $product->slug)->with('tab', 'specification');
     }
 
 
@@ -91,9 +91,7 @@ class SpecificationController extends Controller
             'label' => $validated['label'],
             'value' => $validated['value'],
         ]);
-
         Alert::success('Success', 'Specification berhasil diperbarui');
-
         return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
     }
 
@@ -106,11 +104,8 @@ class SpecificationController extends Controller
         $spec = Specification::where('id', $id)
             ->where('product_id', $product->id)
             ->firstOrFail();
-
         $spec->delete();
-
         Alert::success('Success', 'Specification berhasil dihapus.');
-
-        return redirect()->route('product.show', $product->slug)->with('tab', 'spesification');
+        return redirect()->route('product.show', $product->slug)->with('tab', 'specification');
     }
 }

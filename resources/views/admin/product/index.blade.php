@@ -62,13 +62,16 @@
                                                             @foreach ($categories as $cat)
                                                                 <option value="{{ $cat->id }}"
                                                                     data-position="{{ $cat->category_position_id }}"
-                                                                    data-name="{{ $cat->name_category }}">
+                                                                    data-name="{{ $cat->name_category }}"
+                                                                    {{ old('category_id') == $cat->id ? 'selected' : '' }}>
                                                                     {{ $cat->name_category }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                        @error('category_id')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
-
 
                                                     <!-- Brand -->
                                                     <div class="col-lg-6 mb-3">
@@ -77,33 +80,51 @@
                                                             required>
                                                             <option value="">-- Pilih Brand --</option>
                                                         </select>
+                                                        @error('brand_id')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Model Name -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Model Name</label>
                                                         <input type="text" name="model_name" class="form-control"
-                                                            placeholder="Masukkan nama model" required>
+                                                            placeholder="Masukkan nama model"
+                                                            value="{{ old('model_name') }}" required>
+                                                        @error('model_name')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
+
                                                     <!-- Miles -->
                                                     <div class="col-lg-6 mb-3" id="miles-field">
                                                         <label class="form-label">Miles</label>
                                                         <input type="number" name="miles" class="form-control"
-                                                            placeholder="Contoh: 12000">
+                                                            placeholder="Contoh: 12000" value="{{ old('miles') }}">
+                                                        @error('miles')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Seats -->
                                                     <div class="col-lg-6 mb-3" id="seats-field">
                                                         <label class="form-label">Seats</label>
                                                         <input type="number" name="seats" class="form-control"
-                                                            placeholder="Contoh: 4">
+                                                            placeholder="Contoh: 4" value="{{ old('seats') }}">
+                                                        @error('seats')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Price -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Price</label>
                                                         <input type="text" id="price" name="price"
-                                                            class="form-control" placeholder="Harga produk" required>
+                                                            class="form-control" placeholder="Harga produk"
+                                                            value="{{ old('price') }}" required>
+                                                        @error('price')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Stock Status -->
@@ -111,24 +132,52 @@
                                                         <label class="form-label">Stock Status</label>
                                                         <select name="stock_status" class="form-control" required>
                                                             <option value="">-- Pilih Status --</option>
-                                                            <option value="in_stock">In Stock</option>
-                                                            <option value="out_of_stock">Out of Stock</option>
+                                                            <option value="in_stock"
+                                                                {{ old('stock_status') == 'in_stock' ? 'selected' : '' }}>
+                                                                In Stock</option>
+                                                            <option value="out_of_stock"
+                                                                {{ old('stock_status') == 'out_of_stock' ? 'selected' : '' }}>
+                                                                Out of Stock</option>
                                                         </select>
+                                                        @error('stock_status')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Featured -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Featured</label>
                                                         <select name="featured" class="form-control">
-                                                            <option value="0">Tidak</option>
-                                                            <option value="1">Ya</option>
+                                                            <option value="0"
+                                                                {{ old('featured') == 0 ? 'selected' : '' }}>Tidak</option>
+                                                            <option value="1"
+                                                                {{ old('featured') == 1 ? 'selected' : '' }}>Ya</option>
                                                         </select>
+                                                        @error('featured')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Description -->
                                                     <div class="col-12 mb-3" id="description-field">
                                                         <label class="form-label">Description</label>
-                                                        <textarea name="description" id="editor" class="form-control" rows="4" placeholder="Deskripsi produk"></textarea>
+                                                        <textarea name="description" id="editor" class="form-control" rows="4">{{ old('description') }}</textarea>
+                                                        @error('description')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+
+                                                    <!-- Thumbnail Image -->
+                                                    <div class="col-12 mb-3">
+                                                        <label class="form-label">Thumbnail</label>
+                                                        <input type="file" name="thumbnail" class="form-control">
+                                                        <small class="text-muted">
+                                                            Hanya 1 gambar. Format: JPG, PNG, atau JPEG. Ukuran maksimal
+                                                            2MB.
+                                                        </small>
+                                                        @error('thumbnail')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
 
                                                     <!-- Multiple Images -->
@@ -140,10 +189,61 @@
                                                             Maksimal 5 file. Format gambar: JPG, PNG, atau JPEG. Ukuran
                                                             maksimal per file 2MB.
                                                         </small>
+                                                        @error('images')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
-                                                </div>
-                                            </div>
 
+
+
+                                                </div>
+
+                                                {{-- ============================= --}}
+                                                {{-- SCRIPT AGAR BRAND TETAP MUNCUL --}}
+                                                {{-- ============================= --}}
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function() {
+
+                                                        const selectedCategory = "{{ old('category_id') }}";
+                                                        const selectedBrand = "{{ old('brand_id') }}";
+
+                                                        // Ketika category berubah → load brand via AJAX
+                                                        document.getElementById("category-select").addEventListener("change", function() {
+                                                            loadBrands(this.value);
+                                                        });
+
+                                                        // Jika sebelumnya validasi gagal → load ulang otomatis
+                                                        if (selectedCategory) {
+                                                            loadBrands(selectedCategory, selectedBrand);
+                                                        }
+
+                                                        function loadBrands(categoryId, selectedBrandId = null) {
+
+                                                            fetch(`/get-brands/${categoryId}`)
+                                                                .then(response => response.json())
+                                                                .then(data => {
+
+                                                                    let brandSelect = document.getElementById("brand-select");
+                                                                    brandSelect.innerHTML = '<option value="">-- Pilih Brand --</option>';
+
+                                                                    data.forEach(brand => {
+                                                                        brandSelect.innerHTML += `
+                        <option value="${brand.id}"
+                            ${selectedBrandId == brand.id ? "selected" : ""}>
+                            ${brand.name_brand}
+                        </option>
+                    `;
+                                                                    });
+
+                                                                })
+                                                                .catch(() => {
+                                                                    console.log("Gagal mengambil brand.");
+                                                                });
+                                                        }
+                                                    });
+                                                </script>
+
+                                            </div>
                                             <!-- Footer -->
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
@@ -151,14 +251,9 @@
                                                 <button type="submit" class="btn btn-primary">Save</button>
                                             </div>
                                         </form>
-
-
                                     </div>
                                 </div>
                             </div>
-
-
-
                             <!-- Table Data -->
                             <table id="productTable" class="table table-bordered table-striped">
                                 <thead>
@@ -172,7 +267,6 @@
                                         <th style="width: 100px; text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     @foreach ($products as $item)
                                         <tr>
@@ -190,15 +284,16 @@
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ url('product-show/' . $item->slug) }}"
-                                                    class="btn btn-icon btn-outline-info" title="Detail">
+                                                    class="btn btn-outline-info d-flex align-items-center gap-1 mb-1"
+                                                    title="Detail">
                                                     <i class="bx bx-show"></i>
+                                                    <span>Detail</span>
                                                 </a>
 
                                                 <a href="{{ url('product/' . $item->slug . '/edit') }}"
                                                     class="btn btn-icon btn-outline-primary" title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </a>
-
                                                 <a href="javascript:void(0)"
                                                     onclick="confirmDeleteproduct('{{ $item->slug }}', '{{ $item->model_name }}')">
                                                     <button class="btn btn-icon btn-outline-danger" title="Hapus">

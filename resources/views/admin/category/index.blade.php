@@ -59,10 +59,14 @@
                                                                 <select name="category_position_id" class="form-control">
                                                                     <option value="">-- Pilih Position --</option>
                                                                     @foreach ($positions as $pos)
-                                                                        <option value="{{ $pos->id }}">
-                                                                            {{ $pos->category_position }}</option>
+                                                                        @if ($pos->id != 1)
+                                                                            <option value="{{ $pos->id }}">
+                                                                                {{ $pos->category_position }}
+                                                                            </option>
+                                                                        @endif
                                                                     @endforeach
                                                                 </select>
+
                                                                 @error('category_position_id')
                                                                     <small class="text-danger">{{ $message }}</small>
                                                                 @enderror
@@ -81,9 +85,7 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
-
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <!-- Footer -->
@@ -116,48 +118,28 @@
 
                                             <td class="text-center">
                                                 {{-- EDIT --}}
-                                                @if (in_array($item->id, [1, 2]))
-                                                    <button type="button" class="btn btn-icon btn-outline-secondary"
-                                                        onclick="Swal.fire({
-                                                        icon: 'warning',
-                                                        title: 'Tidak Bisa Diedit',
-                                                        text: 'Data ini penting dan tidak boleh diubah!',
-                                                        confirmButtonColor: '#3085d6',
-                                                    })">
-                                                        <i class="bx bx-edit-alt"></i>
-                                                    </button>
-                                                @else
+                                                @if ($item->category_position_id != 1)
                                                     <a href="{{ url('category/' . $item->slug . '/edit') }}"
                                                         class="btn btn-icon btn-outline-primary" title="Edit">
                                                         <i class="bx bx-edit-alt"></i>
                                                     </a>
+                                                @else
+                                                    <span class="badge bg-secondary">--</span>
                                                 @endif
+
                                                 {{-- AKHIR EDIT --}}
                                                 {{--  HAPUS --}}
-                                                <a href="javascript:void(0)"
-                                                    onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}', '{{ $item->category_position_id }}')">
-                                                    <button class="btn btn-icon btn-outline-danger" title="Hapus">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </a>
-
-                                                <script>
-                                                    function confirmDeleteCategory(slug, nameCategory, positionId) {
-                                                        const protectedPositions = [1, 2];
-
-                                                        if (protectedPositions.includes(parseInt(positionId))) {
-                                                            alert(`Kategori "${nameCategory}" tidak bisa dihapus karena termasuk kategori penting.`);
-                                                            return false; // hentikan proses
-                                                        }
-
-                                                        if (confirm(`Apakah Anda yakin ingin menghapus kategori "${nameCategory}"?`)) {
-                                                            window.location.href = `/categories/delete/${slug}`;
-                                                        }
-                                                    }
-                                                </script>
+                                                @if ($item->category_position_id != 1)
+                                                    <a href="javascript:void(0)"
+                                                        onclick="confirmDeleteCategory('{{ $item->slug }}', '{{ $item->name_category }}')">
+                                                        <button class="btn btn-icon btn-outline-danger" title="Hapus">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </a>
+                                                @else
+                                                    <span class="badge bg-secondary">--</span>
+                                                @endif
                                                 {{-- AKHIR HAPUS --}}
-
-
                                             </td>
                                         </tr>
                                     @endforeach
@@ -169,11 +151,12 @@
             </div>
         </div>
     </div>
+
     <script>
-        function confirmDeleteCategory(slug, name_category) {
+        function confirmDeleteCategory(slug, model_name) {
             Swal.fire({
                 title: 'Yakin ingin menghapus?',
-                text: `"${name_category}" akan dihapus secara permanen!`,
+                text: `"${model_name}" akan dihapus secara permanen!`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -188,6 +171,8 @@
             });
         }
     </script>
+
+
 
 
 

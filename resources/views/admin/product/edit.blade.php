@@ -40,16 +40,15 @@
                             <!-- CATEGORY -->
                             <div class="col-lg-6 mb-3">
                                 <label class="form-label">Category</label>
-                                <select id="category-select" name="category_id" class="form-control">
-                                    <option value="">-- Pilih Category --</option>
+                                <select id="category-select" name="category_id" class="form-control" disabled>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}" data-position="{{ $cat->category_position_id }}"
-                                            data-name="{{ $cat->name_category }}">
+                                            {{ $products->category_id == $cat->id ? 'selected' : '' }}>
                                             {{ $cat->name_category }}
                                         </option>
                                     @endforeach
                                 </select>
-
+                                <input type="hidden" name="category_id" value="{{ $products->category_id }}">
                                 @error('category_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -93,7 +92,7 @@
                             </div>
 
                             <!-- SEATS -->
-                            <div class="col-lg-6 mb-3"  id="seats-field">
+                            <div class="col-lg-6 mb-3" id="seats-field">
                                 <label class="form-label">Seats</label>
                                 <input type="number" name="seats" class="form-control"
                                     value="{{ old('seats', $products->seats) }}">
@@ -150,6 +149,55 @@
                                 @enderror
                             </div>
 
+                            <!-- Thumbnail Image (Edit) -->
+                            <div class="mb-3">
+                                <label for="thumbnailInput" class="form-label">Thumbnail</label>
+                                <!-- Input File -->
+                                <input type="file" name="thumbnail" class="form-control" id="thumbnailInput">
+                                <!-- Tampilkan file lama jika ada -->
+                                @if (isset($product) && $product->thumbnail)
+                                    <small class="text-muted d-block mt-1">
+                                        Old data: {{ $product->thumbnail }}
+                                    </small>
+
+                                    <!-- Opsional: Preview gambar lama -->
+                                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Old Thumbnail"
+                                        class="img-thumbnail mt-2" width="150">
+                                @endif
+                            </div>
+
+
+                            <!-- Preview Thumbnail -->
+                            <div class="col-lg-12 mb-3">
+                                <div class="text-center">
+                                    @if (!empty($product->thumbnail))
+                                        <!-- Jika sudah ada thumbnail di database -->
+                                        <img id="thumbnailPreview" src="{{ asset('storage/' . $product->thumbnail) }}"
+                                            alt="Thumbnail"
+                                            style="width:150px;height:150px;object-fit:cover;border:1px solid #ccc;border-radius:6px;">
+                                    @else
+                                        <!-- Jika belum ada thumbnail -->
+                                        <img id="thumbnailPreview" src="#"
+                                            style="width:150px;height:150px;object-fit:cover;border:1px solid #ccc;border-radius:6px;display:none;">
+                                    @endif
+
+                                </div>
+                            </div>
+
+                            <!-- Script Preview (Auto tampil ketika upload thumbnail baru) -->
+                            <script>
+                                document.getElementById('thumbnailInput').addEventListener('change', function(event) {
+                                    const preview = document.getElementById('thumbnailPreview');
+                                    const file = event.target.files[0];
+
+                                    if (file) {
+                                        preview.src = URL.createObjectURL(file);
+                                        preview.style.display = 'block';
+                                    }
+                                });
+                            </script>
+
+
 
 
                             <!-- MULTIPLE IMAGES -->
@@ -181,6 +229,7 @@
                                 <a href="{{ route('product.index') }}" class="btn btn-outline-secondary">Batal</a>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -218,40 +267,60 @@
         function checkFields() {
             let selectedOption = categorySelect.options[categorySelect.selectedIndex];
             let positionId = selectedOption.getAttribute('data-position');
-            let categoryName = selectedOption.getAttribute('data-name'); // ambil name_category
+            let categoryName = selectedOption.getAttribute('data-name');
 
             const hiddenPositions = ["2", "3", "4"];
 
-            // miles logic
+            // Miles
             if (hiddenPositions.includes(positionId)) {
                 milesField.style.display = "none";
-                milesField.querySelector('input').value = "";
             } else {
                 milesField.style.display = "block";
             }
 
-            // seats logic: tampil hanya jika name_category = Electric Cars
+            // Seats (khusus Electric Cars)
             if (!hiddenPositions.includes(positionId) && categoryName === "Electric Cars") {
                 seatsField.style.display = "block";
             } else {
                 seatsField.style.display = "none";
-                seatsField.querySelector('input').value = "";
             }
 
-            // description logic
+            // Description
             if (positionId === "1") {
                 descriptionField.style.display = "none";
-                descriptionField.querySelector('textarea').value = "";
             } else {
                 descriptionField.style.display = "block";
             }
         }
 
+        // Trigger ketika berubah
         categorySelect.addEventListener('change', checkFields);
 
-        // Jalankan ketika halaman pertama kali dimuat
-        checkFields();
+        // ⬅️ PENTING: Jalankan saat halaman edit pertama kali terbuka
+        document.addEventListener("DOMContentLoaded", function() {
+            checkFields();
+        });
     </script>
+    {{-- INI SCRIPT UNTUK MEBEDAKAN BRAND DI CATEGORY --}}
+    <script>
+        document.getElementById('category-select').addEventListener('change', function() {
+            let categoryId = this.value;
 
+            // Kosongkan dahulu brand
+            let brandSelect = document.getElementById('brand-select');
+            brandSelect.innerHTML = '<option value="">-- Pilih Brand --</option>';
+
+            if (categoryId) {
+                fetch('/get-brands/' + categoryId)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(brand => {
+                            brandSelect.innerHTML +=
+                                `<option value="${brand.id}">${brand.name_brand}</option>`;
+                        });
+                    });
+            }
+        });
+    </script>
     @include('sweetalert::alert')
 @endsection

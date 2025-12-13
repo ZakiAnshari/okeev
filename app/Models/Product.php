@@ -13,6 +13,7 @@ class Product extends Model
 
     protected $fillable = [
         'category_id',
+        'category_position_id',
         'brand_id',
         'model_name',
         'slug',
@@ -22,6 +23,7 @@ class Product extends Model
         'stock_status',
         'featured',
         'description',
+        'thumbnail'
     ];
 
     use HasSlug;

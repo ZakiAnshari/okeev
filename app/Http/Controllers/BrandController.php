@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,10 +16,10 @@ class BrandController extends Controller
     {
         $user = Auth::user();
 
-        // Ambil input pencarian dan jumlah item per halaman
+        // Ambil input pencarian
         $search = $request->input('search');
-        $paginate = $request->input('itemsPerPage', 5); // default 5
         $categories = Category::orderBy('name_category')->get();
+
         // Query awal
         $query = Brand::query();
 
@@ -31,41 +32,41 @@ class BrandController extends Controller
             });
         }
 
-        // Eksekusi query + paginasi
-        $brands = $query->paginate($paginate)->withQueryString();
+        // Eksekusi tanpa paginate
+        $brands = $query->orderBy('id', 'desc')->get();
 
         return view('admin.brand.index', compact('user', 'brands', 'categories'));
     }
 
+
     public function store(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
             'name_brand'  => 'required|string|max:255|unique:brands,name_brand',
             'category_id' => 'required|exists:categories,id',
             'image'       => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'wallpaper'   => 'required|image|mimes:jpg,jpeg,png|max:10240', // max 10MB
+            'wallpaper'   => 'required|image|mimes:jpg,jpeg,png|max:10240',
         ]);
 
-        // Upload image umum
-        $imagePath = $request->file('image')->store('images', 'public');
+        // AMBIL CATEGORY
+        $category = Category::findOrFail($validated['category_id']);
 
-        // Upload wallpaper slider
-        $wallpaperPath = $request->file('wallpaper')->store('wallpapers', 'public');
+        // UPLOAD FILE
+        $imagePath = $request->file('image')->store('brands/images', 'public');
+        $wallpaperPath = $request->file('wallpaper')->store('brands/wallpapers', 'public');
 
-        // Simpan ke database
+        // SIMPAN BRAND
         Brand::create([
-            'name_brand'  => $validated['name_brand'],
-            'category_id' => $validated['category_id'],
-            'image'       => $imagePath,
-            'wallpaper'   => $wallpaperPath,
+            'name_brand'           => $validated['name_brand'],
+            'slug'                 => Str::slug($validated['name_brand']),
+            'category_id'          => $category->id,
+            'category_position_id' => $category->category_position_id, // 🔥 INI PENTING
+            'image'                => $imagePath,
+            'wallpaper'            => $wallpaperPath,
         ]);
-
-        Alert::success('Success', 'Brand berhasil ditambahkan');
-        return back();
+        Alert::success('Success', 'Brand berhasil ditambah.');
+        return back()->with('success', 'Brand berhasil ditambahkan');
     }
-
-
 
 
 
@@ -91,66 +92,60 @@ class BrandController extends Controller
 
     public function update(Request $request, $slug)
     {
-        // Ambil data brand berdasarkan slug
+        // Ambil data brand
         $brand = Brand::where('slug', $slug)->firstOrFail();
 
-        // Validasi input
+        // Validasi
         $validated = $request->validate([
-            'name_brand' => 'required|string|max:255|unique:brands,name_brand,' . $brand->id,
+            'name_brand'  => 'required|string|max:255|unique:brands,name_brand,' . $brand->id,
             'category_id' => 'required|exists:categories,id',
-
-            'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'wallpaper'  => 'nullable|image|mimes:jpg,jpeg,png|max:10240', // 10MB
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'wallpaper'   => 'nullable|image|mimes:jpg,jpeg,png|max:10240',
         ]);
 
-        /* ------------------------------------
-        HANDLE IMAGE UPDATE
-    ------------------------------------ */
+        // 🔥 Ambil category baru
+        $category = Category::findOrFail($validated['category_id']);
 
+        /* ===============================
+       HANDLE IMAGE
+    =============================== */
         if ($request->hasFile('image')) {
-
-            // Hapus gambar lama jika ada
             if ($brand->image) {
                 Storage::disk('public')->delete($brand->image);
             }
-
-            // Upload baru
-            $validated['image'] = $request->file('image')->store('images', 'public');
+            $validated['image'] = $request->file('image')->store('brands/images', 'public');
         } else {
             $validated['image'] = $brand->image;
         }
 
-        /* ------------------------------------
-        HANDLE WALLPAPER UPDATE
-    ------------------------------------ */
-
+        /* ===============================
+       HANDLE WALLPAPER
+    =============================== */
         if ($request->hasFile('wallpaper')) {
-
-            // Hapus wallpaper lama jika ada
             if ($brand->wallpaper) {
                 Storage::disk('public')->delete($brand->wallpaper);
             }
-
-            // Upload baru
-            $validated['wallpaper'] = $request->file('wallpaper')->store('wallpapers', 'public');
+            $validated['wallpaper'] = $request->file('wallpaper')->store('brands/wallpapers', 'public');
         } else {
             $validated['wallpaper'] = $brand->wallpaper;
         }
 
-        /* ------------------------------------
-        UPDATE DATA
-    ------------------------------------ */
-
+        /* ===============================
+       UPDATE BRAND
+    =============================== */
         $brand->update([
-            'name_brand'  => $validated['name_brand'],
-            'category_id' => $validated['category_id'],
-            'image'       => $validated['image'],
-            'wallpaper'   => $validated['wallpaper'],
+            'name_brand'           => $validated['name_brand'],
+            'slug'                 => Str::slug($validated['name_brand']),
+            'category_id'          => $category->id,
+            'category_position_id' => $category->category_position_id, // 🔥 PENTING
+            'image'                => $validated['image'],
+            'wallpaper'            => $validated['wallpaper'],
         ]);
 
         Alert::success('Success', 'Brand berhasil diperbarui.');
         return redirect()->route('brands.index');
     }
+
 
     public function destroy($slug)
     {

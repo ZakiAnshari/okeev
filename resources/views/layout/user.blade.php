@@ -145,7 +145,7 @@
             </div>
         </div>
     </div>
-  
+
     <!-- /End Preloader -->
 
     <!-- Start Header Area -->
@@ -257,7 +257,6 @@
             });
         });
     </script>
-
 </body>
 @include('sweetalert::alert')
 

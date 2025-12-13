@@ -205,7 +205,7 @@
     </section>
 
     {{-- SECTION 5 --}}
-    @if ($products->isNotEmpty())
+    {{-- @if ($products->isNotEmpty())
         <section class="bg-white py-5">
             <div class="container">
                 <!-- Title -->
@@ -214,15 +214,15 @@
                 </div>
 
                 <!-- Tabs -->
-                {{-- <ul class="nav nav-pills justify-content-center mb-4">
-                <li class="nav-item">
-                    <a class="nav-link active px-3 py-1" href="#">In Stock</a>
-                </li>
-                
-                <li class="nav-item"><a class="nav-link px-3 py-1" href="#">Sedan</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-1" href="#">SUV</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-1" href="#">Motorcycle</a></li>
-            </ul> --}}
+                <ul class="nav nav-pills justify-content-center mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active px-3 py-1" href="#">In Stock</a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#">Sedan</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#">SUV</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#">Motorcycle</a></li>
+                </ul>
 
                 <!-- Scrollable cards -->
                 <div class="scroll-wrapper position-relative">
@@ -329,7 +329,7 @@
 
             </div>
         </section>
-    @endif
+    @endif --}}
 
     @include('sweetalert::alert')
 @endsection

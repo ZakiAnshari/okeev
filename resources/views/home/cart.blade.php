@@ -29,19 +29,66 @@
 
                 <!-- RIGHT SIDE -->
                 <div class="col-lg-4">
-                    <div class="card rounded-4 shadow-sm border-0 p-4">
-                        <h5 class="fw-bold mb-4" style="color:#2e425c;">Shopping Summary</h5>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted fw-semibold">Total</span>
-                            <span class="fw-bold text-danger fs-5" id="totalPrice">Rp 0</span>
+                    <div class="card border-0 shadow-sm p-4 rounded-4">
+
+                        <!-- Payment Title -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-bold mb-0">Payment Methods</h6>
+                            <a href="#" class="small text-decoration-none">See all</a>
                         </div>
+
+                        <!-- Payment List -->
+                        <div class="list-group mb-4">
+                            @foreach ([['img' => 'Group.png', 'name' => 'BCA Virtual Account'], ['img' => 'Group (1).png', 'name' => 'Mandiri Virtual Account'], ['img' => 'BRIVA-BRI 1.png', 'name' => 'BRI Virtual Account'], ['img' => 'Logo-CIMB-Niaga-Linkqu 1.png', 'name' => 'CIMB Virtual Account']] as $key => $bank)
+                                <label
+                                    class="list-group-item d-flex align-items-center justify-content-between border-0 payment-item">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="brand-box">
+                                            <img src="{{ asset('front_end/assets/images/' . $bank['img']) }}"
+                                                class="brand-img" alt="Bank Logo">
+                                        </div>
+                                        <span class="fw-semibold">{{ $bank['name'] }}</span>
+                                    </div>
+
+                                    <input type="radio" name="pay" {{ $key === 0 ? 'checked' : '' }} class="radio-lg">
+                                </label>
+                            @endforeach
+                        </div>
+
                         <hr>
-                        <button id="buyBtn" class="btn w-100 text-white fw-bold mt-3 py-3 rounded-pill"
+
+                        <!-- SHOPPING SUMMARY (FUNGSI DITIRU DARI ATAS) -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted fw-semibold">Total</span>
+                                <span class="fw-bold text-danger fs-5" id="totalPrice">
+                                    Rp 0
+                                </span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <span>Service Fee</span>
+                                <span class="fw-semibold">Rp 2.000</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        {{-- <!-- TOTAL BILL -->
+                        <div class="d-flex justify-content-between fw-semibold fs-6 mb-4">
+                            <span>Total Bill</span>
+                            <span class="text-primary">Rp 194.002.000</span>
+                        </div> --}}
+
+                        <!-- BUY BUTTON (DARI SHOPPING SUMMARY) -->
+                        <button id="buyBtn" class="btn w-100 text-white fw-bold py-3 rounded-pill"
                             style="background: linear-gradient(90deg,#09c6f9,#05a0f7,#04d4c3);">
                             BUY (0)
                         </button>
+
                     </div>
                 </div>
+
 
             </div>
         </div>

@@ -81,7 +81,13 @@
                                 <i class="bi bi-plus-circle fs-5 me-2"></i><span>Suspensi</span>
                             </button>
                         </div>
-
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-dark border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#FiturModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Fitur</span>
+                            </button>
+                        </div>
                         {{-- Category_id lainnya --}}
                     @else
                         <div class="d-flex justify-content-end">
@@ -139,21 +145,30 @@
                                                     </div>
 
                                                     <!-- Image dengan preview -->
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Image</label>
-                                                        <input type="file" name="image" class="form-control"
-                                                            accept="image/png, image/jpg, image/jpeg">
+                                                    <div class="mb-3 d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <label class="form-label">Image</label>
+                                                            <input type="file" name="image" class="form-control"
+                                                                id="imageInput3"
+                                                                accept="image/png, image/jpg, image/jpeg">
 
-                                                        <!-- Notifikasi Format & Ukuran -->
-                                                        <small class="text-muted d-block mt-1">
-                                                            Format yang diizinkan: <strong>PNG, JPG, JPEG</strong> —
-                                                            Maksimal <strong>2 MB</strong>
-                                                        </small>
+                                                            <!-- Notifikasi Format & Ukuran -->
+                                                            <small class="text-muted d-block mt-1">
+                                                                Format yang diizinkan: <strong>PNG, JPG, JPEG</strong> —
+                                                                Maksimal <strong>2 MB</strong>
+                                                            </small>
 
-                                                        @error('image')
-                                                            <small class="text-danger d-block">{{ $message }}</small>
-                                                        @enderror
+                                                            @error('image')
+                                                                <small class="text-danger d-block">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="ms-3">
+                                                            <img id="imagePreview3" src="#" alt="Preview"
+                                                                style="max-width: 150px; display: none; border-radius: 5px; border: 1px solid #ccc;">
+                                                        </div>
                                                     </div>
+
 
                                                 </div>
                                             </div>
@@ -208,13 +223,28 @@
                                                     </div>
 
                                                     <!-- Image dengan preview -->
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Image</label>
-                                                        <input type="file" name="image" class="form-control">
-                                                        @error('image')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
+                                                    <div class="mb-3 d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <label class="form-label">Image</label>
+                                                            <input type="file" name="image" class="form-control"
+                                                                id="imageInput" accept="image/jpeg,image/png,image/jpg">
+
+                                                            <!-- Pemberitahuan Jenis File & Ukuran -->
+                                                            <small class="text-muted d-block mt-1">
+                                                                Format yang diizinkan: JPG, JPEG, PNG — Maksimal 2MB
+                                                            </small>
+
+                                                            @error('image')
+                                                                <small class="text-danger">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="ms-3">
+                                                            <img id="imagePreview" src="#" alt="Preview"
+                                                                style="max-width: 150px; display: none; border-radius: 5px; border: 1px solid #ccc;">
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -276,7 +306,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Image</label>
                                                         <input type="file" name="image" class="form-control"
-                                                            id="imageInput">
+                                                            id="imageInput2">
 
                                                         <!-- Pemberitahuan -->
                                                         <small class="text-muted d-block mt-1">
@@ -292,18 +322,12 @@
 
                                                     <!-- Preview di bawah -->
                                                     <div class="text-center mt-2">
-                                                        <img id="imagePreview" src="#" alt="Preview"
-                                                            style="
-                                                                width: 150px;
-                                                                height: 150px;
-                                                                object-fit: contain;   /* Biar gambar tidak terlalu besar */
-                                                                background: #f8f8f8;   /* Biar kelihatan batas area gambar */
-                                                                display: none;
-                                                                border-radius: 5px;
-                                                                border: 1px solid #ccc;
-                                                            ">
+                                                        <img id="imagePreview2" src="#" alt="Preview"
+                                                            style="display:none; max-width:150px; border:1px solid #ccc; border-radius:5px;">
                                                     </div>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                         <!-- Footer -->
@@ -864,7 +888,7 @@
                                 <div class="tab-content">
                                     {{-- TEKNOLOGI TABLE --}}
                                     <div class="tab-pane fade {{ $activeTab == 'technology' ? 'show active' : '' }}"
-                                        id="navs-pills-top-home" role="tabpanel">
+                                        id="navs-pills-top-technology" role="tabpanel">
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -891,7 +915,6 @@
                                                                 title="Hapus">
                                                                 <i class="bx bx-trash"></i>
                                                             </button>
-
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -908,7 +931,8 @@
                                     </div>
                                     {{-- FEATURE  TABLE --}}
                                     <div class="tab-pane fade {{ $activeTab == 'feature' ? 'show active' : '' }}"
-                                        id="navs-pills-top-profile" role="tabpanel">
+                                        id="navs-pills-top-feature" role="tabpanel">
+
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -1003,8 +1027,8 @@
                                         </div>
                                     </div>
                                     {{-- SPECIFICATION  TABLE --}}
-                                    <div class="tab-pane fade {{ $activeTab == 'spesification' ? 'show active' : '' }}"
-                                        id="navs-pills-top-spesification" role="tabpanel">
+                                    <div class="tab-pane fade {{ $activeTab == 'specification' ? 'show active' : '' }}"
+                                        id="navs-pills-top-specification" role="tabpanel">
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead>
@@ -1056,7 +1080,6 @@
                                                 {{ $specifications->appends(request()->input())->links('pagination::bootstrap-4') }}
                                             </div>
                                         </div>
-
                                     </div>
                                     {{-- POWER TABLE --}}
                                     <div class="tab-pane fade {{ $activeTab == 'power' ? 'show active' : '' }}"

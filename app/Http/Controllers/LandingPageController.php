@@ -30,6 +30,13 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         // Ambil semua brand (optional, tetap untuk grid)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
@@ -43,6 +50,7 @@ class LandingPageController extends Controller
             'products',
             'categoriesPosition1',
             'categoriesPosition2',
+            'categoriesPosition3',
             'brands',
             'brandChunks'
         ));
@@ -60,7 +68,11 @@ class LandingPageController extends Controller
         // Ambil semua produk yang memiliki brand yang sama sekaligus load relasi category
         $products = Product::with('category')
             ->where('brand_id', $brand->id)
+            ->whereHas('category', function ($q) {
+                $q->whereIn('category_position_id', [1, 2, 3, 4]);
+            })
             ->get();
+
 
         // Ambil kategori khusus category_position_id = 1 dan 2 untuk navbar
         $categoriesPosition1 = Category::with('brands')
@@ -72,13 +84,20 @@ class LandingPageController extends Controller
             ->where('category_position_id', 2)
             ->orderBy('name_category', 'asc')
             ->get();
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
 
         return view('landing.brand-detail', compact(
             'brand',
             'products',
             'brandChunks',
             'categoriesPosition1',
-            'categoriesPosition2'
+            'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
 
@@ -99,6 +118,13 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->where('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         // Ambil produk berdasarkan slug sekaligus load relasi
         $product = Product::with([
             'brand',          // relasi brand() di model Product
@@ -110,7 +136,7 @@ class LandingPageController extends Controller
         ])->where('slug', $productSlug)->firstOrFail();
 
         // Opsional: ambil semua produk untuk carousel/list
-        $products = Product::all();
+        $products = Product::where('brand_id', $product->brand_id)->get();
         $powers = $product->powers;
         $dimensis = $product->dimensis;
         $suspensis = $product->suspensis;
@@ -128,7 +154,8 @@ class LandingPageController extends Controller
             'fiturs',
             'details',
             'categoriesPosition1',
-            'categoriesPosition2'
+            'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
 
@@ -155,13 +182,20 @@ class LandingPageController extends Controller
             ->where('category_position_id', 2)
             ->orderBy('name_category', 'asc')
             ->get();
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
 
         return view('landing.testdrive', compact(
             'product',
             'brands',
             'brandChunks',
             'categoriesPosition1',
-            'categoriesPosition2'
+            'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
 
@@ -229,6 +263,13 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         // Ambil semua brand (optional, tetap untuk grid)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
@@ -244,7 +285,8 @@ class LandingPageController extends Controller
             'brands',
             'brandChunks',
             'categoriesPosition1',
-            'categoriesPosition2'
+            'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
 
@@ -276,6 +318,13 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         // Ambil semua brand (optional, tetap untuk grid)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
@@ -288,9 +337,11 @@ class LandingPageController extends Controller
             'brands',
             'brandChunks',
             'categoriesPosition1',
-            'categoriesPosition2'
+            'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
+
     public function stores(Request $request)
     {
         // Validasi input
@@ -341,6 +392,13 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         // Ambil semua brand (optional, tetap untuk grid)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
@@ -354,6 +412,7 @@ class LandingPageController extends Controller
             'brandChunks',
             'categoriesPosition1',
             'categoriesPosition2',
+            'categoriesPosition3',
             'news'
         ));
     }
@@ -375,10 +434,18 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        $categoriesPosition3 = Category::with('brands')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('name_category', 'asc')
+            ->get();
+
+
         return view('landing.news-detail', compact(
             'news',
             'categoriesPosition1',
-            'categoriesPosition2'
+            'categoriesPosition2',
+            'categoriesPosition3',
         ));
     }
 }

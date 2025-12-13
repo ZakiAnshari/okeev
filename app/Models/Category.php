@@ -35,4 +35,6 @@ class Category extends Model
     {
         return $this->belongsTo(CategoryPosition::class, 'category_position_id');
     }
+
+  
 }

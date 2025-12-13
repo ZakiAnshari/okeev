@@ -59,45 +59,53 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Bersihkan harga
+        // Bersihkan harga dari titik
         $request->merge([
             'price' => $request->price ? str_replace('.', '', $request->price) : null,
         ]);
 
-        // Validasi produk
+        // Validasi
         $validated = $request->validate([
-            'category_id' => 'required|integer|exists:categories,id',
-            'brand_id'    => 'required|string|max:255',
-            'model_name'  => 'required|string|max:255',
-            'slug'        => 'nullable|string|max:255',
-            'miles'       => 'nullable|integer',
-            'seats'       => 'nullable|integer',
-            'price'       => 'required|numeric',
-            'stock_status' => 'required|in:in_stock,out_of_stock',
-            'featured'    => 'nullable|boolean',
-            'description' => 'string|nullable',
-            'images.*'    => 'required|image|mimes:jpg,jpeg,png|max:2048', // multiple
+            'category_id'   => 'required|integer|exists:categories,id',
+            'brand_id'      => 'required|integer|exists:brands,id',
+            'model_name'    => 'required|string|max:255',
+            'slug'          => 'nullable|string|max:255',
+            'miles'         => 'nullable|integer',
+            'seats'         => 'nullable|integer',
+            'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'price'         => 'required|numeric',
+            'stock_status'  => 'required|in:in_stock,out_of_stock',
+            'featured'      => 'nullable|boolean',
+            'description'   => 'nullable|string',
+            'images.*'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        //Bersihkan HTML dari CKEditor agar aman
+        // 🔥 AMBIL CATEGORY
+        $category = Category::findOrFail($validated['category_id']);
+
+        // 🔥 SET category_position_id OTOMATIS
+        $validated['category_position_id'] = $category->category_position_id;
+
+        // Bersihkan HTML pada deskripsi
         if (!empty($validated['description'])) {
             $validated['description'] = Purifier::clean($validated['description']);
         }
 
-        $validated['description'] = Purifier::clean($validated['description']);
+        // Upload Thumbnail
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')
+                ->store('images', 'public');
+        }
 
-        // Simpan data produk utama
+        // Simpan produk
         $product = Product::create($validated);
 
-        // Upload multiple image
+        // Upload Multiple Images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('images', 'public');
-
-                // Simpan ke tabel `product_images`
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image' => $path,
+                    'image'      => $image->store('images', 'public'),
                 ]);
             }
         }
@@ -105,6 +113,7 @@ class ProductController extends Controller
         Alert::success('Success', 'Product berhasil ditambahkan');
         return back();
     }
+
 
     public function edit($slug)
     {
@@ -117,44 +126,58 @@ class ProductController extends Controller
                 ->with('error', 'Data Product tidak ditemukan.');
         }
 
-        // Ambil semua brand dan category untuk dropdown
-        $brands = Brand::orderBy('name_brand', 'asc')->get();
+        // Ambil kategori untuk dropdown (tidak difilter)
         $categories = Category::orderBy('name_category', 'asc')->get();
 
-        // Kirim data ke view (pastikan view memakai variable $categories dan $brands)
+        // FILTER brand berdasarkan category_id dari produk
+        $brands = Brand::where('category_id', $products->category_id)
+            ->orderBy('name_brand', 'asc')
+            ->get();
+
+        // Kirim data ke view
         return view('admin.product.edit', compact('products', 'brands', 'categories'));
     }
 
+
     public function update(Request $request, $slug)
     {
-        // Ambil data produk berdasarkan slug
+        // Ambil produk
         $product = Product::where('slug', $slug)->firstOrFail();
 
-        // Format harga: hilangkan titik
+        // Bersihkan harga dari titik
         $request->merge([
             'price' => $request->price ? str_replace('.', '', $request->price) : null,
         ]);
 
-        // Validasi input (mirip STORE)
+        // Validasi
         $validated = $request->validate([
-            'category_id' => 'required|integer|exists:categories,id',
-            'brand_id'    => 'required|string|max:255',
-            'model_name'  => 'required|string|max:255',
-            'slug'        => 'nullable|string|max:255',
-            'miles'       => 'nullable|integer',
-            'seats'       => 'nullable|integer',
-            'price'       => 'required|numeric',
-            'stock_status' => 'required|in:in_stock,out_of_stock',
-            'featured'    => 'nullable|boolean',
-            'description' => 'nullable|string',
-
-            // Multiple image, boleh kosong saat update
-            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'category_id'    => 'required|integer|exists:categories,id',
+            'brand_id'       => 'required|integer|exists:brands,id',
+            'model_name'     => 'required|string|max:255',
+            'slug'           => 'nullable|string|max:255',
+            'miles'          => 'nullable|integer',
+            'seats'          => 'nullable|integer',
+            'price'          => 'required|numeric',
+            'stock_status'   => 'required|in:in_stock,out_of_stock',
+            'featured'       => 'nullable|boolean',
+            'description'    => 'nullable|string',
+            'images.*'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Bersihkan HTML CKEditor
+        // 🔥 AMBIL CATEGORY BARU
+        $category = Category::findOrFail($validated['category_id']);
+
+        // 🔥 SINKRON category_position_id
+        $validated['category_position_id'] = $category->category_position_id;
+
+        // Bersihkan HTML deskripsi
         if (!empty($validated['description'])) {
             $validated['description'] = Purifier::clean($validated['description']);
+        }
+
+        // HANDLE SLUG
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['model_name']);
         }
 
         // ============================
@@ -163,7 +186,7 @@ class ProductController extends Controller
         $product->update($validated);
 
         // ============================
-        // UPLOAD MULTIPLE IMAGES (OPTIONAL)
+        // UPDATE MULTIPLE IMAGES (OPTIONAL)
         // ============================
         if ($request->hasFile('images')) {
 
@@ -175,27 +198,17 @@ class ProductController extends Controller
 
             // Upload gambar baru
             foreach ($request->file('images') as $image) {
-                $path = $image->store('images', 'public');
-
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image'      => $path,
+                    'image'      => $image->store('images', 'public'),
                 ]);
             }
-        }
-
-        // ============================
-        // HANDLE SLUG
-        // ============================
-        if (empty($validated['slug'])) {
-            $product->update([
-                'slug' => Str::slug($validated['model_name'])
-            ]);
         }
 
         Alert::success('Success', 'Product berhasil diperbarui.');
         return redirect()->route('product.index');
     }
+
 
     public function destroy($slug)
     {

@@ -14,6 +14,7 @@ class Brand extends Model
         'image',
         'wallpaper',
         'category_id',
+        'category_position_id'
     ];
 
     use HasSlug;
@@ -32,5 +33,10 @@ class Brand extends Model
     public function categories()
     {
         return $this->belongsTo(Category::class, 'brand_id');
+    }
+    // Brand → Category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

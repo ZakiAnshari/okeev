@@ -15,10 +15,10 @@ class CategoryController extends Controller
     {
         $user = Auth::user();
 
-        // Ambil input pencarian & jumlah item per halaman
+        // Ambil input pencarian
         $search = $request->input('search');
-        $paginate = $request->input('itemsPerPage', 5); // default 5
         $positions = CategoryPosition::all();
+
         // Query awal: sort terbaru di atas
         $query = Category::orderBy('created_at', 'desc');
 
@@ -29,10 +29,13 @@ class CategoryController extends Controller
                     ->orWhere('slug', 'LIKE', '%' . $search . '%');
             });
         }
-        // Eksekusi query + paginasi
-        $categorys = $query->paginate($paginate)->withQueryString();
+
+        // Ambil semua data tanpa paginate
+        $categorys = $query->get();
+
         return view('admin.category.index', compact('user', 'categorys', 'positions'));
     }
+
 
     public function store(Request $request)
     {
@@ -101,12 +104,6 @@ class CategoryController extends Controller
     {
         // Cari kategori berdasarkan slug
         $category = Category::where('slug', $slug)->firstOrFail();
-
-        // Cek kategori yang dilindungi (category_position_id 1 dan 2)
-        if (in_array($category->category_position_id, [1, 2])) {
-            Alert::error('Error', 'Kategori ini tidak bisa dihapus karena termasuk kategori penting.');
-            return redirect()->route('category.index');
-        }
 
         // Hapus kategori
         $category->delete();

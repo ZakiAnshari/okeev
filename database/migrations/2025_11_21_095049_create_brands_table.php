@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id'); // <---- WAJIB ADA
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedTinyInteger('category_position_id'); 
             $table->string('name_brand');
             $table->string('slug')->nullable();
             $table->string('image')->nullable();

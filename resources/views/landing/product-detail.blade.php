@@ -6,14 +6,12 @@
         <div class="container">
             <!-- Back Button -->
             <div class="header-title">
-
                 <a href="{{ route('landing.cars', $product->brand->slug) }}" class="text-decoration-none text-dark me-2">
                     <i class="bx bx-arrow-back me-2"></i> Detail
                 </a>
-
             </div>
             {{-- TAMPILAN DETAIL --}}
-            @if (in_array($product->category_id, [1, 2]))
+            @if ($product->category_position_id == 1)
                 <div class="row g-4 mt-2">
 
                     <!-- Gambar Utama -->
@@ -21,26 +19,27 @@
                         <div id="productCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
                             <div class="carousel-inner bg-light rounded" style="max-height: 395px;">
 
-                                @foreach ($product->images as $key => $image)
-                                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                        <img src="{{ asset('storage/' . $image->image) }}"
-                                            class="d-block mx-auto img-fluid p-4"
-                                            style="max-height: 395px; object-fit: contain;"
-                                            alt="{{ $product->model_name }}">
-                                    </div>
-                                @endforeach
+                                <div class="carousel-item active">
+                                    <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                        class="d-block mx-auto img-fluid p-4"
+                                        style="max-height: 395px; object-fit: contain;" alt="Thumbnail">
+                                </div>
+
                             </div>
+
                             <!-- Controls -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon"></span>
                             </button>
+
                             <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
                                 data-bs-slide="next">
                                 <span class="carousel-control-next-icon"></span>
                             </button>
                         </div>
                     </div>
+
 
                     <!-- Thumbnail -->
                     <div class="col-12">
@@ -83,7 +82,7 @@
                             </a>
                         @else
                             <a href="{{ route('login') }}" class="btn btn-outline-success w-100 py-2">
-                                <i class="bx bx-cart me-2"></i> Login to Add
+                                <i class="bx bx-cart me-2"></i> Add to Cart
                             </a>
                         @endif
                     </div>
@@ -95,7 +94,7 @@
                     </div>
                 </div>
             @endif
-            @if (in_array($product->category_id, [3, 4]))
+            @if ($product->category_position_id == 2 || $product->category_position_id == 3 || $product->category_position_id == 4)
                 <section class="pt-5">
                     <div class="container">
                         <div class="row g-4">
@@ -119,7 +118,6 @@
                                                 style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                         @endif
                                     </div>
-
                                 </div>
                                 <!-- Thumbnails -->
                                 <div class="d-flex gap-3 justify-content-center">
@@ -128,12 +126,10 @@
                                             width="70" onclick="document.getElementById('mainImage').src=this.src">
                                     @endforeach
                                 </div>
-
                             </div>
 
                             <!-- RIGHT: PRODUCT DETAILS -->
                             <div class="col-lg-6">
-
                                 <h3 class="fw-bold">{{ $product->model_name }}</h3>
                                 <h4 class="fw-bold text-primary mb-3" style="color:#00AEEF !important;">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
@@ -141,22 +137,29 @@
                                 <p class="text-secondary">
                                     {!! $product->description !!}
                                 </p>
-
-
                                 <!-- Action Buttons -->
                                 <div class="d-flex gap-3 mt-4">
-                                    <button class="btn btn-outline-primary px-4 py-2 rounded-pill">
-                                        <i class="bx bx-cart-alt me-2"></i>
-                                        Keranjang
-                                    </button>
-
+                                    @if (Auth::check())
+                                        <button class="btn btn-outline-primary px-4 py-2 rounded-pill add-to-cart-btn"
+                                            data-id="{{ $product->id }}" data-name="{{ $product->model_name }}"
+                                            data-price="{{ $product->price }}"
+                                            data-image="{{ asset('storage/' . $product->images->first()->image) }}">
+                                            <i class="bx bx-cart-alt me-2"></i>
+                                            Keranjang
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="btn btn-outline-primary px-4 py-2 rounded-pill">
+                                            <i class="bx bx-cart-alt me-2"></i>
+                                            Keranjang
+                                        </a>
+                                    @endif
                                     <button class="btn px-4 py-2 rounded-pill text-white"
                                         style="background: linear-gradient(to right, #00A6FF, #00D8A4); border: none;">
                                         Pesan Sekarang
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -169,7 +172,7 @@
             <!-- Top Navigation -->
             <ul class="nav justify-content-center border-bottom pb-2 mb-4 tech-nav">
                 <!-- Tab -->
-                @if ($product->category_id == 1)
+                @if ($product->category_position_id == 1)
                     <li class="nav-item">
                         <a class="nav-link" id="tech-tab" href="javascript:void(0)">Technology</a>
                     </li>
@@ -208,10 +211,7 @@
                         <a class="nav-link" id="tech-tab" href="javascript:void(0)">Fitur</a>
                     </li>
                 @endif
-
             </ul>
-
-
 
             @if (in_array($product->category_id, [3, 4]))
 
@@ -233,8 +233,6 @@
                     </div>
                 </section>
             @endif
-
-
 
             @if ($product->category_id == 1)
                 <br><br>
@@ -292,7 +290,6 @@
         </div>
     </section>
 
-
     {{-- INI FEATURE UNTUK CATEGORI 1 --}}
     @if ($product->category_id == 1)
         <section class="py-5">
@@ -302,9 +299,7 @@
                     <h4 class="fw-bold me-3 mb-0"> {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature</h4>
                     <div class="flex-grow-1 line-tech"></div>
                 </div>
-
                 <div class="row align-items-center g-4 mt-1">
-
                     <!-- Left Text -->
                     <div class="col-lg-6 col-md-12">
                         <h4 class="mb-5" id="feature-description">
@@ -312,7 +307,6 @@
                                 {!! $product->features->first()->description !!}
                             @endif
                         </h4>
-
                         @forelse($product->features as $index => $feature)
                             <h5 class="feature-item {{ $index === 0 ? 'active' : '' }}"
                                 data-index="{{ $index }}">
@@ -336,6 +330,37 @@
                         @endforelse
                     </div>
                 </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const featureItems = document.querySelectorAll(".feature-item");
+                        const featureImages = document.querySelectorAll(".feature-image");
+                        const descriptionElement = document.getElementById("feature-description");
+
+                        featureItems.forEach(item => {
+                            item.addEventListener("click", function() {
+                                // Ambil index
+                                const index = this.dataset.index;
+
+                                // --- Update Active Class di daftar fitur ---
+                                featureItems.forEach(i => i.classList.remove("active"));
+                                this.classList.add("active");
+
+                                // --- Update Teks Deskripsi ---
+                                const selectedFeature = @json($product->features);
+                                descriptionElement.innerHTML = selectedFeature[index].description;
+
+                                // --- Update Gambar ---
+                                featureImages.forEach(img => img.style.display = "none");
+
+                                const activeImage = document.getElementById(`feature-image-${index}`);
+                                if (activeImage) {
+                                    activeImage.style.display = "block";
+                                }
+                            });
+                        });
+                    });
+                </script>
+
             </div>
         </section>
     @endif
@@ -382,15 +407,18 @@
                             <!-- Buttons -->
                             <div class="row mt-4">
                                 <div class="col-6 pe-1">
-                                    <button class="btn btn-outline-primary w-100 py-2 rounded-3">
+                                    <a href="{{ route('landing.product.testdrive', $product->slug) }}"
+                                        class="btn btn-outline-primary w-100 py-2 rounded-3">
                                         Test Drive
-                                    </button>
+                                    </a>
+
                                 </div>
                                 <div class="col-6 ps-1">
-                                    <button class="btn btn-primary w-100 py-2 rounded-3"
+                                    <a href="" class="btn btn-primary w-100 py-2 rounded-3"
                                         style="background: linear-gradient(to right, #0094ff, #00e6a8); border: none;">
                                         Order Now
-                                    </button>
+                                    </a>
+
                                 </div>
                             </div>
                         </div>
@@ -398,8 +426,10 @@
                         <!-- Gambar Mobil -->
                         <div class="col-lg-7 text-center">
                             <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
-                                class="img-fluid car-preview" id="car-preview" alt="Car">
+                                class="img-fluid car-preview" id="car-preview" alt="Car"
+                                style="max-height: 250px; width: auto;">
                         </div>
+
 
                     </div>
                 @endif
@@ -673,7 +703,6 @@
                                                 class="img-fluid mb-2 vehicle-img w-100 p-4">
                                         @endif
                                     </div>
-
                                 </div>
                                 <!-- Detail -->
                                 <div class="card-body p-3 bg-white rounded-bottom">

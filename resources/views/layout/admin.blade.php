@@ -565,4 +565,48 @@
 </script>
 {{-- END TEXT AREA --}}
 
+{{-- INI SCRIPT UNTUK PREVIEW SEMUA IMAGE --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // Fungsi umum untuk preview
+        function setupImagePreview(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            if (!input || !preview) return;
+
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                if (!file) {
+                    preview.style.display = 'none';
+                    preview.src = '#';
+                    return;
+                }
+
+                // Validasi tipe file
+                const validTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+                if (!validTypes.includes(file.type)) {
+                    alert("Format gambar harus PNG, JPG, atau JPEG!");
+                    this.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Setup semua input/preview
+        setupImagePreview('imageInput2', 'imagePreview2');
+        setupImagePreview('imageInput3', 'imagePreview3');
+
+    });
+</script>
+
+
 </html>

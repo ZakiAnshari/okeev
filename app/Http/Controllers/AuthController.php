@@ -74,18 +74,14 @@ class AuthController extends Controller
 
         // Arahkan sesuai role_id
         switch ($user->role_id) {
-            case 1:
-                return redirect()->intended('/dashboard');
-
             case 2:
+                // Role 2 → ke /home
                 return redirect()->intended('/home');
 
+            case 1:
             default:
-                // Jika role tidak dikenal → logout sebagai pengaman
-                Auth::logout();
-                return redirect('/login')->with('error', 'Anda tidak memiliki akses.');
-
-                
+                // Role 1 atau role tidak dikenal → ke /dashboard
+                return redirect()->intended('/dashboard');
         }
     }
 

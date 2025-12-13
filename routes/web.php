@@ -52,7 +52,6 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
     Route::get('/cart', [HomeUserController::class, 'cart']);
     Route::post('/cart/add', [HomeUserController::class, 'addToCart']);
-
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 

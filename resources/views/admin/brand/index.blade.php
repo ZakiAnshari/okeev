@@ -179,7 +179,7 @@
 
 
                             <!-- Table Data -->
-                            <table id="brandTable" class="table table-bordered ">
+                            <table id="brandTable" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
@@ -217,6 +217,24 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            <script>
+                                $(document).ready(function() {
+                                    $('#brandTable').DataTable({
+                                        responsive: true,
+                                        pageLength: 10,
+                                        lengthMenu: [5, 10, 25, 50, 100],
+                                        ordering: true,
+                                        language: {
+                                            search: "Cari:",
+                                            lengthMenu: "Tampilkan _MENU_ data",
+                                            zeroRecords: "Data tidak ditemukan",
+                                            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                                            infoEmpty: "Tidak ada data tersedia",
+                                            infoFiltered: "(difilter dari _MAX_ total data)"
+                                        }
+                                    });
+                                });
+                            </script>
 
 
                         </div>
