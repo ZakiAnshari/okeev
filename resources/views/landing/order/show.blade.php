@@ -1,23 +1,23 @@
 @extends('layout.user')
-@section('title', 'cart')
+@section('title', 'Order-Now')
 @section('content')
 
     <br><br><br><br>
+
 
     <section class="py-5">
         <div class="container">
 
             <!-- Back -->
-            <a href="/detailwuling" class="text-decoration-none d-flex align-items-center mb-4">
+            <a href="/" class="text-decoration-none d-flex align-items-center mb-4">
                 <i class="bx bx-arrow-back me-2"></i> Order Now
             </a>
 
             <div class="row g-4">
 
                 <!-- LEFT SIDE -->
-                <div class="col-lg-7">
-                    <div class="card border-0 shadow-sm p-4 rounded-4">
-
+                <div class="col-lg-8">
+                    <div class="card shadow-sm p-4 rounded-4">
                         <div class="d-flex flex-column flex-md-row gap-3 align-items-start">
 
                             <!-- IMAGE -->
@@ -47,7 +47,7 @@
 
                                 <p class="fw-semibold mb-2">Pilih Warna</p>
 
-                                <div class="d-flex flex-wrap gap-2 gap-md-3">
+                                <div class="d-flex flex-wrap gap-2 gap-md-3 justify-content-center align-items-center">
                                     <div class="color-circle" style="background: linear-gradient(#000 50%, #fff 50%);">
                                     </div>
                                     <div class="color-circle"
@@ -121,8 +121,8 @@
 
 
                 <!-- RIGHT SIDE -->
-                <div class="col-lg-5">
-                    <div class="card border-0 shadow-sm p-4 rounded-4">
+                <div class="col-lg-4">
+                    <div class="card  shadow-sm p-4 rounded-4">
 
                         <!-- Payment Title -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -146,7 +146,11 @@
                                         <span class="fw-semibold">{{ $bank['name'] }}</span>
                                     </div>
 
-                                    <input type="radio" name="pay" {{ $key === 0 ? 'checked' : '' }} class="radio-lg">
+                                    <label class="custom-radio">
+                                        <input type="radio" name="pay" {{ $key === 0 ? 'checked' : '' }}>
+                                        <span></span>
+                                    </label>
+
                                 </label>
                             @endforeach
 
@@ -158,7 +162,11 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <span>Total price (1 item)</span>
-                                <span class="fw-semibold">Rp 194.000.000</span>
+                                <span style="font-weight: 900; letter-spacing: 1px; color: #00B0E5;">
+                                    Rp 194.000.000
+                                </span>
+
+
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span>Service Fee</span>
@@ -171,13 +179,16 @@
                         <!-- Total Bill -->
                         <div class="d-flex justify-content-between fw-semibold fs-6 mb-3">
                             <span>Total Bill</span>
-                            <span class="text-primary">Rp 194.002.000</span>
+                            <span style="font-weight: 900; letter-spacing: 1px; color: #00B0E5;">
+                                Rp 194.002.000
+                            </span>
                         </div>
 
                         <!-- Payment Button -->
-                        <button class="btn btn-info text-white w-100 py-2 rounded-pill">
+                        <a href="{{ route('payment.va') }}" class="btn btn-info text-white w-100 py-2 rounded-pill">
                             Payment
-                        </button>
+                        </a>
+
 
                     </div>
                 </div>
@@ -187,6 +198,146 @@
         </div>
     </section>
 
+    <style>
+        .product-card {
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* IMAGE */
+        .product-image-box {
+            width: 80px;
+            height: 80px;
+            background: #f9fafb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+        }
+
+        .product-image-box img {
+            max-width: 100px !important;
+            max-height: 100px;
+            object-fit: contain;
+        }
+
+        /* DROPDOWN OFFSET */
+        .shipping-options {
+            margin-left: calc(80px + 16px);
+            /* PENTING */
+            max-width: 260px;
+        }
+
+        .form-select {
+            font-size: 14px;
+            border-radius: 8px;
+        }
+
+        .shipping-card,
+        .product-card {
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .location-icon {
+            color: #ef4444;
+            font-size: 18px;
+            margin-top: 3px;
+        }
+
+        .product-image-box {
+            width: 80px;
+            height: 80px;
+            background: #f9fafb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+        }
+
+        .product-image-box img {
+            max-width: 70px;
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+        .shipping-options {
+            max-width: 260px;
+            /* INI YANG BIKIN POSISI SAMA */
+        }
+
+        .form-select {
+            font-size: 14px;
+            border-radius: 8px;
+        }
+
+        .custom-radio {
+            position: relative;
+            display: inline-block;
+            width: 24px;
+            /* ukuran lingkaran luar */
+            height: 24px;
+        }
+
+        .custom-radio input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .custom-radio span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #00B0E5;
+            /* warna border */
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .custom-radio span::after {
+            content: "";
+            width: 12px;
+            /* lingkaran dalam */
+            height: 12px;
+            background-color: #00B0E5;
+            /* warna lingkaran tengah */
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .custom-radio input:checked+span::after {
+            opacity: 1;
+        }
+
+        .product-image-box {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+    </style>
 
     <style>
         /* PRODUCT IMAGE */
@@ -231,9 +382,9 @@
         }
 
         .brand-box {
-            width: 70px;
-            height: 50px;
-            background: #f5f5f5;
+            width: 60px;
+            height: 60px;
+            /* background: #f5f5f5; */
             border-radius: 10px;
             display: flex;
             justify-content: center;
@@ -246,19 +397,6 @@
 
         .radio-lg {
             transform: scale(1.2);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .product-image-box {
-                width: 130px;
-                height: 90px;
-            }
-
-            .color-circle {
-                width: 40px;
-                height: 40px;
-            }
         }
     </style>
 

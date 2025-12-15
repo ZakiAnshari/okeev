@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Roles;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -51,48 +55,59 @@ class HomeUserController extends Controller
 
     public function showProfile($slug)
     {
-        $brands = Brand::select('id', 'name_brand', 'slug', 'image')
+        // User login
+        $authUser = Auth::user();
+
+        // User yang sedang dilihat berdasarkan slug
+        $user = User::where('slug', $slug)->firstOrFail();
+
+        // Roles
+        $roles = Roles::all();
+
+        // Ambil brand
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
             ->get();
-        // Pecah menjadi chunks untuk grid, misal 4 per kolom
+
+        // Chunk brand (4 per kolom)
         $brandChunks = $brands->chunk(4);
 
-        // Ambil kategori dengan category_position_id = 1 beserta brand-nya
+        // Kategori posisi 1
         $categoriesPosition1 = Category::with('brands')
             ->where('category_position_id', 1)
             ->orderBy('name_category', 'asc')
             ->get();
 
-        // Ambil kategori dengan category_position_id = 2 (misal untuk Electric Motorcycles)
+        // Kategori posisi 2
         $categoriesPosition2 = Category::with('brands')
             ->where('category_position_id', 2)
             ->orderBy('name_category', 'asc')
             ->get();
 
-        // Ambil kategori khusus category_position_id = 3 beserta brand-nya
+        // Kategori posisi 3 & 4
         $categoriesPosition3 = Category::with('brands')
             ->whereIn('category_position_id', [3, 4])
             ->orderBy('name_category', 'asc')
             ->get();
 
-
-        // Ambil semua brand (optional, jika ingin menampilkan di grid lain)
-        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
-            ->orderBy('name_brand', 'asc')
-            ->get();
-
-
         return view('home.profil', compact(
+            'authUser',
+            'user',
+            'roles',
             'brands',
             'brandChunks',
             'categoriesPosition1',
             'categoriesPosition2',
-            'categoriesPosition3',
+            'categoriesPosition3'
         ));
     }
 
     public function cart()
     {
+        $cartItems = Cart::with('product')
+            ->where('user_id', Auth::id())
+            ->get();
+
         // Ambil semua brand dari tabel brands
         $brands = Brand::select('id', 'name_brand', 'slug', 'image')
             ->orderBy('name_brand', 'asc')
@@ -127,24 +142,69 @@ class HomeUserController extends Controller
             'categoriesPosition1',
             'categoriesPosition2',
             'categoriesPosition3',
-            'products'
+            'products',
+            'cartItems'
         ));
     }
 
     // HomeUserController.php
     public function addToCart(Request $request)
     {
-        // logika menambahkan ke keranjang
-        // Contoh sederhana, bisa disesuaikan dengan implementasi cart-mu
-        $cart = session()->get('cart', []);
-        $cart[$request->product_id] = [
-            "name" => $request->product_name,
-            "price" => $request->price,
-            "image" => $request->image,
-            "quantity" => 1
-        ];
-        session()->put('cart', $cart);
+        $cart = Cart::firstOrCreate(
+            [
+                'user_id'    => Auth::id(),
+                'product_id' => $request->product_id
+            ],
+            [
+                'quantity' => 0
+            ]
+        );
 
-        return response()->json(['success' => true]);
+        $cart->increment('quantity');
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function increaseQty(Request $request)
+    {
+        $cart = Cart::where('id', $request->id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $cart->increment('quantity');
+
+        return response()->json([
+            'qty'   => $cart->quantity,
+            'count' => Cart::where('user_id', auth()->id())->sum('quantity')
+        ]);
+    }
+
+    public function decreaseQty(Request $request)
+    {
+        $cart = Cart::where('id', $request->id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        if ($cart->quantity > 1) {
+            $cart->decrement('quantity');
+        }
+
+        return response()->json([
+            'qty'   => $cart->quantity,
+            'count' => Cart::where('user_id', auth()->id())->sum('quantity')
+        ]);
+    }
+
+    public function removeItem($id)
+    {
+        Cart::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->delete();
+
+        return response()->json([
+            'count' => Cart::where('user_id', auth()->id())->sum('quantity')
+        ]);
     }
 }

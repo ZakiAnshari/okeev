@@ -159,7 +159,6 @@ class LandingPageController extends Controller
         ));
     }
 
-
     public function testdrive($productSlug)
     {
         // Ambil semua brand untuk header
@@ -290,12 +289,10 @@ class LandingPageController extends Controller
         ));
     }
 
-
     public function cart()
     {
         return view('landing.cart');
     }
-
 
     // KONTAK
     public function contact()
@@ -371,8 +368,6 @@ class LandingPageController extends Controller
         return back();
     }
     // AKHIR KONTAK
-
-
     public function newss()
     {
         $brands = Brand::select('id', 'name_brand', 'slug', 'image')
@@ -448,4 +443,6 @@ class LandingPageController extends Controller
             'categoriesPosition3',
         ));
     }
+
+
 }

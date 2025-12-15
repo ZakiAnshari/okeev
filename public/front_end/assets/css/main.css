@@ -1218,7 +1218,7 @@ p {
 }
 
 .brand-box img {
-    max-width: 80%; /* biar gambar nggak mepet */
+    max-width: 100%; /* biar gambar nggak mepet */
     max-height: 80%;
     object-fit: contain;
 }
@@ -1354,10 +1354,10 @@ button:focus,
     box-shadow: none !important;
 }
 
-.form-check-input:checked {
+/* .form-check-input:checked {
     background-color: #ff6b81;
     border-color: #ff6b81;
-}
+} */
 
 select {
     -webkit-writing-mode: horizontal-tb !important;

@@ -1,84 +1,133 @@
 @extends('layout.user')
 @section('title', 'Profil')
 @section('content')
-<link rel="stylesheet" 
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<br><br><br>
-<section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            
-            <!-- Kolom Kiri -->
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <br><br><br>
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
 
-                        <!-- Foto Profil -->
-                        <img src="{{ asset('front_end/assets/images/hero/mobil.png') }}" 
-                             class="img-fluid rounded mb-3" 
-                             alt="Profile">
+                <!-- Kolom Kiri -->
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm ">
+                        <div class="card-body text-center">
 
-                        <!-- Tombol ganti foto -->
-                        <button class="btn btn-success w-100 mb-2" style="border-radius: 8px;">
-                            Change Profile Photo
-                        </button>
+                            <!-- Foto Profil -->
+                            <img src="{{ asset('front_end/assets/images/hero/mobil.png') }}" class="img-fluid rounded mb-3"
+                                alt="Profile">
 
-                        <!-- Info kecil -->
-                        <small class="text-muted d-block">
-                            File size: maximum 10 Megabytes. Allowed file<br>
-                            extensions: JPG, JPEG, PNG
-                        </small>
+                            <!-- Tombol ganti foto -->
+                            <button class="btn btn-success w-100 mb-2" style="border-radius: 8px;">
+                                Change Profile Photo
+                            </button>
+
+                            <!-- Info kecil -->
+                            <small class="text-muted d-block">
+                                File size: maximum 10 Megabytes. Allowed file<br>
+                                extensions: JPG, JPEG, PNG
+                            </small>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Kolom Kanan -->
-            <div class="col-md-6">
-                <div class="p-3">
+                <!-- Kolom Kanan -->
+                <div class="col-md-6 ">
+                    <div class="p-3">
 
-                    <!-- Nama -->
-                    <h3 class="fw-bold mb-0">OKEEV</h3>
+                        <!-- Nama -->
+                        <h3 class="fw-bold mb-0">{{ $user->name }}</h3>
 
-                    <!-- Email -->
-                    <a href="mailto:okeev2025@gmail.com" 
-                       class="d-block mb-3" 
-                       style="color: #2ED3C1; text-decoration:none;">
-                        okeev2025@gmail.com
-                    </a>
+                        <!-- Email -->
+                        <a href="mailto:okeev2025@gmail.com" class="d-block mb-3"
+                            style="color: #2ED3C1; text-decoration:none;">
+                            {{ $user->email }}
+                        </a>
 
-                    <!-- Contact -->
-                    <p class="mb-1">
-                        <i class="bi bi-telephone text-danger me-2"></i>
-                        +62 857 6765 6789
-                    </p>
+                        <!-- Contact -->
+                        <p class="mb-1">
+                            <i class="bi bi-telephone text-danger me-2"></i>
+                            {{ $user->contact }}
+                        </p>
 
-                    <!-- Alamat -->
-                    <p>
-                        <i class="bi bi-geo-alt text-danger me-2"></i>
-                        Jl. Ahmad Yani, Blok 66 17
-                    </p>
+                        <!-- Alamat -->
+                        <p>
+                            <i class="bi bi-geo-alt text-danger me-2"></i>
+                            Jl. Ahmad Yani, Blok 66 17
+                        </p>
 
-                    <!-- Garis -->
-                    <div class="w-100 my-4" style="height: 6px; background:#26d0cf; border-radius:4px;"></div>
+                        <!-- Garis -->
+                        <div class="gradient-divider my-4"></div>
+                        <style>
+                            .gradient-divider {
+                                width: 100%;
+                                height: 12px;
+                                border-radius: 0px;
+                                background: linear-gradient(90deg,
+                                        #2f4858 0%,
+                                        #2e6f73 25%,
+                                        #2fb7a6 55%,
+                                        #3ff0c3 100%);
+                            }
 
-                    <!-- Tombol Keluar -->
-                    <form action="{{ route('user.logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" 
-                            class="btn btn-dark w-100 py-2" 
-                            style="border-radius: 8px;">
-                            <i class="bi bi-box-arrow-right me-2"></i> Keluar
-                        </button>
-                    </form>
+                            @keyframes loadingGradient {
+                                0% {
+                                    background-position: 0% 50%;
+                                }
+
+                                50% {
+                                    background-position: 100% 50%;
+                                }
+
+                                100% {
+                                    background-position: 0% 50%;
+                                }
+                            }
+                        </style>
+                        <!-- Tombol Keluar -->
+                        <!-- Logout Form -->
+                        <form id="logoutForm" action="{{ route('user.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-dark w-100 py-2" style="border-radius: 8px;">
+                                <i class="bi bi-box-arrow-right me-2"></i> Keluar
+                            </button>
+                        </form>
+
+                        <!-- SweetAlert2 CDN (jika belum ada) -->
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const logoutForm = document.getElementById('logoutForm');
+
+                                logoutForm.addEventListener('submit', function(e) {
+                                    e.preventDefault(); // hentikan submit default
+
+                                    Swal.fire({
+                                        title: 'Keluar?',
+                                        text: "Apakah kamu yakin ingin logout?",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Ya, keluar!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            this.submit(); // submit form jika dikonfirmasi
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
 
 
+
+                    </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
-</section>
+    </section>
 
-@include('sweetalert::alert')
+    @include('sweetalert::alert')
 @endsection
-

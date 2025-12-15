@@ -13,18 +13,15 @@
             {{-- TAMPILAN DETAIL --}}
             @if ($product->category_position_id == 1)
                 <div class="row g-4 mt-2">
-
                     <!-- Gambar Utama -->
                     <div class="col-12">
                         <div id="productCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
                             <div class="carousel-inner bg-light rounded" style="max-height: 395px;">
-
                                 <div class="carousel-item active">
                                     <img src="{{ asset('storage/' . $product->thumbnail) }}"
                                         class="d-block mx-auto img-fluid p-4"
                                         style="max-height: 395px; object-fit: contain;" alt="Thumbnail">
                                 </div>
-
                             </div>
 
                             <!-- Controls -->
@@ -39,7 +36,6 @@
                             </button>
                         </div>
                     </div>
-
 
                     <!-- Thumbnail -->
                     <div class="col-12">
@@ -74,12 +70,10 @@
 
                     <div class="col-md-6">
                         @if (Auth::check())
-                            <a href="#" class="btn btn-outline-success w-100 py-2 add-to-cart-btn"
-                                data-id="{{ $product->id }}" data-name="{{ $product->model_name }}"
-                                data-price="{{ $product->price }}"
-                                data-image="{{ asset('storage/' . $product->images->first()->image) }}">
+                            <button type="button" class="btn btn-outline-success w-100 py-2 add-to-cart-btn"
+                                data-id="{{ $product->id }}">
                                 <i class="bx bx-cart me-2"></i> Add to Cart
-                            </a>
+                            </button>
                         @else
                             <a href="{{ route('login') }}" class="btn btn-outline-success w-100 py-2">
                                 <i class="bx bx-cart me-2"></i> Add to Cart
@@ -88,9 +82,15 @@
                     </div>
 
                     <div class="col-12">
-                        <button class="btn text-white w-100 py-2 order-btn">
+                        <button class="btn text-white w-100 py-2 order-btn" id="orderBtn">
                             Order Now
                         </button>
+
+                        <script>
+                            document.getElementById('orderBtn').addEventListener('click', function() {
+                                window.location.href = "{{ route('order.now') }}";
+                            });
+                        </script>
                     </div>
                 </div>
             @endif
@@ -154,10 +154,12 @@
                                             Keranjang
                                         </a>
                                     @endif
-                                    <button class="btn px-4 py-2 rounded-pill text-white"
-                                        style="background: linear-gradient(to right, #00A6FF, #00D8A4); border: none;">
-                                        Pesan Sekarang
-                                    </button>
+                                    <a href="/order-now">
+                                        <button class="btn px-4 py-2 rounded-pill text-white"
+                                            style="background: linear-gradient(to right, #00A6FF, #00D8A4); border: none;">
+                                            Pesan Sekarang
+                                        </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -785,7 +787,7 @@
     </script>
 
     {{-- ini scrip untuk menambahkan cart  --}}
-    <script>
+    {{-- <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
@@ -850,7 +852,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -912,7 +914,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
@@ -952,7 +954,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
     {{-- JS untuk switch tab dan gambar --}}
     <script>
         document.querySelectorAll('.tab-item').forEach(tab => {
@@ -976,4 +978,5 @@
             });
         });
     </script>
+
 @endsection

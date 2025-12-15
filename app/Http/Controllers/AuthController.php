@@ -73,15 +73,19 @@ class AuthController extends Controller
         alert()->success('Berhasil Login', 'Selamat datang di Okeev');
 
         // Arahkan sesuai role_id
+        $intendedUrl = redirect()->intended()->getTargetUrl();
+
+        if ($intendedUrl && !str_contains($intendedUrl, '/login')) {
+            return redirect()->to($intendedUrl);
+        }
+
         switch ($user->role_id) {
             case 2:
-                // Role 2 → ke /home
-                return redirect()->intended('/home');
+                return redirect('/home');
 
             case 1:
             default:
-                // Role 1 atau role tidak dikenal → ke /dashboard
-                return redirect()->intended('/dashboard');
+                return redirect('/dashboard');
         }
     }
 

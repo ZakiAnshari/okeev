@@ -25,6 +25,14 @@
             font-family: 'Oxanium', sans-serif !important;
         }
 
+        body.swal2-shown {
+            overflow-y: scroll !important;
+            /* scroll tetap muncul */
+            padding-right: 0 !important;
+            /* hilangkan padding tambahan */
+        }
+
+
         /* === BUTTON GROUP === */
         .menu-buttons {
             margin-left: 40px;
@@ -95,7 +103,7 @@
         }
 
         .logo-header {
-            max-width: 180px;
+            max-width: 125px;
             /* ukuran default untuk layar besar */
             height: auto;
             transition: all 0.3s ease;
@@ -259,5 +267,139 @@
     </script>
 </body>
 @include('sweetalert::alert')
+
+
+{{-- ini SCRIPT UNTUK MEMUNCULKAN TITIK DI KERANJANG --}}
+<script>
+    function showCartDot() {
+        const dot = document.getElementById('cartDot');
+        if (dot) dot.style.display = 'inline-block';
+    }
+</script>
+
+
+{{-- Akhir ini SCRIPT UNTUK MEMUNCULKAN TITIK DI KERANJANG --}}
+
+
+<!-- Tambahkan meta CSRF di <head> -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectAll = document.getElementById('selectAll');
+        const totalPriceEl = document.getElementById('totalPrice');
+        const buyBtn = document.getElementById('buyBtn');
+        const cartCountEl = document.getElementById('cartCount');
+        const cartDotEl = document.getElementById('cartDot');
+
+        // Ambil CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        /* ===== HEADER ===== */
+        function updateHeader(count) {
+            if (cartCountEl) {
+                cartCountEl.textContent = count;
+                cartCountEl.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+            if (cartDotEl) {
+                cartDotEl.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+        }
+
+        /* ===== TOTAL ===== */
+        function updateTotal() {
+            let total = 0;
+            let count = 0;
+
+            document.querySelectorAll('.product-item').forEach(item => {
+                const check = item.querySelector('.product-check');
+                if (check && !check.checked) return;
+
+                const qty = parseInt(item.querySelector('.qty').textContent) || 0;
+                const price = parseInt(item.dataset.price) || 0;
+
+                total += qty * price;
+                count += qty;
+            });
+
+            if (totalPriceEl) totalPriceEl.textContent = 'Rp ' + total.toLocaleString('id-ID');
+            if (buyBtn) buyBtn.textContent = `BUY (${count})`;
+        }
+
+        /* ===== SELECT ALL ===== */
+        selectAll?.addEventListener('change', function() {
+            document.querySelectorAll('.product-check').forEach(cb => {
+                cb.checked = this.checked;
+            });
+            updateTotal();
+        });
+
+        document.addEventListener('change', e => {
+            if (!e.target.classList.contains('product-check')) return;
+
+            const all = document.querySelectorAll('.product-check');
+            const checked = document.querySelectorAll('.product-check:checked');
+            if (selectAll) selectAll.checked = all.length === checked.length;
+            updateTotal();
+        });
+
+        /* ===== PLUS / MINUS / REMOVE ===== */
+        document.addEventListener('click', async e => {
+            const btn = e.target.closest('.plus-btn, .minus-btn, .remove-btn');
+            if (!btn) return;
+
+            e.preventDefault();
+
+            const item = btn.closest('.product-item');
+            const id = item.dataset.id;
+            const qtyEl = item.querySelector('.qty');
+
+            let url = '';
+            let method = 'POST';
+
+            if (btn.classList.contains('plus-btn')) {
+                url = '/cart/increase';
+            }
+            if (btn.classList.contains('minus-btn')) {
+                if (parseInt(qtyEl.textContent) <= 1) return;
+                url = '/cart/decrease';
+            }
+            if (btn.classList.contains('remove-btn')) {
+                url = `/cart/${id}`;
+                method = 'DELETE';
+            }
+
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                body: method !== 'DELETE' ? JSON.stringify({
+                    id
+                }) : null
+            });
+
+            if (!res.ok) {
+                console.error('Request failed');
+                return;
+            }
+
+            const data = await res.json();
+
+            if (btn.classList.contains('remove-btn')) {
+                item.remove();
+            } else {
+                qtyEl.textContent = data.qty ?? qtyEl.textContent;
+            }
+
+            updateHeader(data.count ?? 0);
+            updateTotal();
+        });
+
+        // Update total saat pertama load
+        updateTotal();
+    });
+</script>
 
 </html>

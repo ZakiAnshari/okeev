@@ -57,6 +57,14 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <style>
+        body.swal2-shown {
+            overflow-y: scroll !important;
+            /* scroll tetap muncul */
+            padding-right: 0 !important;
+            /* hilangkan padding tambahan */
+        }
+
+
         .select2-container {
             display: block !important;
             width: 100% !important;

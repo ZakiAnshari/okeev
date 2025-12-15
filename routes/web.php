@@ -7,13 +7,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FiturController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PowerController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DimensiController;
 use App\Http\Controllers\FeatureController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeUserController;
 use App\Http\Controllers\SuspensiController;
 use App\Http\Controllers\DashboardController;
@@ -23,6 +26,9 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\SpecificationController;
 
 Route::middleware(['role_not_one'])->group(function () {
+
+    
+
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
     Route::get('/brand/{slug}', [LandingPageController::class, 'showBrand'])->name('landing.cars');
     Route::get('/product/{productSlug}', [LandingPageController::class, 'showProduct'])->name('landing.product');
@@ -50,8 +56,21 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])->name('profil.show');
     Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
-    Route::get('/cart', [HomeUserController::class, 'cart']);
-    Route::post('/cart/add', [HomeUserController::class, 'addToCart']);
+
+    
+
+    Route::get('/cart', [HomeUserController::class, 'cart'])->name('cart');
+    Route::post('/cart/add', [HomeUserController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/increase', [HomeUserController::class, 'increaseQty']);
+    Route::post('/cart/decrease', [HomeUserController::class, 'decreaseQty']);
+    Route::delete('/cart/{id}', [HomeUserController::class, 'removeItem']);
+
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+
+    Route::get('/order-now', [OrderController::class, 'show'])->name('order.now');
+
+    Route::get('/payment/va', [PaymentController::class, 'virtualAccount'])->name('payment.va');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 

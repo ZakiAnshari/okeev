@@ -100,7 +100,7 @@
 
                                         <div class="row electric-divider">
                                             @forelse ($categoriesPosition2 as $category)
-                                                <div class="col-lg-3 col-md-6 mb-4 p-3">
+                                                <div class="col-lg-3 col-md-6 mb-4 p-5">
                                                     <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
                                                     <div class="row">
                                                         @foreach ($category->brands->chunk(4) as $chunk)
@@ -233,24 +233,139 @@
                                     </div>
                                     <!-- Icon Buttons -->
                                     <div class="icon-box">
-                                        <a href="/cart" class="icon-btn position-relative">
-                                            <i class="bx bx-shopping-bag fs-3"></i>
 
-                                            <!-- Badge jumlah item -->
-                                            <span id="cartCount"
-                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                                style="font-size:12px;">
-                                                0
+                                        <a href="{{ route('cart') }}" class="icon-btn position-relative">
+                                            <i class="bx bx-shopping-bag fs-3"></i>
+                                            <span id="cartDot"
+                                                class="position-absolute top-0 start-100 translate-middle bg-danger rounded-circle"
+                                                style="width:10px;height:10px; display: {{ $cartCount > 0 ? 'inline-block' : 'none' }};">
                                             </span>
                                         </a>
-
-                                        <a href="javascript:void(0)" class="icon-btn notif position-relative"
-                                            data-bs-toggle="modal" data-bs-target="#notificationModal">
-
+                                        <a href="#" id="notifBtn" class="icon-btn position-relative">
                                             <i class="bx bx-bell fs-4"></i>
-                                            <span class="rounded-circle bg-danger position-absolute top-0 end-0 p-1"
-                                                style="width:8px; height:8px;"></span>
+                                            <span class="rounded-circle bg-danger position-absolute top-0 end-0"
+                                                style="width:8px;height:8px;"></span>
                                         </a>
+
+                                        <div id="notifModal" class="notif-modal">
+
+                                            <div class="notif-tabs">
+                                                <div class="tab active" data-target="notifContent">
+                                                    Notification <span class="dot">1</span>
+                                                </div>
+                                                <div class="tab" data-target="transContent">
+                                                    Transaction <span class="dot">1</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="notif-content show" id="notifContent">
+
+                                                <div class="item">
+                                                    <div class="icon bg-success">
+                                                        <i class="bx bx-dollar-circle"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="title">
+                                                            ORDER VEHICLE <span>2.00 AM</span>
+                                                        </div>
+                                                        <p>
+                                                            You have placed an order & will immediately make payment for
+                                                            the WULING vehicle - New Air Ev...
+                                                        </p>
+                                                        <a href="#">Details...</a>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+
+                                                <div class="item">
+                                                    <div class="icon bg-info">
+                                                        <i class="bx bx-car"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="title">
+                                                            TEST DRIVE <span>Yesterday</span>
+                                                        </div>
+                                                        <p>
+                                                            You apply to do a test drive of the WULING vehicle - New Air
+                                                            Ev...
+                                                        </p>
+                                                        <a href="#">Details...</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="notif-content" id="transContent">
+
+                                                <!-- PURCHASE TITLE -->
+                                                <div class="trans-title">Purchase</div>
+
+                                                <!-- STEPS -->
+                                                <div class="trans-steps">
+
+                                                    <div class="step active">
+                                                        <div class="step-icon">
+                                                            <i class="bx bx-time"></i>
+                                                            <span class="step-dot">1</span>
+                                                        </div>
+                                                        <span>Waiting for<br>Confirmation</span>
+                                                    </div>
+
+                                                    <div class="step">
+                                                        <div class="step-icon">
+                                                            <i class="bx bx-refresh"></i>
+                                                            <span class="step-dot">1</span>
+                                                        </div>
+                                                        <span>Process</span>
+                                                    </div>
+
+                                                    <div class="step">
+                                                        <div class="step-icon">
+                                                            <i class="bx bxs-truck"></i>
+                                                            <span class="step-dot">1</span>
+                                                        </div>
+                                                        <span>Being<br>sent</span>
+                                                    </div>
+
+
+                                                    <div class="step">
+                                                        <div class="step-icon">
+                                                            <i class="bx bx-map"></i>
+                                                            <span class="step-dot">1</span>
+                                                        </div>
+                                                        <span>to the<br>Location</span>
+                                                    </div>
+
+                                                </div>
+
+                                                <hr>
+
+                                                <!-- STATUS TITLE -->
+                                                <div class="trans-status-title">Waiting For Confirmation</div>
+
+                                                <!-- CARD -->
+                                                <a href="/payment/va">
+                                                    <div class="trans-card">
+                                                        <img src="{{ asset('front_end/assets/images/Pristine_White 1.png') }}"
+                                                            alt="car">
+
+                                                        <div class="trans-card-body">
+                                                            <div class="trans-card-top">
+                                                                <span class="status">Menunggu Pembayaran</span>
+                                                                <span class="time">2.00 AM</span>
+                                                            </div>
+                                                            <div class="product">
+                                                                New Air Ev Lite Long Range
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                            </div>
+
+
+                                        </div>
 
 
                                         <!-- PROFILE -->
@@ -271,96 +386,329 @@
     </div>
 </header>
 
+<style>
+    /* TRANSACTION TITLE */
+    .trans-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 14px;
+    }
+
+    /* STEPS */
+    .trans-steps {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        margin-bottom: 14px;
+    }
+
+    .step {
+        font-size: 11px;
+        color: #9aa5b1;
+        width: 25%;
+    }
+
+    .step-icon {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        margin: 0 auto 6px;
+        border-radius: 50%;
+        background: #f1f3f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9aa5b1;
+        font-size: 18px;
+    }
+
+    .step.active .step-icon {
+        background: #e9fff7;
+        color: #1dd1a1;
+    }
+
+    .step-dot {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        background: #ff3b30;
+        color: #fff;
+        font-size: 9px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .step.active span {
+        color: #1dd1a1;
+        font-weight: 500;
+    }
+
+    /* STATUS TITLE */
+    .trans-status-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    /* CARD */
+    .trans-card {
+        display: flex;
+        gap: 12px;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    .trans-card img {
+        width: 70px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 6px;
+        background: #f5f5f5;
+    }
+
+    .trans-card-body {
+        flex: 1;
+    }
+
+    .trans-card-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .status {
+        color: #6c757d;
+    }
+
+    .time {
+        color: #1dd1a1;
+    }
+
+    .product {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1dd1a1;
+    }
+
+    /* ICON CONTAINER – BULAT SEMPURNA */
+    .icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 50%;
+        background: #e9fff7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+
+    /* ICON DI DALAM – CENTER & PROPORSIONAL */
+    .icon i {
+        font-size: 20px;
+        line-height: 1;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1dd1a1;
+    }
+
+    /* HILANGKAN PENGARUH BG BOOTSTRAP */
+    .bg-success,
+    .bg-info {
+        background: transparent !important;
+    }
+
+    /* CONTAINER */
+    .notif-modal {
+        position: absolute;
+        top: 75px;
+        right: 20px;
+        width: 360px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, .12);
+        border: 1px solid #eee;
+        font-family: 'Inter', sans-serif;
+        z-index: 9999;
+    }
+
+    /* TABS HEADER */
+    .notif-tabs {
+        display: flex;
+        border-bottom: 1px solid #eee;
+    }
+
+    .notif-tabs .tab {
+        flex: 1;
+        padding: 14px 0;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        color: #b5b5b5;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .notif-tabs .tab.active {
+        color: #1dd1a1;
+    }
+
+    .notif-tabs .tab.active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background: #1dd1a1;
+        border-radius: 10px;
+    }
+
+    /* RED BADGE */
+    .dot {
+        position: absolute;
+        top: 8px;
+        right: 35%;
+        background: #ff3b30;
+        color: #fff;
+        font-size: 10px;
+        padding: 1px 5px;
+        border-radius: 50%;
+    }
+
+    /* CONTENT */
+    .notif-content {
+        display: none;
+        padding: 14px 16px;
+    }
+
+    .notif-content.show {
+        display: block;
+    }
+
+    /* ITEM */
+    .item {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    /* ICON BULAT */
+    .icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        background: #e8fff8;
+        color: #1dd1a1;
+    }
+
+    .bg-success,
+    .bg-info {
+        background: #e8fff8 !important;
+        color: #1dd1a1 !important;
+    }
+
+    /* TITLE */
+    .title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .title span {
+        font-size: 13px;
+        font-weight: 500;
+        color: #1dd1a1;
+    }
+
+    /* DESC */
+    .item p {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #8a8a8a;
+        margin: 6px 0 4px;
+    }
+
+    /* LINK */
+    .item a {
+        font-size: 13px;
+        color: #1dd1a1;
+        text-decoration: none;
+    }
+
+    /* HR */
+    .notif-content hr {
+        border: none;
+        border-top: 1px solid #eee;
+        margin: 14px 0;
+    }
+
+    /* EMPTY */
+    .empty {
+        text-align: center;
+        padding: 30px 0;
+        color: #aaa;
+        font-size: 14px;
+    }
+</style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Ambil cart dari localStorage atau buat baru
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        const cartCountEl = document.getElementById('cartCount');
-        const cartIcon = document.getElementById('cartIcon');
+        const btn = document.getElementById('notifBtn');
+        const modal = document.getElementById('notifModal');
 
-        // Update badge
-        function updateCartBadge() {
-            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            cartCountEl.textContent = totalQty;
-        }
+        // 🔥 PAKSA SEMBUNYI SAAT PAGE LOAD / REFRESH
+        modal.style.display = 'none';
 
-        updateCartBadge();
-
-        // Add to Cart click
-        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const id = this.dataset.id;
-                const name = this.dataset.name;
-                const price = parseInt(this.dataset.price);
-                const image = this.dataset.image;
-
-                // Cek apakah item sudah ada di cart
-                let existing = cart.find(p => p.id == id);
-                if (existing) {
-                    existing.qty += 1;
-                } else {
-                    cart.push({
-                        id,
-                        name,
-                        price,
-                        image,
-                        qty: 1
-                    });
-                }
-
-                // Simpan ke localStorage
-                localStorage.setItem('cart', JSON.stringify(cart));
-
-                // Update badge
-                updateCartBadge();
-
-                // SweetAlert notifikasi
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: `${name} berhasil ditambahkan ke keranjang`,
-                    timer: 1200,
-                    showConfirmButton: false
-                });
-            });
-        });
-
-        // Klik icon cart → tampilkan isi cart
-        cartIcon.addEventListener('click', function(e) {
+        // toggle popup
+        btn.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        });
 
-            if (cart.length === 0) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Keranjang kosong',
-                    text: 'Silakan tambahkan produk terlebih dahulu',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-                return;
-            }
+        // klik luar nutup
+        document.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
 
-            let html = '<div style="text-align:left;">';
-            cart.forEach(item => {
-                html +=
-                    `<p>${item.name} x ${item.qty} <strong>${formatRupiah(item.price * item.qty)}</strong></p>`;
-            });
-            html += '</div>';
+        // biar klik di dalam modal nggak nutup
+        modal.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
-            Swal.fire({
-                title: 'Isi Keranjang',
-                html: html,
-                icon: 'info',
-                showCloseButton: true
+        // tab switch
+        document.querySelectorAll('.notif-tabs .tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.notif-tabs .tab').forEach(t => t.classList.remove(
+                    'active'));
+                document.querySelectorAll('.notif-content').forEach(c => c.classList.remove(
+                    'show'));
+
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.target).classList.add('show');
             });
         });
 
-        // Fungsi format rupiah
-        function formatRupiah(angka) {
-            return "Rp " + angka.toLocaleString("id-ID");
-        }
     });
 </script>
