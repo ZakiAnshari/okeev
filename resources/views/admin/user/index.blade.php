@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Modal tambah Data -->
                             <div class="modal fade" id="addProductModal" tabindex="-1"
                                 aria-labelledby="addProductModalLabel" aria-hidden="true">
@@ -133,7 +133,6 @@
                                         <th>Nama Lengkap</th>
                                         <th>Contact</th>
                                         <th>Hak Akses</th>
-                                        <th style="width: 5px">ID</th>
                                         <th style="width: 80px; text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
@@ -145,12 +144,19 @@
                                             <td>{{ $item->contact }}</td>
                                             <td>
                                                 <span class="d-flex align-items-center gap-2">
-                                                    <i
-                                                        class="fas fa-circle {{ $item->id === Auth::id() ? 'text-success' : 'text-danger' }} f-10"></i>
+                                                    <button type="button"
+                                                        class="btn btn-sm {{ $item->role_id == 1 ? 'btn-success' : 'btn-dark' }}"
+                                                        style="width:10px; height:10px; padding:0; border-radius:50%;">
+                                                    </button>
+
                                                     {{ $item->role->name ?? 'Role Tidak Ditemukan' }}
                                                 </span>
                                             </td>
-                                            <td>{{ $item->id }}</td>
+
+
+
+
+
                                             <td>
                                                 <a href="user-show/{{ $item->id }}"
                                                     class="btn btn-icon btn-outline-info" title="Lihat Data">
@@ -206,5 +212,5 @@
             });
         }
     </script>
-@include('sweetalert::alert')
+    @include('sweetalert::alert')
 @endsection

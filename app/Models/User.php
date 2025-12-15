@@ -28,9 +28,10 @@ class User extends Authenticatable
         'role_id',
         'contact',
         'jenis_kelamin',
+        'image_provile'
     ];
 
-     use HasSlug;
+    use HasSlug;
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

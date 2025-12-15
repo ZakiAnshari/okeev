@@ -21,57 +21,91 @@
                     <div class="row">
                         <!-- Kartu Kiri (Profile) -->
                         <div class="col-lg-4 mb-4">
-                            <div class="card h-100">
+                            <div class="card h-100 border rounded-4" style="border-color:#E5E7EB;">
                                 <div class="card-body position-relative">
+
+                                    <!-- Badge Role -->
                                     <div class="position-absolute end-0 top-0 p-3">
-                                        <span class="badge bg-primary">{{ $users->role->name }}</span>
+                                        <span class="badge bg-primary rounded-pill px-3">
+                                            {{ $users->role->name }}
+                                        </span>
                                     </div>
+
                                     <div class="text-center mt-3">
                                         <div class="chat-avatar d-inline-flex mx-auto mb-3">
-                                            <img src="{{ asset('backend/assets/img/avatars/' . (Auth::user()->jenis_kelamin === 'Perempuan' ? '6.png' : '1.png')) }}"
-                                                alt="user-image" class="user-avatar img-fluid"
-                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 11px;">
+                                            <img src="{{ Auth::user()->image_provile
+                                                ? asset('storage/' . Auth::user()->image_provile)
+                                                : asset('backend/assets/img/avatars/' . (Auth::user()->jenis_kelamin === 'Perempuan' ? '6.png' : '1.png')) }}"
+                                                alt="user-image" class="user-avatar"
+                                                style="
+                                                    width:150px;
+                                                    height:150px;
+                                                    object-fit:cover;
+                                                    border-radius:14px;
+                                                    border:3px solid #F1F5F9;
+                                                ">
                                         </div>
-                                        <h5 class="mb-1">{{ $users->name }}</h5>
+
+
+                                        <h5 class="mb-1 fw-semibold">{{ $users->name }}</h5>
+
                                         <hr class="my-3">
-                                        <div class="d-flex align-items-center justify-content-center mb-2">
+
+                                        <div class="d-flex align-items-center justify-content-center mb-2 text-muted">
                                             <i class="ti ti-mail me-2 text-primary"></i>
-                                            <p class="mb-0">{{ $users->email }}</p>
+                                            <span>{{ $users->email }}</span>
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-center mb-2">
+
+                                        <div class="d-flex align-items-center justify-content-center mb-2 text-muted">
                                             <i class="ti ti-phone me-2 text-primary"></i>
-                                            <p class="mb-0">{{ $users->contact }}</p>
+                                            <span>{{ $users->contact }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <!-- Kartu Kanan (Personal Detail) -->
                         <div class="col-lg-8 mb-4">
-                            <div class="card h-100">
-                                <div class="card-header">
+                            <div class="card h-100 border rounded-4" style="border-color:#E5E7EB;">
+                                <div class="card-header bg-white border-bottom">
                                     <h5 class="mb-0">Personal Details</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row border-bottom pb-3 mb-3">
+
+                                <div class="card-body mt-4">
+                                    <div class="row g-4">
+
+                                        <!-- Nama Lengkap -->
                                         <div class="col-md-6">
-                                            <p class="mb-1 text-muted">Nama Lengkap</p>
-                                            <h6 class="mb-0">{{ $users->name }}</h6>
+                                            <label class="form-label text-muted">Nama Lengkap</label>
+                                            <input type="text" class="form-control bg-light" value="{{ $users->name }}"
+                                                readonly style="cursor:default;">
                                         </div>
+
+                                        <!-- Username -->
                                         <div class="col-md-6">
-                                            <p class="mb-1 text-muted">Username</p>
-                                            <h6 class="mb-0">{{ $users->username }}</h6>
+                                            <label class="form-label text-muted">Username</label>
+                                            <input type="text" class="form-control bg-light"
+                                                value="{{ $users->username }}" readonly style="cursor:default;">
                                         </div>
-                                    </div>
-                                    <div class="row border-bottom pb-3 mb-3">
+
+                                        <!-- Jenis Kelamin -->
                                         <div class="col-md-6">
-                                            <p class="mb-1 text-muted">Jenis Kelamin</p>
-                                            <h6 class="mb-0">{{ $users->jenis_kelamin }}</h6>
+                                            <label class="form-label text-muted">Jenis Kelamin</label>
+                                            <input type="text" class="form-control bg-light"
+                                                value="{{ $users->jenis_kelamin }}" readonly style="cursor:default;">
                                         </div>
-                                        <div class="col-md-6">
-                                            <p class="mb-1 text-muted">Hak Akses</p>
-                                            <h6 class="mb-0">{{ Auth::user()->role->name }}</h6>
-                                        </div>
+
+                                        <!-- Hak Akses -->
+                                        @auth
+                                            @if (Auth::user()->role_id === 1)
+                                                <div class="col-md-6">
+                                                    <label class="form-label text-muted">Hak Akses</label>
+                                                    <input type="text" class="form-control bg-light"
+                                                        value="{{ $users->role->name }}" readonly>
+                                                </div>
+                                            @endif
+                                        @endauth
                                     </div>
                                 </div>
                             </div>
@@ -81,5 +115,5 @@
             </div>
         </div>
     </div>
-@include('sweetalert::alert')
+    @include('sweetalert::alert')
 @endsection

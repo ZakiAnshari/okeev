@@ -13,17 +13,31 @@
                         <div class="card-body text-center">
 
                             <!-- Foto Profil -->
-                            <img src="{{ asset('front_end/assets/images/hero/mobil.png') }}" class="img-fluid rounded mb-3"
-                                alt="Profile">
+                            {{-- <img src="{{ asset('front_end/assets/images/hero/mobil.png') }}" class="img-fluid rounded mb-3" alt="Profile"> --}}
+                            <img src="{{ Auth::user()->image_provile
+                                ? asset('storage/' . Auth::user()->image_provile)
+                                : asset('front_end/assets/images/hero/mobil.png') }}"
+                                class="profile-img rounded mb-3" alt="Profile">
+
 
                             <!-- Tombol ganti foto -->
-                            <button class="btn btn-success w-100 mb-2" style="border-radius: 8px;">
-                                Change Profile Photo
-                            </button>
+                            <form action="{{ route('profilestore.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+
+                                <!-- Input file disembunyikan -->
+                                <input type="file" name="image_provile" id="image_provile" accept="image/*" hidden
+                                    onchange="this.form.submit()">
+
+                                <!-- Tombol ganti foto -->
+                                <button type="button" class="btn btn-success w-100 mb-2" style="border-radius: 8px;"
+                                    onclick="document.getElementById('image_provile').click()">
+                                    Change Profile Photo
+                                </button>
+                            </form>
 
                             <!-- Info kecil -->
                             <small class="text-muted d-block">
-                                File size: maximum 10 Megabytes. Allowed file<br>
+                                File size: maximum 2 Megabytes. Allowed file<br>
                                 extensions: JPG, JPEG, PNG
                             </small>
                         </div>
@@ -128,6 +142,15 @@
             </div>
         </div>
     </section>
-
+    <style>
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            /* potong rapi tanpa merusak rasio */
+            object-position: center;
+            border-radius: 12px;
+        }
+    </style>
     @include('sweetalert::alert')
 @endsection

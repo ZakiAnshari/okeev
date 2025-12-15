@@ -26,9 +26,6 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\SpecificationController;
 
 Route::middleware(['role_not_one'])->group(function () {
-
-    
-
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
     Route::get('/brand/{slug}', [LandingPageController::class, 'showBrand'])->name('landing.cars');
     Route::get('/product/{productSlug}', [LandingPageController::class, 'showProduct'])->name('landing.product');
@@ -54,10 +51,12 @@ Route::middleware('redirectIfAuth')->group(function () {
 Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/home', [HomeUserController::class, 'index']);
     Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])->name('profil.show');
+    Route::post('/profil-add', [HomeUserController::class, 'profilestore'])->name('profilestore.store');
+
     Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
 
-    
+
 
     Route::get('/cart', [HomeUserController::class, 'cart'])->name('cart');
     Route::post('/cart/add', [HomeUserController::class, 'addToCart'])->name('cart.add');
@@ -87,7 +86,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/brands/{slug}/edit', [BrandController::class, 'update'])->name('brands.update');
     Route::get('/brands-destroy/{slug}', [BrandController::class, 'destroy'])->name('brands.destroy');
     Route::get('/get-brands/{category_id}', [BrandController::class, 'getBrandsByCategory']);
-
     // CATEGORY
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::post('/category-add', [CategoryController::class, 'store'])->name('category.store');
@@ -181,100 +179,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/Contact-add', [ContactController::class, 'store'])->name('Contact.store');
     Route::get('/Contact-destroy/{id}', [ContactController::class, 'destroy'])->name('Contact.destroy');
     Route::get('/Contact-show/{id}', [ContactController::class, 'show'])->name('Contact.show');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // Electric Cars
-    // Route::get('/cars', [ElectricCarsController::class, 'index'])->name('cars.index');
-    // Route::post('/cars-add', [ElectricCarsController::class, 'store'])->name('cars.store');
-    // Route::get('/cars-edit/{id}', [ElectricCarsController::class, 'edit']);
-    // Route::post('/cars-edit/{id}', [ElectricCarsController::class, 'update']);
-    // Route::get('/cars-show/{id}', [ElectricCarsController::class, 'show'])->name('cars.show');
-    // Route::get('/cars-destroy/{id}', [ElectricCarsController::class, 'destroy']);
-    // // TEKNOLOGI CARS
-    // Route::get('/cars/{electric_car}/technologies', [TechnologyCarController::class, 'index'])->name('technologies.index');
-    // Route::post('/cars/{electric_car}/technologies-add', [TechnologyCarController::class, 'store'])->name('technologies.store');
-    // Route::get('/cars/{electric_car}/technologies/{technology}/edit', [TechnologyCarController::class, 'edit'])->name('technologies.edit');
-    // Route::put('/cars/{electric_car}/technologies/{technology}', [TechnologyCarController::class, 'update'])->name('technologies.update');
-    // Route::get('/cars/{electric_car}/technologies/{technology}', [TechnologyCarController::class, 'destroy'])->name('technologies.destroy');
-    // // FEATURE CARS
-    // Route::get('/cars/{electric_car}/features', [FeatureController::class, 'index'])->name('features.index');
-    // Route::post('/cars/{electric_car}/features-add', [FeatureController::class, 'store'])->name('features.store');
-    // Route::get('/cars/{electric_car}/features/{features}/edit', [FeatureController::class, 'edit'])->name('features.edit');
-    // Route::put('/cars/{electric_car}/features/{features}', [FeatureController::class, 'update'])->name('features.update');
-    // Route::get('/cars/{electric_car}/features/{features}', [FeatureController::class, 'destroy'])->name('features.destroy');
-    // // COLOR
-    // Route::get('/cars/{electric_car}/color', [ColorController::class, 'index'])->name('colors.index');
-    // Route::post('/cars/{electric_car}/color-add', [ColorController::class, 'store'])->name('colors.store');
-    // Route::get('/cars/{electric_car}/color/{colors}/edit', [ColorController::class, 'edit'])->name('colors.edit');
-    // Route::put('/cars/{electric_car}/color/{colors}', [ColorController::class, 'update'])->name('colors.update');
-    // Route::get('/cars/{electric_car}/color/{colors}', [ColorController::class, 'destroy'])->name('colors.destroy');
-    // // SPECIFICATION
-    // Route::get('/cars/{electric_car}/specifications', [SpecifitionController::class, 'index'])->name('specifications.index');
-    // Route::post('/cars/{electric_car}/specifications-add', [SpecifitionController::class, 'store'])->name('specifications.store');
-    // Route::get('/cars/{electric_car}/specifications/{specifications}/edit', [SpecifitionController::class, 'edit'])->name('specifications.edit');
-    // Route::put('/cars/{electric_car}/specifications/{specifications}', [SpecifitionController::class, 'update'])->name('specifications.update');
-    // Route::get('/cars/{electric_car}/specifications/{specifications}', [SpecifitionController::class, 'destroy'])->name('specifications.destroy');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // USER
     Route::get('/user', [UserController::class, 'index'])->name('user.index');

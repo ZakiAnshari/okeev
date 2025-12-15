@@ -233,7 +233,6 @@
                                     </div>
                                     <!-- Icon Buttons -->
                                     <div class="icon-box">
-
                                         <a href="{{ route('cart') }}" class="icon-btn position-relative">
                                             <i class="bx bx-shopping-bag fs-3"></i>
                                             <span id="cartDot"
@@ -371,9 +370,12 @@
                                         <!-- PROFILE -->
                                         <a href="{{ route('profil.show', optional(Auth::user())->slug ?? 'guest') }}"
                                             class="profile-box">
-                                            <img src="{{ asset('front_end/assets/images/Group 21.png') }}"
-                                                alt="Profile">
+                                            <img src="{{ Auth::user() && Auth::user()->image_provile
+                                                ? asset('storage/' . Auth::user()->image_provile)
+                                                : asset('front_end/assets/images/Group 21.png') }}"
+                                                class="header-profile-img" alt="Profile">
                                         </a>
+
                                     </div>
                                 @endauth
                             </div>
@@ -387,6 +389,23 @@
 </header>
 
 <style>
+    .profile-box {
+    display: flex;
+    align-items: center;
+}
+
+.header-profile-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 2px solid #eee;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+
+
     /* TRANSACTION TITLE */
     .trans-title {
         font-size: 15px;

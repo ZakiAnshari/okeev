@@ -74,12 +74,6 @@
 
         {{-- User --}}
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Hak Akses</span></li>
-        <li class="menu-item {{ Request::is('user*') ? 'active' : '' }}">
-            <a href="/user" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-shield-alt-2"></i>
-                <div data-i18n="Analytics">Admin</div>
-            </a>
-        </li>
 
         <li class="menu-item {{ Request::is('user*') ? 'active' : '' }}">
             <a href="/user" class="menu-link">
