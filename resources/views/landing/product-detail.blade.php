@@ -10,7 +10,7 @@
                     <i class="bx bx-arrow-back me-2"></i> Detail
                 </a>
             </div>
-            {{-- TAMPILAN DETAIL --}}
+            {{-- TAMPILAN DETAIL UNTUK VEHICLE --}}
             @if ($product->category_position_id == 1)
                 <div class="row g-4 mt-2">
                     <!-- Gambar Utama -->
@@ -62,29 +62,38 @@
                 <div class="row mt-4 g-3">
                     <div class="col-md-6">
                         <a href="{{ route('landing.product.testdrive', $product->slug) }}"
-                            class="btn btn-outline-info w-100 py-2 d-flex justify-content-center align-items-center">
+                            class="btn btn-outline-info w-100 py-2 d-flex justify-content-center align-items-center fw-bold"
+                            style="--bs-btn-hover-color:#fff;">
                             <i class="bx bx-car me-2"></i>
                             Test Drive
                         </a>
+                        <style>
+                            .btn-outline-info:hover,
+                            .btn-outline-info:hover:focus,
+                            .btn-outline-info:hover:active {
+                                color: #fff !important;
+                            }
+                        </style>
                     </div>
 
                     <div class="col-md-6">
                         @if (Auth::check())
-                            <button type="button" class="btn btn-outline-success w-100 py-2 add-to-cart-btn"
+                            <button type="button" class="btn btn-outline-success w-100 py-2 add-to-cart-btn fw-bold"
                                 data-id="{{ $product->id }}">
                                 <i class="bx bx-cart me-2"></i> Add to Cart
                             </button>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-outline-success w-100 py-2">
+                            <a href="{{ route('login') }}" class="btn btn-outline-success w-100 py-2 fw-bold">
                                 <i class="bx bx-cart me-2"></i> Add to Cart
                             </a>
                         @endif
                     </div>
 
                     <div class="col-12">
-                        <button class="btn text-white w-100 py-2 order-btn" id="orderBtn">
+                        <button class="btn text-white w-100 py-2 order-btn fw-bold" id="orderBtn">
                             Order Now
                         </button>
+
 
                         <script>
                             document.getElementById('orderBtn').addEventListener('click', function() {
@@ -174,12 +183,12 @@
             <!-- Top Navigation -->
             <ul class="nav justify-content-center border-bottom pb-2 mb-4 tech-nav">
                 <!-- Tab -->
-                @if ($product->category_position_id == 1)
+                @if ($product->category_id == 1)
                     <li class="nav-item">
                         <a class="nav-link" id="tech-tab" href="javascript:void(0)">Technology</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Feature</a>
+                        <a class="nav-link" id="feature-tab" href="javascript:void(0)">Feature</a>
                     </li>
                 @endif
                 @if (in_array($product->category_id, [1, 2]))
@@ -190,32 +199,32 @@
 
                 @if ($product->category_id == 1)
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Specification</a>
+                        <a class="nav-link" id="specification-tab" href="javascript:void(0)">Specification</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Credit Calculator</a>
+                        <a class="nav-link" id="credit-tab" href="javascript:void(0)">Credit Calculator</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Other</a>
+                        <a class="nav-link" id="other-tab" href="javascript:void(0)">Other</a>
                     </li>
                 @endif
                 @if ($product->category_id == 2)
                     <li class="nav-item ">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Power</a>
+                        <a class="nav-link" id="power-tab" href="javascript:void(0)">Power</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Dimensi</a>
+                        <a class="nav-link" id="dimensi-tab" href="javascript:void(0)">Dimensi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Sistem Suspensi</a>
+                        <a class="nav-link" id="sistemsuspensi-tab" href="javascript:void(0)">Sistem Suspensi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="tech-tab" href="javascript:void(0)">Fitur</a>
+                        <a class="nav-link" id="fitur-tab" href="javascript:void(0)">Fitur</a>
                     </li>
                 @endif
             </ul>
 
-            @if (in_array($product->category_id, [3, 4]))
+            @if (in_array($product->category_position_id, [2, 3, 4]))
 
                 <section class="py-5 container">
                     <div class="row gx-5">
@@ -288,7 +297,6 @@
                     @endforeach
                 </div>
             @endif
-
         </div>
     </section>
 
@@ -298,7 +306,10 @@
             <div class="container">
                 <!-- Title -->
                 <div class="d-flex align-items-center mb-5">
-                    <h4 class="fw-bold me-3 mb-0"> {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature</h4>
+                    <h4 id="feature-heading" class="fw-bold  me-3 mb-0">
+                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature
+                    </h4>
+
                     <div class="flex-grow-1 line-tech"></div>
                 </div>
                 <div class="row align-items-center g-4 mt-1">
@@ -373,7 +384,8 @@
 
                 <!-- Title -->
                 <div class="d-flex align-items-center mb-5">
-                    <h4 class="fw-bold me-3 mb-0"> {{ $product->brand->name_brand ?? 'Unknown Brand' }} Color</h4>
+                    <h4 class="fw-bold me-3 mb-0" id="color-heading">
+                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Color</h4>
                     <div class="flex-grow-1 line-tech"></div>
                 </div>
 
@@ -416,7 +428,7 @@
 
                                 </div>
                                 <div class="col-6 ps-1">
-                                    <a href="" class="btn btn-primary w-100 py-2 rounded-3"
+                                    <a href="{{ route('order.now') }}" class="btn btn-primary w-100 py-2 rounded-3"
                                         style="background: linear-gradient(to right, #0094ff, #00e6a8); border: none;">
                                         Order Now
                                     </a>
@@ -442,7 +454,8 @@
     @if ($product->category_id == 1)
         <section class="py-5 container">
             <div class="d-flex align-items-center mb-5">
-                <h4 class="fw-bold me-3 mb-0">{{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification</h4>
+                <h4 class="fw-bold me-3 mb-0" id="specification-heading">
+                    {{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification</h4>
                 <div class="flex-grow-1 line-tech"></div>
             </div>
 
@@ -466,7 +479,7 @@
                 <div class="gradient-line my-4 mx-auto"></div>
 
                 <!-- Specification Content -->
-                <div class="spec-content">
+                <div class="spec-content ">
                     @foreach ($specSections as $index => $title)
                         <div class="spec-list {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"
                             style="{{ $index === 0 ? '' : 'display:none;' }}">
@@ -480,7 +493,23 @@
                     @endforeach
                 </div>
             </div>
+            <style>
+                .spec-item {
+                    display: grid !important;
+                    grid-template-columns: 500px 1fr !important;
+                    /* kolom sejajar */
+                    text-align: left !important;
+                }
 
+                .spec-title {
+                    text-align: left !important;
+                }
+
+                .spec-value {
+                    text-align: left !important;
+                    justify-self: start !important;
+                }
+            </style>
             <!-- Tab JS -->
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
@@ -514,7 +543,7 @@
         </section>
         <section class="credit-section">
             <div class="container text-center py-5">
-                <h5 class="credit-title">CREDIT CALCULATOR</h5>
+                <h5 class="credit-title" id="credit-heading">CREDIT CALCULATOR</h5>
                 <p class="powered">Powered by <span>OKKEV FINANCE</span></p>
                 <p class="sub-text">
                     Our internal loans guarantee flexible financing options at competitive rates.
@@ -581,7 +610,7 @@
         {{-- POWER --}}
         <section class="py-5 container">
             <div class="d-flex align-items-center mb-4">
-                <h4 class="fw-bold me-3 mb-0">Power (Motor Penggerak)</h4>
+                <h4 class="fw-bold me-3 mb-0" id="power-heading">Power (Motor Penggerak)</h4>
                 <div class="flex-grow-1 border-top"></div>
             </div>
 
@@ -606,7 +635,7 @@
         {{-- DIMENSI --}}
         <section class="py-5 container">
             <div class="d-flex align-items-center mb-4">
-                <h4 class="fw-bold me-3 mb-0">Dimensi</h4>
+                <h4 class="fw-bold me-3 mb-0" id="dimensi-heading">Dimensi</h4>
                 <div class="flex-grow-1 border-top"></div>
             </div>
 
@@ -631,7 +660,7 @@
         {{-- SUSPENSI --}}
         <section class="py-5 container">
             <div class="d-flex align-items-center mb-4">
-                <h4 class="fw-bold me-3 mb-0">Sistem Suspensi</h4>
+                <h4 class="fw-bold me-3 mb-0" id="sistemsuspensi-heading">Sistem Suspensi</h4>
                 <div class="flex-grow-1 border-top"></div>
             </div>
 
@@ -656,7 +685,7 @@
         {{-- FITUR --}}
         <section class="py-5 container">
             <div class="d-flex align-items-center mb-4">
-                <h4 class="fw-bold me-3 mb-0">Fitur</h4>
+                <h4 class="fw-bold me-3 mb-0" id="fitur-heading">Fitur</h4>
                 <div class="flex-grow-1 border-top"></div>
             </div>
 
@@ -683,7 +712,7 @@
     @if ($product->category_id == 1)
         <section>
             <div class="container mt-5">
-                <h4>There are still other options</h4>
+                <h4 id="other-heading">There are still other options</h4>
                 <h6 class="mb-5">if you are not satisfied with the above vehicles.</h6>
                 <div class="row">
                     @forelse($products as $product)
@@ -697,9 +726,9 @@
 
                                     <div class="product-images">
                                         @if ($product->images->first())
-                                            <img src="{{ asset('storage/' . $product->images->first()->image) }}"
-                                                alt="{{ $product->model_name }}"
-                                                class="img-fluid mb-2 vehicle-img w-100 p-4">
+                                            <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                class="d-block mx-auto img-fluid p-4"
+                                                style="max-height: 230px; object-fit: contain;" alt="Thumbnail">
                                         @else
                                             <img src="{{ asset('path/to/default-image.jpg') }}" alt="No Image"
                                                 class="img-fluid mb-2 vehicle-img w-100 p-4">
@@ -978,5 +1007,72 @@
             });
         });
     </script>
+
+
+
+
+    <script>
+        const offset = 120; // jarak dari atas, sesuaikan dengan tinggi navbar
+
+        const tabs = [{
+                tabId: 'tech-tab',
+                sectionId: 'technology-heading'
+            },
+            {
+                tabId: 'feature-tab',
+                sectionId: 'feature-heading'
+            },
+            {
+                tabId: 'color-tab',
+                sectionId: 'color-heading'
+            },
+            {
+                tabId: 'specification-tab',
+                sectionId: 'specification-heading'
+            },
+            {
+                tabId: 'credit-tab',
+                sectionId: 'credit-heading'
+            },
+            {
+                tabId: 'other-tab',
+                sectionId: 'other-heading'
+            },
+            {
+                tabId: 'power-tab',
+                sectionId: 'power-heading'
+            },
+            {
+                tabId: 'dimensi-tab',
+                sectionId: 'dimensi-heading'
+            },
+            {
+                tabId: 'sistemsuspensi-tab',
+                sectionId: 'sistemsuspensi-heading'
+            },
+            {
+                tabId: 'fitur-tab',
+                sectionId: 'fitur-heading'
+            },
+        ];
+
+        tabs.forEach(item => {
+            const tab = document.getElementById(item.tabId);
+            if (tab) {
+                tab.addEventListener('click', function() {
+                    const element = document.getElementById(item.sectionId);
+                    if (element) {
+                        const topPos = element.getBoundingClientRect().top + window.pageYOffset - offset;
+                        window.scrollTo({
+                            top: topPos,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+
 
 @endsection

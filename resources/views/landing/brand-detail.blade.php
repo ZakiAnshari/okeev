@@ -23,10 +23,9 @@
                                     {{ $product->brand->name_brand }}
                                 </span>
 
-                                @if ($product->images->first())
-                                    <img src="{{ asset('storage/' . $product->images->first()->image) }}"
-                                        class="product-img" alt="{{ $product->model_name }}">
-                                @endif
+                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                    class="d-block mx-auto img-fluid p-4" style="max-height: 230px; object-fit: contain;"
+                                    alt="Thumbnail">
                             </div>
 
                             <div class="card-body">
@@ -66,9 +65,9 @@
 
                                         <div class="product-images">
                                             @if ($product->images->first())
-                                                <img src="{{ asset('storage/' . $product->images->first()->image) }}"
-                                                    alt="{{ $product->model_name }}"
-                                                    class="img-fluid mb-2 vehicle-img w-100 p-4">
+                                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                    class="d-block mx-auto img-fluid p-4"
+                                                    style="max-height: 340px; object-fit: contain;" alt="Thumbnail">
                                             @else
                                                 <img src="{{ asset('path/to/default-image.jpg') }}" alt="No Image"
                                                     class="img-fluid mb-2 vehicle-img w-100 p-4">

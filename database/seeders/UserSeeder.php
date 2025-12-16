@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
 
     // Buat user Admin
     $admin = User::create([
-        'name' => 'test',
+        'name' => 'Admin Okeev',
         'username' => 'admin',
         'contact' => '082202020202',
         'role_id' => 1, // role Admin
@@ -37,11 +37,11 @@ class UserSeeder extends Seeder
 
     // Buat user biasa
     $user = User::create([
-        'name' => 'User Satu',
-        'username' => 'user1',
+        'name' => 'Fikri Test',
+        'username' => 'fikri',
         'contact' => '081234567890',
         'role_id' => 2, // role User
-        'email' => 'user@gmail.com',
+        'email' => 'fikri787@gmail.com',
         'jenis_kelamin' => 'Laki-Laki',
         'email_verified_at' => now(),
         'password' => bcrypt('123'),

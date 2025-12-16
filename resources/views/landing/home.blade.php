@@ -256,7 +256,7 @@
 
                 <!-- Scrollable cards -->
                 <div class="scroll-wrapper position-relative">
-                    <div class="d-flex overflow-auto pb-3" id="vehicle-scroll">
+                    <div class="overflow-auto pb-3" id="vehicle-scroll">
                         <!-- CARD -->
                         <div class="row">
                             @forelse($products as $product)
@@ -272,9 +272,9 @@
 
                                                 <div class="product-images">
                                                     @if ($product->images->first())
-                                                        <img src="{{ asset('storage/' . $product->images->first()->image) }}"
-                                                            alt="{{ $product->model_name }}"
-                                                            class="img-fluid mb-2 vehicle-img w-100 p-4">
+                                                          <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                    class="d-block mx-auto img-fluid p-4"
+                                                    style="" alt="Thumbnail">
                                                     @else
                                                         <img src="{{ asset('path/to/default-image.jpg') }}"
                                                             alt="No Image" class="img-fluid mb-2 vehicle-img w-100 p-4">
