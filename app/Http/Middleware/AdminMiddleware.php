@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminMiddleware
 {
 
-      public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response
     {
         // Jika belum login → redirect ke login
         if (!auth()->check()) {

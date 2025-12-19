@@ -64,7 +64,7 @@
                                     border-radius: 4px 4px 0 0;">
 
                                         <div class="product-images">
-                                            @if ($product->images->first())
+                                            @if ($product->images())
                                                 <img src="{{ asset('storage/' . $product->thumbnail) }}"
                                                     class="d-block mx-auto img-fluid p-4"
                                                     style="max-height: 340px; object-fit: contain;" alt="Thumbnail">

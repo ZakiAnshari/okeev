@@ -24,8 +24,9 @@ use App\Http\Controllers\TestDriveController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\SpecificationController;
+use App\Http\Middleware\DetectMobileRedirect;
 
-Route::middleware(['role_not_one'])->group(function () {
+Route::middleware(['role_not_one', DetectMobileRedirect::class])->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
     Route::get('/brand/{slug}', [LandingPageController::class, 'showBrand'])->name('landing.cars');
     Route::get('/product/{productSlug}', [LandingPageController::class, 'showProduct'])->name('landing.product');
@@ -179,7 +180,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/Contact-add', [ContactController::class, 'store'])->name('Contact.store');
     Route::get('/Contact-destroy/{id}', [ContactController::class, 'destroy'])->name('Contact.destroy');
     Route::get('/Contact-show/{id}', [ContactController::class, 'show'])->name('Contact.show');
-
     // USER
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::post('/user-add', [UserController::class, 'store'])->name('user.store');
@@ -187,4 +187,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/user-edit/{id}', [UserController::class, 'update']);
     Route::get('/user-destroy/{id}', [UserController::class, 'destroy']);
     Route::get('/user-show/{id}', [UserController::class, 'show'])->name('user.show');
+});
+
+// MOBILE ---------------------------------------------------------------------------------------------------------------------
+Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
+    Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
+    Route::get('/products', [App\Http\Controllers\Mobile\ProductController::class, 'index'])->name('mobile.products');
+    Route::get('/products/{slug}', [App\Http\Controllers\Mobile\ProductController::class, 'show'])->name('mobile.product.show');
 });

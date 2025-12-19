@@ -13,7 +13,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class LandingPageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Ambil semua product beserta relasi category
         $products = Product::with('category')->get();
@@ -36,7 +36,6 @@ class LandingPageController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
-
         // Ambil semua brand (optional, tetap untuk grid)
         $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
             ->orderBy('name_brand', 'asc')
@@ -45,8 +44,11 @@ class LandingPageController extends Controller
         // Chunk brands untuk grid
         $brandChunks = $brands->chunk(4);
 
+        // Pilih view berdasarkan device
+        $view = $request->is_mobile ? 'mobile.home' : 'landing.home';
+
         // Kirim semua variabel ke view
-        return view('landing.home', compact(
+        return view($view, compact(
             'products',
             'categoriesPosition1',
             'categoriesPosition2',
@@ -443,6 +445,4 @@ class LandingPageController extends Controller
             'categoriesPosition3',
         ));
     }
-
-
 }
