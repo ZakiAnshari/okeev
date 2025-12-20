@@ -192,6 +192,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // MOBILE ---------------------------------------------------------------------------------------------------------------------
 Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
+
     Route::get('/products', [App\Http\Controllers\Mobile\ProductController::class, 'index'])->name('mobile.products');
     Route::get('/products/{slug}', [App\Http\Controllers\Mobile\ProductController::class, 'show'])->name('mobile.product.show');
 });

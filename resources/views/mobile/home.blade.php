@@ -2,6 +2,7 @@
 @section('title', 'Home')
 @section('content')
     <!-- Navbar -->
+    <br>
     <nav class="navbar-custom">
         <div class="container">
             <!-- Top Row: Logo dan Notifikasi -->
@@ -40,98 +41,99 @@
     <div class="category-wrapper">
         <div class="category-section">
             <a href="vehicle.html" class="category-item">
-                <div class="category-btn">
-                    <div class="category-icon">
-                        <img src="{{ asset('front_end/assets/images/logo/Cars.jpg') }}" class="category-icon-img">
-                    </div>
-                    <span class="category-text">Electric Car</span>
+                <div class="category-icon">
+                    <img src="{{ asset('front_end/assets/images/logo/1.jpg') }}" alt="Electric Car">
                 </div>
+                <span class="category-text">Electric<br>Car</span>
             </a>
 
             <a href="vehicle.html" class="category-item">
-                <div class="category-btn">
-                    <div class="category-icon">
-                        <img src="{{ asset('front_end/assets/images/logo/Motor.jpg') }}" class="category-icon-img">
-                    </div>
-                    <span class="category-text">Electric Motor</span>
+                <div class="category-icon">
+                    <img src="{{ asset('front_end/assets/images/logo/2.jpg') }}" alt="Electric Motor">
                 </div>
+                <span class="category-text">Electric<br>Motor</span>
             </a>
 
             <a href="vehicle.html" class="category-item">
-                <div class="category-btn">
-                    <div class="category-icon">
-                        <img src="{{ asset('front_end/assets/images/logo/Electric.jpg') }}" class="category-icon-img">
-                    </div>
-                    <span class="category-text">Electronic</span>
+                <div class="category-icon">
+                    <img src="{{ asset('front_end/assets/images/logo/3.jpg') }}" alt="Electronic">
                 </div>
+                <span class="category-text">Electronic</span>
             </a>
 
             <a href="vehicle.html" class="category-item">
-                <div class="category-btn">
-                    <div class="category-icon">
-                        <img src="{{ asset('front_end/assets/images/logo/Electric.jpg') }}" class="category-icon-img">
-                    </div>
-                    <span class="category-text">Accessories</span>
+                <div class="category-icon">
+                    <img src="{{ asset('front_end/assets/images/logo/Accessoris.jpg') }}" alt="Accessories">
                 </div>
+                <span class="category-text">Accessories</span>
             </a>
         </div>
     </div>
-
     <style>
         .category-wrapper {
-            padding: 0 16px;
-            /* jarak aman dari pinggir layar */
+            width: 100%;
+            padding: 16px 0;
         }
 
         .category-section {
             display: flex;
             justify-content: center;
-            /* bukan space-between */
-            gap: 13px;
-            /* jarak antar item */
-            max-width: 420px;
-            /* BATAS lebar biar ga meleber */
-            margin: 0 auto;
-            /* TENGAH layar */
+            align-items: flex-start;
+            gap: 16px;
+            padding: 0 12px;
         }
 
         .category-item {
-            flex: 1;
+            width: 80px;
             text-decoration: none;
-            color: inherit;
-        }
-
-        .category-btn {
+            color: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            gap: 6px;
         }
 
-        .category-icon-img {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
+        .category-icon {
+            width: 64px;
+            height: 64px;
+            /* AREA SAMA */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
         }
+
+        .category-icon img {
+            width: 200%;
+            height: 100%;
+            /* DIPAKSA NGISI AREA */
+            object-fit: contain;
+            /* GAMBAR TETAP PROPORSI */
+        }
+
 
         .category-text {
-            margin-top: 6px;
-            font-size: 13px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.25;
+            white-space: normal;
+            /* penting untuk <br> */
         }
     </style>
+
 
     <!-- Promo Banner -->
     <div class="container content-container">
         <div class="promo-banner">
-            <img src="assets/banner/promo-car.png" alt="Electric Vehicle Promo">
+            <img src="{{ asset('front_end/assets/images/logo/Mobile.jpg') }}" alt="Electric Vehicle Promo">
         </div>
     </div>
 
     <!-- Main Text -->
     <div class="container content-container main-text-section">
-        <h2>The Future of Driving Starts Here</h2>
-        <p>Find your dream electric vehicle from a variety of leading brands. Energy-efficient, environmentally friendly,
-            and ready to transform the way you travel.</p>
+        <h6 class="heading-hero mb-2">Masa Depan Berkendara Dimulai dari Sini</h6>
+        <p>Temukan kendaraan listrik impian Anda dari berbagai merek ternama. Hemat energi, ramah lingkungan, dan siap
+            mengubah cara Anda melaju.</p>
     </div>
 
     <!-- Slider Section -->
@@ -140,13 +142,15 @@
             <div class="slider-section">
                 <div class="slider-container">
                     <div class="slider-card">
-                        <img src="assets/slider/slider1.jpg" alt="Electric Vehicle 1" class="slider-card-img">
+                        <img src="{{ asset('front_end/assets/images/logo/background2.jpg') }}" alt="Electric Vehicle 1"
+                            class="slider-card-img">
                         <div class="slider-card-overlay">
                             <button class="see-more-btn">See more →</button>
                         </div>
                     </div>
                     <div class="slider-card">
-                        <img src="assets/slider/slider2.jpg" alt="Electric Vehicle 2" class="slider-card-img">
+                        <img src="{{ asset('front_end/assets/images/logo/background.jpg') }}" alt="Electric Vehicle 2"
+                            class="slider-card-img">
                         <div class="slider-card-overlay">
                             <button class="see-more-btn">See more →</button>
                         </div>
@@ -175,88 +179,121 @@
     </div>
 
     <!-- Why Choose Us -->
-    <div class="why-choose-section" style="position: relative; padding: 80px 0; overflow:hidden; background: white;">
-
-        <!-- SVG sebagai background full kiri–kanan -->
-        <svg viewBox="0 0 440 650" xmlns="http://www.w3.org/2000/svg"
-            style="
-                position:absolute;
-                top:0;
-                left:0;
-                width:100%;
-                height:100%;
-                object-fit:cover;
-                z-index:1;
-            ">
+    <section class="why-choose">
+        <!-- Background Shape -->
+        <svg class="why-bg" viewBox="0 0 440 650" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M476 630C476 641.046 467.046 650 456 650H-10C-21.0457 650 -30 641.046 -30 630V70C-30 58.9543 -21.0457 50 -10 50H190.179C197.27 50 203.831 46.2451 207.423 40.131L225.202 9.86901C228.794 3.75491 235.355 0 242.446 0H456C467.046 0 476 8.95431 476 20V630Z"
                 fill="#30445C" />
         </svg>
 
+        <!-- Label -->
+        <div class="why-label">Why Choose Us ?</div>
 
-
-
-
-        <!-- Konten di atas SVG -->
-        <div class="container content-container" style="position: relative; z-index:2; margin-bottom: 10px;">
-
-            <h3
-                style="
-                color: var(--dark-bg);
-                font-weight:700;
-                margin-bottom:130px;
-                font-size:20px;
-                text-align:left;
-                padding-left:5px;
-
-            ">
-                Why choose us?
-            </h3>
-
-            <div class="features-container" style="display:flex; flex-direction:column; gap:35px; padding-bottom:60px;">
-
-                <div class="feature-item" style="display:flex; gap:20px; margin-bottom:30px;">
-                    <div class="feature-icon">
-                        <img src="assets/icon/icon1.png" width="55" alt="Lightning Icon">
-                    </div>
-                    <div class="feature-content">
-                        <div class="feature-title" style="color:#35F5C6; font-weight:600;">
-                            Pilihan Merek & Model Lengkap
-                        </div>
-                        <p style="color:#fff;">Semua merek mobil listrik favorit Anda tersedia di satu showroom.</p>
-                    </div>
+        <!-- Content -->
+        <div class="why-content">
+            <div class="feature">
+                <img src="{{ asset('front_end/assets/images/logo/mobileicon-Photoroom.png') }}" alt="">
+                <div>
+                    <h5>Pilihan Merek & Model Lengkap</h5>
+                    <p>Semua merek mobil listrik favorit Anda tersedia di satu showroom.</p>
                 </div>
-
-                <div class="feature-item" style="display:flex; gap:20px; margin-bottom:30px;">
-                    <div class="feature-icon">
-                        <img src="assets/icon/icon2.png" width="55" alt="Steering Icon">
-                    </div>
-                    <div class="feature-content">
-                        <div class="feature-title" style="color:#35F5C6; font-weight:600;">
-                            Test Drive Kendaraan yang di Inginkan
-                        </div>
-                        <p style="color:#fff;">Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.</p>
-                    </div>
-                </div>
-
-                <div class="feature-item" style="display:flex; gap:20px;">
-                    <div class="feature-icon">
-                        <img src="assets/icon/icon3.png" width="55" alt="Leaf Icon">
-                    </div>
-                    <div class="feature-content">
-                        <div class="feature-title" style="color:#35F5C6; font-weight:600;">
-                            Komitmen pada Lingkungan
-                        </div>
-                        <p style="color:#fff;">Dengan setiap mobil listrik yang terjual, kita bersama selangkah lebih dekat
-                            menuju masa depan hijau.</p>
-                    </div>
-                </div>
-
             </div>
 
-        </div>
-    </div>
+            <div class="divider"></div>
 
+            <div class="feature">
+                <img src="{{ asset('front_end/assets/images/logo/mobileicon2-Photoroom.png') }}" alt="">
+                <div>
+                    <h5>Test Drive Kendaraan yang di Inginkan</h5>
+                    <p>Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="feature">
+                <img src="{{ asset('front_end/assets/images/logo/mobileicon3-Photoroom.png') }}" alt="">
+                <div>
+                    <h5>Komitmen pada Lingkungan</h5>
+                    <p>Dengan setiap mobil listrik yang terjual, kita bersama selangkah lebih dekat menuju masa depan hijau.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        .why-choose {
+            position: relative;
+            padding: 80px 20px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* SVG background */
+        .why-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Label putih */
+        .why-label {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            background: #fff;
+            color: #30445C;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 0 20px 20px 0;
+            /* margin-bottom: 80px; */
+        }
+
+        /* Content */
+        .why-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            max-width: 340px;
+        }
+
+        .feature {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .feature img {
+            width: 48px;
+            flex-shrink: 0;
+        }
+
+        .feature h5 {
+            margin: 0 0 6px;
+            color: #35F5C6;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .feature p {
+            margin: 0;
+            color: #ffffff;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* Divider line */
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            width: 100%;
+        }
+    </style>
 
 
     <!-- Counting Section -->

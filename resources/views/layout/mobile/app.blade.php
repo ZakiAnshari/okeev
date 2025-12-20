@@ -257,10 +257,20 @@
             min-height: 150px;
         }
 
+        .heading-hero {
+            font-family: 'Oxanium', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            line-height: 20px;
+            letter-spacing: 0;
+            color: #30445C;
+            margin: 0;
+        }
+
         /* Main Text Section */
         .main-text-section {
             text-align: center;
-            padding: 25px 15px;
+            padding: 5px 15px;
         }
 
         .main-text-section h2 {
