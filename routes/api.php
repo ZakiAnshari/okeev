@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiNewsController;
 use App\Http\Controllers\Api\ApiBrandController;
@@ -52,3 +53,5 @@ Route::post('/contacts', [ApiContactController::class, 'store']);
 
 //TEST DRIVE
 Route::post('/testdrive', [ApiTestDriveController::class, 'store']);
+
+Route::post('/order/callback',[OrderController::class, 'notificationCallback'])->name('order.callback');

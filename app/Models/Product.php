@@ -34,6 +34,10 @@ class Product extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     public function testdrives()
     {
         return $this->hasMany(Testdrive::class, 'product_id', 'id');

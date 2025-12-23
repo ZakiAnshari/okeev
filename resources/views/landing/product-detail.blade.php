@@ -97,7 +97,7 @@
 
                         <script>
                             document.getElementById('orderBtn').addEventListener('click', function() {
-                                window.location.href = "{{ route('order.now') }}";
+                                window.location.href = "{{ route('order.show', $product->slug) }}";
                             });
                         </script>
                     </div>
@@ -147,9 +147,11 @@
                                     {!! $product->description !!}
                                 </p>
                                 <!-- Action Buttons -->
-                                <div class="d-flex gap-3 mt-4">
+                                <div class="d-flex justify-content-center gap-4 mt-4 flex-wrap">
+
                                     @if (Auth::check())
-                                        <button class="btn btn-outline-primary px-4 py-2 rounded-pill add-to-cart-btn"
+                                        <button
+                                            class="btn btn-outline-primary px-5 py-3 rounded-pill fs-5 fw-bold add-to-cart-btn"
                                             data-id="{{ $product->id }}" data-name="{{ $product->model_name }}"
                                             data-price="{{ $product->price }}"
                                             data-image="{{ asset('storage/' . $product->images->first()->image) }}">
@@ -158,18 +160,21 @@
                                         </button>
                                     @else
                                         <a href="{{ route('login') }}"
-                                            class="btn btn-outline-primary px-4 py-2 rounded-pill">
+                                            class="btn btn-outline-primary px-5 py-3 rounded-pill fs-5 fw-bold">
                                             <i class="bx bx-cart-alt me-2"></i>
                                             Keranjang
                                         </a>
                                     @endif
-                                    <a href="/order-now">
-                                        <button class="btn px-4 py-2 rounded-pill text-white"
-                                            style="background: linear-gradient(to right, #00A6FF, #00D8A4); border: none;">
-                                            Pesan Sekarang
-                                        </button>
+
+                                    <a href="{{ route('order.show', $product->slug) }}"
+                                        class="btn px-5 py-3 rounded-pill text-white fs-5 fw-bold"
+                                        style="background: linear-gradient(to right, #00A6FF, #00D8A4); border: none;">
+                                        Pesan Sekarang
                                     </a>
+
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -428,7 +433,8 @@
 
                                 </div>
                                 <div class="col-6 ps-1">
-                                    <a href="{{ route('order.now') }}" class="btn btn-primary w-100 py-2 rounded-3"
+                                    <a href="{{ route('order.show', $product->slug) }}"
+                                        class="btn btn-primary w-100 py-2 rounded-3"
                                         style="background: linear-gradient(to right, #0094ff, #00e6a8); border: none;">
                                         Order Now
                                     </a>

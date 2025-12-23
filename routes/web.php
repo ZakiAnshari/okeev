@@ -67,12 +67,20 @@ Route::middleware(['auth', 'role'])->group(function () {
 
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 
-    Route::get('/order-now', [OrderController::class, 'show'])->name('order.now');
 
-    Route::get('/payment/va', [PaymentController::class, 'virtualAccount'])->name('payment.va');
+
+
+    Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
+    Route::post('/order/{product:slug}/invoice',[OrderController::class, 'createInvoice'])->name('order.invoice');
+    
+
+    Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])
+        ->name('payment.va');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
+
+
 
 //ADMIN
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -168,6 +176,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product/{product_slug}/details/{id}/edit', [DetailController::class, 'edit'])->name('details.edit');
     Route::post('/product/{product_slug}/details/{id}/edit', [DetailController::class, 'update'])->name('details.update');
     Route::get('/product/{product_slug}/details/{details}', [DetailController::class, 'destroy'])->name('details.destroy');
+    // --------------------
+    // ORDER
+
     // --------------------
     //NEWS
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');

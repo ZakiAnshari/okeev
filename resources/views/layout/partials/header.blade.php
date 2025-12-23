@@ -302,7 +302,6 @@
 
                                                 <!-- STEPS -->
                                                 <div class="trans-steps">
-
                                                     <div class="step active">
                                                         <div class="step-icon">
                                                             <i class="bx bx-time"></i>
@@ -314,7 +313,7 @@
                                                     <div class="step">
                                                         <div class="step-icon">
                                                             <i class="bx bx-refresh"></i>
-                                                            <span class="step-dot">1</span>
+                                                            {{-- <span class="step-dot">1</span> --}}
                                                         </div>
                                                         <span>Process</span>
                                                     </div>
@@ -322,7 +321,7 @@
                                                     <div class="step">
                                                         <div class="step-icon">
                                                             <i class="bx bxs-truck"></i>
-                                                            <span class="step-dot">1</span>
+                                                            {{-- <span class="step-dot">1</span> --}}
                                                         </div>
                                                         <span>Being<br>sent</span>
                                                     </div>
@@ -331,7 +330,7 @@
                                                     <div class="step">
                                                         <div class="step-icon">
                                                             <i class="bx bx-map"></i>
-                                                            <span class="step-dot">1</span>
+                                                            {{-- <span class="step-dot">1</span> --}}
                                                         </div>
                                                         <span>to the<br>Location</span>
                                                     </div>
@@ -344,22 +343,46 @@
                                                 <div class="trans-status-title">Waiting For Confirmation</div>
 
                                                 <!-- CARD -->
-                                                <a href="/payment/va">
-                                                    <div class="trans-card">
-                                                        <img src="{{ asset('front_end/assets/images/Pristine_White 1.png') }}"
-                                                            alt="car">
+                                                @php
+                                                    $orders = \App\Models\Order::where('user_id', auth()->id())
+                                                        ->latest()
+                                                        ->get();
+                                                @endphp
 
-                                                        <div class="trans-card-body">
-                                                            <div class="trans-card-top">
-                                                                <span class="status">Menunggu Pembayaran</span>
-                                                                <span class="time">2.00 AM</span>
-                                                            </div>
-                                                            <div class="product">
-                                                                New Air Ev Lite Long Range
+                                                @foreach ($orders as $item)
+                                                    <a href="{{ route('payment.va', $item->id) }}">
+                                                        <div class="trans-card mb-3">
+                                                            @if ($item->product && $item->product->colors->isNotEmpty() && $item->product->colors->first()->image)
+                                                                <img src="{{ asset('storage/' . $item->product->colors->first()->image) }}"
+                                                                    class="img-fluid car-preview" alt="Car"
+                                                                    style="max-height: 320px; width: auto;">
+                                                            @else
+                                                                <img src="{{ asset('storage/' . $item->product->thumbnail) }}"
+                                                                    class="img-fluid car-preview" alt="Thumbnail"
+                                                                    style="max-height: 395px; object-fit: contain;">
+                                                            @endif
+
+                                                            <div class="trans-card-body">
+                                                                <div class="trans-card-top">
+                                                                    <span class="status">
+                                                                        {{ ucfirst(strtolower($item->status)) }}
+                                                                    </span>
+
+                                                                    @if ($item->status !== 'Completed')
+                                                                        <span class="time countdown"
+                                                                            data-created="{{ $item->created_at->timestamp }}"
+                                                                            data-duration="7200">
+                                                                            --
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="product">
+                                                                    {{ $item->model_name }}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                @endforeach
 
                                             </div>
 
@@ -389,20 +412,27 @@
 </header>
 
 <style>
-    .profile-box {
-    display: flex;
-    align-items: center;
-}
+    .order-link {
+        display: flex;
+        justify-content: flex-end;
+        /* 👉 mentok kanan */
+        text-decoration: none;
+    }
 
-.header-profile-img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 50%;
-    border: 2px solid #eee;
-    transition: transform .2s ease, box-shadow .2s ease;
-}
+    .profile-box {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-profile-img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        border: 2px solid #eee;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
 
 
 
@@ -690,6 +720,39 @@
     }
 </style>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -730,4 +793,41 @@
         });
 
     });
+</script>
+
+
+{{-- script untuk hitngangan mundur pembayaran notifikasi --}}
+<script>
+    function startCountdown() {
+        document.querySelectorAll('.countdown').forEach(el => {
+            const createdAt = parseInt(el.dataset.created) * 1000;
+            const duration = parseInt(el.dataset.duration) * 1000;
+            const endTime = createdAt + duration;
+
+            function update() {
+                const now = Date.now();
+                const diff = endTime - now;
+
+                if (diff <= 0) {
+                    el.innerText = 'Expired';
+                    el.classList.add('text-danger');
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                el.innerText =
+                    `${hours.toString().padStart(2, '0')}:` +
+                    `${minutes.toString().padStart(2, '0')}:` +
+                    `${seconds.toString().padStart(2, '0')}`;
+            }
+
+            update();
+            setInterval(update, 1000);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', startCountdown);
 </script>

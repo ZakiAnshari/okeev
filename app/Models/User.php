@@ -32,6 +32,12 @@ class User extends Authenticatable
         'image_provile'
     ];
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+
     use HasSlug;
     public function getSlugOptions(): SlugOptions
     {

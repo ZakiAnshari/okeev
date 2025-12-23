@@ -3,8 +3,6 @@
 @section('content')
 
     <br><br><br><br>
-
-
     <section class="py-5">
         <div class="container">
 
@@ -22,45 +20,53 @@
 
                             <!-- IMAGE -->
                             <div class="product-image-box">
-                                <img src="{{ asset('front_end/assets/images/Pristine_White 1.png') }}"
-                                    class="product-image">
+                                @if ($product->colors->isNotEmpty() && $product->colors->first()->image)
+                                    <img src="{{ asset('storage/' . $product->colors->first()->image) }}"
+                                        class="img-fluid car-preview" id="car-preview" alt="Car"
+                                        style="max-height: 320px; width: auto;">
+                                @else
+                                    <img src="{{ asset('storage/' . $product->thumbnail) }}" class="img-fluid car-preview"
+                                        id="car-preview" alt="Thumbnail" style="max-height: 395px; object-fit: contain;">
+                                @endif
                             </div>
+
 
                             <!-- TEXT + PRICE + COLORS -->
                             <div class="flex-grow-1">
 
-                                <h5 class="fw-bold mb-1">New Air Ev Lite Long Range</h5>
+                                <h5 class="fw-bold mb-1">{{ $product->model_name }}</h5>
 
                                 <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-                                    <h5 class="fw-bold text-danger mb-0">Rp 194.000.000</h5>
+                                    <h5 class="fw-bold text-danger mb-0" id="total-price"
+                                        data-price="{{ $product->price }}">
+                                        {{ formatRupiah($product->price) }}
+                                    </h5>
 
                                     <!-- Counter -->
                                     <div class="d-flex align-items-center border rounded px-2 py-1"
                                         style="gap: 10px; min-width: 90px; justify-content: center;">
-                                        <button class="btn p-0 fw-bold" style="font-size: 20px;">-</button>
-                                        <span class="fw-bold">1</span>
-                                        <button class="btn p-0 fw-bold" style="font-size: 20px;">+</button>
+                                        <button class="btn p-0 fw-bold btn-minus" style="font-size: 20px;">-</button>
+                                        <span class="fw-bold" id="qty">1</span>
+                                        <button class="btn p-0 fw-bold btn-plus" style="font-size: 20px;">+</button>
                                     </div>
                                 </div>
+
 
                                 <hr>
 
-                                <p class="fw-semibold mb-2">Pilih Warna</p>
-
-                                <div class="d-flex flex-wrap gap-2 gap-md-3 justify-content-center align-items-center">
-                                    <div class="color-circle" style="background: linear-gradient(#000 50%, #fff 50%);">
-                                    </div>
-                                    <div class="color-circle"
-                                        style="background: linear-gradient(#2f3a2f 50%, #d7e1d2 50%);"></div>
-                                    <div class="color-circle" style="background: linear-gradient(#000 50%, #ffd500 50%);">
-                                    </div>
-                                    <div class="color-circle" style="background: linear-gradient(#000 50%, #d7b0a4 50%);">
-                                    </div>
-                                    <div class="color-circle" style="background: linear-gradient(#000 50%, #c7cae8 50%);">
-                                    </div>
-                                    <div class="color-circle" style="background: linear-gradient(#000 50%, #000 50%);">
-                                    </div>
+                                <p class="fw-bolder mb-2">Pilih Warna</p>
+                                <div class="d-flex flex-wrap gap-2 gap-md-3 justify-content-center">
+                                    @forelse($product->colors as $index => $color)
+                                        <div class="color-circle {{ $index === 0 ? 'active' : '' }}"
+                                            data-index="{{ $index }}" data-name="{{ $color->name }}"
+                                            data-image="{{ asset('storage/' . $color->image) }}"
+                                            style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%);">
+                                        </div>
+                                    @empty
+                                        <p class="text-muted"></p>
+                                    @endforelse
                                 </div>
+
 
 
                             </div>
@@ -125,7 +131,7 @@
                     <div class="card  shadow-sm p-4 rounded-4">
 
                         <!-- Payment Title -->
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        {{-- <div class="d-flex justify-content-between align-items-center mb-4">
                             <h6 class="fw-bold mb-0">Payment Methods</h6>
                             <a href="#" class="small text-decoration-none">See all</a>
                         </div>
@@ -154,23 +160,22 @@
                                 </label>
                             @endforeach
 
-                        </div>
+                        </div> --}}
 
-                        <hr>
+                        {{-- <hr> --}}
 
                         <!-- Summary -->
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
-                                <span>Total price (1 item)</span>
-                                <span style="font-weight: 900; letter-spacing: 1px; color: #00B0E5;">
-                                    Rp 194.000.000
+                                <span id="summary-label">Total price (1 item)</span>
+                                <span id="summary-price" style="font-weight: 900; letter-spacing: 1px; color: #00B0E5;">
+                                    {{ formatRupiah($product->price) }}
                                 </span>
-
-
                             </div>
+
                             <div class="d-flex justify-content-between">
                                 <span>Service Fee</span>
-                                <span class="fw-semibold">Rp 2.000</span>
+                                <span class="fw-semibold" id="service-fee">Rp 2.000</span>
                             </div>
                         </div>
 
@@ -179,15 +184,30 @@
                         <!-- Total Bill -->
                         <div class="d-flex justify-content-between fw-semibold fs-6 mb-3">
                             <span>Total Bill</span>
-                            <span style="font-weight: 900; letter-spacing: 1px; color: #00B0E5;">
-                                Rp 194.002.000
+                            <span id="total-bill" style="font-weight: 900; letter-spacing: 1px; color: #00B0E5;">
+                                {{ formatRupiah($product->price + 2000) }}
                             </span>
                         </div>
 
+
                         <!-- Payment Button -->
-                        <a href="{{ route('payment.va') }}" class="btn btn-info text-white w-100 py-2 rounded-pill">
-                            Payment
-                        </a>
+                        <form action="{{ route('order.invoice', $product->slug) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="qty" id="qty_input" value="1">
+
+                            <input type="hidden" name="color" id="color"
+                                value="{{ $product->colors->first()->name }}">
+
+                            <input type="hidden" name="price" id="price" value="{{ $product->price }}">
+                            <input type="hidden" name="grand_total" id="grand_total" value="{{ $product->grand_total }}">
+
+                            <button type="submit" class="btn btn-info text-white w-100 py-2 rounded-pill">
+                                Payment
+                            </button>
+                        </form>
+
+
 
 
                     </div>
@@ -218,7 +238,7 @@
         }
 
         .product-image-box img {
-            max-width: 100px !important;
+            max-width: 178px !important;
             max-height: 100px;
             object-fit: contain;
         }
@@ -400,5 +420,150 @@
         }
     </style>
 
+    {{-- SCRIPT UNTUK GANTI WARNA --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preview = document.getElementById('car-preview');
+            const colors = document.querySelectorAll('.color-circle');
+
+            colors.forEach(color => {
+                color.addEventListener('click', function() {
+
+                    // ganti image
+                    const image = this.dataset.image;
+                    if (image) {
+                        preview.src = image;
+                    }
+
+                    // toggle active
+                    colors.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    {{-- SCRIPT UNTUK MENAMBAH DAN MENGURAGI HARGA  --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== CONFIG =====
+            const unitPrice = {{ $product->price }};
+            const serviceFee = 2000;
+
+            // ===== ELEMENT =====
+            const qtyEl = document.getElementById('qty');
+            const priceEl = document.getElementById('total-price');
+
+            const summaryLabel = document.getElementById('summary-label');
+            const summaryPrice = document.getElementById('summary-price');
+            const totalBillEl = document.getElementById('total-bill');
+
+            const btnPlus = document.querySelector('.btn-plus');
+            const btnMinus = document.querySelector('.btn-minus');
+
+            // ===== STATE =====
+            let qty = 1;
+
+            // ===== HELPERS =====
+            function formatRupiah(number) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(number);
+            }
+
+            // ===== UPDATE UI =====
+            function updateAll() {
+                const subtotal = unitPrice * qty;
+                const totalBill = subtotal + serviceFee;
+
+                qtyEl.textContent = qty;
+                priceEl.textContent = formatRupiah(subtotal);
+
+                summaryLabel.textContent = `Total price (${qty} item${qty > 1 ? 's' : ''})`;
+                summaryPrice.textContent = formatRupiah(subtotal);
+                totalBillEl.textContent = formatRupiah(totalBill);
+            }
+
+            // ===== EVENTS =====
+            btnPlus.addEventListener('click', function() {
+                qty++;
+                updateAll();
+            });
+
+            btnMinus.addEventListener('click', function() {
+                if (qty > 1) {
+                    qty--;
+                    updateAll();
+                }
+            });
+
+            // ===== INIT =====
+            updateAll();
+
+        });
+    </script>
+
+    {{-- JQUERY --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+    </script>
+    <script>
+        function count(){
+            var price = $('#qty').val()
+            var qtty = $('#color').val()
+            var price = $('#price').val()
+            var grand_total = price * qty
+            $('#grand_total').val(grand_total)
+        }
+
+        $(document).on('keyup mouseup','#price', function(){
+            count()
+        });
+    </script> --}}
+    {{-- SCRIPT UNTUK WARNA --}}
+    <script>
+        document.querySelectorAll('.color-circle').forEach(circle => {
+            circle.addEventListener('click', function() {
+
+                // hapus active dari semua
+                document.querySelectorAll('.color-circle')
+                    .forEach(c => c.classList.remove('active'));
+
+                // set active ke yang diklik
+                this.classList.add('active');
+
+                // ambil nama warna
+                const colorName = this.dataset.name;
+
+                // set ke input hidden
+                document.getElementById('color').value = colorName;
+
+                console.log('Selected color:', colorName);
+            });
+        });
+    </script>
+    <script>
+        let qty = 1;
+
+        const qtySpan = document.getElementById('qty'); // span
+        const qtyInput = document.getElementById('qty_input'); // hidden input
+
+        document.querySelector('.btn-plus').addEventListener('click', function() {
+            qty++;
+            qtySpan.textContent = qty;
+            qtyInput.value = qty;
+        });
+
+        document.querySelector('.btn-minus').addEventListener('click', function() {
+            if (qty > 1) {
+                qty--;
+                qtySpan.textContent = qty;
+                qtyInput.value = qty;
+            }
+        });
+    </script>
 
 @endsection

@@ -92,6 +92,7 @@ class HomeUserController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+
         return view('home.profil', compact(
             'authUser',
             'user',

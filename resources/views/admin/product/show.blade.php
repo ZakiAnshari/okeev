@@ -93,6 +93,13 @@
                         <div class="d-flex justify-content-end">
                             <button type="button"
                                 class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#ColorModal">
+                                <i class="bi bi-plus-circle fs-5 me-2"></i><span>Color</span>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button"
+                                class="btn btn-outline-primary border-1 rounded-1 px-3 py-1 d-flex align-items-center"
                                 data-bs-toggle="modal" data-bs-target="#DetailModal">
                                 <i class="bi bi-plus-circle fs-5 me-2"></i><span>Detail</span>
                             </button>
@@ -873,7 +880,14 @@
                                     @endif
 
                                     {{-- CATEGORY LAINNYA --}}
-                                    {{-- @if (!in_array($categoryId, [1, 2]))
+                                    @if (!in_array($categoryId, [1, 2]))
+                                        <li class="nav-item">
+                                            <button type="button"
+                                                class="nav-link d-flex align-items-center {{ $activeTab == 'color' ? 'active' : '' }}"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-top-color">
+                                                <i class="bi bi-palette fs-5 me-2"></i> Color
+                                            </button>
+                                        </li>
                                         <li class="nav-item">
                                             <button type="button"
                                                 class="nav-link d-flex align-items-center {{ $activeTab == 'detail' ? 'active' : '' }}"
@@ -881,7 +895,7 @@
                                                 <i class="bx bx-info-circle fs-5 me-2"></i> Detail
                                             </button>
                                         </li>
-                                    @endif --}}
+                                    @endif
                                 </ul>
 
 
@@ -1253,7 +1267,8 @@
 
                                     {{-- DETAIL TABLE --}}
                                     <div class="tab-pane fade {{ $activeTab == 'detail' ? 'show active' : '' }}"
-                                        id="navs-pills-top-fitur" role="tabpanel">
+                                        id="navs-pills-top-detail" role="tabpanel">
+
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -1265,32 +1280,31 @@
                                             <tbody>
                                                 @forelse ($details as $item)
                                                     <tr>
-                                                        <td>{{ ($fiturs->currentPage() - 1) * $details->perPage() + $loop->iteration }}
+                                                        <td>{{ ($details->currentPage() - 1) * $details->perPage() + $loop->iteration }}
                                                         </td>
                                                         <td>{{ $item->label }}</td>
                                                         <td class="text-center">
-                                                            <!-- Edit -->
                                                             <a href="{{ route('details.edit', [$product->slug, $item->id]) }}"
                                                                 class="btn btn-icon btn-outline-primary">
                                                                 <i class="bx bx-edit-alt"></i>
                                                             </a>
-                                                            <!-- Delete -->
+
                                                             <button class="btn btn-icon btn-outline-danger"
-                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'details')"
-                                                                title="Hapus">
+                                                                onclick="confirmDelete('{{ $product->slug }}', '{{ $item->id }}', '{{ $item->label }}', 'details')">
                                                                 <i class="bx bx-trash"></i>
                                                             </button>
-
                                                         </td>
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="8" class="text-center">Data Detail Kosong</td>
+                                                        <td colspan="3" class="text-center">Data Detail Kosong</td>
                                                     </tr>
                                                 @endforelse
+                                            </tbody>
                                         </table>
+
                                         <div class="d-flex justify-content-end mt-3">
-                                            {{ $details->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                            {{ $details->links('pagination::bootstrap-4') }}
                                         </div>
                                     </div>
 

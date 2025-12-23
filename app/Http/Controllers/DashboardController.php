@@ -22,7 +22,6 @@ class DashboardController extends Controller
             'brand_count' => $brandCount,
             'product_count' => $productCount,
             'user_count' => $userCount,
-
         ]);
     }
 }
