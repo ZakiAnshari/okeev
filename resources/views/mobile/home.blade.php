@@ -40,7 +40,7 @@
 
     <div class="category-wrapper">
         <div class="category-section">
-            <a href="{{ route('vehicle.home') }}" class="category-item">
+            <a href="" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/1.jpg') }}" alt="Electric Car">
                 </div>
