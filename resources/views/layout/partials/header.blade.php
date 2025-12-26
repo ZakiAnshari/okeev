@@ -18,198 +18,165 @@
                         </button>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
+                                @php
+                                    $vehicleSlugs = $categoriesPosition1
+                                        ->flatMap(fn($cat) => $cat->brands)
+                                        ->pluck('slug')
+                                        ->toArray();
+                                @endphp
+                                <li
+                                    class="nav-item dropdown position-static 
+                                    {{ in_array(request()->route('slug'), $vehicleSlugs) ? 'active' : '' }}">
 
-                                <li class="nav-item dropdown position-static">
                                     <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Vehicle
+                                        Vehicle <i class='mx-1 bx bx-chevron-down'></i>
                                     </a>
-                                    <div class="dropdown-menu w-100 p-4" aria-labelledby="megaVehicle">
 
-                                        <div class="row position-relative vehicle-divider">
-                                            @forelse ($categoriesPosition1 as $category)
-                                                <div class="col-lg-6 col-md-6 mb-4 p-5">
-                                                    <!-- Header kategori -->
-                                                    <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
-                                                    <!-- Grid brands per kategori -->
-                                                    <div class="row">
-                                                        @foreach ($category->brands->chunk(4) as $chunk)
-                                                            <div class="col-6 col-md-4">
-                                                                <ul class="list-unstyled">
+
+                                    <div class="dropdown-menu nv-vehicle-dropdown" aria-labelledby="megaVehicle">
+                                        <div class="nv-vehicle-clip">
+                                            <div class="nv-vehicle-scroll">
+                                                @forelse ($categoriesPosition1 as $category)
+                                                    <div class="nv-vehicle-category with-divider">
+                                                        <h6 class="nv-vehicle-title">
+                                                            {{ $category->name_category }}
+                                                        </h6>
+
+                                                        <div class="nv-vehicle-brand-grid">
+                                                            @foreach ($category->brands->chunk(4) as $chunk)
+                                                                <ul class="nv-vehicle-brand-col">
                                                                     @foreach ($chunk as $brand)
                                                                         <li>
                                                                             <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                                class="dropdown-item brand-item">
+                                                                                class="dropdown-item nv-vehicle-brand-item">
                                                                                 {{ $brand->name_brand }}
                                                                             </a>
                                                                         </li>
                                                                     @endforeach
                                                                 </ul>
-                                                            </div>
-                                                        @endforeach
+                                                            @endforeach
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            @empty
-                                                <div class="col-12 text-center">
-                                                    <p class="text-muted mb-0">Kategori Vehicle belum tersedia.</p>
-                                                </div>
-                                            @endforelse
+
+                                                @empty
+                                                    <div class="nv-vehicle-empty">
+                                                        <p class="text-muted mb-0">Kategori Vehicle belum tersedia.</p>
+                                                    </div>
+                                                @endforelse
+                                            </div>
                                         </div>
-                                        <style>
-                                            .brand-item {
-                                                font-weight: normal !important;
-                                            }
-
-                                            .vehicle-divider {
-                                                position: relative;
-                                            }
-
-                                            .vehicle-divider::before {
-                                                content: "";
-                                                position: absolute;
-                                                top: 0;
-                                                bottom: 0;
-                                                /* Garis tetap di tengah, tapi diberi margin kiri & kanan */
-                                                left: calc(50% - 1px);
-                                                /* posisi tengah */
-                                                width: 3px;
-                                                background-color: #dcdcdc;
-                                                /* Margin kiri–kanan garis */
-                                                margin-left: -20px;
-                                                margin-right: -20px;
-                                            }
-
-                                            .dropdown-menu {
-                                                background-color: rgba(255, 255, 255, 0.85) !important;
-                                                backdrop-filter: blur(4px);
-                                                /* opsional biar lebih halus */
-                                            }
-                                        </style>
-
-
                                     </div>
                                 </li>
 
-                                <li class="nav-item dropdown position-static">
+                                @php
+                                    $electricSlugs = $categoriesPosition2
+                                        ->flatMap(fn($cat) => $cat->brands)
+                                        ->pluck('slug')
+                                        ->toArray();
+                                @endphp
+                                <li
+                                    class="nav-item dropdown position-static
+                                    {{ in_array(request()->route('slug'), $electricSlugs) ? 'active' : '' }}">
+
                                     <a class="dd-menu collapsed" href="#" id="megaElectric" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Electric
+                                        Electric <i class='mx-1 bx bx-chevron-down'></i>
                                     </a>
 
-                                    <div class="dropdown-menu w-100 p-4" aria-labelledby="megaElectric">
+                                    <div class="dropdown-menu nv-vehicle-dropdown" aria-labelledby="megaElectric">
+                                        <div class="nv-vehicle-clip">
+                                            <div class="nv-vehicle-scroll">
 
-                                        <div class="row electric-divider">
-                                            @forelse ($categoriesPosition2 as $category)
-                                                <div class="col-lg-3 col-md-6 mb-4 p-5">
-                                                    <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
-                                                    <div class="row">
-                                                        @foreach ($category->brands->chunk(4) as $chunk)
-                                                            @foreach ($chunk as $brand)
-                                                                <div class="col-6 col-md-6">
-                                                                    <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                        class="dropdown-item brand-item">
-                                                                        {{ $brand->name_brand }}
-                                                                    </a>
-                                                                </div>
+                                                @forelse ($categoriesPosition2 as $category)
+                                                    <div class="nv-vehicle-category with-divider">
+                                                        <h6 class="nv-vehicle-title">
+                                                            {{ $category->name_category }}
+                                                        </h6>
+
+                                                        <div class="nv-vehicle-brand-grid">
+                                                            @foreach ($category->brands->chunk(4) as $chunk)
+                                                                <ul class="nv-vehicle-brand-col">
+                                                                    @foreach ($chunk as $brand)
+                                                                        <li>
+                                                                            <a href="{{ route('landing.cars', $brand->slug) }}"
+                                                                                class="dropdown-item nv-vehicle-brand-item">
+                                                                                {{ $brand->name_brand }}
+                                                                            </a>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
                                                             @endforeach
-                                                        @endforeach
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            @empty
-                                                <div class="col-12 text-center">
-                                                    <p class="text-muted mb-0">
-                                                        Electric belum tersedia.</p>
-                                                </div>
-                                            @endforelse
+                                                @empty
+                                                    <div class="nv-vehicle-empty">
+                                                        <p class="text-muted mb-0">Electric belum tersedia.</p>
+                                                    </div>
+                                                @endforelse
 
+                                            </div>
                                         </div>
-                                        <style>
-                                            /* Hilangkan bold brand */
-                                            .brand-item {
-                                                font-weight: normal !important;
-                                            }
-
-                                            /* Garis pemisah setiap kategori */
-                                            .electric-divider>div {
-                                                border-right: 2px solid #dcdcdc;
-                                            }
-
-                                            /* Hilangkan garis di kolom terakhir */
-                                            .electric-divider>div:last-child {
-                                                border-right: none;
-                                            }
-                                        </style>
-
-
                                     </div>
                                 </li>
 
+                                <li
+                                    class="nav-item dropdown position-static
+                                    {{ request()->routeIs('landing.accessories*') ? 'active' : '' }}">
 
-                                <li class="nav-item dropdown position-static">
-                                    <a style="padding: 35px 0px" class="nav-link dropdown-toggle" href="#"
-                                        id="megaAccessories" role="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        Accessories
+                                    <a class="dd-menu collapsed" href="#" id="megaAccessories" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Accessories <i class='mx-1 bx bx-chevron-down'></i>
                                     </a>
 
-                                    <div class="dropdown-menu w-100 p-4" aria-labelledby="megaAccessories">
-                                        <div class="row g-4 accessories-divider">
-                                            @forelse ($categoriesPosition3 as $category)
-                                                <div class="col-lg-3 col-md-6 mb-4 p-5">
-                                                    <h6 class="fw-bold mb-3">{{ $category->name_category }}</h6>
+                                    <div class="dropdown-menu nv-vehicle-dropdown" aria-labelledby="megaAccessories">
+                                        <div class="nv-vehicle-clip">
+                                            <div class="nv-vehicle-scroll">
 
-                                                    <div class="row g-2">
-                                                        @foreach ($category->brands->chunk(4) as $chunk)
-                                                            @foreach ($chunk as $brand)
-                                                                <div class="col-6 col-md-6">
-                                                                    <a href="{{ route('landing.cars', $brand->slug) }}"
-                                                                        class="dropdown-item px-0 brand-item">
-                                                                        {{ $brand->name_brand }}
-                                                                    </a>
-                                                                </div>
+                                                @forelse ($categoriesPosition3 as $category)
+                                                    <div class="nv-vehicle-category with-divider">
+                                                        <h6 class="nv-vehicle-title">
+                                                            {{ $category->name_category }}
+                                                        </h6>
+
+                                                        <div class="nv-vehicle-brand-grid">
+                                                            @foreach ($category->brands->chunk(4) as $chunk)
+                                                                <ul class="nv-vehicle-brand-col">
+                                                                    @foreach ($chunk as $brand)
+                                                                        <li>
+                                                                            <a href="{{ route('landing.cars', $brand->slug) }}"
+                                                                                class="dropdown-item nv-vehicle-brand-item">
+                                                                                {{ $brand->name_brand }}
+                                                                            </a>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
                                                             @endforeach
-                                                        @endforeach
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            @empty
-                                                <div class="col-12 text-center">
-                                                    <p class="text-muted mb-0">Accessories belum tersedia.</p>
-                                                </div>
-                                            @endforelse
+                                                @empty
+                                                    <div class="nv-vehicle-empty">
+                                                        <p class="text-muted mb-0">Accessories belum tersedia.</p>
+                                                    </div>
+                                                @endforelse
+
+                                            </div>
                                         </div>
-                                        <style>
-                                            /* Garis pemisah antar kategori */
-                                            .accessories-divider>div {
-                                                border-right: 2px solid #dcdcdc;
-                                            }
-
-                                            /* Hilangkan garis di kolom terakhir */
-                                            .accessories-divider>div:last-child {
-                                                border-right: none;
-                                            }
-
-                                            /* Hilangkan bold di brand */
-                                            .brand-item {
-                                                font-weight: normal !important;
-                                            }
-                                        </style>
-
-
-
                                     </div>
                                 </li>
 
-                                <li class="nav-item">
+                                <li class="nav-item {{ request()->is('about') ? 'active' : '' }}">
                                     <a href="/about">About</a>
                                 </li>
 
-                                <li class="nav-item">
+                                <li class="nav-item {{ request()->is('News') ? 'active' : '' }}">
                                     <a href="/News">News</a>
                                 </li>
 
-                                <li class="nav-item">
+                                <li class="nav-item {{ request()->is('contact') ? 'active' : '' }}">
                                     <a href="/contact">Contact</a>
                                 </li>
+
 
                             </ul>
                             <div class="button add-list-button">
@@ -412,6 +379,125 @@
 </header>
 
 <style>
+    .nv-vehicle-category {
+        position: relative;
+        padding-right: 20px;
+        /* ruang untuk garis */
+    }
+
+    .nav-item.active>a {
+        color: #35F5C6 !important;
+    }
+
+    .nv-vehicle-category::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 1px;
+        /* ketebalan garis */
+        height: 100%;
+        background-color: #e0e0e0;
+        /* warna garis */
+    }
+
+    .nv-vehicle-category:last-child::after {
+        display: none;
+    }
+
+    .nv-vehicle-category::after {
+        content: "";
+        position: absolute;
+        right: 0;
+
+        top: 30px;
+        /* 🔽 garis diturunkan */
+        height: calc(100% - 36px);
+        /* tinggi menyesuaikan */
+
+        width: 1px;
+        background-color: #e0e0e0;
+    }
+
+    .nv-vehicle-dropdown {
+        width: 100%;
+        padding: 50px;
+        background-color: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(2px);
+        border-radius: 2px;
+        border: none;
+    }
+
+    /* Horizontal scroll container */
+    .nv-vehicle-dropdown .nv-vehicle-scroll {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 80px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 10px;
+        scroll-behavior: smooth;
+    }
+
+    /* Scrollbar (optional) */
+    .nv-vehicle-dropdown .nv-vehicle-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .nv-vehicle-dropdown .nv-vehicle-scroll::-webkit-scrollbar-thumb {
+        background: #d0d0d0;
+        border-radius: 10px;
+    }
+
+    /* Category box */
+    .nv-vehicle-dropdown .nv-vehicle-category {
+        flex: 0 0 420px;
+
+        /* padding: 20px 24px; */
+        border-radius: 12px;
+
+    }
+
+    /* Category title */
+    .nv-vehicle-dropdown .nv-vehicle-title {
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    /* Brand grid */
+    .nv-vehicle-dropdown .nv-vehicle-brand-grid {
+        display: flex;
+        gap: 24px;
+    }
+
+    /* Brand column */
+    .nv-vehicle-dropdown .nv-vehicle-brand-col {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-width: 140px;
+    }
+
+    /* Brand item */
+    .nv-vehicle-dropdown .nv-vehicle-brand-item {
+        padding: 4px 0;
+        font-weight: 400;
+        color: #333;
+        background: transparent;
+    }
+
+    .nv-vehicle-dropdown .nv-vehicle-brand-item:hover {
+        color: #0d6efd;
+        background: transparent;
+    }
+
+    /* Empty state */
+    .nv-vehicle-dropdown .nv-vehicle-empty {
+        width: 100%;
+        text-align: center;
+        padding: 32px;
+    }
+
     .order-link {
         display: flex;
         justify-content: flex-end;
@@ -721,7 +807,17 @@
 </style>
 
 
+<script>
+    function nvVehicleScroll(direction) {
+        const container = document.querySelector('.nv-vehicle-dropdown .nv-vehicle-scroll');
+        if (!container) return;
 
+        container.scrollBy({
+            left: direction * 450,
+            behavior: 'smooth'
+        });
+    }
+</script>
 
 
 

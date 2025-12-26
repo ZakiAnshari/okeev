@@ -57,8 +57,6 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
 
-
-
     Route::get('/cart', [HomeUserController::class, 'cart'])->name('cart');
     Route::post('/cart/add', [HomeUserController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/increase', [HomeUserController::class, 'increaseQty']);
@@ -66,9 +64,6 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::delete('/cart/{id}', [HomeUserController::class, 'removeItem']);
 
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-
-
-
 
     Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
     Route::post('/order/{product:slug}/invoice',[OrderController::class, 'createInvoice'])->name('order.invoice');
@@ -203,6 +198,23 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // MOBILE ---------------------------------------------------------------------------------------------------------------------
 Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
+    Route::get('/vehicle', [App\Http\Controllers\Mobile\HomeController::class, 'vehicle'])->name('vehicle.home');
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Route::get('/products', [App\Http\Controllers\Mobile\ProductController::class, 'index'])->name('mobile.products');
     Route::get('/products/{slug}', [App\Http\Controllers\Mobile\ProductController::class, 'show'])->name('mobile.product.show');

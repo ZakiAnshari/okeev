@@ -40,7 +40,7 @@
 
     <div class="category-wrapper">
         <div class="category-section">
-            <a href="vehicle.html" class="category-item">
+            <a href="{{ route('vehicle.home') }}" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/1.jpg') }}" alt="Electric Car">
                 </div>
@@ -79,8 +79,8 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            gap: 16px;
-            padding: 0 12px;
+            gap: 25px;
+            padding: 0 25px;
         }
 
         .category-item {
@@ -105,7 +105,7 @@
 
         .category-icon img {
             width: 200%;
-            height: 100%;
+            height: 90%;
             /* DIPAKSA NGISI AREA */
             object-fit: contain;
             /* GAMBAR TETAP PROPORSI */
@@ -131,7 +131,7 @@
 
     <!-- Main Text -->
     <div class="container content-container main-text-section">
-        <h6 class="heading-hero mb-2">Masa Depan Berkendara Dimulai dari Sini</h6>
+        <h6 class="heading-hero mb-2">The Future of Driving Starts Here</h6>
         <p>Temukan kendaraan listrik impian Anda dari berbagai merek ternama. Hemat energi, ramah lingkungan, dan siap
             mengubah cara Anda melaju.</p>
     </div>
@@ -178,127 +178,174 @@
         </div>
     </div>
 
+
+
+    <!-- WHY CHOOSE US -->
     <!-- Why Choose Us -->
     <section class="why-choose">
-        <!-- Background Shape -->
-        <svg class="why-bg" viewBox="0 0 440 650" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M476 630C476 641.046 467.046 650 456 650H-10C-21.0457 650 -30 641.046 -30 630V70C-30 58.9543 -21.0457 50 -10 50H190.179C197.27 50 203.831 46.2451 207.423 40.131L225.202 9.86901C228.794 3.75491 235.355 0 242.446 0H456C467.046 0 476 8.95431 476 20V630Z"
-                fill="#30445C" />
-        </svg>
 
-        <!-- Label -->
-        <div class="why-label">Why Choose Us ?</div>
 
-        <!-- Content -->
-        <div class="why-content">
-            <div class="feature">
-                <img src="{{ asset('front_end/assets/images/logo/mobileicon-Photoroom.png') }}" alt="">
-                <div>
-                    <h5>Pilihan Merek & Model Lengkap</h5>
-                    <p>Semua merek mobil listrik favorit Anda tersedia di satu showroom.</p>
-                </div>
-            </div>
 
-            <div class="divider"></div>
+        <div class="container position-relative">
 
-            <div class="feature">
-                <img src="{{ asset('front_end/assets/images/logo/mobileicon2-Photoroom.png') }}" alt="">
-                <div>
-                    <h5>Test Drive Kendaraan yang di Inginkan</h5>
-                    <p>Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.</p>
-                </div>
-            </div>
+            <h3 class="why-title ">Why Choose Us ?</h3>
 
-            <div class="divider"></div>
-            <div class="feature">
-                <img src="{{ asset('front_end/assets/images/logo/mobileicon3-Photoroom.png') }}" alt="">
-                <div>
-                    <h5>Komitmen pada Lingkungan</h5>
-                    <p>Dengan setiap mobil listrik yang terjual, kita bersama selangkah lebih dekat menuju masa depan hijau.
+            <div class="why-items">
+                <br>
+                <!-- ITEM 1 -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <img src="{{ asset('front_end/assets/images/logo/mobileicon-Photoroom.png') }}"
+                            class="feature-icon" alt="">
+                        <h5>Pilihan Merek & Model Lengkap</h5>
+                    </div>
+                    <hr class="feature-line">
+                    <p class="feature-desc">
+                        Semua merek mobil listrik favorit Anda tersedia di satu showroom.
                     </p>
                 </div>
+
+
+                <!-- ITEM 2 -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <img src="{{ asset('front_end/assets/images/logo/mobileicon2-Photoroom.png') }}"
+                            class="feature-icon" alt="">
+                        <h5>Test Drive Kendaraan yang di inginkan</h5>
+                    </div>
+
+                    <hr class="feature-line">
+
+                    <p class="feature-desc">
+                        Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.
+                    </p>
+                </div>
+
+                <!-- ITEM 3 -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <img src="{{ asset('front_end/assets/images/logo/mobileicon3-Photoroom.png') }}"
+                            class="feature-icon" alt="">
+                        <h5>Komitmen pada Lingkungan</h5>
+                    </div>
+
+                    <hr class="feature-line">
+
+                    <p class="feature-desc">
+                        Dengan setiap mobil listrik yang terjual, kita bersama selangkah lebih dekat
+                        menuju masa depan hijau.
+                    </p>
+                </div>
+
+
             </div>
         </div>
     </section>
     <style>
         .why-choose {
             position: relative;
-            padding: 80px 20px;
+            padding: 80px 0;
             overflow: hidden;
-            background: #fff;
+
+            background-image: url('front_end/assets/images/logo/Union.jpg');
+            background-size: cover;
+            background-position: center 70px;
+            /* turun 80px */
+            background-repeat: no-repeat;
         }
 
-        /* SVG background */
-        .why-bg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+        .feature-card {
+            background: transparent;
+        }
+
+        /* HEADER: ICON + TITLE */
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* TITLE */
+        .feature-header h5 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #35F5C6;
+            margin: 0;
+        }
+
+        /* GARIS TIPIS */
+        .feature-line {
+            border: none;
+            height: 2px;
+            background: #ffffff;
+            margin: 8px 0px;
+        }
+
+        /* DESKRIPSI */
+        .feature-desc {
+            font-size: 15px;
+            color: #ffffff;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* LANDI KIRI ATAS */
+        .why-choose::before {
+            content: "";
+            background: #ffffff;
+            border-bottom-right-radius: 280px 130px;
             z-index: 1;
         }
 
-        /* Label putih */
-        .why-label {
+        /* KONTEN DI ATAS BACKGROUND */
+        .why-choose .container {
             position: relative;
             z-index: 2;
-            display: inline-block;
-            background: #fff;
-            color: #30445C;
-            font-weight: 700;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 0 20px 20px 0;
-            /* margin-bottom: 80px; */
         }
 
-        /* Content */
-        .why-content {
-            position: relative;
-            z-index: 2;
+        /* TITLE */
+        .why-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e2f3d;
+            margin-bottom: 40px;
+        }
+
+        /* ITEMS */
+        .why-items {
             display: flex;
             flex-direction: column;
-            gap: 28px;
-            max-width: 340px;
+            gap: 32px;
         }
 
-        .feature {
+        .why-item {
             display: flex;
-            gap: 18px;
+            gap: 14px;
             align-items: flex-start;
         }
 
-        .feature img {
-            width: 48px;
+        .why-icon {
+            width: 44px;
             flex-shrink: 0;
         }
 
-        .feature h5 {
-            margin: 0 0 6px;
+        .why-item h5 {
+            font-size: 15px;
             color: #35F5C6;
             font-weight: 600;
-            font-size: 14px;
+            margin-bottom: 6px;
         }
 
-        .feature p {
-            margin: 0;
+        .why-item p {
+            font-size: 13px;
             color: #ffffff;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        /* Divider line */
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.3);
-            width: 100%;
+            line-height: 1.6;
         }
     </style>
 
-
     <!-- Counting Section -->
-    <div class="container content-container counting-section">
-        <div class="row">
+    <div class="container content-container counting-section mt-5">
+        <div class="row p-3">
             <div class="col-4">
                 <div class="count-item">
                     <h3>28</h3>
@@ -319,19 +366,19 @@
             </div>
         </div>
 
-        <div class="row mt-5">
+        <div class="row mt-2">
             <div class="col-12">
                 <div class="customer-profiles">
                     <div class="profile-img">
-                        <img src="assets/customer/customer.png" alt="profile">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/1.jpg') }}" alt="profile">
                     </div>
                     <div class="profile-img">
-                        <img src="assets/customer/customer.png" alt="profile">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/2.jpg') }}" alt="profile">
                     </div>
                     <div class="profile-img">
-                        <img src="assets/customer/customer.png" alt="profile">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/3.jpg') }}" alt="profile">
                     </div>
-                    <div class="customer-text">
+                    <div class="customer-text text-start mx-4">
                         <h4>Million of happy customers</h4>
                         <p>Lorem ipsum dolor sit amet</p>
                     </div>
@@ -344,14 +391,19 @@
     <div class="container content-container collab-section">
         <h3>Our collaboration with brands</h3>
 
-        <div class="collab-tabs">
-            <button class="collab-tab active" onclick="showTab('vehicle')">Vehicle</button>
-            <button class="collab-tab" onclick="showTab('electric')">Electric</button>
+        <div class="collab-tabs mx-3">
+            <button class="collab-tab active" onclick="showTab('vehicle')">
+                Vehicle
+            </button>
+            <button class="collab-tab" onclick="showTab('electric')">
+                Electric
+            </button>
         </div>
 
-        <div id="vehicle-brands" class="brand-grid">
-            <div class="brand-item"><img src="assets/brand/vehicle/BMW.png" alt="Brand 1" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/BYD.png" alt="Brand 2" class="brand-logo"></div>
+
+        <div id="vehicle-brands" class="brand-grid p-3">
+            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/8.png') }}" alt="Brand 1"
+                    class="brand-logo"></div>
             <div class="brand-item"><img src="assets/brand/vehicle/Chery.png" alt="Brand 3" class="brand-logo"></div>
             <div class="brand-item"><img src="assets/brand/vehicle/DENZA.png" alt="Brand 4" class="brand-logo"></div>
             <div class="brand-item"><img src="assets/brand/vehicle/Maka.png" alt="Brand 5" class="brand-logo"></div>
@@ -367,259 +419,107 @@
             <div class="brand-item"><img src="assets/brand/vehicle/Yadea.png" alt="Brand 9" class="brand-logo"></div>
         </div>
 
-        <div id="electric-brands" class="brand-grid" style="display: none;">
-            <div class="brand-item"><img src="assets/brand/electronic/Xiaomi.png" alt="Electric Brand 1"
+        <div id="electric-brands" class="brand-grid p-3">
+            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/8.png') }}" alt="Brand 3"
                     class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/iPhone.png" alt="Electric Brand 2"
+            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/2.png') }}" alt="Brand 3"
                     class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Samsung.png" alt="Electric Brand 3"
+            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/3.png') }}" alt="Brand 3"
                     class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Asus.png" alt="Electric Brand 4"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Acer.png" alt="Electric Brand 5"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Lenovo.png" alt="Electric Brand 6"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Poco.png" alt="Electric Brand 6"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Tecno.png" alt="Electric Brand 6"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Vivo.png" alt="Electric Brand 6"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Oppo.png" alt="Electric Brand 6"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Advan.png" alt="Electric Brand 6"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/electronic/Infinix.png" alt="Electric Brand 6"
+            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/4.png') }}" alt="Brand 3"
                     class="brand-logo"></div>
         </div>
     </div>
 
     <!-- Most Searched Section -->
-    <div class="container content-container most-searched-section">
+    <div class="container content-container most-searched-section ">
         <div class="strip-divider"></div>
 
-        <h3 class="text-center my-4">The Most Searched Vehicle</h3>
+        <h3 class="text-center p-3">The Most Searched Vehicle</h3>
 
-        <div class="search-tabs">
+        {{-- <div class="search-tabs p-3">
             <button class="search-tab active">In Stock</button>
             <button class="search-tab">Sedan</button>
             <button class="search-tab">SUV</button>
             <button class="search-tab">Motorcycle</button>
-        </div>
+        </div> --}}
+
+
 
         <div class="row">
             <!-- Vehicle Card 1 -->
             <div class="col-md-6 mb-3">
                 <a href="wuling-air-ev.html" class="vehicle-card">
                     <div class="vehicle-img">
-                        <img src="assets/product/vehicles/wuling/air-ev/Views.png" class="car-img" alt="Wuling Air EV">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/download (3) 1 (1).png') }}"
+                            class="car-img" alt="Wuling Air EV">
                     </div>
 
                     <div class="vehicle-info">
-                        <h6>Wuling</h6>
-                        <p>New Air Ev Lite Long Range</p>
+                        <h6 class="mb-1">Wuling</h6>
+                        <p class="text-semibold">New Air Ev Lite Long Range</p>
 
-                        <div class="vehicle-specs">
-                            <!-- Speed -->
+                        <div class="vehicle-specs p-4">
+                            <!-- Miles -->
                             <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- Speedometer SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <path d="M12 3a9 9 0 1 0 9 9" />
-                                        <path d="M12 12l4-2" />
-                                    </svg>
+                                <div class="spec-icon mb-1">
+                                    <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
+                                        alt="Speedometer Icon" class="spec-icon-img">
                                 </div>
-                                <div class="spec-label">Speed</div>
                                 <div class="spec-value">20 Miles</div>
                             </div>
 
-                            <!-- Power -->
                             <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- Lightning Bolt SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
-                                    </svg>
+                                <div class="spec-icon mb-1">
+                                    <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols-light_electric-bolt-rounded.jpg') }}"
+                                        alt="Speedometer Icon" class="spec-icon-img">
                                 </div>
-                                <div class="spec-label">Power</div>
                                 <div class="spec-value">Electric</div>
                             </div>
 
-                            <!-- Seat -->
                             <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- User SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <circle cx="12" cy="7" r="4" />
-                                        <path d="M6 21c0-4 3-7 6-7s6 3 6 7" />
-                                    </svg>
+                                <div class="spec-icon mb-1">
+                                    <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
+                                        alt="Speedometer Icon" class="spec-icon-img">
                                 </div>
-                                <div class="spec-label">Seat</div>
-                                <div class="spec-value">2 Seat</div>
+                                <div class="spec-value">6 Seat</div>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="vehicle-price">IDR 194.000.000</span>
-                            <P>Details →</P>
+
+                            <div class="d-flex align-items-center details-link">
+                                <p class="m-0 me-1 mx-1">Details</p>
+                                <img src="{{ asset('front_end/assets/images/logo/mobile/majesticons_arrow-up-line.jpg') }}"
+                                    alt="Details Icon" class="details-icon">
+                            </div>
                         </div>
+
                     </div>
                 </a>
             </div>
 
+            <style>
+                .spec-icon {
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
 
-            <!-- Vehicle Card 2 -->
-            <div class="col-md-6 mb-3">
-                <a href="wuling-air-ev.html" class="vehicle-card">
-                    <div class="vehicle-img">
-                        <img src="assets/product/vehicles/vehicle1.png" class="car-img" alt="Wuling Air EV">
-                    </div>
+                .spec-icon-img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    /* icon tidak terpotong */
+                }
+            </style>
 
-                    <div class="vehicle-info">
-                        <h6>Wuling</h6>
-                        <p>New Air Ev Lite Long Range</p>
-
-                        <div class="vehicle-specs">
-                            <!-- Speed -->
-                            <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- Speedometer SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <path d="M12 3a9 9 0 1 0 9 9" />
-                                        <path d="M12 12l4-2" />
-                                    </svg>
-                                </div>
-                                <div class="spec-label">Speed</div>
-                                <div class="spec-value">20 Miles</div>
-                            </div>
-
-                            <!-- Power -->
-                            <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- Lightning Bolt SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
-                                    </svg>
-                                </div>
-                                <div class="spec-label">Power</div>
-                                <div class="spec-value">Electric</div>
-                            </div>
-
-                            <!-- Seat -->
-                            <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- User SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <circle cx="12" cy="7" r="4" />
-                                        <path d="M6 21c0-4 3-7 6-7s6 3 6 7" />
-                                    </svg>
-                                </div>
-                                <div class="spec-label">Seat</div>
-                                <div class="spec-value">2 Seat</div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="vehicle-price">IDR 194.000.000</span>
-                            <P>Details →</P>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Vehicle Card 3 -->
-            <div class="col-md-6 mb-3">
-                <a href="wuling-air-ev.html" class="vehicle-card">
-                    <div class="vehicle-img">
-                        <img src="assets/product/vehicles/vehicle1.png" class="car-img" alt="Wuling Air EV">
-                    </div>
-
-                    <div class="vehicle-info">
-                        <h6>Wuling</h6>
-                        <p>New Air Ev Lite Long Range</p>
-
-                        <div class="vehicle-specs">
-                            <!-- Speed -->
-                            <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- Speedometer SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <path d="M12 3a9 9 0 1 0 9 9" />
-                                        <path d="M12 12l4-2" />
-                                    </svg>
-                                </div>
-                                <div class="spec-label">Speed</div>
-                                <div class="spec-value">20 Miles</div>
-                            </div>
-
-                            <!-- Power -->
-                            <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- Lightning Bolt SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
-                                    </svg>
-                                </div>
-                                <div class="spec-label">Power</div>
-                                <div class="spec-value">Electric</div>
-                            </div>
-
-                            <!-- Seat -->
-                            <div class="spec-item">
-                                <div class="spec-icon">
-                                    <!-- User SVG -->
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
-                                        <circle cx="12" cy="7" r="4" />
-                                        <path d="M6 21c0-4 3-7 6-7s6 3 6 7" />
-                                    </svg>
-                                </div>
-                                <div class="spec-label">Seat</div>
-                                <div class="spec-value">2 Seat</div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="vehicle-price">IDR 194.000.000</span>
-                            <P>Details →</P>
-                        </div>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
+
     </div>
 
-    <!-- Hotbar -->
-    <div class="bottom-nav">
-        <div class="bottom-nav-container">
-            <a href="transaction.html" class="nav-item">
-                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-                </svg>
-                <span class="nav-label">Transaction</span>
-            </a>
-            <a href="index.html" class="nav-item active">
-                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                </svg>
-                <span class="nav-label">Home</span>
-            </a>
-            <a href="news.html" class="nav-item">
-                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-                </svg>
-                <span class="nav-label">News</span>
-            </a>
-            <a href="profile.html" class="nav-item">
-                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-                </svg>
-                <span class="nav-label">Profile</span>
-            </a>
-        </div>
-    </div>
 @endsection

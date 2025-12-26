@@ -11,4 +11,9 @@ class HomeController extends Controller
     {
         return view('mobile.home');
     }
+
+    public function vehicle()
+    {
+        return view('mobile.vehicle');
+    }
 }

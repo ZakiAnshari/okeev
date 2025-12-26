@@ -195,7 +195,7 @@
                                             <td>{{ $item->name_brand }}</td>
                                             <td>
                                                 <img src="{{ asset('storage/' . $item->image) }}" alt="Brand Image"
-                                                    style="width: 80px; height: auto; object-fit: cover; border-radius: 5px;">
+                                                    style="width: 100px; height: auto;">
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ route('brands.edit', $item->slug) }}"

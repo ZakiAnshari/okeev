@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <style>
         :root {
@@ -322,13 +323,13 @@
         }
 
         .slider-card {
-            min-width: 300px;
+            min-width: 307px;
             background: #f5f5f5;
             border-radius: 20px;
             overflow: hidden;
             flex-shrink: 0;
             position: relative;
-            height: 150px;
+            height: 178px;
         }
 
         .slider-card-short {
@@ -358,7 +359,8 @@
         }
 
         .see-more-btn {
-            background: rgba(0, 0, 0, 0.6) !important;
+            background: rgba(255, 255, 255, 0.4) !important;
+            /* putih transparan */
             backdrop-filter: blur(10px);
             color: white !important;
             border: none;
@@ -407,15 +409,15 @@
         }
 
         .feature-icon {
-            width: 70px;
-            height: 70px;
+            width: 63px;
+            height: 63px;
             min-width: 60px;
             border-radius: 50%;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 5px;
         }
 
         .feature-icon img {
@@ -444,7 +446,7 @@
 
         /* Counting Section */
         .counting-section {
-            padding: 40px 0;
+            /* padding: 40px 0; */
             text-align: center;
         }
 
@@ -474,7 +476,7 @@
             background: #ddd;
             border-radius: 50%;
             border: 3px solid white;
-            margin-left: -10px;
+            margin-left: -16px;
             overflow: hidden;
             min-width: 60px;
             flex-shrink: 0;
@@ -504,61 +506,77 @@
 
         /* Collaboration */
         .collab-section {
-            padding: 40px 0;
+            padding: 0px 0;
         }
 
         .collab-section h3 {
             font-family: 'Oxanium', sans-serif;
-            font-weight: 700;
-            font-size: 24px;
+            font-weight: 500;
+            font-size: 18px;
             margin: 20px;
         }
 
         .collab-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            margin: 25px;
+            gap: 12px;
         }
 
+        /* TAB BASE */
         .collab-tab {
-            padding: 10px 30px;
-            border: 2px solid var(--dark-bg);
-            background: white;
+            background: #ffffff;
+            color: #3EF2C3;
+            /* PUTIH */
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 4px;
+            border: 1.5px solid #3EF2C3;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 25px;
+            transition: all 0.25s ease;
         }
 
+
+        /* ACTIVE TAB */
         .collab-tab.active {
-            background: var(--dark-bg);
-            color: var(--light-green);
+            background: #3EF2C3;
+            color: #000000;
+            border-color: #3EF2C3;
+        }
+
+        /* OPTIONAL: hover biar hidup */
+        .collab-tab:hover {
+            opacity: 0.9;
         }
 
         .brand-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr) !important;
-            gap: 15px;
-            margin: 20px 0;
-            padding: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            /* 4 KOLOM */
+            gap: 16px;
         }
 
         .brand-item {
-            background: white;
+            background: #ffffff;
             border: 1px solid #ddd;
             border-radius: 15px;
-            padding: 10px;
+            padding: 12px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             aspect-ratio: 1;
+            /* kotak */
         }
 
+        /* LOGO */
         .brand-logo {
-            width: 80%;
-            max-width: 90px;
-            height: auto;
+            max-width: 80%;
+            max-height: 60%;
             object-fit: contain;
         }
+
 
         /* Most Searched */
         .most-searched-section {
@@ -568,24 +586,24 @@
         .most-searched-section h3 {
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
-            font-size: 24px;
+            font-size: 18px;
         }
 
         .strip-divider {
-            height: 3px;
+            height: 10px;
             background: linear-gradient(to right, var(--primary-blue), var(--light-green));
             margin: 20px 0;
         }
 
         .search-tabs {
             display: flex;
-            gap: 15px;
+            /* gap: 15px; */
             margin: 20px 0;
             border-bottom: 2px solid #ddd;
         }
 
         .search-tab {
-            padding: 10px 20px;
+            padding: 10px 17px;
             background: none;
             border: none;
             cursor: pointer;
@@ -620,14 +638,16 @@
             display: flex;
             width: 100%;
             height: 220px;
-            background: #f1f1f1;
+            background: radial-gradient(circle at center,
+                    #658FC2 0%,
+                    #30445C 100%);
             overflow: hidden;
             align-items: center;
             justify-content: center;
         }
 
         .car-img {
-            width: 90%;
+            width: 81%;
             height: auto;
             object-fit: contain;
             max-height: 180px;
@@ -646,8 +666,25 @@
             margin: 15px 0;
         }
 
+        .text-semibold {
+            font-weight: 600;
+            /* semi-bold */
+        }
+
+        .details-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
         .spec-item {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            /* icon di atas, teks di bawah */
+            align-items: center;
+            /* rata tengah horizontal */
+            gap: 6px;
+            /* jarak icon ↔ teks */
         }
 
         .spec-icon svg {
@@ -721,9 +758,62 @@
         }
     </style>
 </head>
-@yield('content')
 
 <body>
+    @yield('content')
+
+    <!-- Hotbar -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-container">
+            <a href="transaction.html" class="nav-item">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                </svg>
+                <span class="nav-label">Transaction</span>
+            </a>
+            <a href="{{ route('mobile.home') }}" class="nav-item active">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="news.html" class="nav-item">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                </svg>
+                <span class="nav-label">News</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                </svg>
+                <span class="nav-label">Profile</span>
+            </a>
+        </div>
+    </div>
+
+    <style>
+        .bottom-nav .nav-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            /* default */
+            line-height: 1;
+            /* penting agar tinggi tidak nambah */
+        }
+
+        .bottom-nav .nav-item {
+            gap: 2px;
+        }
+    </style>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function showTab(tab) {

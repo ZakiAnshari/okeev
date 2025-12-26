@@ -21,7 +21,7 @@
     </section>
 
     {{-- SECTION 2 --}}
-    <section id="features" class="features section">
+    <section id="features" class="features section" style="padding-bottom:none;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12">
