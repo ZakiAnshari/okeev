@@ -108,7 +108,7 @@
 
         .title-text {
             color: white;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 500;
             margin-bottom: 0.3rem;
             line-height: 1.4;
@@ -147,13 +147,13 @@
             flex-shrink: 0;
         }
 
-        .brand-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
+        /* .brand-item {
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    gap: 8px;
+                                    cursor: pointer;
+                                } */
 
         .brand-item a {
             text-decoration: none;
@@ -461,30 +461,17 @@
     <!-- Content -->
     <div class="content-section p-0">
         <!-- Brands Carousel -->
-        <div id="vehicle-brands" class="brand-grid p-3">
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/1.png') }}" alt="Brand 3"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/2.png') }}" alt="Brand 4"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/3.png') }}" alt="Brand 5"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/4.png') }}" alt="Brand 6"
-                    class="brand-logo">
-            </div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/5.png') }}" alt="Brand 7"
-                    class="brand-logo">
-            </div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/6.png') }}" alt="Brand 8"
-                    class="brand-logo">
-            </div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/7.png') }}" alt="Brand 9"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/8.png') }}" alt="Brand 8"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/9.png') }}" alt="Brand 9"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/10.png') }}" alt="Brand 9"
-                    class="brand-logo"></div>
+        <div id="vehicle-brands" class="brand-grid p-4">
+            @for ($i = 1; $i <= 8; $i++)
+                <div class="brand-wrap">
+                    <div class="brand-item">
+                        <img src="{{ asset('front_end/assets/images/logo/1.png') }}" class="brand-logo">
+                    </div>
+                    <span class="brand-text">BMW</span>
+                </div>
+            @endfor
+
+
         </div>
 
         <!-- Most Searched Section -->

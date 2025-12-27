@@ -167,7 +167,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 17px;
         }
 
         .navbar-bottom {
@@ -553,22 +553,40 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             /* 4 KOLOM */
-            gap: 16px;
+            gap: 8px 20px;
+          
         }
 
-        .brand-item {
-            background: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            padding: 12px;
+       .brand-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* span sejajar tengah */
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.brand-item {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 12px;
 
-            aspect-ratio: 1;
-            /* kotak */
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1;
+}
+
+.brand-logo {
+    max-width: 60px;
+    height: auto;
+}
+
+.brand-text {
+    margin-top: 6px; /* jarak dari border */
+    font-size: 12px;
+    text-align: center;
+}
+
 
         /* LOGO */
         .brand-logo {
@@ -721,7 +739,7 @@
             margin: 0 auto;
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
+            padding: 3px 18px;
         }
 
         .nav-item {
