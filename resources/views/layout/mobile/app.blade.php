@@ -554,38 +554,40 @@
             grid-template-columns: repeat(4, 1fr);
             /* 4 KOLOM */
             gap: 8px 20px;
-          
+
         }
 
-       .brand-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* span sejajar tengah */
-}
+        .brand-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* span sejajar tengah */
+        }
 
-.brand-item {
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    padding: 12px;
+        .brand-item {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 12px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    aspect-ratio: 1;
-}
+            aspect-ratio: 1;
+        }
 
-.brand-logo {
-    max-width: 60px;
-    height: auto;
-}
+        .brand-logo {
+            max-width: 60px;
+            height: auto;
+        }
 
-.brand-text {
-    margin-top: 6px; /* jarak dari border */
-    font-size: 12px;
-    text-align: center;
-}
+        .brand-text {
+            margin-top: 6px;
+            /* jarak dari border */
+            font-size: 12px;
+            text-align: center;
+        }
 
 
         /* LOGO */
@@ -739,7 +741,7 @@
             margin: 0 auto;
             display: flex;
             justify-content: space-around;
-            padding: 3px 18px;
+            padding: 0px 20px;
         }
 
         .nav-item {
@@ -815,8 +817,8 @@
 
     <style>
         .bottom-nav .nav-icon {
-            width: 40px;
-            height: 40px;
+            width: 33px;
+            height: 33px;
         }
 
         .nav-label {

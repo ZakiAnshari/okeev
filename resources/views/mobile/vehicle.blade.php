@@ -148,12 +148,12 @@
         }
 
         /* .brand-item {
-                                    display: flex;
-                                    flex-direction: column;
-                                    align-items: center;
-                                    gap: 8px;
-                                    cursor: pointer;
-                                } */
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                        gap: 8px;
+                                        cursor: pointer;
+                                    } */
 
         .brand-item a {
             text-decoration: none;
@@ -345,13 +345,7 @@
             z-index: 200;
         }
 
-        .bottom-nav-container {
-            max-width: 480px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-        }
+
 
         .nav-item {
             display: flex;
@@ -463,7 +457,7 @@
         <!-- Brands Carousel -->
         <div id="vehicle-brands" class="brand-grid p-4">
             @for ($i = 1; $i <= 8; $i++)
-                <div class="brand-wrap">
+                <div class="brand-wrap mb-2">
                     <div class="brand-item">
                         <img src="{{ asset('front_end/assets/images/logo/1.png') }}" class="brand-logo">
                     </div>
