@@ -249,7 +249,7 @@
     </div>
 
     <!-- Collaboration Section -->
-    <div class="container content-container collab-section">
+    {{-- <div class="container content-container collab-section">
         <h3>Our collaboration with brands</h3>
 
         <div class="collab-tabs mx-3">
@@ -283,7 +283,7 @@
             @endforeach
         </div>
 
-    </div>
+    </div> --}}
 
     <!-- Most Searched Section -->
     <div class="container content-container most-searched-section p-3">
