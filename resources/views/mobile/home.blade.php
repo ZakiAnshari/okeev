@@ -40,7 +40,7 @@
 
     <div class="category-wrapper">
         <div class="category-section">
-            <a href="{{ route('vehicle.home') }}" class="category-item">
+            <a href="{{ route('vehiclecard.show') }}" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/1.jpg') }}" alt="Electric Car">
                 </div>
@@ -69,57 +69,6 @@
             </a>
         </div>
     </div>
-    <style>
-        .category-wrapper {
-            width: 100%;
-            padding: 16px 0;
-        }
-
-        .category-section {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 25px;
-            padding: 0 25px;
-        }
-
-        .category-item {
-            width: 80px;
-            text-decoration: none;
-            color: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .category-icon {
-            width: 64px;
-            height: 64px;
-            /* AREA SAMA */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 16px;
-        }
-
-        .category-icon img {
-            width: 200%;
-            height: 90%;
-            /* DIPAKSA NGISI AREA */
-            object-fit: contain;
-            /* GAMBAR TETAP PROPORSI */
-        }
-
-
-        .category-text {
-            font-size: 12px;
-            text-align: center;
-            line-height: 1.25;
-            white-space: normal;
-            /* penting untuk <br> */
-        }
-    </style>
 
 
     <!-- Promo Banner -->
@@ -253,94 +202,6 @@
             /* turun 80px */
             background-repeat: no-repeat;
         }
-
-        .feature-card {
-            background: transparent;
-        }
-
-        /* HEADER: ICON + TITLE */
-        .feature-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* TITLE */
-        .feature-header h5 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #35F5C6;
-            margin: 0;
-        }
-
-        /* GARIS TIPIS */
-        .feature-line {
-            border: none;
-            height: 2px;
-            background: #ffffff;
-            margin: 8px 0px;
-        }
-
-        /* DESKRIPSI */
-        .feature-desc {
-            font-size: 15px;
-            color: #ffffff;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        /* LANDI KIRI ATAS */
-        .why-choose::before {
-            content: "";
-            background: #ffffff;
-            border-bottom-right-radius: 280px 130px;
-            z-index: 1;
-        }
-
-        /* KONTEN DI ATAS BACKGROUND */
-        .why-choose .container {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* TITLE */
-        .why-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e2f3d;
-            margin-bottom: 40px;
-        }
-
-        /* ITEMS */
-        .why-items {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .why-item {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-        }
-
-        .why-icon {
-            width: 44px;
-            flex-shrink: 0;
-        }
-
-        .why-item h5 {
-            font-size: 15px;
-            color: #35F5C6;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .why-item p {
-            font-size: 13px;
-            color: #ffffff;
-            line-height: 1.6;
-        }
     </style>
 
     <!-- Counting Section -->
@@ -395,47 +256,40 @@
             <button class="collab-tab active" onclick="showTab('vehicle')">
                 Vehicle
             </button>
+
             <button class="collab-tab" onclick="showTab('electric')">
                 Electric
             </button>
         </div>
 
 
-        <div id="vehicle-brands" class="brand-grid p-3">
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/8.png') }}" alt="Brand 1"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Chery.png" alt="Brand 3" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/DENZA.png" alt="Brand 4" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Maka.png" alt="Brand 5" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Mercedes.png" alt="Brand 6" class="brand-logo">
-            </div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Polytron.png" alt="Brand 7" class="brand-logo">
-            </div>
-            <div class="brand-item"><img src="assets/brand/vehicle/U-Winfly.png" alt="Brand 8" class="brand-logo">
-            </div>
-            <div class="brand-item"><img src="assets/brand/vehicle/VinFast.png" alt="Brand 9" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Volta.png" alt="Brand 8" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Wuling.png" alt="Brand 9" class="brand-logo"></div>
-            <div class="brand-item"><img src="assets/brand/vehicle/Yadea.png" alt="Brand 9" class="brand-logo"></div>
+        <div id="vehicle-brands" class="brand-grid p-3 tab-content active">
+            @foreach ($brands->where('category_position_id', 1) as $brand)
+                <div class="brand-item">
+                    <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
+                        class="brand-logo">
+                </div>
+            @endforeach
         </div>
 
-        <div id="electric-brands" class="brand-grid p-3">
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/8.png') }}" alt="Brand 3"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/2.png') }}" alt="Brand 3"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/3.png') }}" alt="Brand 3"
-                    class="brand-logo"></div>
-            <div class="brand-item"><img src="{{ asset('front_end/assets/images/logo/4.png') }}" alt="Brand 3"
-                    class="brand-logo"></div>
+
+
+        <div id="electric-brands" class="brand-grid p-3 tab-content">
+            @foreach ($brands->where('category_position_id', 2) as $brand)
+                <div class="brand-item">
+                    <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
+                        class="brand-logo">
+                </div>
+            @endforeach
         </div>
+
     </div>
 
     <!-- Most Searched Section -->
-    <div class="container content-container most-searched-section ">
+    <div class="container content-container most-searched-section p-3">
         <div class="strip-divider"></div>
 
-        <h3 class="text-center p-3">The Most Searched Vehicle</h3>
+        <h3 class="text-center">The Most Searched Vehicle</h3>
 
         {{-- <div class="search-tabs p-3">
             <button class="search-tab active">In Stock</button>
@@ -499,23 +353,6 @@
                     </div>
                 </a>
             </div>
-
-            <style>
-                .spec-icon {
-                    width: 32px;
-                    height: 32px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                .spec-icon-img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
-                    /* icon tidak terpotong */
-                }
-            </style>
 
         </div>
     </div>

@@ -12,11 +12,14 @@ class DetectMobileRedirect
         $userAgent = $request->header('User-Agent');
 
         $isMobile = preg_match(
-            '/Mobile|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/',
+            '/Mobile|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile/i',
             $userAgent
         );
 
-        $request->merge(['is_mobile' => $isMobile]);
+        // Jika mobile & bukan route /m
+        if ($isMobile && ! $request->is('m*')) {
+            return redirect()->to('/m');
+        }
 
         return $next($request);
     }

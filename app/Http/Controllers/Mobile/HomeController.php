@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('mobile.home');
+        $brands = Brand::all();
+        return view('mobile.home', compact('brands'));
     }
 
-    public function vehicle()
+
+    public function showcard()
     {
-        return view('mobile.vehicle');
+        return view('mobile.brand.show');
     }
 }

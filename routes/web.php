@@ -66,8 +66,8 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 
     Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
-    Route::post('/order/{product:slug}/invoice',[OrderController::class, 'createInvoice'])->name('order.invoice');
-    
+    Route::post('/order/{product:slug}/invoice', [OrderController::class, 'createInvoice'])->name('order.invoice');
+
 
     Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])
         ->name('payment.va');
@@ -198,24 +198,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // MOBILE ---------------------------------------------------------------------------------------------------------------------
 Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
-    Route::get('/vehicle', [App\Http\Controllers\Mobile\HomeController::class, 'vehicle'])->name('vehicle.home');
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Route::get('/products', [App\Http\Controllers\Mobile\ProductController::class, 'index'])->name('mobile.products');
-    Route::get('/products/{slug}', [App\Http\Controllers\Mobile\ProductController::class, 'show'])->name('mobile.product.show');
-});
+    Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])
+        ->name('vehiclecard.show');
+}); 
