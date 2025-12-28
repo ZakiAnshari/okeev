@@ -37,20 +37,16 @@ class HomeController extends Controller
         return view('mobile.brand.show', compact('vehicleBrands', 'products'));
     }
 
-    public function showVehicleDetail($slug)
+    public function showBrandVehicle($slug)
     {
-        // Ambil product detail beserta brand
-        $product = Product::with('brand')->where('slug', $slug)->firstOrFail();
+        $brand = Brand::where('slug', $slug)->firstOrFail();
 
-        // Ambil brand dari relasi
-        $brand = $product->brand;
-
-        // Ambil semua product dengan brand yang sama
+        // Ambil semua produk brand ini
         $sameBrandProducts = Product::with('brand')
-            ->where('brand_id', $brand->id)       // hanya brand yang sama
+            ->where('brand_id', $brand->id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('mobile.brand.detail', compact('product', 'brand', 'sameBrandProducts'));
+        return view('mobile.brand.detail', compact('brand', 'sameBrandProducts'));
     }
 }

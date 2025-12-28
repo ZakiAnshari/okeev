@@ -47,6 +47,7 @@
                 <span class="category-text">Electric<br>Car</span>
             </a>
 
+
             <a href="vehicle.html" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/2.jpg') }}" alt="Electric Motor">

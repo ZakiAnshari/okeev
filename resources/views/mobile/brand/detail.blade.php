@@ -65,16 +65,16 @@
             <div class="row">
                 @forelse ($sameBrandProducts as $p)
                     <div class="col-md-6 mb-3">
-                        <a href="{{ route('product.show', $product->slug) }}" class="vehicle-card">
+                        <a href="{{ route('product.show', $p->slug) }}" class="vehicle-card">
 
                             <div class="vehicle-img">
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}" class="car-img"
-                                    alt="{{ $product->model_name }}">
+                                <img src="{{ asset('storage/' . $p->thumbnail) }}" class="car-img"
+                                    alt="{{ $p->model_name }}">
                             </div>
 
                             <div class="vehicle-info">
-                                <h6 class="mb-1">{{ $product->brand->name_brand ?? '-' }}</h6>
-                                <p class="text-semibold">{{ $product->model_name }}</p>
+                                <h6 class="mb-1">{{ $p->brand->name_brand ?? '-' }}</h6>
+                                <p class="text-semibold">{{ $p->model_name }}</p>
 
                                 <div class="vehicle-specs p-4">
 
@@ -84,7 +84,7 @@
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
                                                 class="spec-icon-img">
                                         </div>
-                                        <div class="spec-value">{{ $product->miles }} Miles</div>
+                                        <div class="spec-value">{{ $p->miles }} Miles</div>
                                     </div>
 
                                     <!-- Type -->
@@ -102,14 +102,14 @@
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
                                                 class="spec-icon-img">
                                         </div>
-                                        <div class="spec-value">{{ $product->seats }} Seat</div>
+                                        <div class="spec-value">{{ $p->seats }} Seat</div>
                                     </div>
 
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="vehicle-price">
-                                        IDR {{ number_format($product->price, 0, ',', '.') }}
+                                        IDR {{ number_format($p->price, 0, ',', '.') }}
                                     </span>
 
                                     <div class="d-flex align-items-center details-link">
@@ -127,8 +127,8 @@
                         Tidak ada produk lain dari brand {{ $brand->name_brand ?? 'Unknown' }}
                     </p>
                 @endforelse
-
             </div>
+
 
         </div>
     </div>
