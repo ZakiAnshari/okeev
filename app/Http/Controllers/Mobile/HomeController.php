@@ -16,7 +16,6 @@ class HomeController extends Controller
             ->where('category_id', 1)
             ->orderBy('created_at', 'desc')
             ->get();
-
         $brands = Brand::all();
         return view('mobile.home', compact('brands', 'products'));
     }
