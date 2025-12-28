@@ -16,9 +16,15 @@ class DetectMobileRedirect
             $userAgent
         );
 
-        // Jika mobile & bukan route /m
+        // 1️⃣ MOBILE tapi akses NON /m → redirect ke /m
         if ($isMobile && ! $request->is('m*')) {
-            return redirect()->to('/m');
+            return redirect('/m');
+        }
+
+        // 2️⃣ DESKTOP tapi akses /m → hapus prefix /m
+        if (! $isMobile && $request->is('m*')) {
+            $path = preg_replace('#^m/?#', '', $request->path());
+            return redirect('/' . $path);
         }
 
         return $next($request);

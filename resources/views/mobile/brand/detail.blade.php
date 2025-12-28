@@ -1,11 +1,10 @@
 @extends('layout.mobile.app')
 @section('title', 'Vehicle')
 @section('content')
-
     <!-- Navbar -->
     <nav class="navbar-custom-vehicle">
         <div class="navbar-top">
-            <a href="{{ route('mobile.home') }}" class="back-btn">
+            <a href="{{ route('vehiclecard.show') }}" class="back-btn">
                 <i class='bx bx-arrow-back'></i>
             </a>
 
@@ -35,34 +34,36 @@
             </button>
         </div>
         <div>
-            <h1 class="title-text m-0">Find Your Dream Car Only at OKEEV</h1>
-            <p class="subtitle-text">Lorem ipsum dolor sit amet consectetur.</p>
+            <h1 class="title-text m-0">Your Everyday Vehicle</h1>
+            <p class="subtitle-text">{{ $brand->name_brand }}</p>
         </div>
     </nav>
 
     <!-- Content -->
-    <div class="content-section p-0">
-        <!-- Brands Carousel -->
-        <div id="vehicle-brands" class="brand-grid p-4">
-            @forelse ($vehicleBrands as $brand)
-                <a href="{{ route('vehiclecard.detail', $brand->slug) }}"
-                    class="brand-wrap mb-2 text-decoration-none text-center d-block">
-                    <div class="brand-item mb-1">
-                        <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
-                            class="brand-logo rounded">
-                    </div>
-                    <span class="brand-text d-block text-dark">{{ $brand->name_brand }}</span>
-                </a>
-            @empty
-                <p class="text-center text-muted">Brand tidak tersedia</p>
-            @endforelse
+    <div class="content-section">
+        <!-- Banner Section -->
+        <div class="container content-container">
+            <div class="promo-banner">
+                @if ($brand && $brand->wallpaper)
+                    <img src="{{ asset('storage/' . $brand->wallpaper) }}" alt="{{ $brand->name_brand }} Banner"
+                        class="banner-img img-fluid w-100 rounded" style="max-height: 300px; object-fit: cover;">
+                @else
+                    <img src="{{ asset('front_end/assets/images/default-banner.jpg') }}" alt="Default Banner"
+                        class="banner-img img-fluid w-100 rounded" style="max-height: 300px; object-fit: cover;">
+                @endif
+            </div>
         </div>
+        <!-- Description Section -->
+        {{-- <div class="description-section">
+            <p>Lorem ipsum dolor sit amet consectetur. Tempus diam massa volutpat nisl aliquet massa vitae nulla. Faucibus
+                condimentum quam. Amet mattis id lacus sed mauris. In purus sed.</p>
+        </div> --}}
 
-        <!-- Most Searched Section -->
+        <!-- Available Cars Section -->
         <div class="most-searched-section p-3">
-            <h3>The newest cars at OKEEV</h3>
+            <h3>Available cars</h3>
             <div class="row">
-                @forelse ($products as $product)
+                @forelse ($sameBrandProducts as $p)
                     <div class="col-md-6 mb-3">
                         <a href="{{ route('product.show', $product->slug) }}" class="vehicle-card">
 
@@ -122,11 +123,15 @@
                         </a>
                     </div>
                 @empty
-                    <p class="text-center text-muted"> ⚡ Produk Electric Car belum tersedia</p>
+                    <p class="text-center text-muted">
+                        Tidak ada produk lain dari brand {{ $brand->name_brand ?? 'Unknown' }}
+                    </p>
                 @endforelse
+
             </div>
 
         </div>
     </div>
+
 
 @endsection

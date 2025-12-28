@@ -198,6 +198,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // MOBILE ---------------------------------------------------------------------------------------------------------------------
 Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
-    Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])
-        ->name('vehiclecard.show');
-}); 
+    Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])->name('vehiclecard.show');
+    Route::get('/vehiclecard/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showVehicleDetail'])->name('vehiclecard.detail');
+});
