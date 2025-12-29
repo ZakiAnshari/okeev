@@ -25,7 +25,7 @@ class HomeController extends Controller
         // Brand Vehicle
         $vehicleBrands = Brand::where('category_id', 1)
             ->orderBy('name_brand', 'asc')
-            ->limit(8)
+            ->limit(100)
             ->get();
 
         // Product Vehicle
@@ -48,5 +48,35 @@ class HomeController extends Controller
             ->get();
 
         return view('mobile.brand.detail', compact('brand', 'sameBrandProducts'));
+    }
+
+    public function transaksi()
+    {
+        // Kembalikan view tanpa data
+        return view('mobile.transaksi.index');
+    }
+
+    public function newss()
+    {
+        // Kembalikan view tanpa data
+        return view('mobile.news.index');
+    }
+
+    public function newssdetail()
+    {
+        // Kembalikan view tanpa data
+        return view('mobile.news.detail');
+    }
+
+    public function profil()
+    {
+        // Kembalikan view tanpa data
+        return view('mobile.profil.index');
+    }
+    
+    public function about()
+    {
+        // Kembalikan view tanpa data
+        return view('mobile.about.index');
     }
 }

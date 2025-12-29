@@ -1,0 +1,75 @@
+@extends('layout.admin')
+@section('title', 'Product')
+@section('content')
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row">
+            <h4 class="fw-bold d-flex align-items-center my-4">
+                <i class="bx bx-category me-2 text-primary" style="font-size: 1.5rem;"></i>
+                <span class="text-muted fw-light me-1"></span> Orders
+            </h4>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive text-nowrap">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <!-- Table Data -->
+                            <table id="ordersTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5px;">No</th>
+                                        <th>No. Transaksi</th>
+                                        <th>Model</th>
+                                        <th>Color</th>
+                                        <th>Qty</th>
+                                        <th>Harga</th>
+                                        <th>Grand Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($orders as $index => $order)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $order->no_transaction }}</td>
+                                            <td>{{ $order->model_name }}</td>
+                                            <td>{{ $order->color }}</td>
+                                            <td>{{ $order->qty }}</td>
+                                            <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($order->grand_total, 0, ',', '.') }}</td>
+                                            <td>
+                                                <span
+                                                    class="badge 
+                                                    @if ($order->status == 'pending') bg-warning
+                                                    @elseif($order->status == 'completed') bg-success
+                                                    @elseif($order->status == 'cancelled') bg-danger
+                                                    @else bg-secondary @endif">
+                                                    {{ ucfirst($order->status) }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+
+                            {{-- Jika menggunakan paginate --}}
+                            {{-- {{ $orders->links() }} --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @include('sweetalert::alert')
+@endsection

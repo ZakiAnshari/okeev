@@ -165,12 +165,12 @@ class OrderController extends Controller
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 
-            if($order){
-                if ($request->status === 'PAID'){
+            if ($order) {
+                if ($request->status === 'PAID') {
                     $order->update([
                         'status' => 'Completed'
                     ]);
-                }else{
+                } else {
                     $order->update([
                         'status' => 'Failed'
                     ]);
@@ -184,5 +184,18 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    // ---------------------------------------------------------------------------------
+
+    public function index()
+    {
+        // Ambil semua order terbaru, diurutkan dari terbaru ke terlama
+        $orders = Order::orderBy('created_at', 'desc')->get();
+
+        // Jika ingin paginate, misal 10 per halaman
+        // $orders = Order::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.orders.index', compact('orders'));
     }
 }

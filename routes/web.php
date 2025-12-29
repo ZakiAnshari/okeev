@@ -173,7 +173,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product/{product_slug}/details/{details}', [DetailController::class, 'destroy'])->name('details.destroy');
     // --------------------
     // ORDER
-
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     // --------------------
     //NEWS
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');
@@ -200,4 +200,13 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
     Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])->name('vehiclecard.show');
     Route::get('/vehiclecard/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandVehicle'])->name('vehiclecard.detail');
+
+    Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
+
+    Route::get('/newss', [App\Http\Controllers\Mobile\HomeController::class, 'newss'])->name('newss.show');
+    Route::get('/newss/detail', [App\Http\Controllers\Mobile\HomeController::class, 'newssdetail'])->name('newssdetail.show');
+
+    Route::get('/profil', [App\Http\Controllers\Mobile\HomeController::class, 'profil'])->name('profil.show');
+
+    Route::get('/about', [App\Http\Controllers\Mobile\HomeController::class, 'about'])->name('about.show');
 });

@@ -284,10 +284,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ url('product-show/' . $item->slug) }}"
-                                                    class="btn btn-outline-info d-flex align-items-center gap-1 mb-1"
-                                                    title="Detail">
+                                                    class="btn btn-icon btn-outline-info" title="Detail">
                                                     <i class="bx bx-show"></i>
-                                                    <span>Detail</span>
+                                                    {{-- <span>Detail</span> --}}
                                                 </a>
 
                                                 <a href="{{ url('product/' . $item->slug . '/edit') }}"

@@ -65,19 +65,16 @@
             <div class="row">
                 @forelse ($sameBrandProducts as $p)
                     <div class="col-md-6 mb-3">
-                        <a href="{{ route('product.show', $p->slug) }}" class="vehicle-card">
-
+                        <a href="" class="vehicle-card">
                             <div class="vehicle-img">
                                 <img src="{{ asset('storage/' . $p->thumbnail) }}" class="car-img"
                                     alt="{{ $p->model_name }}">
                             </div>
-
+                            
                             <div class="vehicle-info">
                                 <h6 class="mb-1">{{ $p->brand->name_brand ?? '-' }}</h6>
                                 <p class="text-semibold">{{ $p->model_name }}</p>
-
                                 <div class="vehicle-specs p-4">
-
                                     <!-- Miles -->
                                     <div class="spec-item">
                                         <div class="spec-icon mb-1">
@@ -104,7 +101,6 @@
                                         </div>
                                         <div class="spec-value">{{ $p->seats }} Seat</div>
                                     </div>
-
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">

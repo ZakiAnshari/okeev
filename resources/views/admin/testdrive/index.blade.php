@@ -107,10 +107,12 @@
 
                                             <td class="text-center">
                                                 <!-- Tombol Ubah Status -->
-                                                <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#modalStatus{{ $item->id }}">
-                                                    <i class="bx bx-edit"></i> Ubah Status
-                                                </button>
+                                                @if ($item->testdrive)
+                                                    <a href="https://wa.me/{{ $item->testdrive->phone }}?text=Halo%20{{ urlencode($item->testdrive->name) }}%2C%20pesanan%20{{ $item->no_transaction }}%20anda%20sedang%20diproses."
+                                                        target="_blank" class="btn btn-sm btn-success">
+                                                        <i class="bx bxl-whatsapp"></i> WA
+                                                    </a>
+                                                @endif
                                                 <a href="{{ url('test-drive-show/' . $item->id) }}"
                                                     class="btn btn-icon btn-outline-info" title="Detail">
                                                     <i class="bx bx-show"></i>

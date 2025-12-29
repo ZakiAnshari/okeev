@@ -11,7 +11,7 @@
          margin: 0;
          padding: 0;
          padding-bottom: 80px;
-         padding-top: 150px;
+         /* padding-top: 150px; */
      }
 
      html {
@@ -941,6 +941,22 @@
          padding-top: 150px;
      }
 
+     .category-icon-waiting {
+         position: relative;
+         width: 40px;
+         height: 40px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+     }
+
+     .category-img-waiting {
+         width: 35px;
+         height: auto;
+         object-fit: contain;
+     }
+
+
      .navbar-custom-vehicle {
          background-color: var(--dark-bg);
          padding: 1rem 1rem 1.5rem 1rem;
@@ -1350,6 +1366,14 @@
      .tab-content.active {
          display: grid;
          /* sesuaikan layout kamu */
+     }
+
+     .bottom-nav-container {
+         max-width: 480px;
+         margin: 0 auto;
+         display: flex;
+         justify-content: space-around;
+         /* padding: 12px 0; */
      }
 
      @media (min-width: 768px) {

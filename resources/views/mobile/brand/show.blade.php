@@ -43,19 +43,23 @@
     <!-- Content -->
     <div class="content-section p-0">
         <!-- Brands Carousel -->
-        <div id="vehicle-brands" class="brand-grid p-4">
-            @forelse ($vehicleBrands as $brand)
-                <a href="{{ route('vehiclecard.detail', $brand->slug) }}"
-                    class="brand-wrap mb-2 text-decoration-none text-center d-block">
-                    <div class="brand-item mb-1">
-                        <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
-                            class="brand-logo rounded">
-                    </div>
-                    <span class="brand-text d-block text-dark">{{ $brand->name_brand }}</span>
-                </a>
-            @empty
-                <p class="text-center text-muted">Brand tidak tersedia</p>
-            @endforelse
+        <div class="p-4">
+            <h5 class="mb-3">Vehicle Brands</h5>
+            <div class="d-flex flex-wrap gap-3 overflow-auto" style="scroll-snap-type: x mandatory;">
+                @forelse ($vehicleBrands as $brand)
+                    <a href="{{ route('vehiclecard.detail', $brand->slug) }}"
+                        class="brand-wrap text-decoration-none text-center d-block flex-shrink-0"
+                        style="width: calc(25% - 12px); scroll-snap-align: start;">
+                        <div class="brand-item mb-1">
+                            <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
+                                class="brand-logo rounded w-100">
+                        </div>
+                        <span class="brand-text d-block text-dark">{{ $brand->name_brand }}</span>
+                    </a>
+                @empty
+                    <p class="text-center text-muted">Brand tidak tersedia</p>
+                @endforelse
+            </div>
         </div>
 
         <!-- Most Searched Section -->
@@ -65,19 +69,14 @@
                 @forelse ($products as $product)
                     <div class="col-md-6 mb-3">
                         <a href="{{ route('product.show', $product->slug) }}" class="vehicle-card">
-
                             <div class="vehicle-img">
                                 <img src="{{ asset('storage/' . $product->thumbnail) }}" class="car-img"
                                     alt="{{ $product->model_name }}">
                             </div>
-
                             <div class="vehicle-info">
                                 <h6 class="mb-1">{{ $product->brand->name_brand ?? '-' }}</h6>
                                 <p class="text-semibold">{{ $product->model_name }}</p>
-
                                 <div class="vehicle-specs p-4">
-
-                                    <!-- Miles -->
                                     <div class="spec-item">
                                         <div class="spec-icon mb-1">
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
@@ -85,8 +84,6 @@
                                         </div>
                                         <div class="spec-value">{{ $product->miles }} Miles</div>
                                     </div>
-
-                                    <!-- Type -->
                                     <div class="spec-item">
                                         <div class="spec-icon mb-1">
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols-light_electric-bolt-rounded.jpg') }}"
@@ -94,8 +91,6 @@
                                         </div>
                                         <div class="spec-value">Electric</div>
                                     </div>
-
-                                    <!-- Seats -->
                                     <div class="spec-item">
                                         <div class="spec-icon mb-1">
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
@@ -103,21 +98,17 @@
                                         </div>
                                         <div class="spec-value">{{ $product->seats }} Seat</div>
                                     </div>
-
                                 </div>
-
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="vehicle-price">
                                         IDR {{ number_format($product->price, 0, ',', '.') }}
                                     </span>
-
                                     <div class="d-flex align-items-center details-link">
                                         <p class="m-0 me-1 mx-1">Details</p>
                                         <img src="{{ asset('front_end/assets/images/logo/mobile/majesticons_arrow-up-line.jpg') }}"
                                             class="details-icon">
                                     </div>
                                 </div>
-
                             </div>
                         </a>
                     </div>
@@ -125,8 +116,8 @@
                     <p class="text-center text-muted"> ⚡ Produk Electric Car belum tersedia</p>
                 @endforelse
             </div>
-
         </div>
     </div>
+
 
 @endsection

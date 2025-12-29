@@ -43,8 +43,8 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('test-drive-booking*') ? 'active' : '' }}">
-            <a href="/test-drive-booking" class="menu-link">
+        <li class="menu-item {{ Request::is('orders*') ? 'active' : '' }}">
+            <a href="/orders" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-receipt"></i>
                 <div data-i18n="Test Drive Booking">Orders</div>
             </a>

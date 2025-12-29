@@ -30,7 +30,8 @@
 
                                     <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Vehicle <i class='mx-1 bx bx-chevron-down'></i>
+                                        Vehicle 
+                                        {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
                                     </a>
 
 
@@ -81,7 +82,8 @@
 
                                     <a class="dd-menu collapsed" href="#" id="megaElectric" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Electric <i class='mx-1 bx bx-chevron-down'></i>
+                                        Electric 
+                                        {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
                                     </a>
 
                                     <div class="dropdown-menu nv-vehicle-dropdown" aria-labelledby="megaElectric">
@@ -126,7 +128,8 @@
 
                                     <a class="dd-menu collapsed" href="#" id="megaAccessories" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Accessories <i class='mx-1 bx bx-chevron-down'></i>
+                                        Accessories 
+                                        {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
                                     </a>
 
                                     <div class="dropdown-menu nv-vehicle-dropdown" aria-labelledby="megaAccessories">
@@ -317,7 +320,7 @@
                                                 @endphp
 
                                                 @foreach ($orders as $item)
-                                                    <a href="{{ route('payment.va', $item->id) }}">
+                                                    <a href="{{ route('payment.va', $item->id) }}" class="w-100">
                                                         <div class="trans-card mb-3">
                                                             @if ($item->product && $item->product->colors->isNotEmpty() && $item->product->colors->first()->image)
                                                                 <img src="{{ asset('storage/' . $item->product->colors->first()->image) }}"

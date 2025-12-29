@@ -48,21 +48,21 @@
             </a>
 
 
-            <a href="vehicle.html" class="category-item">
+            <a href="#" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/2.jpg') }}" alt="Electric Motor">
                 </div>
                 <span class="category-text">Electric<br>Motor</span>
             </a>
 
-            <a href="vehicle.html" class="category-item">
+            <a href="#" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/3.jpg') }}" alt="Electronic">
                 </div>
                 <span class="category-text">Electronic</span>
             </a>
 
-            <a href="vehicle.html" class="category-item">
+            <a href="#" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/Accessoris.jpg') }}" alt="Accessories">
                 </div>
