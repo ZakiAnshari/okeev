@@ -206,7 +206,7 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/newss', [App\Http\Controllers\Mobile\HomeController::class, 'newss'])->name('newss.show');
     Route::get('/newss/detail', [App\Http\Controllers\Mobile\HomeController::class, 'newssdetail'])->name('newssdetail.show');
 
-    Route::get('/profil', [App\Http\Controllers\Mobile\HomeController::class, 'profil'])->name('profil.show');
+    Route::get('/profilm', [App\Http\Controllers\Mobile\HomeController::class, 'profilm'])->name('profilm.show');
 
     Route::get('/about', [App\Http\Controllers\Mobile\HomeController::class, 'about'])->name('about.show');
 });
