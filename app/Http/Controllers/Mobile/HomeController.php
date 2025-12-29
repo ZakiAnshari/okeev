@@ -68,7 +68,7 @@ class HomeController extends Controller
         return view('mobile.news.detail');
     }
 
-    public function profil()
+    public function profilm()
     {
         // Kembalikan view tanpa data
         return view('mobile.profil.index');
