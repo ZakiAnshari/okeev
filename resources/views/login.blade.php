@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="light-style customizer-hide" dir="ltr"
-    data-theme="theme-default"
-    data-assets-path="../assets/"
-    data-template="vertical-menu-template-free">
+<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default"
+    data-assets-path="../assets/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="utf-8" />
@@ -23,8 +21,10 @@
     <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/fonts/boxicons.css') }}" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/css/core.css') }}"
+        class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('/backend/assets/vendor/css/theme-default.css') }}"
+        class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('/backend/assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
@@ -60,12 +60,14 @@
                         <div class="app-brand justify-content-center"
                             style="display: flex; flex-direction: column; align-items: center; margin: 15px;">
                             <a href="/" class="app-brand-link gap-2" style="text-align: center;">
-                                <div style="display: flex; justify-content: center; align-items: center; width: 180px; height: 62px;">
+                                <div
+                                    style="display: flex; justify-content: center; align-items: center; width: 180px; height: 62px;">
                                     <img src="{{ asset('/front_end/assets/images/logo_okeev.png') }}" alt="App Logo"
                                         style="object-fit: contain; width: 100%; height: 100%;">
                                 </div>
                             </a>
-                            <p class="mb-4" style="text-align: center; margin-top: 2px; font-weight: 500; font-size: 15px;">
+                            <p class="mb-4"
+                                style="text-align: center; margin-top: 2px; font-weight: 500; font-size: 15px;">
                                 Log into your account
                             </p>
                         </div>
@@ -82,9 +84,7 @@
                                 </label>
                                 <input type="text" id="username" name="username"
                                     class="form-control @error('username') is-invalid @enderror"
-                                    placeholder="Enter username"
-                                    value="{{ old('username') }}"
-                                    autofocus
+                                    placeholder="Enter username" value="{{ old('username') }}" autofocus
                                     style="background: #30445C; color: #ffffff; border: 1px solid #30445C;" />
                                 @error('username')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -101,8 +101,7 @@
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror"
-                                        placeholder="Enter password"
-                                        aria-describedby="toggle-password"
+                                        placeholder="Enter password" aria-describedby="toggle-password"
                                         style="background: #30445C; color: #ffffff; border: 1px solid #30445C;" />
                                     <span class="input-group-text cursor-pointer" id="toggle-password"
                                         style="background: #30445C; color: #ffffff; border: 1px solid #30445C;">
@@ -156,14 +155,14 @@
                                         padding: 10px 0;
                                         transition: all 0.3s ease;
                                     ">
-                                    <div style="
+                                    <div
+                                        style="
                                         display: flex;
                                         align-items: center;
                                         gap: 8px;
                                     ">
                                         <img src='https://developers.google.com/identity/images/g-logo.png'
-                                            alt="Google Logo"
-                                            style="width: 18px; height: 18px;">
+                                            alt="Google Logo" style="width: 18px; height: 18px;">
                                         <span style="line-height: 1;">Google</span>
                                     </div>
                                 </a>
@@ -198,4 +197,5 @@
 
     @include('sweetalert::alert')
 </body>
+
 </html>

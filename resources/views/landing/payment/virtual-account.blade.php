@@ -77,15 +77,12 @@
                                 </small>
                             </div>
                         </div>
-
                         <div class="countdown-badge">
                             <i class="bx bx-time me-1"></i>
                             <span id="countdown">--:--:--</span>
                         </div>
                     </div>
                 @endif
-
-
                 <hr>
 
                 <!-- VIRTUAL ACCOUNT -->

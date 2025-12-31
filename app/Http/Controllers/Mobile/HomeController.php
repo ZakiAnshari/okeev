@@ -6,6 +6,8 @@ use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
 {
@@ -17,6 +19,9 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $brands = Brand::all();
+
+        // Session flash untuk SweetAlert
+
         return view('mobile.home', compact('brands', 'products'));
     }
 
@@ -70,13 +75,22 @@ class HomeController extends Controller
 
     public function profilm()
     {
-        // Kembalikan view tanpa data
-        return view('mobile.profil.index');
+        // Ambil user yang sedang login
+        $user = Auth::user();
+
+        // Kirim data user ke view
+        return view('mobile.profil.index', compact('user'));
     }
-    
+
     public function about()
     {
         // Kembalikan view tanpa data
         return view('mobile.about.index');
+    }
+
+    public function contact()
+    {
+        // Kembalikan view tanpa data
+        return view('mobile.contact.index');
     }
 }

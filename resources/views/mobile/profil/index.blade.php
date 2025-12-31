@@ -259,7 +259,6 @@
     <div class="container">
         <div class="header">
             <a href="{{ route('mobile.home') }}" class="back-btn">←</a>
-
             <div class="header-title">Profile</div>
         </div>
 
@@ -267,13 +266,14 @@
         <div class="profile-section">
             <div class="profile-header">
                 <div class="profile-pic">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23667eea'/%3E%3Ctext x='50' y='50' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EO%3C/text%3E%3C/svg%3E"
+                    <img src="{{ $user->image_provile ? asset('storage/' . $user->image_provile) : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%23667eea\'/%3E%3Ctext x=\'50\' y=\'50\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\' dominant-baseline=\'middle\' font-family=\'Arial\'%3EO%3C/text%3E%3C/svg%3E' }}"
                         alt="Profile">
                 </div>
                 <div class="profile-info">
-                    <h2>Okeev</h2>
-                    <p>okeev2025@gmail.com</p>
+                    <h2 class="mb-0">{{ $user->name }}</h2>
+                    <p class="mb-0">{{ $user->email }}</p>
                 </div>
+
             </div>
 
             <div class="contact-info">
@@ -282,7 +282,7 @@
                         <path
                             d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                     </svg>
-                    +62 857 6785 6789
+                    <p class="mb-0">{{ $user->contact }}</p>
                 </div>
                 <div class="contact-item">
                     <svg class="location-icon" fill="currentColor" viewBox="0 0 24 24">
@@ -301,13 +301,18 @@
                     </svg>
                     Edit
                 </button>
-                <a href="login.html" class="btn btn-logout" style="border-radius: 20px">
-                    <svg fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-                    </svg>
-                    Log Out
-                </a>
+                <form action="{{ route('mobile.logout') }}" method="POST" id="logout-form" style="display:inline;">
+                    @csrf
+
+                    <a href="#" class="btn btn-logout" onclick="confirmLogout(event)" style="border-radius: 20px">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9-2 2 2h8v-2H4V5z" />
+                        </svg>
+                        Log Out
+                    </a>
+                </form>
+
             </div>
         </div>
 
@@ -319,8 +324,8 @@
                 </div>
             </a>
 
-            <a href="#">
-                <div class="menu-item" onclick="showContact()">
+            <a href="{{ route('contact.index') }}">
+                <div class="menu-item">
                     <svg class="phone-icon" fill="currentColor" viewBox="0 0 24 24"
                         style="width: 20px; height: 20px; margin-right: 12px; flex-shrink: 0;">
                         <path
@@ -331,5 +336,30 @@
             </a>
         </div>
     </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault(); // cegah submit default
+
+            Swal.fire({
+                title: 'Yakin ingin logout?',
+                text: "Kamu akan keluar dari akun ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, logout!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
+    </script>
+
+    @include('sweetalert::alert')
 
 @endsection

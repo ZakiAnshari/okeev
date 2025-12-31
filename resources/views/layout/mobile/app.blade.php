@@ -47,8 +47,7 @@
                 <span class="nav-label">News</span>
             </a>
 
-
-            <a href="{{ route('profilm.show') }}"
+            <a href="{{ Auth::check() ? route('profilm.show') : url('/m/login') }}"
                 class="nav-item {{ request()->routeIs('profilm.show') ? 'active' : '' }}">
                 <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
                     <path
@@ -56,6 +55,7 @@
                 </svg>
                 <span class="nav-label">Profile</span>
             </a>
+
 
         </div>
 

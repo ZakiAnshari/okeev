@@ -68,13 +68,11 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
     Route::post('/order/{product:slug}/invoice', [OrderController::class, 'createInvoice'])->name('order.invoice');
 
-
     Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])
         ->name('payment.va');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
-
 
 
 //ADMIN
@@ -209,4 +207,15 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/profilm', [App\Http\Controllers\Mobile\HomeController::class, 'profilm'])->name('profilm.show');
 
     Route::get('/about', [App\Http\Controllers\Mobile\HomeController::class, 'about'])->name('about.show');
+
+    Route::get('/contact', [App\Http\Controllers\Mobile\HomeController::class, 'contact'])->name('contact.index');
+
+
+    Route::get('/login', [App\Http\Controllers\Mobile\LoginController::class, 'index'])->name('login.index');
+    Route::post('/login', [App\Http\Controllers\Mobile\LoginController::class, 'mobileauthenticating']);
+    // LOGOUT
+    Route::post('/logout', [App\Http\Controllers\Mobile\LoginController::class, 'logout'])
+        ->name('mobile.logout');
 });
+
+

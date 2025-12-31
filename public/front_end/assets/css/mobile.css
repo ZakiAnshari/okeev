@@ -598,8 +598,26 @@
 
      .strip-divider {
          height: 10px;
-         background: linear-gradient(to right, var(--primary-blue), var(--light-green));
          margin: 20px 0;
+         border-radius: 0px;
+
+         background: linear-gradient(90deg,
+                 var(--primary-blue) 25%,
+                 var(--light-green) 37%,
+                 var(--primary-blue) 63%);
+
+         background-size: 200% 100%;
+         animation: stripLoading 1.4s ease-in-out infinite;
+     }
+
+     @keyframes stripLoading {
+         0% {
+             background-position: 200% 0;
+         }
+
+         100% {
+             background-position: -200% 0;
+         }
      }
 
      .search-tabs {
@@ -1375,6 +1393,360 @@
          justify-content: space-around;
          /* padding: 12px 0; */
      }
+
+     /* ABOUT */
+     .okeev-intro__title {
+         font-size: 17px;
+         font-weight: 600;
+         color: #35F5C6;
+     }
+
+     .okeev-hero-heading {
+         font-size: 20px;
+         font-weight: 600;
+         line-height: 26px;
+         color: #30445C;
+     }
+
+     .okeev-intro-text {
+         font-size: 16px;
+         font-weight: 500;
+         color: #1A4C93;
+     }
+
+     .okeev-hero__text {
+         font-size: 16px;
+         font-weight: 400;
+         text-align: justify;
+         color: #30445C;
+     }
+
+     .okeev-about-heading {
+         font-size: 22px;
+         font-weight: 700;
+         color: #35F5C6;
+     }
+
+     .okeev-hero__text_about {
+         font-size: 16px;
+         font-weight: 400;
+         text-align: justify;
+         color: white;
+     }
+
+     .okeev-badge-wrapper {
+         display: flex;
+         justify-content: center;
+         margin-top: -40px;
+     }
+
+     .okeev-about-Visi {
+         font-size: 30px;
+         font-weight: 600;
+         color: #35F5C6;
+     }
+
+     .okeev-hero__text_visi {
+         font-size: 16px;
+         font-weight: 400;
+         text-align: justify;
+         color: #30445C;
+     }
+
+     .okeev-visi-image {
+         display: flex;
+         justify-content: center;
+         margin-bottom: 16px;
+     }
+
+     .okeev-visi-img {
+         width: 100%;
+         /* max-width: 320px; */
+         /* bisa membesar di layar besar */
+         height: auto;
+     }
+
+     .bullet-list {
+         padding-left: 1.2rem;
+         /* jarak bullet */
+         text-align: start;
+         color: #30445C;
+         font-size: 16px;
+         font-weight: 400;
+     }
+
+     .bullet-list li {
+         margin-bottom: 10px;
+         line-height: 1.6;
+     }
+
+     /* BESARKAN BULLET */
+     .bullet-list li::marker {
+         font-size: 25px;
+         /* ukuran bullet */
+         color: #30445C;
+     }
+
+     .okeev-about-servise {
+         font-weight: 700;
+         font-size: 18px;
+         line-height: 18px;
+         letter-spacing: 0;
+         color: white;
+     }
+
+     .okeev-about-frame-grid {
+         display: grid;
+         grid-template-columns: repeat(2, 1fr);
+         /* gap: 16px; */
+         align-items: center;
+     }
+
+
+
+
+
+
+
+     .okeev-about-frame-img {
+         width: 70%;
+         /* max-width: 320px; */
+         height: auto;
+     }
+
+     .okeev-about-frame-col {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+     }
+
+     .okeev-about-frame-text {
+         margin-top: 12px;
+         font-size: 16px;
+         font-weight: 500;
+         color: #35F5C6;
+         text-transform: uppercase;
+         text-align: center;
+
+         min-height: 48px;
+         /* KUNCI TINGGI TEKS */
+         display: flex;
+         align-items: center;
+         justify-content: center;
+     }
+
+
+
+
+     /* Section wrapper */
+     .okeev-section {
+         max-width: 420px;
+     }
+
+     /* Title */
+     .okeev-title {
+         color: #35F5C6;
+         font-size: 16px;
+         font-weight: 600;
+     }
+
+     /* Card list */
+     .okeev-card-list {
+         display: flex;
+         flex-direction: column;
+         gap: 12px;
+     }
+
+     .okeev-card-item {
+         border: 1px solid #e5e7eb;
+         border-radius: 8px;
+         padding: 14px 16px;
+         font-size: 15px;
+         font-weight: 500;
+         color: #1f2937;
+         background-color: #fff;
+     }
+
+     /* Support list */
+     .okeev-support-list {
+         list-style: none;
+         padding-left: 0;
+     }
+
+     .okeev-support-list li {
+         position: relative;
+         padding-left: 36px;
+         margin-bottom: 14px;
+         font-size: 14px;
+         color: #374151;
+         line-height: 1.6;
+     }
+
+     /* Bullet besar */
+     .okeev-support-list li::before {
+         content: "";
+         width: 12px;
+         height: 12px;
+         background-color: #2f3e52;
+         border-radius: 50%;
+         position: absolute;
+         left: 0;
+         top: 8px;
+     }
+
+
+     .back-btn-img {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         text-decoration: none;
+     }
+
+     .back-icon {
+         width: 22px;
+         /* bisa dikecilkan/dibesarkan */
+         height: 22px;
+         object-fit: contain;
+     }
+
+     .header-container {
+         display: flex;
+         align-items: center;
+         /* ⬅️ ini yang bikin sejajar vertikal */
+         gap: 12px;
+         /* jarak icon & text */
+     }
+
+     .back-btn-img {
+         display: flex;
+         align-items: center;
+     }
+
+     .back-icon {
+         width: 22px;
+         height: auto;
+     }
+
+     .header-title {
+         font-size: 16px;
+         font-weight: 600;
+         line-height: 1;
+         /* cegah teks turun */
+     }
+
+     .contact-item {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+     }
+
+     .contact-icon-img {
+         width: 24px;
+         height: 24px;
+         object-fit: contain;
+     }
+
+     .contact-text {
+         color: #30445C;
+         font-weight: 500;
+         font-size: 16px;
+
+     }
+
+     .okeev-contact-section {
+         background-color: #344A63;
+         padding: 25px 0;
+     }
+
+     .okeev-contact-card {
+         /* background: #2E435C; */
+         border-radius: 16px;
+         /* padding: 10px; */
+     }
+
+     /* Group */
+     .okeev-contact-group {
+         margin-bottom: 16px;
+     }
+
+     /* Label */
+     .okeev-contact-label {
+         color: #ffffff;
+         font-size: 14px;
+         margin-bottom: 6px;
+         display: block;
+     }
+
+     /* Input & Textarea */
+     .okeev-contact-input,
+     .okeev-contact-textarea {
+         width: 100%;
+         background-color: #1F3348;
+         border: none;
+         border-radius: 10px;
+         padding: 12px 14px;
+         color: #ffffff;
+         font-size: 14px;
+     }
+
+     .okeev-contact-textarea {
+         resize: none;
+         min-height: 120px;
+     }
+
+     .okeev-contact-input::placeholder,
+     .okeev-contact-textarea::placeholder {
+         color: rgba(255, 255, 255, 0.5);
+     }
+
+     .okeev-contact-input:focus,
+     .okeev-contact-textarea:focus {
+         outline: none;
+         box-shadow: 0 0 0 2px rgba(53, 245, 198, 0.4);
+     }
+
+     /* Button */
+     .okeev-contact-submit {
+         width: 100%;
+         background: #35F5C6;
+         border: none;
+         border-radius: 10px;
+         padding: 14px;
+         font-weight: 600;
+         color: #0B1F2A;
+         cursor: pointer;
+     }
+
+     .okeev-contact-submit:hover {
+         background: #2ee0b6;
+     }
+
+     .okeev-map-section {
+         padding: 40px 0;
+         background-color: #f8f9fa;
+     }
+
+     .okeev-map-title {
+         font-size: 20px;
+         font-weight: 600;
+         margin-bottom: 16px;
+         color: #0B1F2A;
+     }
+
+     .okeev-map-wrapper {
+         width: 100%;
+         height: 320px;
+         border-radius: 16px;
+         overflow: hidden;
+         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+     }
+
+     .okeev-map-frame {
+         width: 100%;
+         height: 100%;
+         border: 0;
+     }
+
 
      @media (min-width: 768px) {
          .bottom-nav {
