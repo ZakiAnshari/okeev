@@ -177,9 +177,6 @@
             margin-bottom: 4px;
         }
 
-        .nav-label {
-            font-size: 11px;
-        }
     </style>
     <div class="container">
         <div class="header">
