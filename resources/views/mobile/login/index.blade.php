@@ -184,7 +184,7 @@
             text-align: center;
             color: white;
             font-size: 12px;
-            margin-top: 100px;
+            margin-top: 60px;
             font-weight: 400;
         }
 
