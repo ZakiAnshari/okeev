@@ -16,7 +16,11 @@
             height: 64px;
             display: flex;
             align-items: center;
-            background-color: #fff;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* Safari */
+
             z-index: 999;
             border-bottom: 1px solid #eee;
             border-radius: 0 0 16px 16px;

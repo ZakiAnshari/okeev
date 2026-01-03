@@ -25,7 +25,7 @@
             width: 100%;
             max-width: 375px;
             min-height: 100vh;
-            padding: 50px 25px;
+            padding: 0px 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -38,7 +38,7 @@
 
         .logo h1 {
             color: white;
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 700;
             letter-spacing: 3px;
         }
@@ -119,19 +119,19 @@
         .forgot-password {
             text-align: right;
             margin-top: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .forgot-password a {
             color: white;
-            font-size: 11px;
+            font-size: 15px;
             text-decoration: none;
             font-weight: 400;
         }
 
         .btn-primary {
             width: 100%;
-            padding: 16px;
+            padding: 12px;
             background: #3D4F5C;
             color: white;
             border: none;
@@ -153,14 +153,14 @@
         .divider {
             text-align: center;
             color: white;
-            margin: 15px 0;
+
             font-size: 13px;
             font-weight: 400;
         }
 
         .btn-google {
             width: 100%;
-            padding: 16px;
+            padding: 12px;
             background: white;
             color: #333;
             border: none;
@@ -183,8 +183,8 @@
         .footer-text {
             text-align: center;
             color: white;
-            font-size: 12px;
-            margin-top: 60px;
+            font-size: 15px;
+
             font-weight: 400;
         }
 
@@ -216,8 +216,9 @@
     </style>
 
     <div class="container">
+        <br><br><br><br>
         <div class="logo" style="margin-top:-50px">
-            <h1>OKEEV</h1>
+            <h1 class="mb-4 mt-4">OKEEV</h1>
         </div>
 
         <p class="subtitle">Masuk ke akun Anda</p>
@@ -239,13 +240,17 @@
             </div>
 
             <div class="forgot-password">
-                <a href="reset.html">Lupa kata sandi ?</a>
+                <a href="#">Lupa kata sandi ?</a>
             </div>
 
-            <button type="submit" class="btn-primary">Masuk</button>
+            <button type="submit" class="btn-primary">
+                <span style="font-size:18px">
+                    Masuk
+                </span>
+            </button>
         </form>
 
-        <div class="divider">Atau masuk dengan</div>
+        <div class="divider mb-2 mt-2">Atau masuk dengan</div>
 
         <a href="#" class="btn-google">
             <svg width="20" height="20" viewBox="0 0 20 20">
@@ -258,10 +263,13 @@
                 <path fill="#EA4335"
                     d="M10 3.88c1.88 0 3.13.81 3.85 1.48l2.84-2.76C14.96.99 12.7 0 10 0 6.09 0 2.72 2.25 1.07 5.51l3.24 2.52C5.12 5.62 7.36 3.88 10 3.88z" />
             </svg>
-            Google
-        </a>
+            <span style="font-size:17px;font-weight: 500;">
+                Google
+            </span>
 
-        <p class="footer-text">Belum punya akun? <a href="register.html">Daftar</a></p>
+        </a>
+        <br><br><br>
+        <p class="footer-text mt-5">Belum punya akun? <a href="register.html">Daftar</a></p>
     </div>
 
     <script>
@@ -288,5 +296,5 @@
             }
         }
     </script>
-    
+
 @endsection

@@ -217,3 +217,4 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::post('/logout', [App\Http\Controllers\Mobile\LoginController::class, 'logout'])
         ->name('mobile.logout');
 });
+

@@ -59,7 +59,7 @@
         }
 
         .profile-header {
-            display: flex;
+            /* display: flex; */
             align-items: center;
             margin-bottom: 24px;
         }
@@ -263,58 +263,81 @@
         </div>
 
 
-        <div class="profile-section">
-            <div class="profile-header">
-                <div class="profile-pic">
-                    <img src="{{ $user->image_provile ? asset('storage/' . $user->image_provile) : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%23667eea\'/%3E%3Ctext x=\'50\' y=\'50\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\' dominant-baseline=\'middle\' font-family=\'Arial\'%3EO%3C/text%3E%3C/svg%3E' }}"
-                        alt="Profile">
-                </div>
-                <div class="profile-info">
-                    <h2 class="mb-0">{{ $user->name }}</h2>
-                    <p class="mb-0">{{ $user->email }}</p>
+        @auth
+            <div class="profile-section">
+                <div class="profile-row mb-4">
+                    @php
+                        $user = auth()->user();
+                    @endphp
+
+                    <div class="profile-pic">
+                        <img src="{{ $user->image_provile
+                            ? asset('storage/' . $user->image_provile)
+                            : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=667eea&color=fff' }}"
+                            alt="Profile">
+                    </div>
+
+                    <div class="profile-info">
+                        <h2 class="mb-1">{{ $user->name }}</h2>
+                        <p class="mb-0">{{ $user->email }}</p>
+                    </div>
                 </div>
 
-            </div>
+                <div class="profile-info mb-3">
 
-            <div class="contact-info">
-                <div class="contact-item">
-                    <svg class="phone-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                    </svg>
-                    <p class="mb-0">{{ $user->contact }}</p>
+                    <div class="profile-info-item mb-2">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/ic_baseline-phone.jpg') }}" alt="Phone"
+                            class="profile-icon-img">
+                        <p class="mb-0">{{ $user->contact }}</p>
+                    </div>
+
+                    <div class="profile-info-item">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/gridicons_location.jpg') }}" alt="Location"
+                            class="profile-icon-img">
+                        <p class="mb-0">{{ $user->contact }}</p>
+                    </div>
+
                 </div>
-                <div class="contact-item">
-                    <svg class="location-icon" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                    </svg>
-                    Jl. Ahmad Yani, Blog G6 17
-                </div>
-            </div>
 
-            <div class="button-group">
-                <button class="btn btn-edit" style="border-radius: 20px" onclick="editProfile()">
-                    <svg fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                    </svg>
-                    Edit
-                </button>
-                <form action="{{ route('mobile.logout') }}" method="POST" id="logout-form" style="display:inline;">
-                    @csrf
 
-                    <a href="#" class="btn btn-logout" onclick="confirmLogout(event)" style="border-radius: 20px">
+
+
+                <div class="button-group">
+                    <button class="btn btn-edit" style="border-radius: 20px" onclick="editProfile()">
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path
-                                d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9-2 2 2h8v-2H4V5z" />
+                                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                         </svg>
-                        Log Out
-                    </a>
-                </form>
+                        Edit
+                    </button>
 
+                    <form action="{{ route('mobile.logout') }}" method="POST" id="logout-form" style="display:inline;">
+                        @csrf
+                        <button type="button" class="btn btn-logout w-100" style="border-radius: 20px"
+                            onclick="confirmLogout(event)">
+                            <svg fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9-2 2 2h8v-2H4V5z" />
+                            </svg>
+                            Log Out
+                        </button>
+                    </form>
+
+                </div>
             </div>
-        </div>
+        @endauth
+
+        @guest
+            <div class="okeev-welcome-bar">
+                <div class="okeev-welcome-text">
+                    Halo, Selamat datang di <strong>Okeev!</strong>
+                </div>
+                <a href="{{ route('login.index') }}" class="okeev-welcome-btn">
+                    LOGIN
+                </a>
+            </div>
+        @endguest
+
 
         <div class="menu-section">
             <a href="{{ route('about.show') }}">
