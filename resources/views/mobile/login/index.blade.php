@@ -216,7 +216,7 @@
     </style>
 
     <div class="container">
-        <br><br><br><br>
+        
         <div class="logo" style="margin-top:-50px">
             <h1 class="mb-4 mt-4">OKEEV</h1>
         </div>
@@ -268,7 +268,7 @@
             </span>
 
         </a>
-        <br><br><br>
+        
         <p class="footer-text mt-5">Belum punya akun? <a href="register.html">Daftar</a></p>
     </div>
 
