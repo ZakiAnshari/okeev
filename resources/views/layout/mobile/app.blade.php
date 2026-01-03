@@ -12,11 +12,29 @@
     <link rel="stylesheet" href="{{ asset('front_end/assets/css/mobile.css') }}">
 
 </head>
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Berhasil',
+            text: '{{ session('success') }}'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Gagal',
+            text: '{{ session('error') }}'
+        });
+    </script>
+@endif
 
 <body>
     @yield('content')
     <!-- CSS Mobile -->
-
     <!-- Hotbar -->
     <div class="bottom-nav">
         <div class="bottom-nav-container">
@@ -107,6 +125,8 @@
 
         });
     </script>
+    @include('sweetalert::alert')
+
 </body>
 
 </html>

@@ -359,5 +359,20 @@
     </div>
 
     </div>
-   
+
+    @if (session('swal'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: "{{ session('swal.icon') }}",
+                    title: "{{ session('swal.title') }}",
+                    text: "{{ session('swal.text') }}",
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            });
+        </script>
+    @endif
+    @include('sweetalert::alert')
+    
 @endsection

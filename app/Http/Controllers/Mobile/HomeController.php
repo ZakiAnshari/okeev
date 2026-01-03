@@ -13,17 +13,21 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Product Vehicle
         $products = Product::with('brand')
             ->where('category_id', 1)
             ->orderBy('created_at', 'desc')
             ->get();
+
         $brands = Brand::all();
 
-        // Session flash untuk SweetAlert
-
-        return view('mobile.home', compact('brands', 'products'));
+        // kirim flag biasa
+        return view('mobile.home', [
+            'brands' => $brands,
+            'products' => $products,
+            'showAlert' => true, // <- PAKSA
+        ]);
     }
+
 
     public function showcard()
     {

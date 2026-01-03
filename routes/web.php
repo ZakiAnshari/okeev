@@ -209,7 +209,7 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/about', [App\Http\Controllers\Mobile\HomeController::class, 'about'])->name('about.show');
 
     Route::get('/contact', [App\Http\Controllers\Mobile\HomeController::class, 'contact'])->name('contact.index');
-
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::get('/login', [App\Http\Controllers\Mobile\LoginController::class, 'index'])->name('login.index');
     Route::post('/login', [App\Http\Controllers\Mobile\LoginController::class, 'mobileauthenticating']);
@@ -217,5 +217,3 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::post('/logout', [App\Http\Controllers\Mobile\LoginController::class, 'logout'])
         ->name('mobile.logout');
 });
-
-
