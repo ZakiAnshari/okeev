@@ -218,3 +218,5 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
         ->name('mobile.logout');
 });
 
+
+

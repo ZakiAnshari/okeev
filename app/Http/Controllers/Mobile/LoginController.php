@@ -38,11 +38,12 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        
         // ✅ SATU KALI SAJA
         alert()->success('Login Berhasil', 'Selamat datang di aplikasi Okeev!');
 
         if ($user->role_id == 2) {
-            return redirect()->intended('m/home');
+            return redirect()->intended('/m');
         }
 
         return redirect()->intended('/dashboard');

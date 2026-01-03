@@ -12,29 +12,22 @@
     <link rel="stylesheet" href="{{ asset('front_end/assets/css/mobile.css') }}">
 
 </head>
-@if (session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Login Berhasil',
-            text: '{{ session('success') }}'
-        });
-    </script>
-@endif
-
-@if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Login Gagal',
-            text: '{{ session('error') }}'
-        });
-    </script>
-@endif
 
 <body>
     @yield('content')
     <!-- CSS Mobile -->
+    @if (session('success_login'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Berhasil',
+                text: '{{ session('success_login') }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
     <!-- Hotbar -->
     @if (!request()->routeIs('login.index', 'profilm.show'))
         <div class="bottom-nav">

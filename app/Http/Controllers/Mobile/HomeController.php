@@ -24,7 +24,6 @@ class HomeController extends Controller
         return view('mobile.home', [
             'brands' => $brands,
             'products' => $products,
-            'showAlert' => true, // <- PAKSA
         ]);
     }
 

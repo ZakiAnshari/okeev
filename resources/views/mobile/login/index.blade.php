@@ -224,13 +224,15 @@
 
     <div class="container">
 
-        <div class="logo" style="margin-top:-50px">
-            <h1 class="mb-4 mt-4">OKEEV</h1>
-        </div>
+        <a href="/" style=" text-decoration: none;color: inherit;">
+            <div class="logo" style="margin-top:-50px">
+                <h1 class="mb-4 mt-4">OKEEV</h1>
+            </div>
+        </a>
 
         <p class="subtitle">Masuk ke akun Anda</p>
 
-        <form action="{{ route('login') }}" method="POST" class="mb-3">
+        <form action="{{ url('/m/login') }}" method="POST" class="mb-3">
             @csrf
 
             <div class="form-group">
