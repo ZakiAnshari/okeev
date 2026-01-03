@@ -19,6 +19,13 @@
             padding: 0;
         }
 
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
         .container {
             background: linear-gradient(180deg, rgba(29, 205, 254, 1), rgba(53, 245, 198, 1));
 
@@ -216,7 +223,7 @@
     </style>
 
     <div class="container">
-        
+
         <div class="logo" style="margin-top:-50px">
             <h1 class="mb-4 mt-4">OKEEV</h1>
         </div>
@@ -268,7 +275,7 @@
             </span>
 
         </a>
-        
+
         <p class="footer-text mt-5">Belum punya akun? <a href="register.html">Daftar</a></p>
     </div>
 
