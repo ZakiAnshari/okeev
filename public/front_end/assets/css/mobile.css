@@ -1933,10 +1933,10 @@
          transition: 0.3s;
      }
 
-     .car-thumbnail.active,
+     /* .car-thumbnail.active,
      .car-thumbnail:hover {
          border-color: #1ab1ff;
-     }
+     } */
 
      .car-info-01 {
          text-align: center;

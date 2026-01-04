@@ -60,10 +60,7 @@
                 transition: all 0.25s ease;
             }
 
-            .car-thumbnail.active {
-                opacity: 1;
-                border: 2px solid #000;
-            }
+           
         </style>
         <div class="car-info-01">
             <div class="car-name-01" style="text-align: start"> {{ $product->model_name }}</div>
