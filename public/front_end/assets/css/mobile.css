@@ -1275,7 +1275,7 @@
      }
 
      .car-img {
-         width: 70%;
+         width: 90%;
          height: auto;
          object-fit: contain;
          max-height: 180px;
@@ -1827,6 +1827,748 @@
          line-height: 1.2;
          /* samakan tinggi teks */
      }
+
+     .mobile-header {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 64px;
+         display: flex;
+         align-items: center;
+         background: rgba(255, 255, 255, 0.5);
+         backdrop-filter: blur(10px);
+         -webkit-backdrop-filter: blur(10px);
+         /* Safari */
+         z-index: 999;
+         /* border-bottom: 1px solid #eee; */
+         border-radius: 0 0 16px 16px;
+
+         /* Transisi halus */
+         transition: box-shadow 0.3s ease, backdrop-filter 0.3s ease, background-color 0.3s ease;
+     }
+
+     .mobile-header-title {
+         position: absolute;
+         left: 50%;
+         transform: translateX(-50%);
+         font-size: 18px;
+         font-weight: 500;
+         color: #30445C;
+         white-space: nowrap;
+     }
+
+     .car-section-01 {
+         max-width: 400px;
+         margin: 0 auto;
+         font-family: 'Arial', sans-serif;
+         text-align: center;
+     }
+
+     .car-main-image-container {
+         width: 100%;
+         height: 222px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background: rgba(241, 241, 241, 1);
+         border-radius: 10px;
+         overflow: hidden;
+     }
+
+     .color-circle {
+         width: 50px;
+         height: 50px;
+         border-radius: 50%;
+         cursor: pointer;
+         /* border: 2px solid transparent; */
+         transition: all 0.2s;
+     }
+
+     .color-circle.active {
+         border: 1px solid #635c5c;
+         transform: scale(1.1);
+     }
+
+     .car-main-image {
+         width: auto;
+         max-width: 95%;
+         height: auto;
+         object-fit: contain;
+         cursor: pointer;
+     }
+
+     .car-thumbnail-container {
+         display: flex;
+         justify-content: center;
+         gap: 10px;
+         margin-bottom: 15px;
+         overflow-x: auto;
+         padding: 10px 0;
+         transition: box-shadow 0.3s;
+     }
+
+     /* default tidak ada garis bawah */
+     .car-thumbnail-container.scrollable {
+         box-shadow: inset 0 -2px 0 #1ab1ff;
+         /* garis bawah biru saat scroll */
+     }
+
+     .car-thumbnail-container::-webkit-scrollbar-thumb {
+         background-color: rgba(0, 0, 0, 0.3);
+         border-radius: 3px;
+     }
+
+     .car-thumbnail-container::-webkit-scrollbar-track {
+         background: rgba(0, 0, 0, 0.05);
+     }
+
+     .car-thumbnail {
+         width: 80px;
+         height: 60px;
+         object-fit: cover;
+         border-radius: 8px;
+         cursor: pointer;
+         border: 2px solid transparent;
+         transition: 0.3s;
+     }
+
+     .car-thumbnail.active,
+     .car-thumbnail:hover {
+         border-color: #1ab1ff;
+     }
+
+     .car-info-01 {
+         text-align: center;
+     }
+
+     .car-name-01 {
+         font-size: 16px;
+         font-weight: 500;
+         margin-bottom: 5px;
+     }
+
+     .car-price-01 {
+         font-size: 26px;
+         font-weight: 700;
+         color: #e53935;
+         margin-bottom: 15px;
+     }
+
+     .car-button-group {
+         display: flex;
+         justify-content: center;
+         gap: 10px;
+         margin-bottom: 10px;
+     }
+
+     .car-btn-outline {
+         padding: 8px 16px;
+         border-radius: 8px;
+         font-weight: 500;
+         cursor: pointer;
+         border: 1px solid #1ab1ff;
+         color: #1ab1ff;
+         background: transparent;
+         transition: 0.3s;
+     }
+
+     .car-btn-outline:hover {
+         background: #1ab1ff;
+         color: #fff;
+     }
+
+     .car-btn-primary {
+         padding: 8px 16px;
+         border-radius: 8px;
+         font-weight: 500;
+         cursor: pointer;
+         border: none;
+         background: #1ab1ff;
+         color: #fff;
+         transition: 0.3s;
+     }
+
+     .car-btn-primary:hover {
+         background: #0093d0;
+     }
+
+     .car-btn-order {
+         width: 100%;
+         padding: 12px;
+         background: linear-gradient(90deg, #1ab1ff, #53f5c6);
+         color: #fff;
+         font-weight: 600;
+         border-radius: 12px;
+         border: none;
+         cursor: pointer;
+         transition: 0.3s;
+     }
+
+     .car-btn-order:hover {
+         opacity: 0.9;
+     }
+
+     .car-button-group-01 {
+         display: flex;
+         justify-content: center;
+         gap: 10px;
+         margin-bottom: 10px;
+     }
+
+     .car-btn-outline-01 {
+         padding: 8px 16px;
+         border-radius: 8px;
+         font-weight: 500;
+         cursor: pointer;
+         border: 1px solid #1ab1ff;
+         color: #1ab1ff;
+         background: transparent;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transition: 0.3s;
+     }
+
+     .wuling-title {
+         font-weight: 600;
+         /* setara fw-bold */
+         margin-bottom: 0;
+         margin-right: 1rem;
+         /* setara me-3 */
+         font-size: 17px;
+         /* bisa disesuaikan */
+         color: rgba(48, 68, 92, 1);
+     }
+
+     .wuling-line {
+         border-bottom: 1px solid rgba(48, 68, 92, 1);
+         /* warna garis */
+         height: 0;
+     }
+
+     .car-btn-outline-01:hover {
+         background: #1ab1ff;
+         color: #fff;
+     }
+
+     .car-btn-icon-01 {
+         width: 18px;
+         /* ukuran ikon */
+         height: 18px;
+         margin-right: 8px;
+         /* jarak antara ikon dan teks */
+         vertical-align: middle;
+     }
+
+     .wf-content-item img {
+         width: 200px;
+         /* sesuaikan lebar yang diinginkan */
+         height: 200px;
+         /* sesuaikan tinggi yang diinginkan */
+         object-fit: cover;
+         /* gambar akan terpotong jika proporsinya beda, tapi tetap penuh */
+         display: block;
+         margin: 0 auto 15px;
+         /* center dan beri jarak bawah */
+     }
+
+     .tech-content-wrapper {
+         position: relative;
+     }
+
+     /* Konten */
+     .tech-content {
+         display: block;
+     }
+
+     .tech-content.d-none {
+         display: none;
+     }
+
+     /* Semua gambar konten punya ukuran sama */
+     .tech-content img {
+         width: 100%;
+         /* Lebar penuh container */
+         height: 192px;
+         /* Atur tinggi sama semua */
+         object-fit: cover;
+         /* Agar gambar proporsional tapi tetap mengisi area */
+         border-radius: 10px;
+         margin-top: 1rem;
+     }
+
+     /* Judul dan garis */
+     .wf-title {
+         font-weight: 700;
+         font-size: 1.5rem;
+         margin-bottom: 0;
+         margin-right: 1rem;
+     }
+
+     .wf-line {
+         border-bottom: 2px solid #1ab1ff;
+         height: 0;
+     }
+
+     /* Container tabs + content */
+     .wf-container {
+         gap: 1rem;
+     }
+
+     /* Tabs */
+     .wf-tabs {
+         /* display: flex; */
+         flex-direction: row;
+         gap: 1rem;
+         overflow-x: auto;
+         scrollbar-width: none;
+         /* Firefox */
+     }
+
+     .wf-tabs::-webkit-scrollbar {
+         display: none;
+         /* Chrome, Safari, Edge */
+     }
+
+     .wf-tab {
+         cursor: pointer;
+         padding: 0.5rem 0;
+         font-weight: 500;
+         color: #6c757d;
+         white-space: nowrap;
+         border-left: 4px solid transparent;
+         transition: all 0.3s;
+     }
+
+     .wf-tab.active {
+         color: rgba(53, 245, 198, 1);
+         font-weight: 600;
+     }
+
+     /* Content */
+     .wf-content-item img {
+         width: 100%;
+         border-radius: 10px;
+     }
+
+     .wf-content-item h5 {
+         margin-top: 0.5rem;
+         margin-bottom: 0.5rem;
+         color: #1ab1ff;
+         font-weight: 600;
+     }
+
+     .wf-content-item p {
+         color: #495057;
+         line-height: 1.6;
+     }
+
+     .tech-content-wrapper {
+         position: relative;
+     }
+
+     .tech-content {
+         display: block;
+     }
+
+     .tech-content.d-none {
+         display: none;
+     }
+
+     /* Main tabs wrapper agar scrollable */
+     .tech-tabs-wrapper {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         /* smooth scrolling di iOS */
+     }
+
+     /* Main tabs */
+     .tech-tabs {
+         display: flex;
+         gap: 1rem;
+         min-width: max-content;
+         /* supaya flex item tidak wrap */
+     }
+
+     /* Wrapper agar scrollable tapi scrollbar disembunyikan */
+     .tech-tabs-wrapper,
+     .sub-tabs-wrapper {
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+         /* smooth scroll di iOS */
+         scrollbar-width: none;
+         /* Firefox */
+     }
+
+     /* Chrome, Edge, Safari */
+     .tech-tabs-wrapper::-webkit-scrollbar,
+     .sub-tabs-wrapper::-webkit-scrollbar {
+         display: none;
+     }
+
+     /* Main tabs */
+     .tech-tabs {
+         display: flex;
+         gap: 0.1rem;
+         min-width: max-content;
+         /* supaya item tidak wrap */
+     }
+
+     .tab-item {
+         padding: 0.5rem 1rem;
+         cursor: pointer;
+         color: #6c757d;
+         font-weight: 500;
+         white-space: nowrap;
+         flex-shrink: 0;
+     }
+
+     .tab-item.active {
+         color: #000;
+         border-bottom: 2px solid #dee2e6;
+     }
+
+     /* Sub tabs */
+     .sub-tabs {
+         display: flex;
+         gap: 1rem;
+         min-width: max-content;
+     }
+
+     .sub-tab {
+         padding: 0.25rem 0.5rem;
+         cursor: pointer;
+         color: #6c757d;
+         font-weight: 500;
+         font-size: 0.9rem;
+         white-space: nowrap;
+         flex-shrink: 0;
+         transition: color 0.3s, font-weight 0.3s;
+     }
+
+     .sub-tab.active {
+         color: rgba(53, 245, 198, 1);
+         font-weight: 600;
+     }
+
+     /* Content */
+     .tech-content h5 {
+         color: rgba(53, 245, 198, 1);
+         font-weight: 600;
+         margin-bottom: 1rem;
+     }
+
+     .tech-content p {
+         line-height: 1.6;
+         color: #495057;
+     }
+
+     .tech-content img {
+         margin-top: 1rem;
+         width: 100%;
+         border-radius: 10px;
+     }
+
+     .line-tech {
+         height: 2px;
+         background: #DADADA;
+     }
+
+     .tech-nav {
+         gap: 50px;
+         /* boleh disesuaikan */
+     }
+
+     /* Scoped CSS khusus untuk container ini */
+     .custom-car-container {
+         text-align: center;
+         /* center image */
+         margin-top: 1.5rem;
+         /* beri jarak atas */
+         position: relative;
+         /* jika nanti mau overlay/modal */
+     }
+
+     .custom-car-image {
+         width: 300px;
+         /* lebar tetap semua gambar */
+         height: 155px;
+         /* tinggi tetap semua gambar */
+         object-fit: cover;
+         /* gambar mengisi area tanpa distorsi */
+         display: block;
+         margin: 0 auto;
+         /* center image */
+         border-radius: 8px;
+         /* opsional, biar rounded */
+         /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+         /* opsional, efek shadow */
+         cursor: pointer;
+         transition: transform 0.3s ease;
+     }
+
+     .custom-car-image:hover {
+         transform: scale(1.05);
+         /* zoom ringan saat hover */
+     }
+
+     .custom-box {
+         /* background-color: #f5f5f5; */
+         /* Ganti warna sesuai kebutuhan */
+         border-radius: 15px;
+         /* Membuat sudut sangat melengkung */
+         padding: 20px;
+         /* Opsional, biar isi tidak menempel */
+         box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+         /* shadow lembut merata */
+         /* Opsional, memberi efek shadow */
+         transition: all 0.3s ease;
+         /* Opsional, smooth saat hover atau interaksi */
+     }
+
+     .spec-progress .progress-bar {
+         width: 25%;
+         height: 100%;
+         transition: width .35s ease;
+         background: linear-gradient(90deg, #1f3c88, #2dd4bf);
+     }
+
+     /* Wrapper scroll */
+     .spec-tabs-wrapper {
+         overflow-x: auto;
+         overflow-y: hidden;
+         scrollbar-width: none;
+         /* Firefox */
+         -ms-overflow-style: none;
+         /* IE */
+     }
+
+     .spec-tabs-wrapper::-webkit-scrollbar {
+         display: none;
+         /* Chrome */
+     }
+
+     /* Tabs */
+     .spec-tabs {
+         display: flex;
+         flex-wrap: nowrap;
+         gap: 24px;
+         white-space: nowrap;
+         padding-bottom: 6px;
+         min-width: max-content;
+     }
+
+     /* Tab item */
+     .spec-tabs .nav-link {
+         white-space: nowrap;
+         padding: 8px 2px;
+         flex-shrink: 0;
+     }
+
+     .spec-line {
+         height: 2px;
+         background: #1f3c88;
+         opacity: .2;
+     }
+
+     .spec-card {
+         border-radius: 14px;
+         border: none;
+     }
+
+     .spec-tabs {
+         border-bottom: 1px solid #eee;
+         gap: 0px;
+     }
+
+     .spec-tabs .nav-link {
+         border: none;
+         color: #9aa3af;
+         font-weight: 500;
+         padding: 8px 0;
+         background: none;
+     }
+
+     .spec-tabs .nav-link.active {
+         color: #1f3c88;
+         font-weight: 600;
+         position: relative;
+     }
+
+     .spec-tabs .nav-link.active::after {
+         content: "";
+         position: absolute;
+         left: 0;
+         bottom: -10px;
+         width: 100%;
+         height: 3px;
+         background: #1f3c88;
+         border-radius: 10px;
+     }
+
+     .spec-progress {
+         height: 8px;
+         background: #e5e7eb;
+         border-radius: 20px;
+         overflow: hidden;
+     }
+
+     .spec-progress .progress-bar {
+         width: 35%;
+         height: 100%;
+         background: linear-gradient(90deg, #1f3c88, #2dd4bf);
+     }
+
+     .spec-list {
+         display: flex;
+         flex-direction: column;
+         gap: 18px;
+     }
+
+     .spec-item .title {
+         font-size: 14px;
+         font-weight: 600;
+         color: #1f2937;
+         margin-bottom: 2px;
+     }
+
+     .spec-item .value {
+         font-size: 14px;
+         color: #6b7280;
+
+     }
+
+     .tab-pane {
+         animation: fadeSlide .25s ease;
+     }
+
+     @keyframes fadeSlide {
+         from {
+             opacity: 0;
+             transform: translateY(5px);
+         }
+
+         to {
+             opacity: 1;
+             transform: translateY(0);
+         }
+     }
+
+
+
+     /* WRAPPER */
+     .cc-wrapper {
+         max-width: 380px;
+         margin: 0 auto;
+         padding: 16px;
+     }
+
+     /* CARD */
+     .cc-card {
+         background: #2f4054;
+         /* border-radius: 14px; */
+         padding: 20px;
+         color: #fff;
+         font-family: Arial, sans-serif;
+     }
+
+     /* HEADER */
+     .cc-header {
+         text-align: center;
+         margin-bottom: 12px;
+     }
+
+     .cc-header h2 {
+         font-size: 18px;
+         font-weight: 700;
+         margin-bottom: 4px;
+     }
+
+     .cc-powered {
+         font-size: 12px;
+         margin-bottom: 6px;
+     }
+
+     .cc-powered span {
+         color: #7CFF7C;
+         font-weight: 600;
+     }
+
+     .cc-desc {
+         font-size: 12px;
+         line-height: 1.4;
+         color: #d6dce4;
+     }
+
+     /* INTRO */
+     .cc-intro {
+         font-size: 13px;
+         line-height: 1.4;
+         margin: 14px 0;
+         color: #e2e7ed;
+     }
+
+     /* FORM */
+     .cc-form {
+         display: flex;
+         flex-direction: column;
+         gap: 14px;
+     }
+
+     .cc-group label {
+         font-size: 12px;
+         margin-bottom: 6px;
+         display: block;
+         color: #dbe2ea;
+     }
+
+     .cc-group input,
+     .cc-select select {
+         width: 100%;
+         background: #ffffff;
+         border: none;
+         border-radius: 8px;
+         padding: 12px;
+         font-size: 14px;
+         color: #000;
+         outline: none;
+     }
+
+     /* SELECT */
+     .cc-select {
+         position: relative;
+     }
+
+     .cc-select span {
+         position: absolute;
+         right: 12px;
+         top: 50%;
+         transform: translateY(-50%);
+         font-size: 18px;
+         color: #333;
+         pointer-events: none;
+     }
+
+     .cc-select select {
+         appearance: none;
+         -webkit-appearance: none;
+     }
+
+     /* NOTE */
+     .cc-note {
+         font-size: 11px;
+         line-height: 1.5;
+         color: #cfd6df;
+         margin-top: 18px;
+     }
+
+     .cc-note p {
+         margin-bottom: 8px;
+     }
+
+
+
 
      @media (min-width: 768px) {
          .bottom-nav {

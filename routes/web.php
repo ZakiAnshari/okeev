@@ -198,6 +198,8 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
     Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])->name('vehiclecard.show');
     Route::get('/vehiclecard/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandVehicle'])->name('vehiclecard.detail');
+    Route::get('/vehiclecard/product/{productSlug}', [App\Http\Controllers\Mobile\HomeController::class, 'showVehicleDetail'])->name('vehiclecard.product');
+
 
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
 
@@ -217,6 +219,3 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::post('/logout', [App\Http\Controllers\Mobile\LoginController::class, 'logout'])
         ->name('mobile.logout');
 });
-
-
-

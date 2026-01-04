@@ -49,7 +49,6 @@ class HomeController extends Controller
     {
         $brand = Brand::where('slug', $slug)->firstOrFail();
 
-        // Ambil semua produk brand ini
         $sameBrandProducts = Product::with('brand')
             ->where('brand_id', $brand->id)
             ->orderBy('created_at', 'desc')
@@ -57,6 +56,24 @@ class HomeController extends Controller
 
         return view('mobile.brand.detail', compact('brand', 'sameBrandProducts'));
     }
+
+    public function showVehicleDetail($productSlug)
+    {
+        // Ambil product berdasarkan slug
+        $product = \App\Models\Product::where('slug', $productSlug)->firstOrFail();
+
+        // Bisa juga load relasi jika perlu, misal brand
+        $product->load('brand');
+
+        // Kirim data ke view detail product
+        return view('mobile.vehicle.detail', compact('product'));
+    }
+
+
+
+
+
+
 
     public function transaksi()
     {
