@@ -31,6 +31,18 @@
         </div>
 
         <style>
+            .car-thumbnail {
+                outline: none;
+                border: none;
+            }
+
+            .car-thumbnail:focus,
+            .car-thumbnail:active {
+                outline: none !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
             .car-thumbnail-scroll {
                 display: flex;
                 gap: 12px;
@@ -59,8 +71,6 @@
                 opacity: 0.7;
                 transition: all 0.25s ease;
             }
-
-           
         </style>
         <div class="car-info-01">
             <div class="car-name-01" style="text-align: start"> {{ $product->model_name }}</div>
