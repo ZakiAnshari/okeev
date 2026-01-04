@@ -29,7 +29,7 @@
     @endif
 
     <!-- Hotbar -->
-    @if (!request()->routeIs('login.index', 'profilm.show','vehiclecard.product'))
+    @if (!request()->routeIs('login.index', 'profilm.show','vehiclecard.product','drive.index'))
         <div class="bottom-nav">
             <div class="bottom-nav-container">
                 <a href="{{ route('transaksi.show') }}"

@@ -79,7 +79,7 @@
             </div>
 
             <div class="car-button-group-01">
-                <button class="car-btn-outline-01 w-50" onclick="location.href='test-drive.html'">
+                <button class="car-btn-outline-01 w-50" onclick="location.href='{{ route('drive.index', $product->slug) }}'">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/streamline_steering-wheel-solid.png') }}"
                         alt="Car Icon" class="car-btn-icon-01">
                     Test Drive

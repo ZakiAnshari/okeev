@@ -21,10 +21,11 @@ use App\Http\Controllers\HomeUserController;
 use App\Http\Controllers\SuspensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TestDriveController;
+use App\Http\Middleware\DetectMobileRedirect;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\Mobile\DriveController;
 use App\Http\Controllers\SpecificationController;
-use App\Http\Middleware\DetectMobileRedirect;
 
 Route::middleware(['role_not_one', DetectMobileRedirect::class])->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -199,6 +200,10 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])->name('vehiclecard.show');
     Route::get('/vehiclecard/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandVehicle'])->name('vehiclecard.detail');
     Route::get('/vehiclecard/product/{productSlug}', [App\Http\Controllers\Mobile\HomeController::class, 'showVehicleDetail'])->name('vehiclecard.product');
+
+
+    Route::get('/product/{productSlug}/drive', [DriveController::class, 'index'])->name('drive.index');
+    Route::post('/product/{productSlug}/testdrive-add', [DriveController::class, 'store'])->name('drive.store');
 
 
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
