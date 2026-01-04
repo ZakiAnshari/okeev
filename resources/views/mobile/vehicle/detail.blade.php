@@ -19,25 +19,57 @@
     <br>
     <section class="container car-section-01 mt-5">
         <div class="car-main-image-container">
-            <img id="mainCarImage" src="{{ asset('front_end/assets/images/logo/mobile/download (3) 1 (1).png') }}"
-                alt="Wuling Air EV" class="car-main-image mt-4" onclick="openModal()">
+            <img id="mainCarImage" src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{ $product->model_name }}"
+                class="car-main-image mt-4" onclick="openModal()">
         </div>
 
-        <div class="car-thumbnail-container">
-            <div style="flex: 0 0 10px;"></div> <!-- spacer kiri -->
-
-            @for ($i = 0; $i < 3; $i++)
-                <img src="{{ asset('front_end/assets/images/logo/mobile/new-air-ev-lite 1.png') }}"
-                    alt="Thumbnail {{ $i + 1 }}" class="car-thumbnail {{ $i == 0 ? 'active' : '' }}"
-                    style="width: 100px; height: 100px;" onclick="changeMainImage(this)">
-            @endfor
-
-            <div style="flex: 0 0 10px;"></div> <!-- spacer kanan -->
+        <div class="car-thumbnail-scroll">
+            @foreach ($product->images as $i => $img)
+                <img src="{{ asset('storage/' . $img->image) }}" alt="Thumbnail {{ $i + 1 }}"
+                    class="car-thumbnail {{ $i == 0 ? 'active' : '' }}" onclick="changeMainImage(this)">
+            @endforeach
         </div>
 
+        <style>
+            .car-thumbnail-scroll {
+                display: flex;
+                gap: 12px;
+                overflow-x: auto;
+                padding: 10px 5px;
+                /* 👈 ini mencegah kepotong kiri/kanan */
+                scroll-behavior: smooth;
+
+                /* UX mobile */
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .car-thumbnail-scroll::-webkit-scrollbar {
+                display: none;
+                /* bersih */
+            }
+
+            .car-thumbnail {
+                flex: 0 0 auto;
+                /* 👈 PENTING: jangan mengecil */
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border-radius: 12px;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: all 0.25s ease;
+            }
+
+            .car-thumbnail.active {
+                opacity: 1;
+                border: 2px solid #000;
+            }
+        </style>
         <div class="car-info-01">
-            <div class="car-name-01" style="text-align: start">New Air Ev Lite Long Range</div>
-            <div class="car-price-01" style="text-align: start">IDR 194.000.000</div>
+            <div class="car-name-01" style="text-align: start"> {{ $product->model_name }}</div>
+            <div class="car-price-01" style="text-align: start">
+                IDR {{ number_format($product->price, 0, ',', '.') }}
+            </div>
 
             <div class="car-button-group-01">
                 <button class="car-btn-outline-01 w-50" onclick="location.href='test-drive.html'">
