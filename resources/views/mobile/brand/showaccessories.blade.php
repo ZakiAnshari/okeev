@@ -74,13 +74,10 @@
                                             <img src="{{ asset('storage/' . $product->brand->image) }}"
                                                 alt="{{ $product->brand->name_brand }}">
                                         </div>
-
                                         <img src="{{ asset('storage/' . $product->thumbnail) }}" class="product-main-img"
                                             alt="Thumbnail">
                                     </div>
-
                                 </div>
-
                                 <div class="card-body">
 
                                     <h6 class="product-title mb-1">
@@ -88,14 +85,10 @@
                                             {{ $product->model_name }}
                                         </a>
                                     </h6>
-
                                     <p class="fw-bold text-danger mb-0" style="font-size:18px;font-weight:500;">
                                         Rp {{ number_format($product->price, 0, ',', '.') }}
                                     </p>
-
                                 </div>
-
-
                             </div>
                         </a>
 

@@ -172,90 +172,102 @@
                 <div class="tech-tabs-wrapper mb-3">
 
                     <div class="d-flex tech-tabs" style="border-bottom: 1px solid rgba(48, 68, 92, 0.5);">
-                        <div class="tab-item" data-target="technology-section">Technology</div>
-                        <div class="tab-item" data-target="feature-section">Feature</div>
+                        @if ($product->category_id == 1)
+                            <div class="tab-item" data-target="technology-section">Technology</div>
+                            <div class="tab-item" data-target="feature-section">Feature</div>
+                            <div class="tab-item" data-target="spec-section">Specification</div>
+                            <div class="tab-item" data-target="credit-section">Credit Calculator</div>
+                        @endif
+
                         <div class="tab-item" data-target="color-section">Color</div>
-                        <div class="tab-item" data-target="spec-section">Specification</div>
-                        <div class="tab-item" data-target="credit-section">Credit Calculator</div>
-                    </div>
 
+                        @if ($product->category_id == 2)
+                            <div class="tab-item" data-target="power-section">Power</div>
+                            <div class="tab-item" data-target="dimensi-section">Dimensi</div>
+                            <div class="tab-item" data-target="sistemsuspensi-section">Sistem Suspensi</div>
+                            <div class="tab-item" data-target="fitur-section">Fitur</div>
+                        @endif
 
-
-
-                </div>
-                {{-- TEKNOLOGY ________________________________________________________________________________________ --}}
-                <div id="technology-section" class="d-flex align-items-center mb-5 mt-5">
-                    <h4 class="wuling-title mb-0 me-3">
-                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Technology
-                    </h4>
-                    <div class="flex-grow-1 wuling-line"></div>
-                </div>
-                <div class="sub-tabs-wrapper mb-3">
-                    <div class="d-flex sub-tabs" id="technology-subtabs">
-                        @foreach ($technologies as $index => $technology)
-                            <div class="sub-tab {{ $index === 0 ? 'active' : '' }}"
-                                data-subtab="{{ $technology->slug ?? Str::slug($technology->name) }}">
-                                {{ $technology->name }}
-                            </div>
-                        @endforeach
                     </div>
                 </div>
-                <!-- Content Area -->
-                <div class="tech-content-wrapper">
-                    @foreach ($technologies as $index => $technology)
-                        <div class="tech-content {{ $index !== 0 ? 'd-none' : '' }}"
-                            data-content="{{ $technology->slug ?? Str::slug($technology->name) }}">
-
-                            <h5>{{ $technology->name }}</h5>
-
-                            @if (!empty($technology->description))
-                                {!! nl2br(e($technology->description)) !!}
-                            @endif
-
-                            @if (!empty($technology->image))
-                                <img src="{{ asset('storage/' . $technology->image) }}" alt="{{ $technology->name }}">
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-
-                {{-- Feature________________________________________________________________________________________ --}}
-                <div class="wuling-feature-section">
-                    <div id="feature-section" class="d-flex align-items-center mb-4 mt-5">
+                {{-- INI TEKNOLOGIN UNTUK MOBIL --}}
+                @if ($product->category_id == 1)
+                    {{-- TEKNOLOGY ________________________________________________________________________________________ --}}
+                    <div id="technology-section" class="d-flex align-items-center mb-5 mt-5">
                         <h4 class="wuling-title mb-0 me-3">
-                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Technology
                         </h4>
                         <div class="flex-grow-1 wuling-line"></div>
                     </div>
 
-
-
-                    <div class="wf-container d-flex flex-column flex-md-row">
-                        <!-- Tabs / List -->
-                        <div class="wf-tabs mb-3 mb-md-0">
-                            @foreach ($features as $index => $feature)
-                                <div class="wf-tab {{ $index == 0 ? 'active' : '' }}"
-                                    data-feature="{{ Str::slug($feature->name) }}">
-                                    {{ $feature->name }}
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <!-- Content -->
-                        <div class="wf-content flex-grow-1 ms-md-4">
-                            @foreach ($features as $index => $feature)
-                                <div class="wf-content-item {{ $index != 0 ? 'd-none' : '' }}"
-                                    data-content="{{ Str::slug($feature->name) }}">
-                                    <img src="{{ asset('storage/' . $feature->image) }}"
-                                        alt="{{ $feature->name }} Image" class="img-fluid mb-3">
-                                    {{-- <h5>{{ $feature->name }}</h5> --}}
-                                    <p>{{ $feature->description }}</p>
+                    <div class="sub-tabs-wrapper mb-3">
+                        <div class="d-flex sub-tabs" id="technology-subtabs">
+                            @foreach ($technologies as $index => $technology)
+                                <div class="sub-tab {{ $index === 0 ? 'active' : '' }}"
+                                    data-subtab="{{ $technology->slug ?? Str::slug($technology->name) }}">
+                                    {{ $technology->name }}
                                 </div>
                             @endforeach
                         </div>
                     </div>
-                </div>
+                    <!-- Content Area -->
+                    <div class="tech-content-wrapper">
+                        @foreach ($technologies as $index => $technology)
+                            <div class="tech-content {{ $index !== 0 ? 'd-none' : '' }}"
+                                data-content="{{ $technology->slug ?? Str::slug($technology->name) }}">
 
+                                <h5>{{ $technology->name }}</h5>
+
+                                @if (!empty($technology->description))
+                                    {!! nl2br(e($technology->description)) !!}
+                                @endif
+
+                                @if (!empty($technology->image))
+                                    <img src="{{ asset('storage/' . $technology->image) }}" alt="{{ $technology->name }}">
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+                {{-- INI FEATURE UNTUK MOBIL --}}
+                @if ($product->category_id == 1)
+                    {{-- Feature________________________________________________________________________________________ --}}
+                    <div class="wuling-feature-section">
+                        <div id="feature-section" class="d-flex align-items-center mb-4 mt-5">
+                            <h4 class="wuling-title mb-0 me-3">
+                                {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature
+                            </h4>
+                            <div class="flex-grow-1 wuling-line"></div>
+                        </div>
+
+
+
+                        <div class="wf-container d-flex flex-column flex-md-row">
+                            <!-- Tabs / List -->
+                            <div class="wf-tabs mb-3 mb-md-0">
+                                @foreach ($features as $index => $feature)
+                                    <div class="wf-tab {{ $index == 0 ? 'active' : '' }}"
+                                        data-feature="{{ Str::slug($feature->name) }}">
+                                        {{ $feature->name }}
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Content -->
+                            <div class="wf-content flex-grow-1 ms-md-4">
+                                @foreach ($features as $index => $feature)
+                                    <div class="wf-content-item {{ $index != 0 ? 'd-none' : '' }}"
+                                        data-content="{{ Str::slug($feature->name) }}">
+                                        <img src="{{ asset('storage/' . $feature->image) }}"
+                                            alt="{{ $feature->name }} Image" class="img-fluid mb-3">
+                                        {{-- <h5>{{ $feature->name }}</h5> --}}
+                                        <p>{{ $feature->description }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 {{-- COLOR________________________________________________________________________________________ --}}
                 <div class="wuling-feature-section">
@@ -305,66 +317,137 @@
 
 
                 </div>
+                @if ($product->category_id == 1)
+                    {{-- SPECIFICATION ________________________________________________________________________________________ --}}
+                    <div class="my-5">
+                        <!-- Title -->
+                        <div id="spec-section" class="d-flex align-items-center mb-4">
+                            <h4 class="wuling-title mb-0 me-3">
+                                {{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification
+                            </h4>
+                            <div class="flex-grow-1 wuling-line"></div>
+                        </div>
 
-                {{-- SPECIFICATION ________________________________________________________________________________________ --}}
-                <div class="container my-5">
-                    <!-- Title -->
-                    <div id="spec-section" class="d-flex align-items-center mb-4">
-                        <h4 class="wuling-title mb-0 me-3">
-                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification
-                        </h4>
-                        <div class="flex-grow-1 wuling-line"></div>
-                    </div>
+                        <!-- Card -->
+                        <div class="card spec-card shadow-sm">
+                            <div class="card-body">
+                                <div class="spec-tabs-wrapper mb-3">
+                                    <ul class="nav spec-tabs flex-nowrap" id="specTab" role="tablist">
+                                        @foreach ($specifications->unique('title') as $index => $spec)
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link {{ $index === 0 ? 'active' : '' }}"
+                                                    id="{{ Str::slug($spec->title) }}-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#{{ Str::slug($spec->title) }}" type="button"
+                                                    role="tab" aria-controls="{{ Str::slug($spec->title) }}"
+                                                    aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
+                                                    {{ $spec->title }}
+                                                </button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
 
-                    <!-- Card -->
-                    <div class="card spec-card shadow-sm">
-                        <div class="card-body">
-                            <div class="spec-tabs-wrapper mb-3">
-                                <ul class="nav spec-tabs flex-nowrap" id="specTab" role="tablist">
-                                    @foreach ($specifications->unique('title') as $index => $spec)
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link {{ $index === 0 ? 'active' : '' }}"
-                                                id="{{ Str::slug($spec->title) }}-tab" data-bs-toggle="tab"
-                                                data-bs-target="#{{ Str::slug($spec->title) }}" type="button"
-                                                role="tab" aria-controls="{{ Str::slug($spec->title) }}"
-                                                aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                                                {{ $spec->title }}
-                                            </button>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                                <!-- Progress -->
+                                <div class="spec-progress mb-4">
+                                    <span class="progress-bar"></span>
+                                </div>
 
-                            <!-- Progress -->
-                            <div class="spec-progress mb-4">
-                                <span class="progress-bar"></span>
-                            </div>
-
-                            <!-- Tab Content -->
-                            <div class="tab-content">
+                                <!-- Tab Content -->
+                                <div class="tab-content">
 
 
-                                @foreach ($specifications->groupBy('title') as $title => $specs)
-                                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
-                                        id="{{ Str::slug($title) }}">
+                                    @foreach ($specifications->groupBy('title') as $title => $specs)
+                                        <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                            id="{{ Str::slug($title) }}">
 
-                                        <div class="spec-list">
-                                            @foreach ($specs as $spec)
-                                                <div class="spec-item">
-                                                    <p class="title">{{ $spec->label }}</p>
-                                                    <p class="value">{{ $spec->value }}</p>
-                                                </div>
-                                            @endforeach
+                                            <div class="spec-list">
+                                                @foreach ($specs as $spec)
+                                                    <div class="spec-item">
+                                                        <p class="title">{{ $spec->label }}</p>
+                                                        <p class="value">{{ $spec->value }}</p>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+
                                         </div>
+                                    @endforeach
 
-                                    </div>
-                                @endforeach
-
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
+                @if ($product->category_id == 2)
+                    {{-- POWER --}}
+                    <div id="power-section" class="d-flex align-items-center mb-4 mt-5">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Power
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
+                    </div>
+                    <div class="custom-specs rounded" style="max-width: 300px;">
+                        @foreach ($powers as $power)
+                            <div class="custom-spec-item mb-3">
+                                <h6 class="custom-spec-title mb-2" style="color:rgba(48, 68, 92, 1);">{{ $power->label }}
+                                </h6>
+                                <p class="custom-spec-value mb-3">{{ $power->nilai }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- DIMENSI --}}
+                    <div id="dimensi-section" class="d-flex align-items-center mb-4 mt-5">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Dimensi
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
+                    </div>
+                    <div class="custom-specs rounded" style="max-width: 300px;">
+                        @foreach ($dimensis as $dimensi)
+                            <div class="custom-spec-item mb-3">
+                                <h6 class="custom-spec-title mb-2" style="color:rgba(48, 68, 92, 1);">
+                                    {{ $dimensi->label }}</h6>
+                                <p class="custom-spec-value mb-3">{{ $dimensi->nilai }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- SISTEM SUSPENSI --}}
+                    <div id="sistemsuspensi-section" class="d-flex align-items-center mb-4 mt-5">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Sistem Suspensi
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
+                    </div>
+                    <div class="custom-specs rounded" style="max-width: 300px;">
+                        @foreach ($suspensis as $suspensi)
+                            <div class="custom-spec-item mb-3">
+                                <h6 class="custom-spec-title mb-2" style="color:rgba(48, 68, 92, 1);">
+                                    {{ $suspensi->label }}</h6>
+                                <p class="custom-spec-value mb-3">{{ $suspensi->nilai }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- FITUR --}}
+                    <div id="fitur-section" class="d-flex align-items-center mb-4 mt-5">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Fitur
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
+                    </div>
+                    <div class="custom-specs rounded" style="max-width: 300px;">
+                        @foreach ($fiturs as $fitur)
+                            <div class="custom-spec-item mb-3">
+                                <h6 class="custom-spec-title mb-2" style="color:rgba(48, 68, 92, 1);">{{ $fitur->label }}
+                                </h6>
+                                <p class="custom-spec-value mb-3">{{ $fitur->nilai }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                @endif
 
             </div>
         @endif
@@ -570,13 +653,22 @@
     <div class="bf-wrapper">
         <div class="bf-price">
             <span class="bf-price-label">Price</span>
-            <span class="bf-price-value mb-3">Rp 194.00.000</span>
+            <span class="bf-price-value mb-3"> Rp {{ number_format($product->price, 0, ',', '.') }}</span>
         </div>
 
         <div class="bf-actions">
-            <button class="bf-btn bf-btn-outline w-50">
-                Test Drive
-            </button>
+            @if ($product->category_position_id == 1)
+                <button class="bf-btn bf-btn-outline w-50"
+                    onclick="window.location='{{ route('drive.index', $product->slug) }}'">
+                    Test Drive
+                </button>
+            @else
+                <button class="bf-btn bf-btn-outline w-50" onclick="window.location='#'">
+                    + Cart
+                </button>
+            @endif
+
+
 
             <button class="bf-btn bf-btn-solid w-50">
                 Bayar Now
@@ -681,7 +773,7 @@
                     const target = document.getElementById(targetId);
                     if (!target) return;
 
-                    const offset = 110; // adjust as needed
+                    const offset = 90; // sesuaikan jarak header
                     const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
                     window.scrollTo({
                         top: targetPosition - offset,
@@ -689,6 +781,7 @@
                     });
                 });
             });
+
 
             // ==============================
             // 4️⃣ Spec Progress Bar (Bootstrap)

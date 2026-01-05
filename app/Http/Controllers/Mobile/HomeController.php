@@ -149,7 +149,7 @@ class HomeController extends Controller
     {
         // Ambil product berdasarkan slug
         $product = \App\Models\Product::where('slug', $productSlug)
-            ->with(['features', 'technologies', 'colors', 'specifications', 'details']) // load relasi langsung
+            ->with(['features', 'technologies', 'colors', 'specifications', 'details','powers','dimensis','suspensis','fiturs']) // load relasi langsung
             ->firstOrFail();
 
         // Ambil feature & technology khusus product ini
@@ -158,9 +158,13 @@ class HomeController extends Controller
         $colors = $product->colors;
         $specifications = $product->specifications;
         $details = $product->details;
+        $powers = $product->powers;
+        $dimensis = $product->dimensis;
+        $suspensis = $product->suspensis;
+        $fiturs = $product->fiturs;
 
         // Kirim data ke view
-        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications', 'details'));
+        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications', 'details','powers','dimensis','suspensis','fiturs'));
     }
 
 
