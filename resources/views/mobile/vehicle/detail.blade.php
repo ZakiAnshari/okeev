@@ -106,7 +106,7 @@
                 object-fit: cover;
                 border-radius: 12px;
                 cursor: pointer;
-                opacity: 0.7;
+                /* opacity: 0.7; */
                 transition: all 0.25s ease;
             }
         </style>
