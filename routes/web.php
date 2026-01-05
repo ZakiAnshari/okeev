@@ -95,12 +95,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/category/{slug}/edit', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/{slug}/edit', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/category-destroy/{slug}', [CategoryController::class, 'destroy'])->name('category.destroy');
-
     // TEST DRIVE
     Route::get('/test-drive', [TestDriveController::class, 'index'])->name('testdrive.index');
     Route::get('/test-drive-show/{id}', [TestDriveController::class, 'show'])->name('testdrive.show');
     Route::get('/test-drive-destroy/{id}', [TestDriveController::class, 'destroy'])->name('testdrive.destroy');
-
     //PRODUK
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::post('/product-add', [ProductController::class, 'store'])->name('product.store');
@@ -108,9 +106,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/product/{slug}/edit', [ProductController::class, 'update'])->name('product.update');
     Route::get('/product-destroy/{slug}', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product-show/{slug}', [ProductController::class, 'show'])->name('product.show');
-
     Route::get('/get-brands/{category_id}', [ProductController::class, 'getBrands']);
-
     //technologies
     Route::get('/product/{slug}/technologies', [TechnologyController::class, 'index'])->name('technologies.index');
     Route::post('/product-add/{slug}/technologies', [TechnologyController::class, 'store'])->name('technologies.store');
@@ -197,14 +193,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // MOBILE ---------------------------------------------------------------------------------------------------------------------
 Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
+    
     Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])->name('vehiclecard.show');
-    Route::get('/vehiclecard/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandVehicle'])->name('vehiclecard.detail');
-    Route::get('/vehiclecard/product/{productSlug}', [App\Http\Controllers\Mobile\HomeController::class, 'showVehicleDetail'])->name('vehiclecard.product');
+    Route::get('/vehiclemotorcycles', [App\Http\Controllers\Mobile\HomeController::class, 'showmotorcycles'])->name('showmotorcycles.show');
+    Route::get('/electric', [App\Http\Controllers\Mobile\HomeController::class, 'showelectric'])->name('showelectric.show');
 
+    Route::get('/vehicle/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandVehicle'])->name('vehiclecard.detail');
+    Route::get('/vehiclemotor/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandmotor'])->name('vehiclemotor.detail');
+    Route::get('/electric/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandelectric'])->name('electric.detail');
+
+    Route::get('/product/{productSlug}', [App\Http\Controllers\Mobile\HomeController::class, 'showVehicleDetail'])->name('vehiclecard.product');
 
     Route::get('/product/{productSlug}/drive', [DriveController::class, 'index'])->name('drive.index');
     Route::post('/product/{productSlug}/testdrive-add', [DriveController::class, 'store'])->name('drive.store');
-
 
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
 

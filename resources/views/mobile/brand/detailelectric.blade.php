@@ -1,11 +1,10 @@
 @extends('layout.mobile.app')
-@section('title', 'Vehicle')
+@section('title', 'ElectricBRANDD')
 @section('content')
-
     <!-- Navbar -->
     <nav class="navbar-custom-vehicle">
         <div class="navbar-top">
-            <a href="{{ route('mobile.home') }}" class="back-btn">
+            <a href="{{ route('showelectric.show') }}" class="back-btn">
                 <i class='bx bx-arrow-back'></i>
             </a>
 
@@ -35,54 +34,57 @@
             </button>
         </div>
         <div>
-            <h1 class="title-text m-0">Find Your Dream Car Only at OKEEV</h1>
-            <p class="subtitle-text">Lorem ipsum dolor sit amet consectetur.</p>
+            <h1 class="title-text m-0">Your Everyday Vehicle</h1>
+            <p class="subtitle-text">{{ $brand->name_brand }}</p>
         </div>
     </nav>
 
     <!-- Content -->
-    <div class="content-section p-0">
-        <!-- Brands Carousel -->
-        <div class="p-4">
-            <div class="d-flex flex-wrap gap-3 overflow-auto" style="scroll-snap-type: x mandatory;">
-                @forelse ($vehicleBrands as $brand)
-                    <a href="{{ route('vehiclecard.detail', $brand->slug) }}"
-                        class="brand-wrap text-decoration-none text-center d-block flex-shrink-0"
-                        style="width: calc(25% - 12px); scroll-snap-align: start;">
-                        <div class="brand-item mb-1">
-                            <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
-                                class="brand-logo rounded w-100">
-                        </div>
-                        <span class="brand-text d-block text-dark">{{ $brand->name_brand }}</span>
-                    </a>
-                @empty
-                    <p class="text-center text-muted">Brand tidak tersedia</p>
-                @endforelse
+    <div class="content-section">
+        <!-- Banner Section -->
+        <div class="container content-container">
+            <div class="promo-banner">
+                @if ($brand && $brand->wallpaper)
+                    <img src="{{ asset('storage/' . $brand->wallpaper) }}" alt="{{ $brand->name_brand }} Banner"
+                        class="banner-img img-fluid w-100 rounded" style="max-height: 300px; object-fit: cover;">
+                @else
+                    <img src="{{ asset('front_end/assets/images/default-banner.jpg') }}" alt="Default Banner"
+                        class="banner-img img-fluid w-100 rounded" style="max-height: 300px; object-fit: cover;">
+                @endif
             </div>
         </div>
+        <!-- Description Section -->
+        {{-- <div class="description-section">
+            <p>Lorem ipsum dolor sit amet consectetur. Tempus diam massa volutpat nisl aliquet massa vitae nulla. Faucibus
+                condimentum quam. Amet mattis id lacus sed mauris. In purus sed.</p>
+        </div> --}}
 
-        <!-- Most Searched Section -->
+        <!-- Available Cars Section -->
         <div class="most-searched-section p-3">
-            <h3>The newest cars at OKEEV</h3>
+            <h3>Available cars</h3>
             <div class="row">
-                @forelse ($products as $product)
+                @forelse ($sameBrandProducts as $p)
                     <div class="col-md-6 mb-3">
-                        <a href="{{ route('product.show', $product->slug) }}" class="vehicle-card">
+                        <a href="{{ route('vehiclecard.product', $p->slug) }}" class="vehicle-card">
                             <div class="vehicle-img">
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}" class="car-img"
-                                    alt="{{ $product->model_name }}">
+                                <img src="{{ asset('storage/' . $p->thumbnail) }}" class="car-img"
+                                    alt="{{ $p->model_name }}">
                             </div>
+
                             <div class="vehicle-info">
-                                <h6 class="mb-1">{{ $product->brand->name_brand ?? '-' }}</h6>
-                                <p class="text-semibold">{{ $product->model_name }}</p>
+                                <h6 class="mb-1">{{ $p->brand->name_brand ?? '-' }}</h6>
+                                <p class="text-semibold">{{ $p->model_name }}</p>
                                 <div class="vehicle-specs p-4">
+                                    <!-- Miles -->
                                     <div class="spec-item">
                                         <div class="spec-icon mb-1">
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
                                                 class="spec-icon-img">
                                         </div>
-                                        <div class="spec-value">{{ $product->miles }} Miles</div>
+                                        <div class="spec-value">{{ $p->miles }} Miles</div>
                                     </div>
+
+                                    <!-- Type -->
                                     <div class="spec-item">
                                         <div class="spec-icon mb-1">
                                             <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols-light_electric-bolt-rounded.jpg') }}"
@@ -90,36 +92,44 @@
                                         </div>
                                         <div class="spec-value">Electric</div>
                                     </div>
-                                    @if ($product->category_id != 2)
+
+                                    <!-- Seats -->
+                                    @if ($p->category_id != 2)
                                         <div class="spec-item">
                                             <div class="spec-icon mb-1">
                                                 <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
                                                     class="spec-icon-img">
                                             </div>
-                                            <div class="spec-value">{{ $product->seats }} Seat</div>
+                                            <div class="spec-value">{{ $p->seats }} Seat</div>
                                         </div>
                                     @endif
 
                                 </div>
+
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="vehicle-price">
-                                        IDR {{ number_format($product->price, 0, ',', '.') }}
+                                        IDR {{ number_format($p->price, 0, ',', '.') }}
                                     </span>
+
                                     <div class="d-flex align-items-center details-link">
                                         <p class="m-0 me-1 mx-1">Details</p>
                                         <img src="{{ asset('front_end/assets/images/logo/mobile/majesticons_arrow-up-line.jpg') }}"
                                             class="details-icon">
                                     </div>
                                 </div>
+
                             </div>
                         </a>
                     </div>
                 @empty
-                    <p class="text-center text-muted"> ⚡ Produk Electric Car belum tersedia</p>
+                    <p class="text-center text-muted">
+                        Tidak ada produk lain dari brand {{ $brand->name_brand ?? 'Unknown' }}
+                    </p>
                 @endforelse
             </div>
+
+
         </div>
     </div>
-
 
 @endsection

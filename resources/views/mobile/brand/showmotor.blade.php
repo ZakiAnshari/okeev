@@ -1,5 +1,5 @@
 @extends('layout.mobile.app')
-@section('title', 'Vehicle')
+@section('title', 'Motor')
 @section('content')
 
     <!-- Navbar -->
@@ -35,7 +35,7 @@
             </button>
         </div>
         <div>
-            <h1 class="title-text m-0">Find Your Dream Car Only at OKEEV</h1>
+            <h1 class="title-text m-0">Find Your Dream Motor Only at OKEEV</h1>
             <p class="subtitle-text">Lorem ipsum dolor sit amet consectetur.</p>
         </div>
     </nav>
@@ -46,7 +46,7 @@
         <div class="p-4">
             <div class="d-flex flex-wrap gap-3 overflow-auto" style="scroll-snap-type: x mandatory;">
                 @forelse ($vehicleBrands as $brand)
-                    <a href="{{ route('vehiclecard.detail', $brand->slug) }}"
+                    <a href="{{ route('vehiclemotor.detail', $brand->slug) }}"
                         class="brand-wrap text-decoration-none text-center d-block flex-shrink-0"
                         style="width: calc(25% - 12px); scroll-snap-align: start;">
                         <div class="brand-item mb-1">
@@ -63,7 +63,7 @@
 
         <!-- Most Searched Section -->
         <div class="most-searched-section p-3">
-            <h3>The newest cars at OKEEV</h3>
+            <h3>The newest Motors at OKEEV</h3>
             <div class="row">
                 @forelse ($products as $product)
                     <div class="col-md-6 mb-3">

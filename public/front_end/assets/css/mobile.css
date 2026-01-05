@@ -1892,7 +1892,7 @@
          height: 50px;
          border-radius: 50%;
          cursor: pointer;
-         /* border: 2px solid transparent; */
+         border: 1px solid ;
          transition: all 0.2s;
      }
 
@@ -2241,11 +2241,11 @@
      }
 
      /* Sub tabs */
-     .sub-tabs {
+     /* .sub-tabs {
          display: flex;
          gap: 1rem;
          min-width: max-content;
-     }
+     } */
 
      .sub-tab {
          padding: 0.25rem 0.5rem;
@@ -2325,13 +2325,13 @@
      }
 
      .custom-box {
-         /* background-color: #f5f5f5; */
+         background-color: #f5f5f5;
          /* Ganti warna sesuai kebutuhan */
          border-radius: 15px;
          /* Membuat sudut sangat melengkung */
-         padding: 20px;
+         padding: 0px 20px;
          /* Opsional, biar isi tidak menempel */
-         box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+         box-shadow: 0 0 7px rgba(0, 0, 0, -4.75);
          /* shadow lembut merata */
          /* Opsional, memberi efek shadow */
          transition: all 0.3s ease;

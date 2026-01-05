@@ -1,7 +1,6 @@
 @extends('layout.mobile.app')
-@section('title', 'Vehicle')
+@section('title', 'Electric')
 @section('content')
-
     <!-- Navbar -->
     <nav class="navbar-custom-vehicle">
         <div class="navbar-top">
@@ -35,7 +34,7 @@
             </button>
         </div>
         <div>
-            <h1 class="title-text m-0">Find Your Dream Car Only at OKEEV</h1>
+            <h1 class="title-text m-0">Find Your Dream Electric Only at OKEEV</h1>
             <p class="subtitle-text">Lorem ipsum dolor sit amet consectetur.</p>
         </div>
     </nav>
@@ -46,7 +45,7 @@
         <div class="p-4">
             <div class="d-flex flex-wrap gap-3 overflow-auto" style="scroll-snap-type: x mandatory;">
                 @forelse ($vehicleBrands as $brand)
-                    <a href="{{ route('vehiclecard.detail', $brand->slug) }}"
+                    <a href="{{ route('electric.detail', $brand->slug) }}"
                         class="brand-wrap text-decoration-none text-center d-block flex-shrink-0"
                         style="width: calc(25% - 12px); scroll-snap-align: start;">
                         <div class="brand-item mb-1">
@@ -63,63 +62,64 @@
 
         <!-- Most Searched Section -->
         <div class="most-searched-section p-3">
-            <h3>The newest cars at OKEEV</h3>
+            <h3>The newest Electric at OKEEV</h3>
             <div class="row">
                 @forelse ($products as $product)
                     <div class="col-md-6 mb-3">
-                        <a href="{{ route('product.show', $product->slug) }}" class="vehicle-card">
-                            <div class="vehicle-img">
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}" class="car-img"
-                                    alt="{{ $product->model_name }}">
-                            </div>
-                            <div class="vehicle-info">
-                                <h6 class="mb-1">{{ $product->brand->name_brand ?? '-' }}</h6>
-                                <p class="text-semibold">{{ $product->model_name }}</p>
-                                <div class="vehicle-specs p-4">
-                                    <div class="spec-item">
-                                        <div class="spec-icon mb-1">
-                                            <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
-                                                class="spec-icon-img">
-                                        </div>
-                                        <div class="spec-value">{{ $product->miles }} Miles</div>
-                                    </div>
-                                    <div class="spec-item">
-                                        <div class="spec-icon mb-1">
-                                            <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols-light_electric-bolt-rounded.jpg') }}"
-                                                class="spec-icon-img">
-                                        </div>
-                                        <div class="spec-value">Electric</div>
-                                    </div>
-                                    @if ($product->category_id != 2)
-                                        <div class="spec-item">
-                                            <div class="spec-icon mb-1">
-                                                <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
-                                                    class="spec-icon-img">
-                                            </div>
-                                            <div class="spec-value">{{ $product->seats }} Seat</div>
-                                        </div>
-                                    @endif
+                        <div class="card h-100 shadow-sm card-hover">
+                            <div class="product-img-wrapper position-relative" style="background:rgba(241, 241, 241, 1);">
+                                <div class="product-card-brand">
+                                    <img src="{{ asset('storage/' . $product->brand->image) }}"
+                                        alt="{{ $product->brand->name_brand }}">
+                                </div>
 
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="vehicle-price">
-                                        IDR {{ number_format($product->price, 0, ',', '.') }}
-                                    </span>
-                                    <div class="d-flex align-items-center details-link">
-                                        <p class="m-0 me-1 mx-1">Details</p>
-                                        <img src="{{ asset('front_end/assets/images/logo/mobile/majesticons_arrow-up-line.jpg') }}"
-                                            class="details-icon">
-                                    </div>
+                                <style>
+                                    .product-card-brand {
+                                        position: absolute;
+                                        top: 14px;
+                                        left: 14px;
+                                        background: #ffffff;
+                                        padding: 6px 10px;
+                                        border-radius: 10px;
+                                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        z-index: 5;
+                                    }
+
+                                    .product-card-brand img {
+                                        max-height: 22px;
+                                        max-width: 70px;
+                                        object-fit: contain;
+                                    }
+                                </style>
+
+                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                    class="d-block mx-auto img-fluid p-4" style="max-height: 230px; object-fit: contain;"
+                                    alt="Thumbnail">
+                            </div>
+
+                            <div class="card-body">
+                                <div class="d-flex align-items-start">
+                                    <h6 class="card-title mb-0 me-2 flex-grow-1">
+                                        <a href="{{ route('landing.product', $product->slug) }}">
+                                            {{ $product->model_name }}
+                                        </a>
+                                    </h6>
+
+                                    <p class="fw-bold text-danger mb-0">
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                                    </p>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 @empty
-                    <p class="text-center text-muted"> ⚡ Produk Electric Car belum tersedia</p>
+                    <p class="text-center text-muted"> ⚡ Produk Electric belum tersedia</p>
                 @endforelse
             </div>
         </div>
     </div>
-
 
 @endsection

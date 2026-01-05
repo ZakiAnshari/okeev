@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Models\Brand;
+use App\Models\Feature;
 use App\Models\Product;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +29,8 @@ class HomeController extends Controller
         ]);
     }
 
-
+    // ______________________________________________________________________
+    // MOBIL
     public function showcard()
     {
         // Brand Vehicle
@@ -44,29 +47,90 @@ class HomeController extends Controller
 
         return view('mobile.brand.show', compact('vehicleBrands', 'products'));
     }
+    // MOTOR
+    public function showmotorcycles()
+    {
+        // Brand Vehicle
+        $vehicleBrands = Brand::where('category_id', 2)
+            ->orderBy('name_brand', 'asc')
+            ->limit(100)
+            ->get();
 
+        // Product Vehicle
+        $products = Product::with('brand')
+            ->where('category_id', 2)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('mobile.brand.showmotor', compact('vehicleBrands', 'products'));
+    }
+    // ELECTRIC
+    public function showelectric()
+    {
+        // Brand Vehicle
+        $vehicleBrands = Brand::where('category_position_id', 2)
+            ->orderBy('name_brand', 'asc')
+            ->limit(100)
+            ->get();
+
+        // Product Vehicle
+        $products = Product::with('brand')
+            ->where('category_position_id', 2)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('mobile.brand.showelectric', compact('vehicleBrands', 'products'));
+    }
+
+    // ______________________________________________________________________
+    // MOBIL BRAND
     public function showBrandVehicle($slug)
     {
         $brand = Brand::where('slug', $slug)->firstOrFail();
-
         $sameBrandProducts = Product::with('brand')
             ->where('brand_id', $brand->id)
             ->orderBy('created_at', 'desc')
             ->get();
-
         return view('mobile.brand.detail', compact('brand', 'sameBrandProducts'));
     }
+    // MOTOR BRAND
+    public function showBrandmotor($slug)
+    {
+        $brand = Brand::where('slug', $slug)->firstOrFail();
+        $sameBrandProducts = Product::with('brand')
+            ->where('brand_id', $brand->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('mobile.brand.detailmotor', compact('brand', 'sameBrandProducts'));
+    }
+    // ELECTRIC BRAND
+    public function showBrandelectric($slug)
+    {
+        $brand = Brand::where('slug', $slug)->firstOrFail();
+        $sameBrandProducts = Product::with('brand')
+            ->where('brand_id', $brand->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('mobile.brand.detailelectric', compact('brand', 'sameBrandProducts'));
+    }
+
+    // ______________________________________________________________________
 
     public function showVehicleDetail($productSlug)
     {
         // Ambil product berdasarkan slug
-        $product = \App\Models\Product::where('slug', $productSlug)->firstOrFail();
+        $product = \App\Models\Product::where('slug', $productSlug)
+            ->with(['features', 'technologies', 'colors', 'specifications']) // load relasi langsung
+            ->firstOrFail();
 
-        // Bisa juga load relasi jika perlu, misal brand
-        $product->load('brand');
+        // Ambil feature & technology khusus product ini
+        $features = $product->features;
+        $technologies = $product->technologies;
+        $colors = $product->colors;
+        $specifications = $product->specifications;
 
-        // Kirim data ke view detail product
-        return view('mobile.vehicle.detail', compact('product'));
+        // Kirim data ke view
+        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications'));
     }
 
 

@@ -9,12 +9,23 @@
 
 
     <div class="mobile-header">
-        <div class="container header-container">
-            <a href="{{ route('vehiclecard.detail', $product->brand->slug) }}" class="back-btn-img">
-                <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
-            </a>
-            <div class="mobile-header-title">Car Details</div>
-        </div>
+        @if (isset($product) && $product->category_id == 1)
+            <div class="container header-container">
+                <a href="{{ route('vehiclecard.detail', $product->brand->slug) }}" class="back-btn-img">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
+                </a>
+                <div class="mobile-header-title">Car Details</div>
+            </div>
+        @endif
+        @if (isset($product) && $product->category_id == 2)
+            <div class="container header-container">
+                <a href="{{ route('vehiclemotor.detail', $product->brand->slug) }}" class="back-btn-img">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back"
+                        class="back-icon">
+                </a>
+                <div class="mobile-header-title">Motor Details</div>
+            </div>
+        @endif
     </div>
     <br>
     <section class="container car-section-01 mt-5">
@@ -79,12 +90,13 @@
             </div>
 
             <div class="car-button-group-01">
-                <button class="car-btn-outline-01 w-50" onclick="location.href='{{ route('drive.index', $product->slug) }}'">
+                <button class="car-btn-outline-01 w-50"
+                    onclick="location.href='{{ route('drive.index', $product->slug) }}'">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/streamline_steering-wheel-solid.png') }}"
                         alt="Car Icon" class="car-btn-icon-01">
                     Test Drive
                 </button>
-                <button class="car-btn-outline-01 w-50" onclick="location.href='cart.html'">
+                <button class="car-btn-outline-01 w-50" onclick="location.href='#'">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/ri_shopping-bag-fill.png') }}" alt="Cart Icon"
                         class="car-btn-icon-01">
                     Add to Cart
@@ -92,7 +104,7 @@
             </div>
 
 
-            <button class="car-btn-order" onclick="location.href='checkout-wuling-air-ev.html'">Order Now</button>
+            <button class="car-btn-order" onclick="location.href='#'">Order Now</button>
         </div>
     </section>
 
@@ -103,199 +115,133 @@
 
             <!-- Main Tabs -->
             <div class="tech-tabs-wrapper mb-3">
-                <div class="d-flex tech-tabs" style=" border-bottom: 1px solid rgba(48, 68, 92, 0.5);">
-                    <div class="tab-item" data-tab="technology">Technology</div>
-                    <div class="tab-item" data-tab="feature">Feature</div>
-                    <div class="tab-item" data-tab="color">Color</div>
-                    <div class="tab-item" data-tab="spec">Spec</div>
-                    <div class="tab-item" data-tab="extra1">Extra 1</div>
-                    <div class="tab-item" data-tab="extra2">Extra 2</div>
-
+                <div class="d-flex tech-tabs" style="border-bottom: 1px solid rgba(48, 68, 92, 0.5);">
+                    <div class="tab-item" data-target="technology-section">Technology</div>
+                    <div class="tab-item" data-target="feature-section">Feature</div>
+                    <div class="tab-item" data-target="color-section">Color</div>
+                    <div class="tab-item" data-target="spec-section">Specification</div>
+                    <div class="tab-item" data-target="credit-section">Credit Calculator</div>
                 </div>
 
+
             </div>
-            {{-- ________________________________________________________________________________________ --}}
-            <div class="d-flex align-items-center mb-5 mt-5">
-                <h4 class="wuling-title mb-0 me-3">Wuling Technology</h4>
+            {{-- TEKNOLOGY ________________________________________________________________________________________ --}}
+            <div id="technology-section" class="d-flex align-items-center mb-5 mt-5">
+                <h4 class="wuling-title mb-0 me-3">
+                    {{ $product->brand->name_brand ?? 'Unknown Brand' }} Technology
+                </h4>
                 <div class="flex-grow-1 wuling-line"></div>
             </div>
-
-
-
-
-            <!-- Sub Tabs -->
             <div class="sub-tabs-wrapper mb-3">
                 <div class="d-flex sub-tabs" id="technology-subtabs">
-                    <div class="sub-tab active" data-subtab="drive">Easy to Drive</div>
-                    <div class="sub-tab" data-subtab="own">Easy to Own</div>
-                    <div class="sub-tab" data-subtab="charge">Easy to Charge</div>
+                    @foreach ($technologies as $index => $technology)
+                        <div class="sub-tab {{ $index === 0 ? 'active' : '' }}"
+                            data-subtab="{{ $technology->slug ?? Str::slug($technology->name) }}">
+                            {{ $technology->name }}
+                        </div>
+                    @endforeach
                 </div>
             </div>
-
             <!-- Content Area -->
             <div class="tech-content-wrapper">
-                <div class="tech-content" data-content="drive">
-                    <h5>Easy to Drive</h5>
-                    <p>
-                        Tak perlu cemas soal ganjil-genap atau jalan sempit! Desain compact buat Wuling New Air ev mudah
-                        dikendarai, diparkir, dan jadi pilihan mobilitas harian yang praktis. Sekali charge, bisa menempuh
-                        sampai 300km!
-                    </p>
-                    <p>
-                        Dilengkapi fitur pintar seperti Hill Hold Control (HHC) untuk keamanan di tanjakan dan WIND (Wuling
-                        Indonesia Command), New Air ev siap menemani aktivitas harianmu tanpa hambatan.
-                    </p>
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/Easy_to_Drive 1 (2).png') }}" alt="Car Image">
-                </div>
+                @foreach ($technologies as $index => $technology)
+                    <div class="tech-content {{ $index !== 0 ? 'd-none' : '' }}"
+                        data-content="{{ $technology->slug ?? Str::slug($technology->name) }}">
 
-                <div class="tech-content d-none" data-content="own">
-                    <h5>Easy to Own</h5>
-                    <p>
-                        Wuling New Air ev mudah dimiliki, biaya perawatan rendah, dan dilengkapi garansi resmi. Semua
-                        dokumen
-                        dan proses administrasi dijamin cepat dan praktis.
-                    </p>
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/Easy_to_Drive 1 (2).png') }}" alt="Own Image">
-                </div>
+                        <h5>{{ $technology->name }}</h5>
 
-                <div class="tech-content d-none" data-content="charge">
-                    <h5>Easy to Charge</h5>
-                    <p>
-                        Mengisi daya Wuling New Air ev gampang! Bisa di rumah atau stasiun charging umum. Cepat dan aman,
-                        mendukung mobilitas harian tanpa khawatir kehabisan baterai.
-                    </p>
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/Easy_to_Drive 1 (2).png') }}"
-                        alt="Charge Image">
-                </div>
+                        @if (!empty($technology->description))
+                            {!! nl2br(e($technology->description)) !!}
+                        @endif
+
+                        @if (!empty($technology->image))
+                            <img src="{{ asset('storage/' . $technology->image) }}" alt="{{ $technology->name }}">
+                        @endif
+                    </div>
+                @endforeach
             </div>
 
-            {{-- ________________________________________________________________________________________ --}}
+            {{-- Feature________________________________________________________________________________________ --}}
             <div class="wuling-feature-section">
-                <div class="d-flex align-items-center mb-4 mt-5">
-                    <h4 class="wuling-title mb-0 me-3">Wuling Feature</h4>
+                <div id="feature-section" class="d-flex align-items-center mb-4 mt-5">
+                    <h4 class="wuling-title mb-0 me-3">
+                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature
+                    </h4>
                     <div class="flex-grow-1 wuling-line"></div>
                 </div>
+
 
 
                 <div class="wf-container d-flex flex-column flex-md-row">
                     <!-- Tabs / List -->
                     <div class="wf-tabs mb-3 mb-md-0">
-                        <div class="wf-tab active" data-feature="battery">Main Battery & Powertrain</div>
-                        <div class="wf-tab" data-feature="widescreen">Integrated Floating Widescreen</div>
-                        <div class="wf-tab" data-feature="exterior">Exterior</div>
-                        <div class="wf-tab" data-feature="interior">Interior</div>
-                        <div class="wf-tab" data-feature="rear-camera">Rear Parking Camera</div>
+                        @foreach ($features as $index => $feature)
+                            <div class="wf-tab {{ $index == 0 ? 'active' : '' }}"
+                                data-feature="{{ Str::slug($feature->name) }}">
+                                {{ $feature->name }}
+                            </div>
+                        @endforeach
                     </div>
 
                     <!-- Content -->
                     <div class="wf-content flex-grow-1 ms-md-4">
-                        <div class="wf-content-item" data-content="battery">
-                            <img src="{{ asset('front_end/assets/images/logo/mobile/young-couple-talking-sales-person-car-showroom 1.jpg') }}"
-                                alt="Battery Image" class="img-fluid mb-3">
-                            {{-- <h5>Proven & Tested Battery, IP67</h5> --}}
-                            <p>
-                                Wuling's battery has been rigorously tested to meet IP67 standards for water and dust
-                                resistance,
-                                ensuring reliable performance in any condition.
-                            </p>
-                        </div>
-
-                        <div class="wf-content-item d-none" data-content="widescreen">
-                            <img src="{{ asset('front_end/assets/images/logo/mobile/battery 1 (1).png') }}"
-                                alt="Widescreen Image" class="img-fluid mb-3">
-                            {{-- <h5>Floating Widescreen Display</h5> --}}
-                            <p>
-                                Enjoy an integrated floating widescreen display with intuitive controls and seamless user
-                                experience.
-                            </p>
-                        </div>
-
-                        <div class="wf-content-item d-none" data-content="exterior">
-                            <img src="{{ asset('front_end/assets/images/logo/mobile/battery 1 (1).png') }}"
-                                alt="Exterior Image" class="img-fluid mb-3">
-                            {{-- <h5>Stylish Exterior Design</h5> --}}
-                            <p>
-                                Aerodynamic and sleek design elements give Wuling a modern and dynamic appearance.
-                            </p>
-                        </div>
-
-                        <div class="wf-content-item d-none" data-content="interior">
-                            <img src="{{ asset('front_end/assets/images/logo/mobile/battery 1 (1).png') }}"
-                                alt="Interior Image" class="img-fluid mb-3">
-                            {{-- <h5>Comfortable Interior</h5> --}}
-                            <p>
-                                Spacious and ergonomic interior designed for maximum comfort during every ride.
-                            </p>
-                        </div>
-
-                        <div class="wf-content-item d-none" data-content="rear-camera">
-                            <img src="{{ asset('front_end/assets/images/logo/mobile/battery 1 (1).png') }}"
-                                alt="Rear Camera Image" class="img-fluid mb-3">
-                            {{-- <h5>Rear Parking Camera</h5> --}}
-                            <p>
-                                Advanced rear parking camera provides clear guidance for safe and easy parking.
-                            </p>
-                        </div>
+                        @foreach ($features as $index => $feature)
+                            <div class="wf-content-item {{ $index != 0 ? 'd-none' : '' }}"
+                                data-content="{{ Str::slug($feature->name) }}">
+                                <img src="{{ asset('storage/' . $feature->image) }}" alt="{{ $feature->name }} Image"
+                                    class="img-fluid mb-3">
+                                {{-- <h5>{{ $feature->name }}</h5> --}}
+                                <p>{{ $feature->description }}</p>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
 
-            {{-- ________________________________________________________________________________________ --}}
+            {{-- COLOR________________________________________________________________________________________ --}}
             <div class="wuling-feature-section">
-                <div class="d-flex align-items-center mb-5 mt-4">
-                    <h4 class="wuling-title mb-0 me-3">Wuling Color</h4>
+                <div id="color-section" class="d-flex align-items-center mb-5 mt-4">
+                    <h4 class="wuling-title mb-0 me-3">
+                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Color
+                    </h4>
                     <div class="flex-grow-1 wuling-line"></div>
                 </div>
+
                 <div class="row align-items-center g-4">
+
                     <!-- Gambar Mobil -->
                     <div class="container">
-                        <img id="mainCarImage"
-                            src="{{ asset('front_end/assets/images/logo/mobile/download (3) 1 (1).png') }}"
-                            alt="Wuling Air EV" class="car-main-image custom-car-image mt-4" onclick="openModal()">
+                        <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
+                            class="img-fluid car-preview" id="car-preview" alt="Car"
+                            style="max-height: 250px; width: auto;">
                     </div>
 
-                    <div class="col-lg-5 mt-4">
-                        <div class="d-flex flex-column align-items-center custom-box">
-                            <!-- Baris 1 -->
-                            <div class="d-flex justify-content-center gap-4 mb-4 mt-4">
-                                <div class="color-circle" style="background: linear-gradient(#000 50%, #fff 50%);"
-                                    data-name="Black & White"></div>
-                                <div class="color-circle" style="background: linear-gradient(#2f3a2f 50%, #d7e1d2 50%);"
-                                    data-name="Forest Green"></div>
-                                <div class="color-circle" style="background: linear-gradient(#000 50%, #ffd500 50%);"
-                                    data-name="Black & Yellow"></div>
-                            </div>
+                    <!-- Warna -->
+                    <div class="d-flex flex-column align-items-center custom-box mt-4">
+                        <div class="d-flex flex-wrap justify-content-center gap-4 mb-3 mt-4">
+                            @forelse($product->colors as $index => $color)
+                                <div class="color-circle {{ $index === 0 ? 'active' : '' }}"
+                                    data-index="{{ $index }}" data-name="{{ $color->name }}"
+                                    data-image="{{ asset('storage/' . $color->image) }}"
+                                    style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%); cursor: pointer;">
+                                </div>
+                            @empty
+                                <p class="text-muted">Tidak ada warna tersedia</p>
+                            @endforelse
+                        </div>
 
-                            <!-- Baris 2 -->
-                            <div class="d-flex justify-content-center gap-4 mb-3">
-                                <div class="color-circle" style="background: linear-gradient(#000 50%, #d7b0a4 50%);"
-                                    data-name="Black & Beige"></div>
-                                <div class="color-circle" style="background: linear-gradient(#000 50%, #c7cae8 50%);"
-                                    data-name="Black & Light Blue"></div>
-                                <div class="color-circle" style="background: linear-gradient(#000 50%, #000 50%);"
-                                    data-name="All Black"></div>
-                            </div>
-                            <p class="fw-semibold fs-6 mt-2" id="color-name">Pristine White</p>
-                        </div>
-                        <!-- Buttons -->
-                        <div class="car-button-group-01 mt-4">
-                            <button class="car-btn-outline-01 w-50 p-0" onclick="location.href='test-drive.html'">
-                                <img src="{{ asset('front_end/assets/images/logo/mobile/streamline_steering-wheel-solid.png') }}"
-                                    alt="Car Icon" class="car-btn-icon-01">
-                                Test Drive
-                            </button>
-                            <button class="car-btn-outline-01 w-50 p-0" onclick="location.href='cart.html'">
-                                <a href="order.html" class="btn btn-primary w-100 py-2 rounded-3"
-                                    style="background: linear-gradient(to right, #0094ff, #00e6a8); border: none;">
-                                    Order Now
-                                </a>
-                            </button>
-                        </div>
+                        <!-- Nama warna -->
+                        <p class="fw-semibold fs-6 mt-2" id="color-name">{{ $product->colors->first()?->name ?? '' }}</p>
                     </div>
-
 
                 </div>
+
+                <!-- JavaScript -->
+
+
+                <!-- CSS untuk styling (opsional) -->
+
 
 
 
@@ -304,48 +250,29 @@
             {{-- SPECIFICATION ________________________________________________________________________________________ --}}
             <div class="container my-5">
                 <!-- Title -->
-                <div class="d-flex align-items-center mb-4">
-                    <h4 class="wuling-title mb-0 me-3">Wuling Specification</h4>
+                <div id="spec-section" class="d-flex align-items-center mb-4">
+                    <h4 class="wuling-title mb-0 me-3">
+                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification
+                    </h4>
                     <div class="flex-grow-1 wuling-line"></div>
                 </div>
+
                 <!-- Card -->
                 <div class="card spec-card shadow-sm">
                     <div class="card-body">
                         <div class="spec-tabs-wrapper mb-3">
                             <ul class="nav spec-tabs flex-nowrap" id="specTab" role="tablist">
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="dimension-tab" data-bs-toggle="tab"
-                                        data-bs-target="#dimension" type="button" role="tab"
-                                        aria-controls="dimension" aria-selected="true">
-                                        Dimension
-                                    </button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="battery-tab" data-bs-toggle="tab"
-                                        data-bs-target="#battery" type="button" role="tab" aria-controls="battery"
-                                        aria-selected="false">
-                                        Main Battery And Powertrain
-                                    </button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="exterior-tab" data-bs-toggle="tab"
-                                        data-bs-target="#exterior" type="button" role="tab"
-                                        aria-controls="exterior" aria-selected="false">
-                                        Exterior
-                                    </button>
-                                </li>
-
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="interior-tab" data-bs-toggle="tab"
-                                        data-bs-target="#interior" type="button" role="tab"
-                                        aria-controls="interior" aria-selected="false">
-                                        Interior
-                                    </button>
-                                </li>
-
+                                @foreach ($specifications->unique('title') as $index => $spec)
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link {{ $index === 0 ? 'active' : '' }}"
+                                            id="{{ Str::slug($spec->title) }}-tab" data-bs-toggle="tab"
+                                            data-bs-target="#{{ Str::slug($spec->title) }}" type="button"
+                                            role="tab" aria-controls="{{ Str::slug($spec->title) }}"
+                                            aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
+                                            {{ $spec->title }}
+                                        </button>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
 
@@ -357,83 +284,22 @@
                         <!-- Tab Content -->
                         <div class="tab-content">
 
-                            <!-- Dimension -->
-                            <div class="tab-pane fade show active" id="dimension">
-                                <div class="spec-list">
-                                    <div class="spec-item">
-                                        <p class="title">Lenght x Width x Height (mm)</p>
-                                        <p class="value">2,974 x 1,505 x 1,631</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Wheelbase (mm)</p>
-                                        <p class="value">2,010</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Seat capacity</p>
-                                        <p class="value">4</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Suspension</p>
-                                        <p class="value">
-                                            McPherson (Front) + 3-link coil spring (Rear)
-                                        </p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Wheel and tire</p>
-                                        <p class="value">
-                                            12” steel wheel with full cap, 145/70R12
-                                        </p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Brakes</p>
-                                        <p class="value">Disc (Front) + Drum (Rear)</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Steering</p>
-                                        <p class="value">Electric Power Steering</p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Battery -->
-                            <div class="tab-pane fade" id="battery">
-                                <div class="spec-list">
-                                    <div class="spec-item">
-                                        <p class="title">Battery Type</p>
-                                        <p class="value">Lithium Ferro-Phosphate (LFP)</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Battery Capacity</p>
-                                        <p class="value">26.7 kWh</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Charging Time</p>
-                                        <p class="value">6.5 Hours (AC)</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Driving Range</p>
-                                        <p class="value">300 KM</p>
-                                    </div>
-                                </div>
-                            </div>
+                            @foreach ($specifications->groupBy('title') as $title => $specs)
+                                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                    id="{{ Str::slug($title) }}">
 
-                            <!-- Exterior -->
-                            <div class="tab-pane fade" id="exterior">
-                                <div class="spec-list">
-                                    <div class="spec-item">
-                                        <p class="title">Headlamp</p>
-                                        <p class="value">LED</p>
+                                    <div class="spec-list">
+                                        @foreach ($specs as $spec)
+                                            <div class="spec-item">
+                                                <p class="title">{{ $spec->label }}</p>
+                                                <p class="value">{{ $spec->value }}</p>
+                                            </div>
+                                        @endforeach
                                     </div>
-                                    <div class="spec-item">
-                                        <p class="title">Rear Lamp</p>
-                                        <p class="value">LED Combination Lamp</p>
-                                    </div>
-                                    <div class="spec-item">
-                                        <p class="title">Wheel Cover</p>
-                                        <p class="value">Full Cap</p>
-                                    </div>
+
                                 </div>
-                            </div>
+                            @endforeach
 
                         </div>
                     </div>
@@ -446,7 +312,7 @@
 
     <section>
         {{-- Kredit Calculator ________________________________________________________________________________________ --}}
-        <div class="">
+        <div class="" id="credit-section">
             <div class="cc-card">
 
                 <div class="cc-header">
@@ -640,90 +506,156 @@
         </div>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    {{-- animasi scroll --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('#specTab .nav-link');
+            const colorCircles = document.querySelectorAll('.color-circle');
+            const carPreview = document.getElementById('car-preview');
+            const colorName = document.getElementById('color-name');
+
+            colorCircles.forEach(circle => {
+                circle.addEventListener('click', function() {
+                    // Hapus class active dari semua circle
+                    colorCircles.forEach(c => c.classList.remove('active'));
+
+                    // Tambah class active ke circle yang diklik
+                    this.classList.add('active');
+
+                    // Ambil data dari circle yang diklik
+                    const imagePath = this.getAttribute('data-image');
+                    const name = this.getAttribute('data-name');
+
+                    // Update gambar dan nama warna
+                    carPreview.src = imagePath;
+                    colorName.textContent = name;
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ==============================
+            // 1️⃣ Sub-Tabs / Technology Section
+            // ==============================
+            document.querySelectorAll('.sub-tabs-wrapper').forEach(wrapper => {
+                const tabs = wrapper.querySelectorAll('.sub-tab');
+                const contents = document.querySelectorAll('.tech-content');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const target = tab.dataset.subtab;
+                        if (!target) return;
+
+                        // Reset all tabs & content
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => c.classList.add('d-none'));
+
+                        // Activate clicked tab & content
+                        tab.classList.add('active');
+                        const activeContent = document.querySelector(
+                            `.tech-content[data-content="${target}"]`);
+                        if (activeContent) activeContent.classList.remove('d-none');
+                    });
+                });
+            });
+
+            // ==============================
+            // 2️⃣ WF-Tabs / Feature Section
+            // ==============================
+            document.querySelectorAll('.wf-container').forEach(container => {
+                const tabs = container.querySelectorAll('.wf-tab');
+                const contents = container.querySelectorAll('.wf-content-item');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const feature = tab.dataset.feature;
+                        if (!feature) return;
+
+                        // Reset tabs & content
+                        tabs.forEach(t => t.classList.remove('active'));
+                        contents.forEach(c => {
+                            c.classList.add('d-none');
+                            c.style.display = 'none';
+                        });
+
+                        // Activate tab
+                        tab.classList.add('active');
+
+                        // Show content
+                        const activeContent = container.querySelector(
+                            `.wf-content-item[data-content="${feature}"]`);
+                        if (activeContent) {
+                            activeContent.classList.remove('d-none');
+                            activeContent.style.display = 'block';
+                        }
+                    });
+                });
+            });
+
+            // ==============================
+            // 3️⃣ Scroll to Section
+            // ==============================
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const target = document.getElementById(targetId);
+                    if (!target) return;
+
+                    const offset = 110; // adjust as needed
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({
+                        top: targetPosition - offset,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // ==============================
+            // 4️⃣ Spec Progress Bar (Bootstrap)
+            // ==============================
+            const specTabs = document.querySelectorAll('#specTab .nav-link');
             const progressBar = document.querySelector('.spec-progress .progress-bar');
-            const totalTabs = tabs.length;
-            tabs.forEach((tab, index) => {
-                tab.addEventListener('shown.bs.tab', function() {
-                    const step = tab.getAttribute('data-step') || (index + 1);
-                    const progress = (step / totalTabs) * 100;
-                    progressBar.style.width = progress + '%';
+            if (specTabs.length && progressBar) {
+                const totalTabs = specTabs.length;
+                specTabs.forEach((tab, index) => {
+                    tab.addEventListener('shown.bs.tab', function() {
+                        const step = tab.dataset.step || (index + 1);
+                        const progress = (step / totalTabs) * 100;
+                        progressBar.style.width = progress + '%';
+                    });
                 });
-            });
-        });
-    </script>
+            }
 
-    <script>
-        // Ambil semua color-circle
-        const circles = document.querySelectorAll('.color-circle');
-        const colorName = document.getElementById('color-name');
-
-        circles.forEach(circle => {
-            circle.addEventListener('click', () => {
-                // Hapus class 'active' dari semua
-                circles.forEach(c => c.classList.remove('active'));
-                // Tambahkan class 'active' ke yang diklik
-                circle.classList.add('active');
-                // Update teks nama warna
-                colorName.textContent = circle.dataset.name;
-            });
-        });
-    </script>
-
-    <script>
-        // Switch content on tab click
-        document.querySelectorAll('.wf-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const feature = this.getAttribute('data-feature');
-
-                // Active tab
-                document.querySelectorAll('.wf-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-
-                // Show content
-                document.querySelectorAll('.wf-content-item').forEach(c => {
-                    if (c.getAttribute('data-content') === feature) {
-                        c.classList.remove('d-none');
-                    } else {
-                        c.classList.add('d-none');
-                    }
+            // ==============================
+            // 5️⃣ Color Picker
+            // ==============================
+            const circles = document.querySelectorAll('.color-circle');
+            const colorName = document.getElementById('color-name');
+            if (circles.length && colorName) {
+                circles.forEach(circle => {
+                    circle.addEventListener('click', function() {
+                        circles.forEach(c => c.classList.remove('active'));
+                        this.classList.add('active');
+                        colorName.textContent = this.dataset.name || '';
+                    });
                 });
-            });
+            }
+
+            // ==============================
+            // 6️⃣ Main Image Switcher
+            // ==============================
+            window.changeMainImage = function(el) {
+                const mainImg = document.getElementById('mainCarImage');
+                if (!mainImg) return;
+
+                mainImg.src = el.src;
+                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                el.classList.add('active');
+            };
+
         });
-    </script>
-    <script>
-        document.querySelectorAll('.sub-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Hapus active dari semua tab
-                document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-
-                const target = this.getAttribute('data-subtab');
-
-                // Tampilkan konten sesuai tab
-                document.querySelectorAll('.tech-content').forEach(content => {
-                    if (content.getAttribute('data-content') === target) {
-                        content.classList.remove('d-none');
-                    } else {
-                        content.classList.add('d-none');
-                    }
-                });
-            });
-        });
-    </script>
-
-    <script>
-        function changeMainImage(el) {
-            document.getElementById('mainCarImage').src = el.src;
-            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-        }
     </script>
 
 
