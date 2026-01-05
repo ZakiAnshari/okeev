@@ -66,55 +66,58 @@
             <div class="row">
                 @forelse ($products as $product)
                     <div class="col-md-6 mb-3">
-                        <div class="card h-100 shadow-sm card-hover">
-                            <div class="product-img-wrapper position-relative" style="background:rgba(241, 241, 241, 1);">
-                                <div class="product-card-brand">
-                                    <img src="{{ asset('storage/' . $product->brand->image) }}"
-                                        alt="{{ $product->brand->name_brand }}">
+                        <a href="{{ route('vehiclecard.product', $product->slug) }}">
+                            <div class="card h-100 shadow-sm card-hover" style="border-radius: 15px;">
+                                <div style="background:rgba(241, 241, 241, 1)">
+                                    <div class="product-img-wrapper position-relative product-img-fixed">
+                                        <div class="product-card-brand">
+                                            <img src="{{ asset('storage/' . $product->brand->image) }}"
+                                                alt="{{ $product->brand->name_brand }}">
+                                        </div>
+
+                                        <img src="{{ asset('storage/' . $product->thumbnail) }}" class="product-main-img"
+                                            alt="Thumbnail">
+                                    </div>
+
                                 </div>
 
-                                <style>
-                                    .product-card-brand {
-                                        position: absolute;
-                                        top: 14px;
-                                        left: 14px;
-                                        background: #ffffff;
-                                        padding: 6px 10px;
-                                        border-radius: 10px;
-                                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                        z-index: 5;
-                                    }
+                                <div class="card-body">
 
-                                    .product-card-brand img {
-                                        max-height: 22px;
-                                        max-width: 70px;
-                                        object-fit: contain;
-                                    }
-                                </style>
-
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                    class="d-block mx-auto img-fluid p-4" style="max-height: 230px; object-fit: contain;"
-                                    alt="Thumbnail">
-                            </div>
-
-                            <div class="card-body">
-                                <div class="d-flex align-items-start">
-                                    <h6 class="card-title mb-0 me-2 flex-grow-1">
+                                    <h6 class="product-title mb-1">
                                         <a href="{{ route('landing.product', $product->slug) }}">
                                             {{ $product->model_name }}
                                         </a>
                                     </h6>
 
-                                    <p class="fw-bold text-danger mb-0">
+                                    <p class="fw-bold text-danger mb-0" style="font-size:18px;font-weight:500;">
                                         Rp {{ number_format($product->price, 0, ',', '.') }}
                                     </p>
+
                                 </div>
+
+
                             </div>
-                        </div>
+                        </a>
                     </div>
+
+                    <style>
+                        .product-img-fixed {
+                            height: 260px;
+                            /* TINGGI AREA GAMBAR */
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            overflow: hidden;
+                            /* potong kelebihan */
+                        }
+
+                        .product-main-img {
+                            max-height: 220px;
+                            /* BESARKAN GAMBAR */
+                            width: auto;
+                            object-fit: contain;
+                        }
+                    </style>
                 @empty
                     <p class="text-center text-muted"> ⚡ Produk Electric belum tersedia</p>
                 @endforelse

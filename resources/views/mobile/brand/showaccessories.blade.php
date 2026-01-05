@@ -1,10 +1,10 @@
 @extends('layout.mobile.app')
-@section('title', 'ElectricBRANDD')
+@section('title', 'Accessories')
 @section('content')
     <!-- Navbar -->
     <nav class="navbar-custom-vehicle">
         <div class="navbar-top">
-            <a href="{{ route('showelectric.show') }}" class="back-btn">
+            <a href="{{ route('mobile.home') }}" class="back-btn">
                 <i class='bx bx-arrow-back'></i>
             </a>
 
@@ -34,114 +34,95 @@
             </button>
         </div>
         <div>
-            <h1 class="title-text m-0">Your Everyday Vehicle</h1>
-            <p class="subtitle-text">{{ $brand->name_brand }}</p>
+            <h1 class="title-text m-0">Find Your Dream Accessories Only at OKEEV</h1>
+            <p class="subtitle-text">Lorem ipsum dolor sit amet consectetur.</p>
         </div>
     </nav>
 
     <!-- Content -->
-    <div class="content-section">
-        <!-- Banner Section -->
-        <div class="container content-container">
-            <div class="promo-banner">
-                @if ($brand && $brand->wallpaper)
-                    <img src="{{ asset('storage/' . $brand->wallpaper) }}" alt="{{ $brand->name_brand }} Banner"
-                        class="banner-img img-fluid w-100 rounded" style="max-height: 300px; object-fit: cover;">
-                @else
-                    <img src="{{ asset('front_end/assets/images/default-banner.jpg') }}" alt="Default Banner"
-                        class="banner-img img-fluid w-100 rounded" style="max-height: 300px; object-fit: cover;">
-                @endif
+    <div class="content-section p-0">
+        <!-- Brands Carousel -->
+        <div class="p-4">
+            <div class="d-flex flex-wrap gap-3 overflow-auto" style="scroll-snap-type: x mandatory;">
+                @forelse ($vehicleBrands as $brand)
+                    <a href="{{ route('electric.detail', $brand->slug) }}"
+                        class="brand-wrap text-decoration-none text-center d-block flex-shrink-0"
+                        style="width: calc(25% - 12px); scroll-snap-align: start;">
+                        <div class="brand-item mb-1">
+                            <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
+                                class="brand-logo rounded w-100">
+                        </div>
+                        <span class="brand-text d-block text-dark">{{ $brand->name_brand }}</span>
+                    </a>
+                @empty
+                    <p class="text-center text-muted">Brand tidak tersedia</p>
+                @endforelse
             </div>
         </div>
-        <!-- Description Section -->
-        {{-- <div class="description-section">
-            <p>Lorem ipsum dolor sit amet consectetur. Tempus diam massa volutpat nisl aliquet massa vitae nulla. Faucibus
-                condimentum quam. Amet mattis id lacus sed mauris. In purus sed.</p>
-        </div> --}}
 
-        <!-- Available Cars Section -->
+        <!-- Most Searched Section -->
         <div class="most-searched-section p-3">
-            <h3>Available cars</h3>
+            <h3>The newest Electric at OKEEV</h3>
             <div class="row">
-                @forelse ($sameBrandProducts as $p)
+                @forelse ($products as $product)
                     <div class="col-md-6 mb-3">
-                        <a href="{{ route('vehiclecard.product', $p->slug) }}">
+                        <a href="{{ route('vehiclecard.product', $product->slug) }}">
                             <div class="card h-100 shadow-sm card-hover" style="border-radius: 15px;">
-
-                                <!-- Image Area -->
                                 <div style="background:rgba(241, 241, 241, 1)">
                                     <div class="product-img-wrapper position-relative product-img-fixed">
-
-                                        <!-- Brand Logo -->
                                         <div class="product-card-brand">
-                                            <img src="{{ asset('storage/' . $p->brand->image) }}"
-                                                alt="{{ $p->brand->name_brand }}">
+                                            <img src="{{ asset('storage/' . $product->brand->image) }}"
+                                                alt="{{ $product->brand->name_brand }}">
                                         </div>
 
-                                        <!-- Main Image -->
-                                        <img src="{{ asset('storage/' . $p->thumbnail) }}" class="product-main-img"
-                                            alt="{{ $p->model_name }}">
+                                        <img src="{{ asset('storage/' . $product->thumbnail) }}" class="product-main-img"
+                                            alt="Thumbnail">
                                     </div>
+
                                 </div>
 
-                                <!-- Content -->
                                 <div class="card-body">
 
                                     <h6 class="product-title mb-1">
-                                        <a href="{{ route('vehiclecard.product', $p->slug) }}">
-                                            {{ $p->model_name }}
+                                        <a href="{{ route('landing.product', $product->slug) }}">
+                                            {{ $product->model_name }}
                                         </a>
                                     </h6>
 
                                     <p class="fw-bold text-danger mb-0" style="font-size:18px;font-weight:500;">
-                                        Rp {{ number_format($p->price, 0, ',', '.') }}
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}
                                     </p>
 
                                 </div>
+
 
                             </div>
                         </a>
 
                     </div>
+
                     <style>
                         .product-img-fixed {
                             height: 260px;
+                            /* TINGGI AREA GAMBAR */
                             display: flex;
                             justify-content: center;
                             align-items: center;
                             overflow: hidden;
+                            /* potong kelebihan */
                         }
 
                         .product-main-img {
                             max-height: 220px;
+                            /* BESARKAN GAMBAR */
                             width: auto;
                             object-fit: contain;
                         }
-
-                        .product-card-brand {
-                            position: absolute;
-                            top: 12px;
-                            left: 12px;
-                        }
-
-                        .product-card-brand img {
-                            height: 32px;
-                            object-fit: contain;
-                        }
-
-                        .product-title {
-                            font-size: 15px;
-                            font-weight: 600;
-                        }
                     </style>
                 @empty
-                    <p class="text-center text-muted">
-                        Tidak ada produk lain dari brand {{ $brand->name_brand ?? 'Unknown' }}
-                    </p>
+                    <p class="text-center text-muted"> ⚡ Produk Accessories belum tersedia</p>
                 @endforelse
             </div>
-
-
         </div>
     </div>
 

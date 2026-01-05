@@ -62,7 +62,7 @@
                 <span class="category-text">Electronic</span>
             </a>
 
-            <a href="#" class="category-item">
+            <a href="{{ route('showaccessories.show') }}" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/Accessoris.jpg') }}" alt="Accessories">
                 </div>

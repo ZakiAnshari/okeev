@@ -67,7 +67,7 @@
             <div class="row">
                 @forelse ($products as $product)
                     <div class="col-md-6 mb-3">
-                        <a href="{{ route('product.show', $product->slug) }}" class="vehicle-card">
+                        <a href="{{ route('vehiclecard.product', $product->slug) }}" class="vehicle-card">
                             <div class="vehicle-img">
                                 <img src="{{ asset('storage/' . $product->thumbnail) }}" class="car-img"
                                     alt="{{ $product->model_name }}">

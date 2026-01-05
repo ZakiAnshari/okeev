@@ -193,14 +193,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // MOBILE ---------------------------------------------------------------------------------------------------------------------
 Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Mobile\HomeController::class, 'index'])->name('mobile.home');
-    
+
     Route::get('/vehiclecard', [App\Http\Controllers\Mobile\HomeController::class, 'showcard'])->name('vehiclecard.show');
     Route::get('/vehiclemotorcycles', [App\Http\Controllers\Mobile\HomeController::class, 'showmotorcycles'])->name('showmotorcycles.show');
     Route::get('/electric', [App\Http\Controllers\Mobile\HomeController::class, 'showelectric'])->name('showelectric.show');
+    Route::get('/accessories', [App\Http\Controllers\Mobile\HomeController::class, 'showaccessories'])->name('showaccessories.show');
 
     Route::get('/vehicle/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandVehicle'])->name('vehiclecard.detail');
     Route::get('/vehiclemotor/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandmotor'])->name('vehiclemotor.detail');
     Route::get('/electric/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandelectric'])->name('electric.detail');
+    Route::get('/accessories/brand/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'showBrandaccessories'])->name('accessories.detail');
 
     Route::get('/product/{productSlug}', [App\Http\Controllers\Mobile\HomeController::class, 'showVehicleDetail'])->name('vehiclecard.product');
 

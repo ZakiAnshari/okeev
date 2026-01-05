@@ -267,7 +267,7 @@
          border-radius: 20px;
          padding: 0;
          margin: 20px 0;
-         min-height: 150px;
+         /* min-height: 188px; */
          display: flex;
          align-items: center;
          justify-content: center;
@@ -279,7 +279,7 @@
          width: 100%;
          height: 100%;
          object-fit: cover;
-         min-height: 150px;
+         min-height: 118px;
      }
 
      .heading-hero {
@@ -1892,7 +1892,7 @@
          height: 50px;
          border-radius: 50%;
          cursor: pointer;
-         border: 1px solid ;
+         border: 1px solid;
          transition: all 0.2s;
      }
 
@@ -2322,6 +2322,88 @@
      .custom-car-image:hover {
          transform: scale(1.05);
          /* zoom ringan saat hover */
+     }
+
+     .product-card-brand {
+         position: absolute;
+         top: 14px;
+         left: 14px;
+         background: #ffffff;
+         padding: 6px 10px;
+         border-radius: 10px;
+         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         z-index: 5;
+     }
+
+     .product-card-brand img {
+         max-height: 12px;
+         /* max-width: 70px;
+         object-fit: contain; */
+     }
+
+     .product-title a {
+         text-decoration: none;
+         color: #1f2937;
+         /* warna teks normal */
+         font-weight: 500;
+         font-size: 17px;
+         font: Oxanium;
+     }
+
+     .pd-info-box {
+         background: #ffffff;
+         border-radius: 8px;
+         max-width: 420px;
+         text-align: left;
+     }
+
+     .pd-name {
+         font-family: 'Oxanium', sans-serif;
+         font-size: 20px;
+         font-weight: 600;
+         color: #111;
+         margin-bottom: 6px;
+     }
+
+     .pd-price {
+         font-family: 'Oxanium', sans-serif;
+         font-size: 22px;
+         font-weight: 600;
+         color: #e10600;
+         margin-bottom: 10px;
+     }
+
+     .pd-desc {
+         font-size: 14px;
+         line-height: 20px;
+         color: #555;
+         margin: 0;
+     }
+
+
+     .product-title a:hover {
+         text-decoration: none;
+         color: #2563eb;
+         /* opsional hover */
+     }
+
+     .text-hello {
+         font-family: 'Oxanium', sans-serif;
+         font-weight: 500;
+         font-size: 18px;
+         line-height: 28px;
+         letter-spacing: -0.03em;
+     }
+
+     .text-hello2 {
+         font-family: 'Oxanium', sans-serif;
+         font-weight: 500;
+         font-size: 16px;
+         line-height: 28px;
+         letter-spacing: -0.03em;
      }
 
      .custom-box {

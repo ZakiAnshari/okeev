@@ -82,6 +82,25 @@ class HomeController extends Controller
         return view('mobile.brand.showelectric', compact('vehicleBrands', 'products'));
     }
 
+    //ACCESSORIES
+    public function showaccessories()
+    {
+        // Brand Accessories (category_position_id = 3 & 4)
+        $vehicleBrands = Brand::whereIn('category_position_id', [3, 4])
+            ->orderBy('name_brand', 'asc')
+            ->limit(100)
+            ->get();
+
+        // Product Accessories
+        $products = Product::with('brand')
+            ->whereIn('category_position_id', [3, 4])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('mobile.brand.showaccessories', compact('vehicleBrands', 'products'));
+    }
+
+
     // ______________________________________________________________________
     // MOBIL BRAND
     public function showBrandVehicle($slug)
@@ -113,6 +132,16 @@ class HomeController extends Controller
             ->get();
         return view('mobile.brand.detailelectric', compact('brand', 'sameBrandProducts'));
     }
+    // ACCESSORIES BRAND
+    public function showBrandaccessories($slug)
+    {
+        $brand = Brand::where('slug', $slug)->firstOrFail();
+        $sameBrandProducts = Product::with('brand')
+            ->where('brand_id', $brand->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('mobile.brand.detailaccessories', compact('brand', 'sameBrandProducts'));
+    }
 
     // ______________________________________________________________________
 
@@ -120,7 +149,7 @@ class HomeController extends Controller
     {
         // Ambil product berdasarkan slug
         $product = \App\Models\Product::where('slug', $productSlug)
-            ->with(['features', 'technologies', 'colors', 'specifications']) // load relasi langsung
+            ->with(['features', 'technologies', 'colors', 'specifications', 'details']) // load relasi langsung
             ->firstOrFail();
 
         // Ambil feature & technology khusus product ini
@@ -128,9 +157,10 @@ class HomeController extends Controller
         $technologies = $product->technologies;
         $colors = $product->colors;
         $specifications = $product->specifications;
+        $details = $product->details;
 
         // Kirim data ke view
-        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications'));
+        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications', 'details'));
     }
 
 

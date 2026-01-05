@@ -26,6 +26,24 @@
                 <div class="mobile-header-title">Motor Details</div>
             </div>
         @endif
+        @if (isset($product) && $product->category_position_id == 2)
+            <div class="container header-container">
+                <a href="{{ route('electric.detail', $product->brand->slug) }}" class="back-btn-img">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back"
+                        class="back-icon">
+                </a>
+                <div class="mobile-header-title">Electric Details</div>
+            </div>
+        @endif
+        @if (isset($product) && in_array($product->category_position_id, [3, 4]))
+            <div class="container header-container">
+                <a href="{{ route('accessories.detail', $product->brand->slug) }}" class="back-btn-img">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back"
+                        class="back-icon">
+                </a>
+                <div class="mobile-header-title">Accessories Details</div>
+            </div>
+        @endif
     </div>
     <br>
     <section class="container car-section-01 mt-5">
@@ -34,7 +52,7 @@
                 class="car-main-image mt-4" onclick="openModal()">
         </div>
 
-        <div class="car-thumbnail-scroll">
+        <div class="car-thumbnail-scroll mt-3">
             @foreach ($product->images as $i => $img)
                 <img src="{{ asset('storage/' . $img->image) }}" alt="Thumbnail {{ $i + 1 }}"
                     class="car-thumbnail {{ $i == 0 ? 'active' : '' }}" onclick="changeMainImage(this)">
@@ -42,6 +60,15 @@
         </div>
 
         <style>
+            .car-thumbnail {
+                border: 1px solid #d1d5db !important;
+                /* abu-abu halus */
+                border-radius: 6px;
+                padding: 2px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
             .car-thumbnail {
                 outline: none;
                 border: none;
@@ -83,228 +110,279 @@
                 transition: all 0.25s ease;
             }
         </style>
-        <div class="car-info-01">
-            <div class="car-name-01" style="text-align: start"> {{ $product->model_name }}</div>
-            <div class="car-price-01" style="text-align: start">
-                IDR {{ number_format($product->price, 0, ',', '.') }}
-            </div>
+        @if (!in_array($product->category_position_id, [2, 3, 4]))
+            <div class="car-info-01">
+                <div class="car-name-01" style="text-align: start">
+                    {{ $product->model_name }}
+                </div>
 
-            <div class="car-button-group-01">
-                <button class="car-btn-outline-01 w-50"
-                    onclick="location.href='{{ route('drive.index', $product->slug) }}'">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/streamline_steering-wheel-solid.png') }}"
-                        alt="Car Icon" class="car-btn-icon-01">
-                    Test Drive
+                <div class="car-price-01" style="text-align: start">
+                    IDR {{ number_format($product->price, 0, ',', '.') }}
+                </div>
+
+                <div class="car-button-group-01">
+                    <button class="car-btn-outline-01 w-50"
+                        onclick="location.href='{{ route('drive.index', $product->slug) }}'">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/streamline_steering-wheel-solid.png') }}"
+                            alt="Car Icon" class="car-btn-icon-01">
+                        Test Drive
+                    </button>
+
+                    <button class="car-btn-outline-01 w-50" onclick="location.href='#'">
+                        <img src="{{ asset('front_end/assets/images/logo/mobile/ri_shopping-bag-fill.png') }}"
+                            alt="Cart Icon" class="car-btn-icon-01">
+                        Add to Cart
+                    </button>
+                </div>
+
+                <button class="car-btn-order" onclick="location.href='#'">
+                    Order Now
                 </button>
-                <button class="car-btn-outline-01 w-50" onclick="location.href='#'">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/ri_shopping-bag-fill.png') }}" alt="Cart Icon"
-                        class="car-btn-icon-01">
-                    Add to Cart
-                </button>
             </div>
+        @endif
+
+        @if ($product->category_position_id != 1)
+            <div class="pd-info-box text-start mt-3">
+                <h5 class="pd-name">
+                    {{ $product->model_name }}
+                </h5>
+
+                <div class="pd-price">
+                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                </div>
 
 
-            <button class="car-btn-order" onclick="location.href='#'">Order Now</button>
-        </div>
+                <p class="pd-desc">
+                    {{ strip_tags($product->description ?? '') }}
+                </p>
+
+            </div>
+            <hr>
+        @endif
+
     </section>
 
 
 
     <section>
-        <div class="container mt-5">
+        @if (!in_array($product->category_position_id, [2, 3, 4])) {{-- kalau category_position_id 2 3 4 maka sembunyikan ini  --}}
+            <div class="container mt-5">
 
-            <!-- Main Tabs -->
-            <div class="tech-tabs-wrapper mb-3">
-                <div class="d-flex tech-tabs" style="border-bottom: 1px solid rgba(48, 68, 92, 0.5);">
-                    <div class="tab-item" data-target="technology-section">Technology</div>
-                    <div class="tab-item" data-target="feature-section">Feature</div>
-                    <div class="tab-item" data-target="color-section">Color</div>
-                    <div class="tab-item" data-target="spec-section">Specification</div>
-                    <div class="tab-item" data-target="credit-section">Credit Calculator</div>
+                <!-- Main Tabs -->
+                <div class="tech-tabs-wrapper mb-3">
+
+                    <div class="d-flex tech-tabs" style="border-bottom: 1px solid rgba(48, 68, 92, 0.5);">
+                        <div class="tab-item" data-target="technology-section">Technology</div>
+                        <div class="tab-item" data-target="feature-section">Feature</div>
+                        <div class="tab-item" data-target="color-section">Color</div>
+                        <div class="tab-item" data-target="spec-section">Specification</div>
+                        <div class="tab-item" data-target="credit-section">Credit Calculator</div>
+                    </div>
+
+
+
+
                 </div>
-
-
-            </div>
-            {{-- TEKNOLOGY ________________________________________________________________________________________ --}}
-            <div id="technology-section" class="d-flex align-items-center mb-5 mt-5">
-                <h4 class="wuling-title mb-0 me-3">
-                    {{ $product->brand->name_brand ?? 'Unknown Brand' }} Technology
-                </h4>
-                <div class="flex-grow-1 wuling-line"></div>
-            </div>
-            <div class="sub-tabs-wrapper mb-3">
-                <div class="d-flex sub-tabs" id="technology-subtabs">
+                {{-- TEKNOLOGY ________________________________________________________________________________________ --}}
+                <div id="technology-section" class="d-flex align-items-center mb-5 mt-5">
+                    <h4 class="wuling-title mb-0 me-3">
+                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Technology
+                    </h4>
+                    <div class="flex-grow-1 wuling-line"></div>
+                </div>
+                <div class="sub-tabs-wrapper mb-3">
+                    <div class="d-flex sub-tabs" id="technology-subtabs">
+                        @foreach ($technologies as $index => $technology)
+                            <div class="sub-tab {{ $index === 0 ? 'active' : '' }}"
+                                data-subtab="{{ $technology->slug ?? Str::slug($technology->name) }}">
+                                {{ $technology->name }}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- Content Area -->
+                <div class="tech-content-wrapper">
                     @foreach ($technologies as $index => $technology)
-                        <div class="sub-tab {{ $index === 0 ? 'active' : '' }}"
-                            data-subtab="{{ $technology->slug ?? Str::slug($technology->name) }}">
-                            {{ $technology->name }}
+                        <div class="tech-content {{ $index !== 0 ? 'd-none' : '' }}"
+                            data-content="{{ $technology->slug ?? Str::slug($technology->name) }}">
+
+                            <h5>{{ $technology->name }}</h5>
+
+                            @if (!empty($technology->description))
+                                {!! nl2br(e($technology->description)) !!}
+                            @endif
+
+                            @if (!empty($technology->image))
+                                <img src="{{ asset('storage/' . $technology->image) }}" alt="{{ $technology->name }}">
+                            @endif
                         </div>
                     @endforeach
                 </div>
-            </div>
-            <!-- Content Area -->
-            <div class="tech-content-wrapper">
-                @foreach ($technologies as $index => $technology)
-                    <div class="tech-content {{ $index !== 0 ? 'd-none' : '' }}"
-                        data-content="{{ $technology->slug ?? Str::slug($technology->name) }}">
 
-                        <h5>{{ $technology->name }}</h5>
-
-                        @if (!empty($technology->description))
-                            {!! nl2br(e($technology->description)) !!}
-                        @endif
-
-                        @if (!empty($technology->image))
-                            <img src="{{ asset('storage/' . $technology->image) }}" alt="{{ $technology->name }}">
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-
-            {{-- Feature________________________________________________________________________________________ --}}
-            <div class="wuling-feature-section">
-                <div id="feature-section" class="d-flex align-items-center mb-4 mt-5">
-                    <h4 class="wuling-title mb-0 me-3">
-                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature
-                    </h4>
-                    <div class="flex-grow-1 wuling-line"></div>
-                </div>
-
-
-
-                <div class="wf-container d-flex flex-column flex-md-row">
-                    <!-- Tabs / List -->
-                    <div class="wf-tabs mb-3 mb-md-0">
-                        @foreach ($features as $index => $feature)
-                            <div class="wf-tab {{ $index == 0 ? 'active' : '' }}"
-                                data-feature="{{ Str::slug($feature->name) }}">
-                                {{ $feature->name }}
-                            </div>
-                        @endforeach
+                {{-- Feature________________________________________________________________________________________ --}}
+                <div class="wuling-feature-section">
+                    <div id="feature-section" class="d-flex align-items-center mb-4 mt-5">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Feature
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
                     </div>
 
-                    <!-- Content -->
-                    <div class="wf-content flex-grow-1 ms-md-4">
-                        @foreach ($features as $index => $feature)
-                            <div class="wf-content-item {{ $index != 0 ? 'd-none' : '' }}"
-                                data-content="{{ Str::slug($feature->name) }}">
-                                <img src="{{ asset('storage/' . $feature->image) }}" alt="{{ $feature->name }} Image"
-                                    class="img-fluid mb-3">
-                                {{-- <h5>{{ $feature->name }}</h5> --}}
-                                <p>{{ $feature->description }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
 
 
-            {{-- COLOR________________________________________________________________________________________ --}}
-            <div class="wuling-feature-section">
-                <div id="color-section" class="d-flex align-items-center mb-5 mt-4">
-                    <h4 class="wuling-title mb-0 me-3">
-                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Color
-                    </h4>
-                    <div class="flex-grow-1 wuling-line"></div>
-                </div>
-
-                <div class="row align-items-center g-4">
-
-                    <!-- Gambar Mobil -->
-                    <div class="container">
-                        <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
-                            class="img-fluid car-preview" id="car-preview" alt="Car"
-                            style="max-height: 250px; width: auto;">
-                    </div>
-
-                    <!-- Warna -->
-                    <div class="d-flex flex-column align-items-center custom-box mt-4">
-                        <div class="d-flex flex-wrap justify-content-center gap-4 mb-3 mt-4">
-                            @forelse($product->colors as $index => $color)
-                                <div class="color-circle {{ $index === 0 ? 'active' : '' }}"
-                                    data-index="{{ $index }}" data-name="{{ $color->name }}"
-                                    data-image="{{ asset('storage/' . $color->image) }}"
-                                    style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%); cursor: pointer;">
-                                </div>
-                            @empty
-                                <p class="text-muted">Tidak ada warna tersedia</p>
-                            @endforelse
-                        </div>
-
-                        <!-- Nama warna -->
-                        <p class="fw-semibold fs-6 mt-2" id="color-name">{{ $product->colors->first()?->name ?? '' }}</p>
-                    </div>
-
-                </div>
-
-                <!-- JavaScript -->
-
-
-                <!-- CSS untuk styling (opsional) -->
-
-
-
-
-            </div>
-
-            {{-- SPECIFICATION ________________________________________________________________________________________ --}}
-            <div class="container my-5">
-                <!-- Title -->
-                <div id="spec-section" class="d-flex align-items-center mb-4">
-                    <h4 class="wuling-title mb-0 me-3">
-                        {{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification
-                    </h4>
-                    <div class="flex-grow-1 wuling-line"></div>
-                </div>
-
-                <!-- Card -->
-                <div class="card spec-card shadow-sm">
-                    <div class="card-body">
-                        <div class="spec-tabs-wrapper mb-3">
-                            <ul class="nav spec-tabs flex-nowrap" id="specTab" role="tablist">
-                                @foreach ($specifications->unique('title') as $index => $spec)
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link {{ $index === 0 ? 'active' : '' }}"
-                                            id="{{ Str::slug($spec->title) }}-tab" data-bs-toggle="tab"
-                                            data-bs-target="#{{ Str::slug($spec->title) }}" type="button"
-                                            role="tab" aria-controls="{{ Str::slug($spec->title) }}"
-                                            aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                                            {{ $spec->title }}
-                                        </button>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <!-- Progress -->
-                        <div class="spec-progress mb-4">
-                            <span class="progress-bar"></span>
-                        </div>
-
-                        <!-- Tab Content -->
-                        <div class="tab-content">
-
-
-                            @foreach ($specifications->groupBy('title') as $title => $specs)
-                                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
-                                    id="{{ Str::slug($title) }}">
-
-                                    <div class="spec-list">
-                                        @foreach ($specs as $spec)
-                                            <div class="spec-item">
-                                                <p class="title">{{ $spec->label }}</p>
-                                                <p class="value">{{ $spec->value }}</p>
-                                            </div>
-                                        @endforeach
-                                    </div>
-
+                    <div class="wf-container d-flex flex-column flex-md-row">
+                        <!-- Tabs / List -->
+                        <div class="wf-tabs mb-3 mb-md-0">
+                            @foreach ($features as $index => $feature)
+                                <div class="wf-tab {{ $index == 0 ? 'active' : '' }}"
+                                    data-feature="{{ Str::slug($feature->name) }}">
+                                    {{ $feature->name }}
                                 </div>
                             @endforeach
+                        </div>
 
+                        <!-- Content -->
+                        <div class="wf-content flex-grow-1 ms-md-4">
+                            @foreach ($features as $index => $feature)
+                                <div class="wf-content-item {{ $index != 0 ? 'd-none' : '' }}"
+                                    data-content="{{ Str::slug($feature->name) }}">
+                                    <img src="{{ asset('storage/' . $feature->image) }}"
+                                        alt="{{ $feature->name }} Image" class="img-fluid mb-3">
+                                    {{-- <h5>{{ $feature->name }}</h5> --}}
+                                    <p>{{ $feature->description }}</p>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
+
+
+                {{-- COLOR________________________________________________________________________________________ --}}
+                <div class="wuling-feature-section">
+                    <div id="color-section" class="d-flex align-items-center mb-5 mt-4">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Color
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
+                    </div>
+
+                    <div class="row align-items-center g-4">
+
+                        <!-- Gambar Mobil -->
+                        <div class="container">
+                            <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
+                                class="img-fluid car-preview" id="car-preview" alt="Car"
+                                style="max-height: 250px; width: auto;">
+                        </div>
+
+                        <!-- Warna -->
+                        <div class="d-flex flex-column align-items-center custom-box mt-4">
+                            <div class="d-flex flex-wrap justify-content-center gap-4 mb-3 mt-4">
+                                @forelse($product->colors as $index => $color)
+                                    <div class="color-circle {{ $index === 0 ? 'active' : '' }}"
+                                        data-index="{{ $index }}" data-name="{{ $color->name }}"
+                                        data-image="{{ asset('storage/' . $color->image) }}"
+                                        style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%); cursor: pointer;">
+                                    </div>
+                                @empty
+                                    <p class="text-muted">Tidak ada warna tersedia</p>
+                                @endforelse
+                            </div>
+
+                            <!-- Nama warna -->
+                            <p class="fw-semibold fs-6 mt-2" id="color-name">{{ $product->colors->first()?->name ?? '' }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- JavaScript -->
+
+
+                    <!-- CSS untuk styling (opsional) -->
+
+
+
+
+                </div>
+
+                {{-- SPECIFICATION ________________________________________________________________________________________ --}}
+                <div class="container my-5">
+                    <!-- Title -->
+                    <div id="spec-section" class="d-flex align-items-center mb-4">
+                        <h4 class="wuling-title mb-0 me-3">
+                            {{ $product->brand->name_brand ?? 'Unknown Brand' }} Specification
+                        </h4>
+                        <div class="flex-grow-1 wuling-line"></div>
+                    </div>
+
+                    <!-- Card -->
+                    <div class="card spec-card shadow-sm">
+                        <div class="card-body">
+                            <div class="spec-tabs-wrapper mb-3">
+                                <ul class="nav spec-tabs flex-nowrap" id="specTab" role="tablist">
+                                    @foreach ($specifications->unique('title') as $index => $spec)
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link {{ $index === 0 ? 'active' : '' }}"
+                                                id="{{ Str::slug($spec->title) }}-tab" data-bs-toggle="tab"
+                                                data-bs-target="#{{ Str::slug($spec->title) }}" type="button"
+                                                role="tab" aria-controls="{{ Str::slug($spec->title) }}"
+                                                aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
+                                                {{ $spec->title }}
+                                            </button>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <!-- Progress -->
+                            <div class="spec-progress mb-4">
+                                <span class="progress-bar"></span>
+                            </div>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content">
+
+
+                                @foreach ($specifications->groupBy('title') as $title => $specs)
+                                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                        id="{{ Str::slug($title) }}">
+
+                                        <div class="spec-list">
+                                            @foreach ($specs as $spec)
+                                                <div class="spec-item">
+                                                    <p class="title">{{ $spec->label }}</p>
+                                                    <p class="value">{{ $spec->value }}</p>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
+        @endif
+        <div class="container">
+            @foreach ($product->details as $detail)
+                <div class="row align-items-start">
+                    <div class="col-6">
+                        <p class="text-hello mb-0">
+                            {{ $detail->label }}
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="text-hello2 mb-0">
+                            {!! $detail->nilai !!}
+                        </p>
+                    </div>
+                </div>
+            @endforeach
 
 
         </div>

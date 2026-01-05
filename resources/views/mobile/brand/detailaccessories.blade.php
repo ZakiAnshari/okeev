@@ -1,10 +1,10 @@
 @extends('layout.mobile.app')
-@section('title', 'ElectricBRANDD')
+@section('title', 'Accessories')
 @section('content')
     <!-- Navbar -->
     <nav class="navbar-custom-vehicle">
         <div class="navbar-top">
-            <a href="{{ route('showelectric.show') }}" class="back-btn">
+            <a href="{{ route('showaccessories.show') }}" class="back-btn">
                 <i class='bx bx-arrow-back'></i>
             </a>
 
@@ -34,7 +34,7 @@
             </button>
         </div>
         <div>
-            <h1 class="title-text m-0">Your Everyday Vehicle</h1>
+            <h1 class="title-text m-0">Your Everyday Accessories</h1>
             <p class="subtitle-text">{{ $brand->name_brand }}</p>
         </div>
     </nav>
