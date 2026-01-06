@@ -69,6 +69,8 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
     Route::post('/order/{product:slug}/invoice', [OrderController::class, 'createInvoice'])->name('order.invoice');
 
+
+
     Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])
         ->name('payment.va');
 
@@ -212,6 +214,8 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/order/{product:slug}', [App\Http\Controllers\Mobile\OrderController::class, 'show'])->name('order.show');
     Route::post('/order/{product:slug}/invoice', [App\Http\Controllers\Mobile\OrderController::class, 'createInvoice'])->name('order.invoice');
 
+    Route::get('/payment/va/{order}', [App\Http\Controllers\Mobile\PaymentController::class, 'virtualAccount'])
+        ->name('payment.vam');
 
 
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');

@@ -10,7 +10,7 @@
     <div class="mobile-header">
 
         <div class="container header-container">
-            <a href="" class="back-btn-img">
+            <a href="javascript:void(0)" class="back-btn-img" onclick="history.back()">
                 <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
             </a>
             <div class="mobile-header-title">CheckOut</div>

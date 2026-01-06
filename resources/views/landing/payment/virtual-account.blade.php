@@ -201,11 +201,6 @@
         </div>
     </div>
 
-    <!-- TOTAL -->
-
-    {{-- </div> --}}
-    {{-- </div>  --}}
-    {{-- </div>  --}}
     <style>
         .modal-open {
             overflow: auto !important;
@@ -318,5 +313,9 @@
             setInterval(tick, 1000);
         });
     </script>
+ <!-- TOTAL -->
 
+    {{-- </div> --}}
+    {{-- </div>  --}}
+    {{-- </div>  --}}
 @endsection

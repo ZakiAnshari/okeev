@@ -69,8 +69,8 @@
         }
 
         /* .category-tab.active {
-                                background-color: rgba(53, 245, 198, 0.1);
-                            } */
+                                                        background-color: rgba(53, 245, 198, 0.1);
+                                                    } */
 
         .category-icon {
             width: 32px;
@@ -205,28 +205,28 @@
         }
 
         /* .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 200;
-        } */
+                                    position: fixed;
+                                    bottom: 0;
+                                    left: 0;
+                                    right: 0;
+                                    background-color: white;
+                                    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                                    z-index: 200;
+                                } */
 
         /* .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            padding: 8px 16px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: #999;
-        } */
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    cursor: pointer;
+                                    padding: 8px 16px;
+                                    transition: all 0.3s ease;
+                                    text-decoration: none;
+                                    color: #999;
+                                } */
 
-     
-     
+
+
 
         .transaction-card:hover {
             transform: translateY(-2px);
@@ -273,6 +273,12 @@
             color: #007bff;
             /* sama seperti warna link di gambar */
             text-decoration: none;
+        }
+
+        .trans-card-link {
+            text-decoration: none;
+            color: inherit;
+            /* biar teks tidak berubah warna */
         }
     </style>
 
@@ -321,41 +327,56 @@
 
         <div class="content-section">
             <!-- Waiting for Confirmation -->
-            <div id="waiting-content" class="category-content">
-                <div class="section-title">Waiting For Confirmation</div>
+            <!-- CARD -->
+            @php
+                $orders = \App\Models\Order::where('user_id', auth()->id())
+                    ->latest()
+                    ->get();
+            @endphp
 
-                <a href="payment.html" class="text-decoration-none">
-                    <div class="transaction-card">
-                        <div class="transaction-header">
-                            <div class="transaction-time">2:00 AM</div>
-                        </div>
-                        <div class="transaction-body">
-                            <div class="transaction-image">
-                                <img src="{{ asset('front_end/assets/images/logo/mobile/Rectangle 430.jpg') }}" alt="Car">
+            @foreach ($orders as $item)
+                <a href="{{ route('payment.vam', $item->id) }}" class="trans-card-link countdown-link">
+
+                    <div class="trans-card d-flex align-items-center p-2 mb-3 shadow-sm rounded-3"
+                        style="background: #fff; gap: 12px;">
+
+                        <!-- Gambar mobil -->
+                        @if ($item->product && $item->product->colors->isNotEmpty() && $item->product->colors->first()->image)
+                            <img src="{{ asset('storage/' . $item->product->colors->first()->image) }}"
+                                class="car-preview rounded-2" alt="Car"
+                                style="width: auto; height: 65px; object-fit: cover;">
+                        @else
+                            <img src="{{ asset('storage/' . $item->product->thumbnail) }}" class="car-preview rounded-2"
+                                alt="Thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                        @endif
+
+                        <!-- Konten kanan -->
+                        <div class="flex-grow-1 position-relative">
+                            <!-- Waktu di pojok kanan atas -->
+                            <span class="time position-absolute" style="top: 0; right: 0; font-size: 12px; color: #34495E;">
+                                @if ($item->status !== 'Completed')
+                                    <span class="countdown" data-created="{{ $item->created_at->timestamp }}"
+                                        data-duration="7200">
+                                        00:00:00
+                                    </span>
+                                @else
+                                    {{ $item->created_at->format('h:i A') }}
+                                @endif
+                            </span>
+
+                            <!-- Status -->
+                            <div class="status mb-1" style="font-size: 12px; color: #34495E;">
+                                {{ ucfirst(strtolower($item->status)) }}
                             </div>
-                            <div class="transaction-info">
-                                <div class="transaction-type">Menunggu Pembayaran</div>
-                                <div class="transaction-title">New Air Ev Lite Long Range</div>
+
+                            <!-- Nama produk -->
+                            <div class="product fw-bold" style="font-size: 14px; color: #1E90FF;">
+                                {{ $item->model_name }}
                             </div>
                         </div>
                     </div>
                 </a>
-
-                <div class="transaction-card" onclick="viewTransaction(2)">
-                    <div class="transaction-header">
-                        <div class="transaction-time">Yesterday</div>
-                    </div>
-                    <div class="transaction-body">
-                        <div class="transaction-image">
-                            <img src="{{ asset('front_end/assets/images/logo/mobile/w800 1.jpg') }}" alt="Laptop">
-                        </div>
-                        <div class="transaction-info">
-                            <div class="transaction-type">Menunggu Pembayaran</div>
-                            <div class="transaction-title">ASUS Zenbook A1X (UX3407)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
 
             <!-- Process -->
             <div id="process-content" class="category-content hidden">
@@ -394,4 +415,76 @@
             </div>
         </div>
     </div>
+
+    {{-- JAM --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function updateCountdown(el) {
+                const created = parseInt(el.dataset.created) * 1000; // timestamp to ms
+                const duration = parseInt(el.dataset.duration) * 1000; // duration in ms
+                const now = Date.now();
+                const endTime = created + duration;
+                let remaining = endTime - now;
+
+                if (remaining <= 0) {
+                    el.innerHTML = '<span style="color:red;">Expired</span>';
+                } else {
+                    const hours = Math.floor(remaining / 1000 / 3600);
+                    const minutes = Math.floor((remaining / 1000 % 3600) / 60);
+                    const seconds = Math.floor((remaining / 1000) % 60);
+
+                    el.textContent =
+                        String(hours).padStart(2, '0') + ':' +
+                        String(minutes).padStart(2, '0') + ':' +
+                        String(seconds).padStart(2, '0');
+                }
+            }
+
+            // update setiap 1 detik
+            const countdowns = document.querySelectorAll('.countdown');
+            countdowns.forEach(el => {
+                updateCountdown(el); // update pertama
+                setInterval(() => updateCountdown(el), 1000);
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.countdown').forEach(function(el) {
+            const createdAt = parseInt(el.dataset.created) * 1000; // timestamp ke ms
+            const duration = parseInt(el.dataset.duration) * 1000; // detik ke ms
+            const expiredAt = createdAt + duration;
+
+            const link = el.closest('.countdown-link');
+
+            const timer = setInterval(() => {
+                const now = Date.now();
+                const diff = expiredAt - now;
+
+                if (diff <= 0) {
+                    clearInterval(timer);
+                    el.textContent = 'EXPIRED';
+
+                    // Disable link
+                    if (link) {
+                        link.classList.add('disabled');
+                        link.removeAttribute('href');
+                        link.style.pointerEvents = 'none';
+                        link.style.opacity = '0.6';
+                    }
+                    return;
+                }
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                el.textContent =
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0');
+            }, 1000);
+        });
+    </script>
+
 @endsection
