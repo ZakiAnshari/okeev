@@ -69,8 +69,8 @@
         }
 
         /* .category-tab.active {
-                                                        background-color: rgba(53, 245, 198, 0.1);
-                                                    } */
+                                                            background-color: rgba(53, 245, 198, 0.1);
+                                                        } */
 
         .category-icon {
             width: 32px;
@@ -205,25 +205,25 @@
         }
 
         /* .bottom-nav {
-                                    position: fixed;
-                                    bottom: 0;
-                                    left: 0;
-                                    right: 0;
-                                    background-color: white;
-                                    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-                                    z-index: 200;
-                                } */
+                                        position: fixed;
+                                        bottom: 0;
+                                        left: 0;
+                                        right: 0;
+                                        background-color: white;
+                                        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                                        z-index: 200;
+                                    } */
 
         /* .nav-item {
-                                    display: flex;
-                                    flex-direction: column;
-                                    align-items: center;
-                                    cursor: pointer;
-                                    padding: 8px 16px;
-                                    transition: all 0.3s ease;
-                                    text-decoration: none;
-                                    color: #999;
-                                } */
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                        cursor: pointer;
+                                        padding: 8px 16px;
+                                        transition: all 0.3s ease;
+                                        text-decoration: none;
+                                        color: #999;
+                                    } */
 
 
 
@@ -344,11 +344,12 @@
                         @if ($item->product && $item->product->colors->isNotEmpty() && $item->product->colors->first()->image)
                             <img src="{{ asset('storage/' . $item->product->colors->first()->image) }}"
                                 class="car-preview rounded-2" alt="Car"
-                                style="width: auto; height: 65px; object-fit: cover;">
+                                style="width: 80px; height: 59px; object-fit: cover;">
                         @else
                             <img src="{{ asset('storage/' . $item->product->thumbnail) }}" class="car-preview rounded-2"
-                                alt="Thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                                alt="Thumbnail" style="width: 80px; height: 59px; object-fit: cover;">
                         @endif
+                    
 
                         <!-- Konten kanan -->
                         <div class="flex-grow-1 position-relative">
