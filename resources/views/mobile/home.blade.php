@@ -11,7 +11,7 @@
                     <img src="{{ asset('front_end/assets/images/logo/logo.png') }}" alt="OKEEV Logo">
                 </div>
                 <button class="icon-btn" style="background: none">
-                    <a href="notification.html">
+                    <a href="#">
                         <img src="{{ asset('front_end/assets/images/logo/bel.jpg') }}" alt="Belt" class="icon-img">
                     </a>
                 </button>
@@ -19,22 +19,14 @@
 
             <!-- Bottom Row: Search Bar dan Cart -->
             <div class="navbar-bottom">
-
                 <div class="search-wrapper">
                     <i class="bi bi-search search-icon"></i>
-
                     <input type="text" class="search-bar" placeholder="Search Vehicle / Electronic">
                 </div>
-
                 <a href="#" class="icon-btn">
                     <img src="{{ asset('front_end/assets/images/logo/cart.jpg') }}" alt="Cart" class="icon-img">
                 </a>
-
             </div>
-
-
-
-
         </div>
     </nav>
 
@@ -46,7 +38,6 @@
                 </div>
                 <span class="category-text">Electric<br>Car</span>
             </a>
-
 
             <a href="{{ route('showmotorcycles.show') }}" class="category-item">
                 <div class="category-icon">
@@ -70,10 +61,6 @@
             </a>
         </div>
     </div>
-
-
-
-
 
     <!-- Promo Banner -->
     <div class="container content-container">

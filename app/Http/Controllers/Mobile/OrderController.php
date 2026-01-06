@@ -75,7 +75,17 @@ class OrderController extends Controller
             'status'         => 'PENDING',
         ]);
 
-        // 6️⃣ REDIRECT KE XENDIT
-        return redirect($invoice['invoice_url']);
+        $invoice = $apiInstance->createInvoice(
+            new CreateInvoiceRequest([
+                'external_id' => $externalId,
+                'amount'      => (int) $grandTotal,
+                'currency'    => 'IDR',
+                'description' => 'Order ' . $product->model_name,
+
+                // 🔥 REDIRECT SETELAH BAYAR
+                'success_redirect_url' => route('payment.vam', $externalId),
+                'failure_redirect_url' => route('payment.vam', $externalId),
+            ])
+        );
     }
 }
