@@ -35,34 +35,35 @@ class OrderController extends Controller
         ]);
 
         // 2️⃣ SET API KEY
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
-        // dd(
-        //     env('XENDIT_SECRET_KEY'),
-        //     config('services.xendit.secret_key')
-        // );
+        Configuration::setXenditKey(config('services.xendit.secret_key'));
 
         // 3️⃣ HITUNG TOTAL (JANGAN DARI FORM!)
-        $qty        = $request->qty;
-        $price      = $product->price;
+        $qty        = (int) $request->qty;
+        $price      = (int) $product->price;
         $serviceFee = 2000;
         $grandTotal = ($price * $qty) + $serviceFee;
 
+        // 🔑 external_id
         $externalId = 'INV-' . uniqid();
 
-        // 4️⃣ CREATE INVOICE KE XENDIT
+        // 4️⃣ CREATE INVOICE KE XENDIT + REDIRECT URL
         $apiInstance = new InvoiceApi();
         $invoice = $apiInstance->createInvoice(
             new CreateInvoiceRequest([
-                'external_id' => $externalId,
-                'amount'      => (int) $grandTotal,
-                'currency'    => 'IDR',
-                'description' => 'Order ' . $product->model_name,
+                'external_id'          => $externalId,
+                'amount'               => $grandTotal,
+                'currency'             => 'IDR',
+                'description'          => 'Order ' . $product->model_name,
+
+                // 🔥 REDIRECT SETELAH BAYAR
+                'success_redirect_url' => route('payment.vam', $externalId),
+                'failure_redirect_url' => route('payment.vam', $externalId),
             ])
         );
 
-        // 5️⃣ SIMPAN ORDER KE DATABASE (PER USER)
+        // 5️⃣ SIMPAN ORDER KE DATABASE
         Order::create([
-            'user_id'        => Auth::id(), // 🔥 INI PENTING
+            'user_id'        => Auth::id(),
             'product_id'     => $product->id,
             'external_id'    => $externalId,
             'no_transaction' => $externalId,
@@ -75,7 +76,7 @@ class OrderController extends Controller
             'status'         => 'PENDING',
         ]);
 
-        // 6️⃣ REDIRECT KE XENDIT
-        return redirect($invoice['invoice_url']);
+        // 6️⃣ REDIRECT KE HALAMAN BAYAR XENDIT
+        return redirect()->away($invoice['invoice_url']);
     }
 }

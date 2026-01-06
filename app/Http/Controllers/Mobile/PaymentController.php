@@ -14,6 +14,7 @@ class PaymentController extends Controller
         abort_if($order->user_id !== auth()->id(), 403);
 
         // Tidak ada query kategori lagi
+        $order = Order::where('external_id', $order)->firstOrFail();
 
         return view('mobile.payment.virtual-account', compact('order'));
     }
