@@ -28,47 +28,53 @@ class OrderController extends Controller
 
     public function createInvoice(Request $request, Product $product)
     {
-        // 1️⃣ VALIDASI
-        $request->validate([
-            'qty'   => 'required|integer|min:1',
-            'color' => 'required|string',
+        /* =======================
+     * 1. VALIDASI INPUT
+     * ======================= */
+        $validated = $request->validate([
+            'qty'   => ['required', 'integer', 'min:1'],
+            'color' => ['required', 'string'],
         ]);
 
-        // 2️⃣ SET API KEY
-        Configuration::setXenditKey(config('xnd_public_development_1drOdYt6RqLoYcvRipOXw0O5CODh7jME1xmoZMhBNACD6utl53Pz6ik6Z6_cRTI3'));
+        /* =======================
+     * 2. SET API KEY XENDIT
+     * ======================= */
+        Configuration::setXenditKey(config('services.xendit.secret_key'));
 
-        // 3️⃣ HITUNG TOTAL (JANGAN DARI FORM!)
-        $qty        = (int) $request->qty;
-        $price      = (int) $product->price;
+        /* =======================
+     * 3. HITUNG TOTAL (BACKEND)
+     * ======================= */
+        $qty        = $validated['qty'];
+        $price      = $product->price;
         $serviceFee = 2000;
-        $grandTotal = ($price * $qty) + $serviceFee;
 
-        // 🔑 external_id
+        $grandTotal = ($price * $qty) + $serviceFee;
         $externalId = 'INV-' . uniqid();
 
-        // 4️⃣ CREATE INVOICE KE XENDIT + REDIRECT URL
-        $apiInstance = new InvoiceApi();
-        $invoice = $apiInstance->createInvoice(
-            new CreateInvoiceRequest([
-                'external_id'          => $externalId,
-                'amount'               => $grandTotal,
-                'currency'             => 'IDR',
-                'description'          => 'Order ' . $product->model_name,
+        /* =======================
+     * 4. CREATE INVOICE XENDIT
+     * ======================= */
+        $invoiceApi = new InvoiceApi();
 
-                // 🔥 REDIRECT SETELAH BAYAR
-                'success_redirect_url' => route('payment.vam', $externalId),
-                'failure_redirect_url' => route('payment.vam', $externalId),
+        $invoice = $invoiceApi->createInvoice(
+            new CreateInvoiceRequest([
+                'external_id' => $externalId,
+                'amount'      => (int) $grandTotal,
+                'currency'    => 'IDR',
+                'description' => 'Order ' . $product->model_name,
             ])
         );
 
-        // 5️⃣ SIMPAN ORDER KE DATABASE
+        /* =======================
+     * 5. SIMPAN ORDER
+     * ======================= */
         Order::create([
             'user_id'        => Auth::id(),
             'product_id'     => $product->id,
             'external_id'    => $externalId,
             'no_transaction' => $externalId,
             'model_name'     => $product->model_name,
-            'color'          => $request->color,
+            'color'          => $validated['color'],
             'qty'            => $qty,
             'price'          => $price,
             'invoice_url'    => $invoice['invoice_url'],
@@ -76,7 +82,9 @@ class OrderController extends Controller
             'status'         => 'PENDING',
         ]);
 
-        // 6️⃣ REDIRECT KE HALAMAN BAYAR XENDIT
+        /* =======================
+     * 6. REDIRECT KE XENDIT
+     * ======================= */
         return redirect()->away($invoice['invoice_url']);
     }
 }
