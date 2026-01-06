@@ -35,7 +35,7 @@ class OrderController extends Controller
         ]);
 
         // 2️⃣ SET API KEY
-        Configuration::setXenditKey(config('xnd_development_uGuo1El8ZakozQClrnVmBjAnEXbT3i2sl7ti8W8iFeTQYKXdQmycCXEGMCtxR'));
+        Configuration::setXenditKey(config('xnd_public_development_1drOdYt6RqLoYcvRipOXw0O5CODh7jME1xmoZMhBNACD6utl53Pz6ik6Z6_cRTI3'));
 
         // 3️⃣ HITUNG TOTAL (JANGAN DARI FORM!)
         $qty        = (int) $request->qty;
