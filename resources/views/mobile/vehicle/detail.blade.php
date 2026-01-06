@@ -135,9 +135,10 @@
                     </button>
                 </div>
 
-                <button class="car-btn-order" onclick="location.href='#'">
+                <button class="car-btn-order" onclick="window.location='{{ route('order.show', $product->slug) }}'">
                     Order Now
                 </button>
+
             </div>
         @endif
 
@@ -571,82 +572,7 @@
             text-align: left;
         }
 
-        /* WRAPPER */
-        .bf-wrapper {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.12);
-            padding: 14px 18px;
-            /* display: flex; */
-            justify-content: space-between;
-            align-items: center;
-            z-index: 999;
-            background: rgba(255, 255, 255, 0.75);
-            /* transparan biar blur kelihatan */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-
-        }
-
-        /* PRICE */
-        .bf-price {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .bf-price-label {
-            font-size: 13px;
-            color: #555;
-        }
-
-        .bf-price-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #e60000;
-        }
-
-        /* ACTION BUTTONS */
-        .bf-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        /* BASE BUTTON */
-        .bf-btn {
-            min-width: 120px;
-            height: 44px;
-            border-radius: 999px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        /* OUTLINE BUTTON */
-        .bf-btn-outline {
-            background: #ffffff;
-            color: #00a0e3;
-            border: 2px solid #00a0e3;
-        }
-
-        .bf-btn-outline:hover {
-            background: #eaf7ff;
-        }
-
-        /* SOLID BUTTON */
-        .bf-btn-solid {
-            background: linear-gradient(135deg, #00c6d4, #0097d6);
-            color: #ffffff;
-            border: none;
-        }
-
-        .bf-btn-solid:hover {
-            opacity: 0.9;
-        }
+      
     </style>
 
     <br><br>
@@ -670,9 +596,12 @@
 
 
 
-            <button class="bf-btn bf-btn-solid w-50">
+            <button class="bf-btn bf-btn-solid w-50"
+                onclick="window.location='{{ route('order.show', $product->slug) }}'">
                 Bayar Now
             </button>
+
+
         </div>
     </div>
 

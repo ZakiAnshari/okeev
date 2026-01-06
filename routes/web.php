@@ -209,6 +209,11 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/product/{productSlug}/drive', [DriveController::class, 'index'])->name('drive.index');
     Route::post('/product/{productSlug}/testdrive-add', [DriveController::class, 'store'])->name('drive.store');
 
+    Route::get('/order/{product:slug}', [App\Http\Controllers\Mobile\OrderController::class, 'show'])->name('order.show');
+    Route::post('/order/{product:slug}/invoice', [App\Http\Controllers\Mobile\OrderController::class, 'createInvoice'])->name('order.invoice');
+
+
+
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
 
     Route::get('/newss', [App\Http\Controllers\Mobile\HomeController::class, 'newss'])->name('newss.show');

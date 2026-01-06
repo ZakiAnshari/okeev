@@ -41,7 +41,6 @@ class OrderController extends Controller
 
         // product dipilih berdasarkan slug
         $product->load('colors');
-
         return view('landing.order.show', compact(
             'product',
             'categoriesPosition1',

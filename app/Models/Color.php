@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Color extends Model
 {
-     protected $fillable = [
-        'product_id',
-        'name',
-        'hex',
-        'image',
-    ];
+  protected $fillable = [
+    'product_id',
+    'name',
+    'hex',
+    'image',
+  ];
 
-      // Relasi: Color dimiliki satu Product
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
-    }
+  // Relasi: Color dimiliki satu Product
+  public function product()
+  {
+    return $this->belongsTo(Product::class, 'product_id', 'id');
+  }
 }
