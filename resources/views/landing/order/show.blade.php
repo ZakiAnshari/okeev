@@ -191,21 +191,26 @@
 
 
                         <!-- Payment Button -->
-                        <form action="{{ route('order.invoice', $product->slug) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="qty" id="qty_input" value="1">
+                        <div class="bf-actions">
 
-                            <input type="hidden" name="color" id="color"
-                                value="{{ $product->colors->first()->name }}">
+                            <form action="/order-invoice/{{ $product->slug }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="qty" id="qty_input" value="1">
 
-                            <input type="hidden" name="price" id="price" value="{{ $product->price }}">
-                            <input type="hidden" name="grand_total" id="grand_total" value="{{ $product->grand_total }}">
+                                <input type="hidden" name="color" id="color"
+                                    value="{{ $product->colors->first()->name }}">
 
-                            <button type="submit" class="btn btn-info text-white w-100 py-2 rounded-pill">
-                                Payment
-                            </button>
-                        </form>
+                                <input type="hidden" name="price" id="price" value="{{ $product->price }}">
+                                <input type="hidden" name="grand_total" id="grand_total"
+                                    value="{{ $product->grand_total }}">
+
+                                <button type="submit" class="btn btn-info text-white w-100 py-2 rounded-pill">
+                                    Payment
+                                </button>
+                            </form>
+                        </div>
+
 
 
 

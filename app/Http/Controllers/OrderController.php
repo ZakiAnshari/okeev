@@ -49,46 +49,9 @@ class OrderController extends Controller
         ));
     }
 
-
-    // public function createInvoice(Request $request)
-    // {
-
-    //     try {
-    //         $no_transaction = 'Inv - ' . rand();
-    //         $order = new Order;
-    //         $order->no_transaction = $no_transaction;
-    //         $order->external_id = $no_transaction;
-    //         $order->model_name = $request->input('model_name');
-    //         $order->qty = $request->input('qty');
-    //         $order->price = $request->input('price');
-    //         $order->grand_total = $request->input('grand_total');
-
-    //         $items = new InvoiceItem([
-    //             'name' => $request->input('model_name'),
-    //             'price' => $request->input('price'),
-    //             'quantity' => $request->input('qty'),
-    //         ]);
-
-    //         $createInvoice = new CreateInvoiceRequest([
-    //             'external_id' => $no_transaction,
-    //             'amount' => $request->input('grand_total'),
-    //             'invoice_duration' => 172800,
-    //             'items' => array($items)
-    //         ]);
-
-
-    //         $apiInstance = new InvoiceApi();
-    //         $generateInvoice = $apiInstance->createInvoice($createInvoice);
-
-    //         return dd($generateInvoice);
-
-    //     } catch (\Throwable $th) {
-    //         throw $th;
-    //     }
-    // }
-
     public function createInvoice(Request $request, Product $product)
     {
+
         // 1️⃣ VALIDASI
         $request->validate([
             'qty'   => 'required|integer|min:1',
@@ -139,7 +102,6 @@ class OrderController extends Controller
         // 6️⃣ REDIRECT KE XENDIT
         return redirect($invoice['invoice_url']);
     }
-
 
     public function notificationCallback(Request $request)
     {

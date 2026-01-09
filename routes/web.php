@@ -66,10 +66,15 @@ Route::middleware(['auth', 'role'])->group(function () {
 
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 
-    Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
-    Route::post('/order/{product:slug}/invoice', [OrderController::class, 'createInvoice'])->name('order.invoice');
+    Route::post(
+        '/order-invoice/{product:slug}',
+        [OrderController::class, 'createInvoice']
+    )->name('order.invoice');
 
-
+    Route::get(
+        '/order/{product:slug}',
+        [OrderController::class, 'show']
+    )->name('order.show');
 
     Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])
         ->name('payment.va');
@@ -133,14 +138,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/product/{product_slug}/specifications/{id}/edit', [SpecificationController::class, 'edit'])->name('specifications.edit');
     Route::post('/product/{product_slug}/specifications/{id}/edit', [SpecificationController::class, 'update'])->name('specifications.update');
     Route::get('/product/{product_slug}/specifications/{specifications}', [SpecificationController::class, 'destroy'])->name('specifications.destroy');
-
     //POWER
     Route::get('/product/{slug}/powers', [PowerController::class, 'index'])->name('powers.index');
     Route::post('/product-add/{slug}/powers', [PowerController::class, 'store'])->name('powers.store');
     Route::get('/product/{product_slug}/powers/{id}/edit', [PowerController::class, 'edit'])->name('powers.edit');
     Route::post('/product/{product_slug}/powers/{id}/edit', [PowerController::class, 'update'])->name('powers.update');
     Route::get('/product/{product_slug}/powers/{powers}', [PowerController::class, 'destroy'])->name('powers.destroy');
-
     //DIMENSI
     Route::get('/product/{slug}/dimensis', [DimensiController::class, 'index'])->name('dimensis.index');
     Route::post('/product-add/{slug}/dimensis', [DimensiController::class, 'store'])->name('dimensis.store');
@@ -219,14 +222,10 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
 
 
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
-
     Route::get('/newss', [App\Http\Controllers\Mobile\HomeController::class, 'newss'])->name('newss.show');
     Route::get('/newss/detail', [App\Http\Controllers\Mobile\HomeController::class, 'newssdetail'])->name('newssdetail.show');
-
     Route::get('/profilm', [App\Http\Controllers\Mobile\HomeController::class, 'profilm'])->name('profilm.show');
-
     Route::get('/about', [App\Http\Controllers\Mobile\HomeController::class, 'about'])->name('about.show');
-
     Route::get('/contact', [App\Http\Controllers\Mobile\HomeController::class, 'contact'])->name('contact.index');
     Route::get('/dashboard', [DashboardController::class, 'index']);
 

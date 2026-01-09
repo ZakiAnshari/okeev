@@ -63,6 +63,37 @@
         </div>
     </div>
 
+
+
+    <div class="bf-wrapper d-flex justify-content-between align-items-center p-3 border rounded" style="max-width: 400px;">
+        <!-- Price -->
+        <div class="bf-price" style="display:inline;">
+            <span class="bf-price-label">Price</span><br>
+            <span class="bf-price-value">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+        </div>
+
+        <!-- Button -->
+        <div class="bf-actions">
+            <form action="{{ route('order.invoice', $product->slug) }}" method="POST">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <input type="hidden" name="qty" id="qty_input" value="1">
+
+                <input type="hidden" name="color" id="color" value="{{ $product->colors->first()->name }}">
+
+                <input type="hidden" name="price" id="price" value="{{ $product->price }}">
+                <input type="hidden" name="grand_total" id="grand_total" value="{{ $product->grand_total }}">
+
+                <button type="submit" class="btn btn-info text-white w-100 py-2 rounded-pill">
+                    Payment
+                </button>
+            </form>
+        </div>
+
+
+
+
+    </div>
     <script>
         // Ambil semua elemen warna
         document.querySelectorAll('.color-circle').forEach(circle => {
@@ -106,33 +137,6 @@
         }
     </style>
 
-
-
-    <div class="bf-wrapper d-flex justify-content-between align-items-center p-3 border rounded" style="max-width: 400px;">
-        <!-- Price -->
-        <div class="bf-price" style="display:inline;">
-            <span class="bf-price-label">Price</span><br>
-            <span class="bf-price-value">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-        </div>
-
-        <!-- Button -->
-        <div class="bf-actions">
-            <form action="{{ route('order.invoice', $product->slug) }}" method="POST">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" name="qty" id="qty_input" value="1">
-
-                <input type="hidden" name="color" id="color" value="{{ $product->colors->first()->name }}">
-
-                <input type="hidden" name="price" id="price" value="{{ $product->price }}">
-                <input type="hidden" name="grand_total" id="grand_total" value="{{ $product->grand_total }}">
-
-                <button type="submit" class="btn btn-info text-white w-100 py-2 rounded-pill">
-                    Payment
-                </button>
-            </form>
-        </div>
-    </div>
 
     @include('sweetalert::alert')
 @endsection

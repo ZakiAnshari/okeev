@@ -26,7 +26,7 @@ class OrderController extends Controller
         return view('mobile.order.show', compact('product'));
     }
 
-     public function createInvoice(Request $request, Product $product)
+    public function createInvoice(Request $request, Product $product)
     {
         // 1️⃣ VALIDASI
         $request->validate([
