@@ -7,14 +7,14 @@
         // Immediate block reload BEFORE anything else
         window.location.reload = () => false;
         window.history.go = () => false;
-        
+
         // Block form GET submissions
         document.addEventListener('submit', (e) => {
             if (e.target.method?.toUpperCase() === 'GET') {
                 e.preventDefault();
             }
         }, true);
-        
+
         // 🛑 Block iframe Xendit dari auto-reload
         window.addEventListener('load', () => {
             const iframes = document.querySelectorAll('iframe');
@@ -31,7 +31,7 @@
         });
     </script>
 
-    
+
 
     <div class="container py-5 mt-5">
 
@@ -45,7 +45,8 @@
 
                 <!-- HEADER -->
                 @if ($order->status === 'Completed')
-                    <div class="p-3 rounded bg-success-subtle text-success d-flex align-items-center gap-2 payment-success-header justify-content-center">
+                    <div
+                        class="p-3 rounded bg-success-subtle text-success d-flex align-items-center gap-2 payment-success-header justify-content-center">
                         <i class="bx bx-check-circle fs-4"></i>
                         <div>
                             <strong>Pembayaran sudah diterima</strong><br>
@@ -143,8 +144,9 @@
                         <a href="{{ $order->invoice_url }}" target="_blank" class="btn btn-primary flex-fill">
                             Bayar Sekarang
                         </a>
-                        
-                        <button class="btn btn-outline-primary flex-fill" data-bs-toggle="modal" data-bs-target="#statusModal">
+
+                        <button class="btn btn-outline-primary flex-fill" data-bs-toggle="modal"
+                            data-bs-target="#statusModal">
                             Cek Status
                         </button>
                     @else
@@ -191,10 +193,10 @@
                     </div>
                 @endif
 
-                </div>
-
             </div>
+
         </div>
+    </div>
     </div>
 
     <style>
@@ -211,7 +213,8 @@
             border-radius: 16px;
             padding: 28px 20px;
             max-width: 480px;
-            margin: 0 auto; /* center horizontally */
+            margin: 0 auto;
+            /* center horizontally */
             box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
         }
 
@@ -247,13 +250,13 @@
             line-height: 1;
         }
 
-        .payment-success-header > div {
+        .payment-success-header>div {
             text-align: center;
         }
-        
+
         /* Tambah border solid 1px untuk header success */
         .payment-success-header {
-            border: 1px solid rgba(16,185,129,0.15);
+            border: 1px solid rgba(16, 185, 129, 0.15);
             padding: 14px;
         }
 
@@ -321,9 +324,9 @@
         // 🛑 CEGAH AUTO-RELOAD YANG AGGRESSIVE
         (function blockRefresh() {
             // 1. Blokir reload
-            window.location.reload = function() { 
+            window.location.reload = function() {
                 console.log('🛑 Reload blocked');
-                return false; 
+                return false;
             };
 
             // 2. Blokir window.location assignment
@@ -371,29 +374,29 @@
         document.addEventListener('DOMContentLoaded', () => {
             // 🔐 Jangan jalankan countdown jika sudah Completed
             @if ($order->status !== 'Completed')
-            const el = document.getElementById('countdown');
-            const expiredAt = new Date("{{ $order->created_at->addHours(2)->toIso8601String() }}");
+                const el = document.getElementById('countdown');
+                const expiredAt = new Date("{{ $order->created_at->addHours(2)->toIso8601String() }}");
 
-            function tick() {
-                const now = new Date();
-                let diff = Math.floor((expiredAt - now) / 1000);
-                if (diff <= 0) {
-                    el.textContent = 'Expired';
-                    // Jangan perbarui halaman, tunggu webhook dari Xendit
-                    return;
+                function tick() {
+                    const now = new Date();
+                    let diff = Math.floor((expiredAt - now) / 1000);
+                    if (diff <= 0) {
+                        el.textContent = 'Expired';
+                        // Jangan perbarui halaman, tunggu webhook dari Xendit
+                        return;
+                    }
+
+                    const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+                    const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+                    const s = String(diff % 60).padStart(2, '0');
+
+                    el.textContent = `${h}:${m}:${s}`;
                 }
 
-                const h = String(Math.floor(diff / 3600)).padStart(2, '0');
-                const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-                const s = String(diff % 60).padStart(2, '0');
-
-                el.textContent = `${h}:${m}:${s}`;
-            }
-
-            tick();
-            setInterval(tick, 1000);
+                tick();
+                setInterval(tick, 1000);
             @endif
         });
     </script>
-
+    @include('sweetalert::alert')
 @endsection
