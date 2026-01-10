@@ -66,19 +66,16 @@ Route::middleware(['auth', 'role'])->group(function () {
 
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 
-    Route::post(
-        '/order-invoice/{product:slug}',
-        [OrderController::class, 'createInvoice']
-    )->name('order.invoice');
+    Route::post('/order-invoice/{product:slug}', [OrderController::class, 'createInvoice'])->name('order.invoice');
+    Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
 
-    Route::get(
-        '/order/{product:slug}',
-        [OrderController::class, 'show']
-    )->name('order.show');
+    Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])->name('payment.va');
 
-    Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])
-        ->name('payment.va');
+    // Route::get('/payment/success', function () {return view('payment.success');})->name('payment.success');
 
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+
+    Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 

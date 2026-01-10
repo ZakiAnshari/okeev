@@ -2,9 +2,38 @@
 @section('title', 'cart')
 @section('content')
 
-    <br><br><br><br>
+    <!-- 🛑 BLOCK AUTO-REFRESH AGGRESSIVE -->
+    <script>
+        // Immediate block reload BEFORE anything else
+        window.location.reload = () => false;
+        window.history.go = () => false;
+        
+        // Block form GET submissions
+        document.addEventListener('submit', (e) => {
+            if (e.target.method?.toUpperCase() === 'GET') {
+                e.preventDefault();
+            }
+        }, true);
+        
+        // 🛑 Block iframe Xendit dari auto-reload
+        window.addEventListener('load', () => {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                // Disable iframe interactions yang bisa trigger reload
+                try {
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.location.reload = () => false;
+                    }
+                } catch (e) {
+                    // Cross-origin, tidak bisa diakses
+                }
+            });
+        });
+    </script>
 
-    <div class="container py-5">
+    
+
+    <div class="container py-5 mt-5">
 
         <!-- Back -->
         <a href="/order-now" class="text-decoration-none d-flex align-items-center mb-4">
@@ -16,7 +45,7 @@
 
                 <!-- HEADER -->
                 @if ($order->status === 'Completed')
-                    <div class="p-3 rounded bg-success-subtle text-success d-flex align-items-center gap-2">
+                    <div class="p-3 rounded bg-success-subtle text-success d-flex align-items-center gap-2 payment-success-header justify-content-center">
                         <i class="bx bx-check-circle fs-4"></i>
                         <div>
                             <strong>Pembayaran sudah diterima</strong><br>
@@ -43,10 +72,9 @@
                         </div>
                     </div>
                 @endif
-                <hr>
 
                 <!-- VIRTUAL ACCOUNT -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
                     <div>
                         <small class="text-muted">Nomor Virtual Account</small>
                         <div class="fw-semibold">
@@ -115,13 +143,20 @@
                         <a href="{{ $order->invoice_url }}" target="_blank" class="btn btn-primary flex-fill">
                             Bayar Sekarang
                         </a>
+                        
+                        <button class="btn btn-outline-primary flex-fill" data-bs-toggle="modal" data-bs-target="#statusModal">
+                            Cek Status
+                        </button>
+                    @else
+                        <!-- Jika sudah Completed, tampilkan tombol lanjut saja -->
+                        <a href="{{ route('landing') }}" class="btn btn-primary flex-fill">
+                            Kembali ke Beranda
+                        </a>
                     @endif
+                </div>
 
-
-                    <button class="btn btn-outline-primary flex-fill" data-bs-toggle="modal" data-bs-target="#statusModal">
-                        Cek Status
-                    </button>
-                    <!-- STATUS MODAL -->
+                <!-- STATUS MODAL - HANYA UNTUK PENDING -->
+                @if ($order->status !== 'Completed')
                     <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -154,6 +189,7 @@
                             </div>
                         </div>
                     </div>
+                @endif
 
                 </div>
 
@@ -173,7 +209,19 @@
             background: #fff;
             border: 1px solid #e5e7eb;
             border-radius: 16px;
-            padding: 24px;
+            padding: 28px 20px;
+            max-width: 480px;
+            margin: 0 auto; /* center horizontally */
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+        }
+
+        /* Make sure card has comfortable side padding on small screens */
+        @media (max-width: 576px) {
+            .payment-card {
+                padding-left: 16px;
+                padding-right: 16px;
+                border-radius: 12px;
+            }
         }
 
         /* ===== ICON ===== */
@@ -187,6 +235,26 @@
             align-items: center;
             justify-content: center;
             font-size: 18px;
+        }
+
+        /* Success header styling */
+        .payment-success-header {
+            gap: 12px;
+        }
+
+        .payment-success-header i.bx {
+            font-size: 34px !important;
+            line-height: 1;
+        }
+
+        .payment-success-header > div {
+            text-align: center;
+        }
+        
+        /* Tambah border solid 1px untuk header success */
+        .payment-success-header {
+            border: 1px solid rgba(16,185,129,0.15);
+            padding: 14px;
         }
 
         /* ===== COUNTDOWN ===== */
@@ -250,7 +318,59 @@
     </style>
 
     <script>
+        // 🛑 CEGAH AUTO-RELOAD YANG AGGRESSIVE
+        (function blockRefresh() {
+            // 1. Blokir reload
+            window.location.reload = function() { 
+                console.log('🛑 Reload blocked');
+                return false; 
+            };
+
+            // 2. Blokir window.location assignment
+            const originalLocationAssign = window.location.assign;
+            window.location.assign = function(url) {
+                if (url === window.location.href) {
+                    console.log('🛑 Location assign blocked (same page)');
+                    return;
+                }
+                return originalLocationAssign.call(window.location, url);
+            };
+
+            // 3. Blokir meta refresh
+            const metas = document.querySelectorAll('meta[http-equiv="refresh"]');
+            metas.forEach(meta => meta.remove());
+
+            // 4. Override fetch untuk intercept auto-requests
+            const originalFetch = window.fetch;
+            window.fetch = function(...args) {
+                const url = args[0];
+                if (typeof url === 'string' && url.includes(window.location.pathname)) {
+                    console.log('🛑 Fetch to same page blocked:', url);
+                    return Promise.reject('Auto-fetch blocked');
+                }
+                return originalFetch.apply(this, args);
+            };
+
+            // 5. Stop semua interval yang suspicious
+            const originalSetInterval = window.setInterval;
+            let intervalId = 0;
+            window.setInterval = function(callback, delay) {
+                if (callback && typeof callback === 'function') {
+                    const fnStr = callback.toString().toLowerCase();
+                    if (fnStr.includes('reload') || fnStr.includes('location') || fnStr.includes('fetch')) {
+                        console.log('🛑 Suspicious interval blocked');
+                        return originalSetInterval(() => {}, 999999999);
+                    }
+                }
+                return originalSetInterval.apply(this, arguments);
+            };
+
+            console.log('✅ Auto-refresh protection activated');
+        })();
+
         document.addEventListener('DOMContentLoaded', () => {
+            // 🔐 Jangan jalankan countdown jika sudah Completed
+            @if ($order->status !== 'Completed')
             const el = document.getElementById('countdown');
             const expiredAt = new Date("{{ $order->created_at->addHours(2)->toIso8601String() }}");
 
@@ -259,6 +379,7 @@
                 let diff = Math.floor((expiredAt - now) / 1000);
                 if (diff <= 0) {
                     el.textContent = 'Expired';
+                    // Jangan perbarui halaman, tunggu webhook dari Xendit
                     return;
                 }
 
@@ -271,6 +392,7 @@
 
             tick();
             setInterval(tick, 1000);
+            @endif
         });
     </script>
 

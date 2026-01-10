@@ -51,21 +51,13 @@ class OrderController extends Controller
 
     public function createInvoice(Request $request, Product $product)
     {
-
         // 1️⃣ VALIDASI
         $request->validate([
             'qty'   => 'required|integer|min:1',
             'color' => 'required|string',
         ]);
 
-        // 2️⃣ SET API KEY
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
-        // dd(
-        //     env('XENDIT_SECRET_KEY'),
-        //     config('services.xendit.secret_key')
-        // );
-
-        // 3️⃣ HITUNG TOTAL (JANGAN DARI FORM!)
+        // 2️⃣ HITUNG TOTAL
         $qty        = $request->qty;
         $price      = $product->price;
         $serviceFee = 2000;
@@ -73,20 +65,25 @@ class OrderController extends Controller
 
         $externalId = 'INV-' . uniqid();
 
-        // 4️⃣ CREATE INVOICE KE XENDIT
+        // 3️⃣ SET API KEY XENDIT
+        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
+
+        // 4️⃣ CREATE INVOICE
         $apiInstance = new InvoiceApi();
         $invoice = $apiInstance->createInvoice(
             new CreateInvoiceRequest([
-                'external_id' => $externalId,
-                'amount'      => (int) $grandTotal,
-                'currency'    => 'IDR',
-                'description' => 'Order ' . $product->model_name,
+                'external_id'          => $externalId,
+                'amount'               => (int) $grandTotal,
+                'currency'             => 'IDR',
+                'description'          => 'Order ' . $product->model_name,
+                'success_redirect_url' => route('payment.success', ['external_id' => $externalId]),
+                'failure_redirect_url' => route('payment.failed', ['external_id' => $externalId]),
             ])
         );
 
-        // 5️⃣ SIMPAN ORDER KE DATABASE (PER USER)
-        Order::create([
-            'user_id'        => Auth::id(), // 🔥 INI PENTING
+        // 5️⃣ SIMPAN ORDER
+        $order = Order::create([
+            'user_id'        => Auth::id(),
             'product_id'     => $product->id,
             'external_id'    => $externalId,
             'no_transaction' => $externalId,
@@ -102,6 +99,7 @@ class OrderController extends Controller
         // 6️⃣ REDIRECT KE XENDIT
         return redirect($invoice['invoice_url']);
     }
+
 
     public function notificationCallback(Request $request)
     {

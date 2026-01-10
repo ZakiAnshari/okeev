@@ -30,7 +30,7 @@
 
                                     <a class="dd-menu collapsed" href="#" id="megaVehicle" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Vehicle 
+                                        Vehicle
                                         {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
                                     </a>
 
@@ -82,7 +82,7 @@
 
                                     <a class="dd-menu collapsed" href="#" id="megaElectric" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Electric 
+                                        Electric
                                         {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
                                     </a>
 
@@ -128,7 +128,7 @@
 
                                     <a class="dd-menu collapsed" href="#" id="megaAccessories" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Accessories 
+                                        Accessories
                                         {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
                                     </a>
 
@@ -196,6 +196,27 @@
                             {{-- SUDAH LOGIN --}}
                             <div class="topbar-wrapper">
                                 @auth
+                                    @php
+                                        $notifOrders = [];
+                                        $notifTestdrives = collect();
+                                        $notifCount = 0;
+                                        if (\Illuminate\Support\Facades\Auth::check()) {
+                                            $notifOrders = \App\Models\Order::where(
+                                                'user_id',
+                                                \Illuminate\Support\Facades\Auth::id(),
+                                            )
+                                                ->whereIn('status', ['PENDING', 'Failed'])
+                                                ->orderBy('created_at', 'desc')
+                                                ->take(5)
+                                                ->get();
+
+                                            // Include recent Testdrive entries so admins can see incoming requests
+                                            $notifTestdrives = \App\Models\Testdrive::latest()->take(5)->get();
+
+                                            $notifCount = $notifOrders->count() + $notifTestdrives->count();
+                                        }
+                                    @endphp
+
                                     <!-- Search -->
                                     <div class="search-box">
                                         <i class="bx bx-search"></i>
@@ -212,8 +233,12 @@
                                         </a>
                                         <a href="#" id="notifBtn" class="icon-btn position-relative">
                                             <i class="bx bx-bell fs-4"></i>
-                                            <span class="rounded-circle bg-danger position-absolute top-0 end-0"
-                                                style="width:8px;height:8px;"></span>
+                                            @if ($notifCount > 0)
+                                                <span class="badge bg-danger position-absolute top-0 end-0"
+                                                    style="font-size:10px; min-width:18px; height:18px; border-radius:9px; display:flex; align-items:center; justify-content:center;">
+                                                    {{ $notifCount }}
+                                                </span>
+                                            @endif
                                         </a>
 
                                         <div id="notifModal" class="notif-modal">
@@ -228,41 +253,69 @@
                                             </div>
 
                                             <div class="notif-content show" id="notifContent">
+                                                @if ($notifCount === 0)
+                                                    <div class="p-3 text-center text-muted">Tidak ada notifikasi.</div>
+                                                @else
+                                                    @foreach ($notifOrders as $n)
+                                                        <a href="{{ route('payment.va', $n->id) }}"
+                                                            class="text-decoration-none text-body">
+                                                            <div class="item">
+                                                                <div
+                                                                    class="icon {{ $n->status === 'PENDING' ? 'bg-warning' : 'bg-danger' }}">
+                                                                    <i class="bx bx-dollar-circle"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="title">
+                                                                        ORDER VEHICLE
+                                                                        <span>{{ $n->created_at->diffForHumans() }}</span>
+                                                                    </div>
+                                                                    <p>
+                                                                        {{ Str::limit('Pesanan ' . $n->model_name . ' - ' . $n->qty . ' item. Total Rp ' . number_format($n->grand_total, 0, ',', '.'), 90) }}
+                                                                    </p>
+                                                                    <a
+                                                                        href="{{ route('payment.va', $n->id) }}">Details...</a>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <hr>
+                                                    @endforeach
 
-                                                <div class="item">
-                                                    <div class="icon bg-success">
-                                                        <i class="bx bx-dollar-circle"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div class="title">
-                                                            ORDER VEHICLE <span>2.00 AM</span>
+                                                    {{-- Render recent Test Drive notifications dynamically --}}
+                                                    @foreach ($notifTestdrives as $t)
+                                                        <div class="item">
+                                                            <div class="icon bg-info">
+                                                                <i class="bx bx-car"></i>
+                                                            </div>
+                                                            <div>
+                                                                <div class="title">
+                                                                    TEST DRIVE
+                                                                    <span>{{ optional($t->created_at)->diffForHumans() }}</span>
+                                                                </div>
+                                                                <p>
+                                                                    {{ Str::limit(($t->first_name ?? 'User') . ' requested a test drive' . (optional($t->product)->model_name ? ' - ' . optional($t->product)->model_name : ''), 90) }}
+                                                                </p>
+
+                                                            </div>
                                                         </div>
-                                                        <p>
-                                                            You have placed an order & will immediately make payment for
-                                                            the WULING vehicle - New Air Ev...
-                                                        </p>
-                                                        <a href="#">Details...</a>
-                                                    </div>
-                                                </div>
+                                                        <hr>
+                                                    @endforeach
+                                                @endif
+                                                <!-- Tetap tampilkan notifikasi Test Drive (static reminder) -->
 
-                                                <hr>
-
-                                                <div class="item">
-                                                    <div class="icon bg-info">
-                                                        <i class="bx bx-car"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div class="title">
-                                                            TEST DRIVE <span>Yesterday</span>
+                                                {{-- <div class="item">
+                                                        <div class="icon bg-info">
+                                                            <i class="bx bx-car"></i>
                                                         </div>
-                                                        <p>
-                                                            You apply to do a test drive of the WULING vehicle - New Air
-                                                            Ev...
-                                                        </p>
-                                                        <a href="#">Details...</a>
-                                                    </div>
-                                                </div>
-
+                                                        <div>
+                                                            <div class="title">
+                                                                TEST DRIVE <span>Info</span>
+                                                            </div>
+                                                            <p>
+                                                                You applied for a test drive. We'll contact you to confirm schedule.
+                                                            </p>
+                                                            <a href="#">Details...</a>
+                                                        </div>
+                                                    </div> --}}
                                             </div>
 
                                             <div class="notif-content" id="transContent">
@@ -731,6 +784,10 @@
     .notif-content {
         display: none;
         padding: 14px 16px;
+        max-height: 360px;
+        /* limit height when many items */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .notif-content.show {
@@ -796,7 +853,7 @@
     /* HR */
     .notif-content hr {
         border: none;
-        border-top: 1px solid #eee;
+        border-top: 1px solid #302d2d;
         margin: 14px 0;
     }
 

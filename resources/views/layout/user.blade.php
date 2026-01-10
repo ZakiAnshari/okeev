@@ -141,6 +141,23 @@
             background-color: transparent !important;
         }
     </style>
+    
+    <!-- 🛑 Auto-Refresh Block untuk halaman payment -->
+    <script>
+        if (window.location.pathname.includes('payment/success') || window.location.pathname.includes('payment/failed')) {
+            window.location.reload = () => false;
+            window.history.go = () => false;
+            
+            // Block auto-fetch polling
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options) {
+                if (typeof url === 'string' && (url.includes('payment/success') || url.includes('payment/failed'))) {
+                    return Promise.reject('Auto-refresh blocked');
+                }
+                return originalFetch.apply(this, arguments);
+            };
+        }
+    </script>
 </head>
 
 <body>
