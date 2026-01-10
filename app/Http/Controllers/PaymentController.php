@@ -63,8 +63,10 @@ class PaymentController extends Controller
             $order->update([
                 'status' => 'Completed'
             ]);
+        }
 
-            // RealRashid SweetAlert notification
+        // RealRashid SweetAlert notification (flash ke session)
+        if ($order->status === 'Completed') {
             Alert::success('Pembayaran Berhasil', 'Pesanan Anda sedang diproses.');
         }
 
