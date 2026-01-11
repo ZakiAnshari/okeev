@@ -38,7 +38,7 @@
                             <div>
                                 <div class="fw-semibold">Bayar sebelum</div>
                                 <small class="text-muted">
-                                    {{ \Carbon\Carbon::parse($order->expired_at)->timezone('Asia/Jakarta')->format('d M Y, H:i') }}
+                                    {{ $order->created_at->copy()->addDay()->timezone('Asia/Jakarta')->format('d M Y, H:i') }}
                                     WIB
                                 </small>
                             </div>

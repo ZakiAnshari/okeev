@@ -357,7 +357,7 @@
                             <span class="time position-absolute" style="top: 0; right: 0; font-size: 12px; color: #34495E;">
                                 @if ($item->status !== 'Completed')
                                     <span class="countdown" data-created="{{ $item->created_at->timestamp }}"
-                                        data-duration="7200">
+                                        data-duration="86400">
                                         00:00:00
                                     </span>
                                 @else

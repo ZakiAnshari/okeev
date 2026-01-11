@@ -32,7 +32,7 @@
                             <div>
                                 <h6 class="mb-1 fw-semibold">Bayar sebelum</h6>
                                 <small class="text-muted">
-                                    {{ \Carbon\Carbon::parse($order->expired_at)->timezone('Asia/Jakarta')->format('d M Y, H:i') }}
+                                    {{ $order->created_at->copy()->addDay()->timezone('Asia/Jakarta')->format('d M Y, H:i') }}
                                     WIB
                                 </small>
                             </div>

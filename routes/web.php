@@ -76,6 +76,10 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 
     Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
+    
+    // API untuk fetch pending orders (untuk real-time notification)
+    Route::get('/api/notifications/pending-orders', [HomeUserController::class, 'getPendingOrders'])->name('api.pending-orders');
+    
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 

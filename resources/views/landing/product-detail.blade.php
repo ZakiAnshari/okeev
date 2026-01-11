@@ -919,12 +919,25 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                // SweetAlert notifikasi
+                                // Update cart dot immediately (use server-provided count if available)
+                                try {
+                                    const dot = document.getElementById('cartDot');
+                                    if (dot) {
+                                        if (typeof data.cart_count !== 'undefined') {
+                                            dot.style.display = data.cart_count > 0 ? 'inline-block' : 'none';
+                                        } else {
+                                            dot.style.display = 'inline-block';
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.warn('Could not update cart dot', e);
+                                }
+
+                                // SweetAlert notification
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil!',
-                                    text: productName +
-                                        ' telah ditambahkan ke keranjang.',
+                                    text: productName + ' telah ditambahkan ke keranjang.',
                                     timer: 1500,
                                     showConfirmButton: false
                                 });

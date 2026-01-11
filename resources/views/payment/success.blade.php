@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex justify-content-between align-items-start mb-3 border border-1 rounded-3 p-3">
                         <div class="d-flex gap-3">
                             <div class="icon-circle">
                                 <i class="bx bx-time"></i>
@@ -62,7 +62,7 @@
                             <div>
                                 <h6 class="mb-1 fw-semibold">Bayar sebelum</h6>
                                 <small class="text-muted">
-                                    {{ \Carbon\Carbon::parse($order->expired_at)->timezone('Asia/Jakarta')->format('d M Y, H:i') }}
+                                    {{ $order->created_at->copy()->addDay()->timezone('Asia/Jakarta')->format('d M Y, H:i') }}
                                     WIB
                                 </small>
                             </div>
@@ -86,11 +86,13 @@
 
                 <!-- MODEL & STATUS -->
                 @php
-                    $statusClass = match ($order->status) {
+                    $status = strtolower($order->status ?? '');
+                    $statusClass = match ($status) {
                         'pending' => 'bg-warning text-dark',
-                        'paid' => 'bg-success',
-                        'expired' => 'bg-danger',
-                        default => 'bg-secondary',
+                        'failed' => 'bg-danger text-white',
+                        'expired' => 'bg-danger text-white',
+                        'paid', 'completed' => 'bg-success text-white',
+                        default => 'bg-secondary text-white',
                     };
                 @endphp
 

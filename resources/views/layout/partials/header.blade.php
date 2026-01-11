@@ -200,6 +200,7 @@
                                         $notifOrders = [];
                                         $notifTestdrives = collect();
                                         $notifCount = 0;
+                                        $ordersCount = 0;
                                         if (\Illuminate\Support\Facades\Auth::check()) {
                                             $notifOrders = \App\Models\Order::where(
                                                 'user_id',
@@ -214,6 +215,9 @@
                                             $notifTestdrives = \App\Models\Testdrive::latest()->take(5)->get();
 
                                             $notifCount = $notifOrders->count() + $notifTestdrives->count();
+
+                                            // Total transactions/orders for this user
+                                            $ordersCount = \App\Models\Order::where('user_id', \Illuminate\Support\Facades\Auth::id())->count();
                                         }
                                     @endphp
 
@@ -244,12 +248,12 @@
                                         <div id="notifModal" class="notif-modal">
 
                                             <div class="notif-tabs">
-                                                <div class="tab active" data-target="notifContent">
-                                                    Notification <span class="dot">1</span>
-                                                </div>
-                                                <div class="tab" data-target="transContent">
-                                                    Transaction <span class="dot">1</span>
-                                                </div>
+                                                    <div class="tab active" data-target="notifContent">
+                                                        Notification <span class="dot">{{ $notifCount }}</span>
+                                                    </div>
+                                                    <div class="tab" data-target="transContent">
+                                                        Transaction <span class="dot">{{ $ordersCount }}</span>
+                                                    </div>
                                             </div>
 
                                             <div class="notif-content show" id="notifContent">
@@ -394,7 +398,7 @@
                                                                     @if ($item->status !== 'Completed')
                                                                         <span class="time countdown"
                                                                             data-created="{{ $item->created_at->timestamp }}"
-                                                                            data-duration="7200">
+                                                                            data-duration="86400">
                                                                             --
                                                                         </span>
                                                                     @endif
