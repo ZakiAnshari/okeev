@@ -17,12 +17,13 @@ class AuthController extends Controller
     public function registerprocess(Request $request)
     {
         $validated = $request->validate([
-            'name'          => 'required|string|max:255',
-            'username'      => 'required|string|max:255|unique:users,username',
+            'first_name'          => 'required|string|max:255',
+            'second_name'      => 'required|string|max:255|unique:users,second_name',
             'contact'       => 'required|string|max:20',
             'email'         => 'required|email|max:255|unique:users,email',
             'jenis_kelamin' => 'required',
             'password'      => 'required|string|min:6|confirmed',
+            'city' => 'required|string|max:255',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -41,28 +42,33 @@ class AuthController extends Controller
 
     public function authenticating(Request $request)
     {
-        // Validasi input username dan password
+        // Validasi input email & password
         $credentials = $request->validate([
-            'username' => ['required', 'string'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ], [
-            'username.required' => 'Username harus diisi!',
+            'email.required' => 'Email harus diisi!',
+            'email.email' => 'Format email tidak valid!',
             'password.required' => 'Password harus diisi!',
         ]);
 
-        // Cari user berdasarkan username
-        $user = User::where('username', $request->username)->first();
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            toast('Username tidak ditemukan', 'error')
-                ->position('top-end')->autoClose(3000)->width('fit-content');
+            toast('Email tidak ditemukan', 'error')
+                ->position('top-end')
+                ->autoClose(3000)
+                ->width('fit-content');
             return back()->withInput();
         }
 
         // Cek password
         if (!Hash::check($request->password, $user->password)) {
             toast('Password salah', 'error')
-                ->position('top-end')->autoClose(3000)->width('fit-content');
+                ->position('top-end')
+                ->autoClose(3000)
+                ->width('fit-content');
             return back()->withInput();
         }
 
@@ -72,13 +78,13 @@ class AuthController extends Controller
 
         alert()->success('Berhasil Login', 'Selamat datang di Okeev');
 
-        // Arahkan sesuai role_id
+        // Redirect ke intended URL jika ada
         $intendedUrl = redirect()->intended()->getTargetUrl();
-
         if ($intendedUrl && !str_contains($intendedUrl, '/login')) {
             return redirect()->to($intendedUrl);
         }
 
+        // Redirect berdasarkan role
         switch ($user->role_id) {
             case 2:
                 return redirect('/home');
@@ -87,8 +93,8 @@ class AuthController extends Controller
             default:
                 return redirect('/dashboard');
         }
-        
     }
+
 
 
     // LOGOUT ADMIN

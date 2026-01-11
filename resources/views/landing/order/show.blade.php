@@ -199,7 +199,7 @@
                                 <input type="hidden" name="qty" id="qty_input" value="1">
 
                                 <input type="hidden" name="color" id="color"
-                                    value="{{ $product->colors->first()->name }}">
+                                    value="{{ optional($product->colors->first())->name ?? '' }}">
 
                                 <input type="hidden" name="price" id="price" value="{{ $product->price }}">
                                 <input type="hidden" name="grand_total" id="grand_total"

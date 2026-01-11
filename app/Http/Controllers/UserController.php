@@ -39,34 +39,35 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-
-        // Validasi data dengan pesan kustom
+        // Validasi data
         $validated = $request->validate([
             'name' => 'required|string|max:255|different:username|different:email',
             'username' => 'required|string|max:255|unique:users,username|different:email|different:name',
             'contact' => 'required|numeric|digits_between:10,15',
             'email' => 'required|email|max:255|unique:users,email|different:name|different:username',
+            'city' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'role_id' => 'required|integer|exists:roles,id',
-            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
         ]);
 
-        // Simpan data ke database
+        // Simpan ke database
         User::create([
             'name' => $validated['name'],
             'username' => $validated['username'],
             'email' => $validated['email'],
+            'contact' => $validated['contact'],
+            'city' => $validated['city'],
             'password' => bcrypt($validated['password']),
             'role_id' => $validated['role_id'],
-            'contact' => $validated['contact'],
             'jenis_kelamin' => $validated['jenis_kelamin'],
         ]);
 
-        // Redirect atau beri respon sukses
         Alert::success('Success', 'Data User berhasil ditambahkan');
         return back();
     }
-    
+
+
     public function edit($id)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login

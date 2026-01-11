@@ -85,9 +85,12 @@
                             <div class="col-6">
                                 <div class="position-relative">
                                     <i class="bi bi-person position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
+
                                     <input type="text" name="first_name" class="form-control form-control-minimal ps-5"
-                                        placeholder="First Name" required>
+                                        placeholder="First Name" value="{{ old('first_name', Auth::user()->first_name) }}"
+                                        required>
                                 </div>
+
                             </div>
 
                             <div class="col-6">
@@ -95,7 +98,8 @@
                                     <i
                                         class="bi bi-person-badge position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
                                     <input type="text" name="second_name" class="form-control form-control-minimal ps-5"
-                                        placeholder="Second Name" required>
+                                        placeholder="Second Name"
+                                        value="{{ old('second_name', Auth::user()->second_name) }}" required>
                                 </div>
                             </div>
 
@@ -104,7 +108,7 @@
                                     <i
                                         class="bi bi-telephone position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
                                     <input type="tel" name="telp" class="form-control form-control-minimal ps-5"
-                                        placeholder="Telp" required>
+                                        placeholder="Telp" value="{{ old('contact', Auth::user()->contact) }}" required>
                                 </div>
                             </div>
 
@@ -113,7 +117,8 @@
                                     <i
                                         class="bi bi-envelope position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
                                     <input type="email" name="email" class="form-control form-control-minimal ps-5"
-                                        placeholder="Email" required>
+                                        placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required
+                                        >
                                 </div>
                             </div>
 
@@ -122,9 +127,10 @@
                                     <i
                                         class="bi bi-geo-alt position-absolute top-50 translate-middle-y ms-2 text-muted"></i>
                                     <input type="text" name="city" class="form-control form-control-minimal ps-5"
-                                        placeholder="City" required>
+                                        placeholder="City" value="{{ old('city', Auth::user()->city) }}" required>
                                 </div>
                             </div>
+
 
                             <div class="col-12 mt-4">
                                 <div class="position-relative">

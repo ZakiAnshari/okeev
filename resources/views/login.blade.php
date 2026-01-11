@@ -77,16 +77,16 @@
                         <form action="{{ route('login') }}" method="POST" class="mb-3">
                             @csrf
 
-                            <!-- Username Field -->
+                            <!-- Email Field -->
                             <div class="mb-3">
-                                <label for="username" class="form-label d-flex justify-content-between">
-                                    <span>Username</span>
+                                <label for="email" class="form-label d-flex justify-content-between">
+                                    <span>Email</span>
                                 </label>
-                                <input type="text" id="username" name="username"
-                                    class="form-control @error('username') is-invalid @enderror"
-                                    placeholder="Enter username" value="{{ old('username') }}" autofocus
+                                <input type="email" id="email" name="email"
+                                    class="form-control @error('email') is-invalid @enderror"
+                                    placeholder="Enter your email" value="{{ old('email') }}" autofocus
                                     style="background: #30445C; color: #ffffff; border: 1px solid #30445C;" />
-                                @error('username')
+                                @error('email')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>

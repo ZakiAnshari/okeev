@@ -59,14 +59,17 @@ class PaymentController extends Controller
         }
 
         // ✅ Update status ke Completed (Xendit sudah redirect ke sini = pembayaran berhasil)
+        $justCompleted = false;
         if ($order->status === 'PENDING') {
             $order->update([
                 'status' => 'Completed'
             ]);
+            $justCompleted = true;
         }
 
         // RealRashid SweetAlert notification (flash ke session)
-        if ($order->status === 'Completed') {
+        // Only show the success alert when the status was changed in THIS request
+        if ($justCompleted) {
             Alert::success('Pembayaran Berhasil', 'Pesanan Anda sedang diproses.');
         }
 

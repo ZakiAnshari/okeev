@@ -52,10 +52,18 @@ class OrderController extends Controller
     public function createInvoice(Request $request, Product $product)
     {
         // 1️⃣ VALIDASI
-        $request->validate([
-            'qty'   => 'required|integer|min:1',
-            'color' => 'required|string',
-        ]);
+        $rules = [
+            'qty' => 'required|integer|min:1',
+        ];
+
+        // Hanya wajibkan warna jika produk memang memiliki opsi warna
+        if ($product->colors->isNotEmpty()) {
+            $rules['color'] = 'required|string';
+        } else {
+            $rules['color'] = 'nullable|string';
+        }
+
+        $request->validate($rules);
 
         // 2️⃣ HITUNG TOTAL
         $qty        = $request->qty;
@@ -68,27 +76,43 @@ class OrderController extends Controller
         // 3️⃣ SET API KEY XENDIT
         Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
 
-        // 4️⃣ CREATE INVOICE
-        $apiInstance = new InvoiceApi();
-        $invoice = $apiInstance->createInvoice(
-            new CreateInvoiceRequest([
-                'external_id'          => $externalId,
-                'amount'               => (int) $grandTotal,
-                'currency'             => 'IDR',
-                'description'          => 'Order ' . $product->model_name,
-                'success_redirect_url' => route('payment.success', ['external_id' => $externalId]),
-                'failure_redirect_url' => route('payment.failed', ['external_id' => $externalId]),
-            ])
-        );
+        // 4️⃣ CREATE INVOICE (tangani error agar tidak silent fail)
+        try {
+            $apiInstance = new InvoiceApi();
+            $invoice = $apiInstance->createInvoice(
+                new CreateInvoiceRequest([
+                    'external_id'          => $externalId,
+                    'amount'               => (int) $grandTotal,
+                    'currency'             => 'IDR',
+                    'description'          => 'Order ' . $product->model_name,
+                    'success_redirect_url' => route('payment.success', ['external_id' => $externalId]),
+                    'failure_redirect_url' => route('payment.failed', ['external_id' => $externalId]),
+                ])
+            );
+        } catch (\Throwable $e) {
+            // Log error and redirect back with message so frontend user tahu kenapa tidak redirect
+            report($e);
+            return back()->with('error', 'Gagal membuat invoice pembayaran. Silakan coba lagi atau hubungi admin. (' . $e->getMessage() . ')');
+        }
 
         // 5️⃣ SIMPAN ORDER
+        // Pastikan kita tidak menyimpan NULL ke kolom yang tidak menerima null
+        $colorInput = $request->color ?? null;
+        if ($product->colors->isNotEmpty() && empty($colorInput)) {
+            // fallback ke warna pertama jika tersedia
+            $colorInput = optional($product->colors->first())->name ?? '';
+        }
+
+        // final fallback ke empty string agar tidak melanggar constraint
+        $colorInput = $colorInput ?? '';
+
         $order = Order::create([
             'user_id'        => Auth::id(),
             'product_id'     => $product->id,
             'external_id'    => $externalId,
             'no_transaction' => $externalId,
             'model_name'     => $product->model_name,
-            'color'          => $request->color,
+            'color'          => $colorInput,
             'qty'            => $qty,
             'price'          => $price,
             'invoice_url'    => $invoice['invoice_url'],
