@@ -401,4 +401,24 @@
         });
     </script>
     @include('sweetalert::alert')
+    @if(!empty($showSuccessAlert))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembayaran Berhasil',
+                            text: 'Pesanan Anda sedang diproses.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else if (typeof swal === 'function') {
+                        swal('Pembayaran Berhasil', 'Pesanan Anda sedang diproses.', 'success');
+                    }
+                } catch (e) {
+                    console.error('SweetAlert show failed', e);
+                }
+            });
+        </script>
+    @endif
 @endsection

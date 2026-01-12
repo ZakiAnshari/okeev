@@ -70,6 +70,11 @@ class PaymentController extends Controller
         // RealRashid SweetAlert notification (flash ke session)
         // Only show the success alert when the status was changed in THIS request
         if ($justCompleted) {
+            // Keep session alert for normal flows (localhost), but some external
+            // redirects (payment gateway) may lose the session cookie. To make
+            // the success notification reliable on server redirects, we also
+            // pass a view flag (`showSuccessAlert`) that the blade will use to
+            // render SweetAlert client-side immediately in this request.
             Alert::success('Pembayaran Berhasil', 'Pesanan Anda sedang diproses.');
         }
 
@@ -89,9 +94,13 @@ class PaymentController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        // Flag to instruct the view to show the SweetAlert immediately (works
+        // even when session cookie is not preserved during external redirects)
+        $showSuccessAlert = $justCompleted && (bool) $externalId;
+
         return view('payment.success', compact('order', 'categoriesPosition1',
             'categoriesPosition2',
-            'categoriesPosition3'));
+            'categoriesPosition3', 'showSuccessAlert'));
     }
 
     public function failed(Request $request)
@@ -114,12 +123,14 @@ class PaymentController extends Controller
         }
 
         // ❌ Update status ke Failed
+        $justFailed = false;
         if ($order->status === 'PENDING') {
             $order->update([
                 'status' => 'Failed'
             ]);
 
-            // RealRashid SweetAlert notification
+            $justFailed = true;
+            // Keep session alert for normal flows
             Alert::error('Pembayaran Gagal', 'Pembayaran gagal atau dibatalkan. Silahkan coba lagi.');
         }
 
@@ -139,9 +150,11 @@ class PaymentController extends Controller
             ->orderBy('name_category', 'asc')
             ->get();
 
+        $showFailedAlert = $justFailed && (bool) $externalId;
+
         return view('payment.failed', compact('order', 'categoriesPosition1',
             'categoriesPosition2',
-            'categoriesPosition3'));
+            'categoriesPosition3', 'showFailedAlert'));
     }
 
     public function virtualAccount(Order $order)
