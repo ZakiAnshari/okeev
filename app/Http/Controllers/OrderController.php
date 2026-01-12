@@ -120,8 +120,8 @@ class OrderController extends Controller
             'status'         => 'PENDING',
         ]);
 
-        // 6️⃣ REDIRECT KE XENDIT
-        return redirect($invoice['invoice_url']);
+        // 6️⃣ REDIRECT KE XENDIT (buka di tab yang sama)
+        return redirect()->away($invoice['invoice_url']);
     }
 
 
@@ -181,4 +181,6 @@ class OrderController extends Controller
 
         return view('admin.orders.index', compact('orders'));
     }
+
+    
 }

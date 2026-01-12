@@ -22,17 +22,15 @@
                             @endif
 
                             <!-- Table Data -->
-                            <table id="ordersTable" class="table table-bordered table-striped">
+                            <table id="ordersTable" class="table table-bordered table-striped w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
                                         <th>No. Transaksi</th>
                                         <th>Model</th>
-                                        <th>Color</th>
-                                        <th>Qty</th>
                                         <th>Harga</th>
-                                        <th>Grand Total</th>
                                         <th>Status</th>
+                                        <th style="text-align: center;padding:10px 10px;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,10 +39,7 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $order->no_transaction }}</td>
                                             <td>{{ $order->model_name }}</td>
-                                            <td>{{ $order->color }}</td>
-                                            <td>{{ $order->qty }}</td>
                                             <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
-                                            <td>Rp {{ number_format($order->grand_total, 0, ',', '.') }}</td>
                                             <td>
                                                 <span
                                                     class="badge 
@@ -55,14 +50,17 @@
                                                     {{ ucfirst($order->status) }}
                                                 </span>
                                             </td>
+                                            <td style="text-align: center;padding:10px 10px;">
+                                                <a href="" class="btn btn-sm btn-primary">Open</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
 
 
-                            {{-- Jika menggunakan paginate --}}
-                            {{-- {{ $orders->links() }} --}}
+
+
                         </div>
                     </div>
                 </div>
@@ -70,6 +68,33 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $('#ordersTable').DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                order: [
+                    [1, 'desc']
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 5]
+                }],
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    paginate: {
+                        previous: "Sebelumnya",
+                        next: "Berikutnya"
+                    },
+                    zeroRecords: "Data tidak ditemukan"
+                }
+            });
+        });
+    </script>
 
     @include('sweetalert::alert')
 @endsection
