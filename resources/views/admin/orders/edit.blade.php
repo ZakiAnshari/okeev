@@ -15,9 +15,10 @@
                 </a>
 
                 <h4 class="fw-bold d-flex align-items-center my-4">
-                    Edit Order
-                    <i class="bx bx-cog mx-2 text-primary" style="font-size: 1.5rem;"></i>
+                    Order
+                    <i class="bx bx-receipt mx-2 text-primary" style="font-size: 1.5rem;"></i>
                 </h4>
+
             </div>
 
             <div class="card-body">
@@ -40,72 +41,89 @@
 
                         <div class="row">
 
+                            <div class="mb-3">
+                                <label class="form-label m-0">No. Transaksi</label> :
+                                <strong class="fs-6">{{ $orders->external_id }}</strong>
+                                <div class="text-muted small">
+                                    {{ $orders->created_at->timezone('Asia/Jakarta')->format('d F Y, H:i') }} WIB
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nama Pemesan</label>
+                                    <div class="form-control bg-light">
+                                        {{ $orders->first_name }}
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <!-- Title -->
                             <div class="col-lg-12 mb-3">
                                 <label class="form-label d-block">Status</label>
 
-                                <div class="btn-group w-100" role="group">
+                                <div class="d-flex flex-wrap gap-2">
 
-                                    <input type="radio" class="btn-check" name="status" id="status-new" value="new"
-                                        {{ old('status', $orders->status) == 'new' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-primary" for="status-new">
-                                        <i class="bx bx-bell-plus me-1"></i> New
+                                    <div class="d-flex justify-content-center">
+                                        <input type="radio" class="btn-check" name="status" id="status-new"
+                                            value="new" {{ old('status', $orders->status) == 'new' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary w-100" for="status-new">
+                                            <i class="bx bx-bell-plus me-1"></i> New
+                                        </label>
+                                    </div>
 
-                                    </label>
+                                    <div class="d-flex justify-content-center">
+                                        <input type="radio" class="btn-check" name="status" id="status-processing"
+                                            value="processing"
+                                            {{ old('status', $orders->status) == 'processing' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary w-100" for="status-processing">
+                                            <i class="bx bx-loader-circle me-1"></i> Processing
+                                        </label>
+                                    </div>
 
-                                    <input type="radio" class="btn-check" name="status" id="status-processing"
-                                        value="processing"
-                                        {{ old('status', $orders->status) == 'processing' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-warning" for="status-processing">
-                                        <i class="bx bx-loader-circle me-1"></i> Processing
-                                    </label>
+                                    <div class="d-flex justify-content-center">
+                                        <input type="radio" class="btn-check" name="status" id="status-being-sent"
+                                            value="being_sent"
+                                            {{ old('status', $orders->status) == 'being_sent' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary w-100" for="status-being-sent">
+                                            <i class="bx bx-car me-1"></i> Being Sent
+                                        </label>
+                                    </div>
 
-                                    <input type="radio" class="btn-check" name="status" id="status-being-sent"
-                                        value="being_sent"
-                                        {{ old('status', $orders->status) == 'being_sent' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-info" for="status-being-sent">
-                                        <i class="bx bx-car me-1"></i> Being Sent
+                                    <div class="d-flex justify-content-center">
+                                        <input type="radio" class="btn-check" name="status" id="status-location"
+                                            value="to_the_location"
+                                            {{ old('status', $orders->status) == 'to_the_location' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary w-100" for="status-location">
+                                            <i class="bx bx-map me-1"></i> Location
+                                        </label>
+                                    </div>
 
-                                    </label>
+                                    <div class="d-flex justify-content-center">
+                                        <input type="radio" class="btn-check" name="status" id="status-delivered"
+                                            value="delivered"
+                                            {{ old('status', $orders->status) == 'delivered' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary w-100" for="status-delivered">
+                                            <i class="bx bx-check-circle me-1"></i> Delivered
+                                        </label>
+                                    </div>
 
-                                    <input type="radio" class="btn-check" name="status" id="status-location"
-                                        value="to_the_location"
-                                        {{ old('status', $orders->status) == 'to_the_location' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-secondary" for="status-location">
-                                        <i class="bx bx-map me-1"></i> Location
-                                    </label>
-
-                                    <input type="radio" class="btn-check" name="status" id="status-delivered"
-                                        value="delivered"
-                                        {{ old('status', $orders->status) == 'delivered' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-success" for="status-delivered">
-                                        <i class="bx bx-check-circle me-1"></i> Delivered
-                                    </label>
-
-                                    <input type="radio" class="btn-check" name="status" id="status-cancelled"
-                                        value="cancelled"
-                                        {{ old('status', $orders->status) == 'cancelled' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-danger" for="status-cancelled">
-                                        <i class="bx bx-x-circle me-1"></i> Cancelled
-                                    </label>
+                                    <div class="d-flex justify-content-center">
+                                        <input type="radio" class="btn-check" name="status" id="status-cancelled"
+                                            value="cancelled"
+                                            {{ old('status', $orders->status) == 'cancelled' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary w-100" for="status-cancelled">
+                                            <i class="bx bx-x-circle me-1"></i> Cancelled
+                                        </label>
+                                    </div>
 
                                 </div>
 
-                                @error('status')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="col-lg-6 mb-3">
-                                <label for="price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="price" name="price"
-                                    value="{{ old('price', $orders->price) }}" placeholder="Enter Price" />
-                                @error('price')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-
                             </div>
 
-                           
+
+
 
                         </div>
 

@@ -185,7 +185,9 @@
                             <div class="button add-list-button">
                                 <div class="button-group">
                                     @guest
-                                        <a href="/login" class="btn-login">Login</a>
+                                        <a href="/login" class="btn-login">
+                                            <i class="bx bx-user me-2"></i> Login
+                                        </a>
                                     @endguest
 
                                     {{-- <a href="#" class="btn-download">
@@ -206,18 +208,39 @@
                                                 'user_id',
                                                 \Illuminate\Support\Facades\Auth::id(),
                                             )
-                                                ->whereIn('status', ['PENDING', 'Failed'])
+                                                // Include Completed so successful payments remain visible
+                                                ->whereIn('status', ['PENDING', 'Failed', 'Completed'])
+                                                ->with(['product.brand'])
                                                 ->orderBy('created_at', 'desc')
                                                 ->take(5)
                                                 ->get();
 
-                                            // Include recent Testdrive entries so admins can see incoming requests
-                                            $notifTestdrives = \App\Models\Testdrive::latest()->take(5)->get();
+                                            // Include recent Testdrive entries but only for the logged-in user
+                                            $user = \Illuminate\Support\Facades\Auth::user();
+                                            $notifTestdrivesQuery = \App\Models\Testdrive::query();
+                                            if ($user) {
+                                                $notifTestdrivesQuery->where(function ($q) use ($user) {
+                                                    if (!empty($user->email)) {
+                                                        $q->where('email', $user->email);
+                                                    }
+                                                    if (!empty($user->contact)) {
+                                                        $q->orWhere('telp', $user->contact);
+                                                    }
+                                                });
+                                            } else {
+                                                // not authenticated -> no testdrive notifications
+                                                $notifTestdrivesQuery->whereRaw('0 = 1');
+                                            }
+
+                                            $notifTestdrives = $notifTestdrivesQuery->latest()->take(5)->get();
 
                                             $notifCount = $notifOrders->count() + $notifTestdrives->count();
 
                                             // Total transactions/orders for this user
-                                            $ordersCount = \App\Models\Order::where('user_id', \Illuminate\Support\Facades\Auth::id())->count();
+                                            $ordersCount = \App\Models\Order::where(
+                                                'user_id',
+                                                \Illuminate\Support\Facades\Auth::id(),
+                                            )->count();
                                         }
                                     @endphp
 
@@ -248,12 +271,12 @@
                                         <div id="notifModal" class="notif-modal">
 
                                             <div class="notif-tabs">
-                                                    <div class="tab active" data-target="notifContent">
-                                                        Notification <span class="dot">{{ $notifCount }}</span>
-                                                    </div>
-                                                    <div class="tab" data-target="transContent">
-                                                        Transaction <span class="dot">{{ $ordersCount }}</span>
-                                                    </div>
+                                                <div class="tab active" data-target="notifContent">
+                                                    Notification <span class="dot">{{ $notifCount }}</span>
+                                                </div>
+                                                <div class="tab" data-target="transContent">
+                                                    Transaction <span class="dot">{{ $ordersCount }}</span>
+                                                </div>
                                             </div>
 
                                             <div class="notif-content show" id="notifContent">
@@ -264,15 +287,29 @@
                                                         <a href="{{ route('payment.va', $n->id) }}"
                                                             class="text-decoration-none text-body">
                                                             <div class="item">
-                                                                <div
-                                                                    class="icon {{ $n->status === 'PENDING' ? 'bg-warning' : 'bg-danger' }}">
-                                                                    <i class="bx bx-dollar-circle"></i>
+                                                                @php
+                                                                    $iconClass = 'bg-danger';
+                                                                    $iconName = 'bx-dollar-circle';
+                                                                    if (strtolower($n->status) === 'pending') {
+                                                                        $iconClass = 'bg-warning';
+                                                                    } elseif (
+                                                                        strtolower($n->status) === 'completed' ||
+                                                                        strtolower($n->status) === 'paid'
+                                                                    ) {
+                                                                        $iconClass = 'bg-success';
+                                                                        $iconName = 'bx-check-circle';
+                                                                    }
+                                                                @endphp
+
+                                                                <div class="icon {{ $iconClass }}">
+                                                                    <i class="bx {{ $iconName }}"></i>
                                                                 </div>
                                                                 <div>
                                                                     <div class="title">
-                                                                        ORDER VEHICLE
+                                                                        ORDER
                                                                         <span>{{ $n->created_at->diffForHumans() }}</span>
                                                                     </div>
+
                                                                     <p>
                                                                         {{ Str::limit('Pesanan ' . $n->model_name . ' - ' . $n->qty . ' item. Total Rp ' . number_format($n->grand_total, 0, ',', '.'), 90) }}
                                                                     </p>
@@ -304,22 +341,7 @@
                                                         <hr>
                                                     @endforeach
                                                 @endif
-                                                <!-- Tetap tampilkan notifikasi Test Drive (static reminder) -->
 
-                                                {{-- <div class="item">
-                                                        <div class="icon bg-info">
-                                                            <i class="bx bx-car"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="title">
-                                                                TEST DRIVE <span>Info</span>
-                                                            </div>
-                                                            <p>
-                                                                You applied for a test drive. We'll contact you to confirm schedule.
-                                                            </p>
-                                                            <a href="#">Details...</a>
-                                                        </div>
-                                                    </div> --}}
                                             </div>
 
                                             <div class="notif-content" id="transContent">
