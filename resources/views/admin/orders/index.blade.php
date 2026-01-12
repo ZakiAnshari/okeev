@@ -27,31 +27,44 @@
                                     <tr>
                                         <th style="width: 5px;">No</th>
                                         <th>No. Transaksi</th>
-                                        <th>Model</th>
-                                        <th>Harga</th>
+                                        <th>Tanggal Pesan</th>
                                         <th>Status</th>
-                                        <th style="text-align: center;padding:10px 10px;">Aksi</th>
+
+                                        <th>Harga</th>
+                                        <th>Payment Status</th>
+                                        <th style="text-align: center; padding:10px 10px;">Aksi</th>
                                     </tr>
+
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $index => $order)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $order->no_transaction }}</td>
-                                            <td>{{ $order->model_name }}</td>
-                                            <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
                                             <td>
+                                                {{ $order->created_at->timezone('Asia/Jakarta')->format('d-m-Y - ( H:i') }}
+                                                WIB )
+                                            </td>
+                                            <td>New</td>
+                                            <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
+                                            <td style="width: 10px;">
+                                                @php
+                                                    $statusClasses = [
+                                                        'PENDING' => 'bg-warning text-dark',
+                                                        'Completed' => 'bg-success text-white',
+                                                        'cancelled' => 'bg-danger text-white',
+                                                    ];
+                                                @endphp
                                                 <span
-                                                    class="badge 
-                                                    @if ($order->status == 'pending') bg-warning
-                                                    @elseif($order->status == 'completed') bg-success
-                                                    @elseif($order->status == 'cancelled') bg-danger
-                                                    @else bg-secondary @endif">
+                                                    class="badge {{ $statusClasses[$order->status] ?? 'bg-secondary text-white' }}">
                                                     {{ ucfirst($order->status) }}
                                                 </span>
                                             </td>
                                             <td style="text-align: center;padding:10px 10px;">
-                                                <a href="" class="btn btn-sm btn-primary">Open</a>
+                                                <a href="{{ route('orders.edit', $order->id) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    Open
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

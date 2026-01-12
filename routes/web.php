@@ -175,6 +175,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // --------------------
     // ORDER
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
     // --------------------
     //NEWS
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');

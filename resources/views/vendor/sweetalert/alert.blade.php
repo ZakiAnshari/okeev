@@ -7,8 +7,15 @@
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-{{ config('sweetalert.theme') }}" rel="stylesheet">
     @endif
 
+    @php
+        $cdn = config('sweetalert.cdn') ?: null;
+        $localPath = public_path('vendor/sweetalert/sweetalert.all.js');
+        $localAsset = asset('vendor/sweetalert/sweetalert.all.js');
+        $scriptSrc = $cdn ?? (file_exists($localPath) ? $localAsset : 'https://cdn.jsdelivr.net/npm/sweetalert2@11');
+    @endphp
+
     @if (config('sweetalert.neverLoadJS') === false)
-        <script src="{{ $cdn ?? asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+        <script src="{{ $scriptSrc }}"></script>
     @endif
 
     @if (Session::has('alert.delete') || Session::has('alert.config'))
