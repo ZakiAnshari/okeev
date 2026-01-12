@@ -28,22 +28,37 @@
 
     @if(!empty($showFailedAlert))
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                try {
-                    if (typeof Swal !== 'undefined') {
+            (function showFailed() {
+                function fire() {
+                    try {
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembayaran Gagal',
                             text: 'Pembayaran gagal atau dibatalkan. Silahkan coba lagi.',
                             confirmButtonText: 'OK'
                         });
-                    } else if (typeof swal === 'function') {
-                        swal('Pembayaran Gagal', 'Pembayaran gagal atau dibatalkan. Silahkan coba lagi.', 'error');
+                    } catch (e) {
+                        if (typeof swal === 'function') {
+                            try { swal('Pembayaran Gagal', 'Pembayaran gagal atau dibatalkan. Silahkan coba lagi.', 'error'); } catch (e2) { console.error(e2); }
+                        } else {
+                            console.error('SweetAlert not available', e);
+                        }
                     }
-                } catch (e) {
-                    console.error('SweetAlert show failed', e);
                 }
-            });
+
+                if (typeof Swal !== 'undefined' || typeof swal === 'function') {
+                    document.addEventListener('DOMContentLoaded', fire);
+                    return;
+                }
+
+                var s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+                s.onload = function() {
+                    document.addEventListener('DOMContentLoaded', fire);
+                };
+                s.onerror = function(err) { console.error('Failed to load SweetAlert2 CDN', err); };
+                document.head.appendChild(s);
+            })();
         </script>
     @endif
 @endsection

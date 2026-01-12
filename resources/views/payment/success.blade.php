@@ -403,22 +403,38 @@
     @include('sweetalert::alert')
     @if(!empty($showSuccessAlert))
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                try {
-                    if (typeof Swal !== 'undefined') {
+            (function showSuccess() {
+                function fire() {
+                    try {
                         Swal.fire({
                             icon: 'success',
                             title: 'Pembayaran Berhasil',
                             text: 'Pesanan Anda sedang diproses.',
                             confirmButtonText: 'OK'
                         });
-                    } else if (typeof swal === 'function') {
-                        swal('Pembayaran Berhasil', 'Pesanan Anda sedang diproses.', 'success');
+                    } catch (e) {
+                        if (typeof swal === 'function') {
+                            try { swal('Pembayaran Berhasil', 'Pesanan Anda sedang diproses.', 'success'); } catch (e2) { console.error(e2); }
+                        } else {
+                            console.error('SweetAlert not available', e);
+                        }
                     }
-                } catch (e) {
-                    console.error('SweetAlert show failed', e);
                 }
-            });
+
+                if (typeof Swal !== 'undefined' || typeof swal === 'function') {
+                    document.addEventListener('DOMContentLoaded', fire);
+                    return;
+                }
+
+                // Load CDN as fallback
+                var s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+                s.onload = function() {
+                    document.addEventListener('DOMContentLoaded', fire);
+                };
+                s.onerror = function(err) { console.error('Failed to load SweetAlert2 CDN', err); };
+                document.head.appendChild(s);
+            })();
         </script>
     @endif
 @endsection
