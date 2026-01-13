@@ -26,6 +26,7 @@ use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Mobile\DriveController;
 use App\Http\Controllers\SpecificationController;
+use App\Http\Controllers\NotificationController;
 
 Route::middleware(['role_not_one', DetectMobileRedirect::class])->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -82,6 +83,9 @@ Route::middleware(['auth', 'role'])->group(function () {
 
     // API untuk fetch pending orders (untuk real-time notification)
     Route::get('/api/notifications/pending-orders', [HomeUserController::class, 'getPendingOrders'])->name('api.pending-orders');
+
+    // AJAX poll endpoint for header notifications
+    Route::get('/notifications/poll', [NotificationController::class, 'poll'])->name('notifications.poll');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });

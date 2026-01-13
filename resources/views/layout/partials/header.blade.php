@@ -238,11 +238,11 @@
 
                                             $notifCount = $notifOrders->count() + $notifTestdrives->count();
 
-                                            // Total transactions/orders for this user
-                                            $ordersCount = \App\Models\Order::where(
-                                                'user_id',
-                                                \Illuminate\Support\Facades\Auth::id(),
-                                            )->count();
+                                            // Total transactions/orders for this user (exclude cancelled)
+                                            $ordersCount = \App\Models\Order::where('user_id', \Illuminate\Support\Facades\Auth::id())
+                                                ->whereRaw("LOWER(COALESCE(status,'')) != 'cancelled'")
+                                                ->whereRaw("LOWER(COALESCE(status_transaksi,'')) != 'cancelled'")
+                                                ->count();
                                         }
                                     @endphp
 
@@ -307,8 +307,21 @@
                                                                     <i class="bx {{ $iconName }}"></i>
                                                                 </div>
                                                                 <div>
+                                                                    @php
+                                                                        $notifLabel = 'ORDER';
+                                                                        $st = strtolower($n->status_transaksi ?? $n->status ?? '');
+                                                                        if ($st === 'being_sent') {
+                                                                            $notifLabel = 'BEING SENT';
+                                                                        } elseif ($st === 'processing') {
+                                                                            $notifLabel = 'PROCESS';
+                                                                        } elseif ($st === 'to_the_location') {
+                                                                            $notifLabel = 'Location';
+                                                                        } elseif (in_array($st, ['completed', 'paid'])) {
+                                                                            $notifLabel = 'ORDER';
+                                                                        }
+                                                                    @endphp
                                                                     <div class="title">
-                                                                        ORDER
+                                                                        {{ $notifLabel }}
                                                                         <span>{{ $n->created_at->diffForHumans() }}</span>
                                                                     </div>
 
@@ -410,6 +423,8 @@
                                                 <!-- CARD -->
                                                 @php
                                                     $orders = \App\Models\Order::where('user_id', auth()->id())
+                                                        ->whereRaw("LOWER(COALESCE(status,'')) != 'cancelled'")
+                                                        ->whereRaw("LOWER(COALESCE(status_transaksi,'')) != 'cancelled'")
                                                         ->latest()
                                                         ->get();
                                                 @endphp

@@ -26,7 +26,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
-                                        <th>No. Transaksi</th>
+                                        {{-- <th>No. Transaksi</th> --}}
+                                        <th>Nama Pemesan</th>
+                                        <th>Telp</th>
                                         <th>Tanggal Pesan</th>
                                         <th>Status</th>
 
@@ -40,7 +42,9 @@
                                     @foreach ($orders as $index => $order)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $order->no_transaction }}</td>
+                                            {{-- <td>{{ $order->no_transaction }}</td> --}}
+                                            <td>{{ $order->user->first_name }}</td>
+                                            <td>{{ $order->user->contact }}</td>
                                             <td>
                                                 {{ $order->created_at->timezone('Asia/Jakarta')->format('d-m-Y - ( H:i') }}
                                                 WIB )
