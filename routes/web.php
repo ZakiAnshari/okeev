@@ -69,6 +69,9 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::post('/order-invoice/{product:slug}', [OrderController::class, 'createInvoice'])->name('order.invoice');
     Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
 
+    // Allow user to cancel their own order (set status_transaksi -> cancelled)
+    Route::post('/order/{order}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
+
     Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])->name('payment.va');
 
     // Route::get('/payment/success', function () {return view('payment.success');})->name('payment.success');
@@ -76,10 +79,10 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 
     Route::get('/payment/failed', [PaymentController::class, 'failed'])->name('payment.failed');
-    
+
     // API untuk fetch pending orders (untuk real-time notification)
     Route::get('/api/notifications/pending-orders', [HomeUserController::class, 'getPendingOrders'])->name('api.pending-orders');
-    
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 
@@ -176,6 +179,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // ORDER
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::post('/orders/{id}/edit', [OrderController::class, 'update'])->name('orders.update');
     // --------------------
     //NEWS
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');

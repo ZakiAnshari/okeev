@@ -7,9 +7,11 @@
         <div class="container">
 
             <!-- Back -->
-            <a href="/" class="text-decoration-none d-flex align-items-center mb-4">
+            <a href="{{ route('landing.product', ['productSlug' => $product->slug]) }}"
+                class="text-decoration-none d-flex align-items-center mb-4 text-dark">
                 <i class="bx bx-arrow-back me-2"></i> Order Now
             </a>
+
 
             <div class="row g-4">
 
@@ -193,7 +195,7 @@
                         <!-- Payment Button -->
                         <div class="bf-actions">
 
-                            <form action="/order-invoice/{{ $product->slug }}" method="POST">
+                            <form id="paymentForm" action="/order-invoice/{{ $product->slug }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="qty" id="qty_input" value="1">
@@ -569,6 +571,45 @@
                 qtyInput.value = qty;
             }
         });
+    </script>
+
+    <script>
+        // Set a pending flag before redirecting to payment gateway,
+        // and reload this page when the user returns via Back so content is fresh.
+        (function () {
+            const key = 'pending_payment_{{ $product->slug }}';
+            const form = document.getElementById('paymentForm');
+
+            if (form) {
+                form.addEventListener('submit', function () {
+                    try {
+                        localStorage.setItem(key, Date.now());
+                    } catch (e) {
+                        // ignore storage errors
+                    }
+                });
+            }
+
+            function handlePageShow(e) {
+                // if page was restored from bfcache or navigation type is back_forward
+                const nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')) ? performance.getEntriesByType('navigation')[0] : null;
+                const isBack = e.persisted || (nav && nav.type === 'back_forward') || (performance && performance.navigation && performance.navigation.type === 2);
+                if (!isBack) return;
+
+                try {
+                    if (localStorage.getItem(key)) {
+                        localStorage.removeItem(key);
+                        // reload to get fresh state from server
+                        location.reload();
+                    }
+                } catch (err) {
+                    // fallback: always reload on back
+                    location.reload();
+                }
+            }
+
+            window.addEventListener('pageshow', handlePageShow);
+        })();
     </script>
 
 @endsection

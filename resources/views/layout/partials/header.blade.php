@@ -204,12 +204,14 @@
                                         $notifCount = 0;
                                         $ordersCount = 0;
                                         if (\Illuminate\Support\Facades\Auth::check()) {
-                                            $notifOrders = \App\Models\Order::where(
-                                                'user_id',
-                                                \Illuminate\Support\Facades\Auth::id(),
-                                            )
-                                                // Include Completed so successful payments remain visible
-                                                ->whereIn('status', ['PENDING', 'Failed', 'Completed'])
+                                            $notifOrders = \App\Models\Order::where('user_id', \Illuminate\Support\Facades\Auth::id())
+                                                // show recent orders that are not cancelled; include Completed so successful payments remain visible
+                                                ->where(function($q) {
+                                                    $q->whereIn('status', ['PENDING', 'Failed', 'Completed'])
+                                                      ->orWhereIn('status_transaksi', ['PENDING', 'Failed', 'Completed']);
+                                                })
+                                                ->whereRaw("LOWER(COALESCE(status,'')) != 'cancelled'")
+                                                ->whereRaw("LOWER(COALESCE(status_transaksi,'')) != 'cancelled'")
                                                 ->with(['product.brand'])
                                                 ->orderBy('created_at', 'desc')
                                                 ->take(5)
@@ -285,7 +287,7 @@
                                                 @else
                                                     @foreach ($notifOrders as $n)
                                                         <a href="{{ route('payment.va', $n->id) }}"
-                                                            class="text-decoration-none text-body">
+                                                            class="text-decoration-none text-body" data-order-id="{{ $n->id }}">
                                                             <div class="item">
                                                                 @php
                                                                     $iconClass = 'bg-danger';
@@ -350,36 +352,50 @@
                                                 <div class="trans-title">Purchase</div>
 
                                                 <!-- STEPS -->
+                                                @php
+                                                    $userOrdersForCounts = \App\Models\Order::where('user_id', auth()->id() ?? 0)->get();
+                                                    $statusCounts = $userOrdersForCounts->groupBy(function ($o) {
+                                                        return strtolower($o->status_transaksi ?? $o->status ?? 'unknown');
+                                                    })->map->count()->toArray();
+                                                @endphp
                                                 <div class="trans-steps">
-                                                    <div class="step active">
+                                                    <div class="step active" data-status="new">
                                                         <div class="step-icon">
                                                             <i class="bx bx-time"></i>
-                                                            <span class="step-dot">1</span>
+                                                            @if(($statusCounts['new'] ?? 0) > 0)
+                                                                <span class="step-dot">{{ $statusCounts['new'] }}</span>
+                                                            @endif
                                                         </div>
                                                         <span>Waiting for<br>Confirmation</span>
                                                     </div>
 
-                                                    <div class="step">
+                                                    <div class="step" data-status="processing">
                                                         <div class="step-icon">
                                                             <i class="bx bx-refresh"></i>
-                                                            {{-- <span class="step-dot">1</span> --}}
+                                                            @if(($statusCounts['processing'] ?? 0) > 0)
+                                                                <span class="step-dot">{{ $statusCounts['processing'] }}</span>
+                                                            @endif
                                                         </div>
                                                         <span>Process</span>
                                                     </div>
 
-                                                    <div class="step">
+                                                    <div class="step" data-status="being_sent">
                                                         <div class="step-icon">
                                                             <i class="bx bxs-truck"></i>
-                                                            {{-- <span class="step-dot">1</span> --}}
+                                                            @if(($statusCounts['being_sent'] ?? 0) > 0)
+                                                                <span class="step-dot">{{ $statusCounts['being_sent'] }}</span>
+                                                            @endif
                                                         </div>
                                                         <span>Being<br>sent</span>
                                                     </div>
 
 
-                                                    <div class="step">
+                                                    <div class="step" data-status="to_the_location">
                                                         <div class="step-icon">
                                                             <i class="bx bx-map"></i>
-                                                            {{-- <span class="step-dot">1</span> --}}
+                                                            @if(($statusCounts['to_the_location'] ?? 0) > 0)
+                                                                <span class="step-dot">{{ $statusCounts['to_the_location'] }}</span>
+                                                            @endif
                                                         </div>
                                                         <span>to the<br>Location</span>
                                                     </div>
@@ -389,7 +405,7 @@
                                                 <hr>
 
                                                 <!-- STATUS TITLE -->
-                                                <div class="trans-status-title">Waiting For Confirmation</div>
+                                                <div id="transStatusTitle" class="trans-status-title">Waiting For Confirmation</div>
 
                                                 <!-- CARD -->
                                                 @php
@@ -398,9 +414,13 @@
                                                         ->get();
                                                 @endphp
 
+                                                <div id="transCardsContainer">
                                                 @foreach ($orders as $item)
-                                                    <a href="{{ route('payment.va', $item->id) }}" class="w-100">
-                                                        <div class="trans-card mb-3">
+                                                    @php
+                                                        $ts = strtolower($item->status_transaksi ?? $item->status ?? '');
+                                                    @endphp
+                                                    <a href="{{ route('payment.va', $item->id) }}" class="w-100 trans-card-link" data-status="{{ $ts }}" data-order-id="{{ $item->id }}">
+                                                        <div class="trans-card mb-3" data-status="{{ $ts }}">
                                                             @if ($item->product && $item->product->colors->isNotEmpty() && $item->product->colors->first()->image)
                                                                 <img src="{{ asset('storage/' . $item->product->colors->first()->image) }}"
                                                                     class="img-fluid car-preview" alt="Car"
@@ -432,6 +452,7 @@
                                                         </div>
                                                     </a>
                                                 @endforeach
+                                                </div>
 
                                             </div>
 
@@ -973,6 +994,66 @@
                 document.getElementById(tab.dataset.target).classList.add('show');
             });
         });
+
+        // Transaction steps filtering (show trans-cards by status_transaksi)
+        const steps = document.querySelectorAll('.trans-steps .step');
+        const cardsContainer = document.getElementById('transCardsContainer');
+        const cards = cardsContainer ? cardsContainer.querySelectorAll('.trans-card') : [];
+        const statusTitle = document.getElementById('transStatusTitle');
+
+        function statusLabelFromKey(key) {
+            const map = {
+                'new': 'Waiting For Confirmation',
+                'processing': 'Process',
+                'being_sent': 'Being sent',
+                'to_the_location': 'To the Location'
+            };
+            return map[key] || 'Transactions';
+        }
+
+        function filterByStatus(status) {
+            if (!cardsContainer) return;
+            let shown = 0;
+            cards.forEach(c => {
+                const s = (c.dataset.status || '').toLowerCase();
+                if (!status || status === 'all' || s === status) {
+                    c.parentElement.style.display = ''; // anchor wrapper
+                    shown++;
+                } else {
+                    c.parentElement.style.display = 'none';
+                }
+            });
+
+            statusTitle.textContent = statusLabelFromKey(status);
+            if (shown === 0) {
+                // show empty message
+                if (!document.getElementById('transEmpty')) {
+                    const empty = document.createElement('div');
+                    empty.id = 'transEmpty';
+                    empty.className = 'empty';
+                    empty.textContent = 'Tidak ada transaksi untuk status ini.';
+                    cardsContainer.appendChild(empty);
+                }
+            } else {
+                const ex = document.getElementById('transEmpty');
+                if (ex) ex.remove();
+            }
+        }
+
+        steps.forEach(step => {
+            step.addEventListener('click', function () {
+                steps.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+                const status = this.dataset.status || 'all';
+                filterByStatus(status);
+            });
+        });
+
+        // apply initial filter from the active step
+        const activeStep = document.querySelector('.trans-steps .step.active');
+        if (activeStep) {
+            filterByStatus(activeStep.dataset.status || 'all');
+        }
 
     });
 </script>

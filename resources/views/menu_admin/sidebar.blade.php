@@ -13,12 +13,23 @@
 
     <div class="menu-inner-shadow"></div>
 
+    @php
+        $newOrdersCount = \App\Models\Order::where('status_transaksi', 'new')->count();
+    @endphp
+
     <ul class="menu-inner py-1">
         {{-- Dashboard --}}
         <li class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">
             <a href="/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{ Request::is('slider') ? 'active' : '' }}">
+            <a href="/slider" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-images"></i>
+                <div data-i18n="Analytics">Slider</div>
             </a>
         </li>
 
@@ -44,9 +55,14 @@
         </li>
 
         <li class="menu-item {{ Request::is('orders*') ? 'active' : '' }}">
-            <a href="/orders" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-receipt"></i>
-                <div data-i18n="Test Drive Booking">Orders</div>
+            <a href="/orders" class="menu-link d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <i class="menu-icon tf-icons bx bx-receipt"></i>
+                    <div class="ms-2" data-i18n="Test Drive Booking">Orders</div>
+                </div>
+                @if($newOrdersCount > 0)
+                    <span class="badge bg-danger" style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $newOrdersCount }}</span>
+                @endif
             </a>
         </li>
 

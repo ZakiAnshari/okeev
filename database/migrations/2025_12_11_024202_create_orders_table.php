@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('qty');
             $table->decimal('price', 15, 2);
             $table->bigInteger('grand_total');
-
+            $table->string('status_transaksi')->default('new');
             $table->string('status')->default('pending');
             $table->timestamps();
 

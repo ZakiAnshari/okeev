@@ -10,8 +10,9 @@ use Illuminate\Http\Request;
 use Xendit\Invoice\InvoiceApi;
 use Xendit\Invoice\InvoiceItem;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
+use RealRashid\SweetAlert\Facades\Alert;
 use Xendit\Invoice\CreateInvoiceRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
@@ -118,6 +119,7 @@ class OrderController extends Controller
             'invoice_url'    => $invoice['invoice_url'],
             'grand_total'    => $grandTotal,
             'status'         => 'PENDING',
+            'status_transaksi' => 'new',
         ]);
 
         // 6️⃣ REDIRECT KE XENDIT (buka di tab yang sama)
@@ -189,5 +191,43 @@ class OrderController extends Controller
         return view('admin.orders.edit', [
             'orders' => $orders
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $orders = Order::findOrFail($id);
+
+        $request->validate([
+            'status_transaksi' => 'required|in:new,processing,being_sent,to_the_location,delivered,cancelled',
+        ]);
+
+        $orders->status_transaksi = $request->input('status_transaksi');
+        $orders->save();
+
+        Alert::success('Success', 'Order berhasil diperbarui');
+        return redirect()->route('orders.index');
+    }
+
+    /**
+     * Allow the owning user to cancel their order. This sets `status_transaksi` to 'cancelled'.
+     */
+    public function cancel(Request $request, Order $order)
+    {
+        // Ensure the action is performed by the owner
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Prevent cancelling already-paid orders
+        if (strtolower($order->status) === 'completed') {
+            Alert::error('Gagal', 'Tidak dapat membatalkan pesanan yang sudah dibayar.');
+            return back();
+        }
+
+        $order->status_transaksi = 'cancelled';
+        $order->save();
+
+        Alert::success('Berhasil', 'Pesanan Anda berhasil dibatalkan.');
+        return back();
     }
 }

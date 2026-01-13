@@ -179,7 +179,7 @@
 
 
                             <!-- Table Data -->
-                            <table id="brandTable" class="table table-bordered">
+                            <table id="brandTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th style="width: 5px;">No</th>
@@ -194,47 +194,33 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name_brand }}</td>
                                             <td>
-                                                <img src="{{ asset('storage/' . $item->image) }}" alt="Brand Image"
-                                                    style="width: 100px; height: auto;">
+                                                @if ($item->image)
+                                                    <img src="{{ asset('storage/' . $item->image) }}" alt="Brand Image"
+                                                        style="width: 100px; height: auto;">
+                                                @else
+                                                    <span class="text-muted">Tidak ada</span>
+                                                @endif
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ route('brands.edit', $item->slug) }}"
                                                     class="btn btn-icon btn-outline-primary" title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </a>
-                                                <a href="javascript:void(0)"
+                                                <button class="btn btn-icon btn-outline-danger" title="Hapus"
                                                     onclick="confirmDeletebrand('{{ $item->slug }}', '{{ $item->name_brand }}')">
-                                                    <button class="btn btn-icon btn-outline-danger" title="Hapus">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </a>
+                                                    <i class="bx bx-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center">Data Brand Kosong</td>
+                                            <td colspan="4" class="text-center text-muted">Data Brand Kosong</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
-                            <script>
-                                $(document).ready(function() {
-                                    $('#brandTable').DataTable({
-                                        responsive: true,
-                                        pageLength: 10,
-                                        lengthMenu: [5, 10, 25, 50, 100],
-                                        ordering: true,
-                                        language: {
-                                            search: "Cari:",
-                                            lengthMenu: "Tampilkan _MENU_ data",
-                                            zeroRecords: "Data tidak ditemukan",
-                                            info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                                            infoEmpty: "Tidak ada data tersedia",
-                                            infoFiltered: "(difilter dari _MAX_ total data)"
-                                        }
-                                    });
-                                });
-                            </script>
+
+                            {{-- DataTable initialization handled globally in layout.admin via .datatable class --}}
 
 
                         </div>
@@ -262,6 +248,27 @@
             });
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#brandTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                responsive: true,
+                autoWidth: false,
+                // jangan pakai columns kalau tabel biasa (blade render)
+            });
+        });
+
+        // Fungsi konfirmasi delete
+        function confirmDeletebrand(slug, name) {
+            if (confirm(`Apakah Anda yakin ingin menghapus brand "${name}"?`)) {
+                window.location.href = `/brands/delete/${slug}`;
+            }
+        }
+    </script>
+
 
     @include('sweetalert::alert')
 @endsection

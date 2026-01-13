@@ -49,7 +49,7 @@
                     <div class="p-3">
 
                         <!-- Nama -->
-                        <h3 class="fw-bold mb-0">{{ $user->name }}</h3>
+                        <h3 class="fw-bold mb-0">{{ $user->first_name }}</h3>
 
                         <!-- Email -->
                         <a href="mailto:okeev2025@gmail.com" class="d-block mb-3"
@@ -66,7 +66,7 @@
                         <!-- Alamat -->
                         <p>
                             <i class="bi bi-geo-alt text-danger me-2"></i>
-                            Jl. Ahmad Yani, Blok 66 17
+                            {{ $user->city }}
                         </p>
 
                         <!-- Garis -->
@@ -144,8 +144,8 @@
     </section>
     <style>
         .profile-img {
-            width: 200px;
-            height: 200px;
+            width: 320px;
+            height: 320px;
             object-fit: cover;
             /* potong rapi tanpa merusak rasio */
             object-position: center;

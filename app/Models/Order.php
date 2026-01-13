@@ -21,6 +21,7 @@ class Order extends Model
         'invoice_url',
         'grand_total',
         'status',
+        'status_transaksi'
     ];
 
 

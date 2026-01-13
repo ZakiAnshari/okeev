@@ -62,18 +62,18 @@
                                     <div class="vehicle-img-wrapper"
                                         style="background: radial-gradient(50% 50% at 50% 50%, #658FC2 0%, #30445C 100%);
                                     border-radius: 4px 4px 0 0;">
-
-                                        <div class="product-images">
-                                            @if ($product->images())
-                                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                                    class="d-block mx-auto img-fluid p-4"
-                                                    style="max-height: 340px; object-fit: contain;" alt="Thumbnail">
-                                            @else
-                                                <img src="{{ asset('path/to/default-image.jpg') }}" alt="No Image"
-                                                    class="img-fluid mb-2 vehicle-img w-100 p-4">
-                                            @endif
-                                        </div>
-
+                                        <a href="{{ route('landing.product', $product->slug) }}">
+                                            <div class="product-images">
+                                                @if ($product->images())
+                                                    <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                        class="d-block mx-auto img-fluid p-4"
+                                                        style="max-height: 340px; object-fit: contain;" alt="Thumbnail">
+                                                @else
+                                                    <img src="{{ asset('path/to/default-image.jpg') }}" alt="No Image"
+                                                        class="img-fluid mb-2 vehicle-img w-100 p-4">
+                                                @endif
+                                            </div>
+                                        </a>
                                     </div>
                                     <!-- Detail -->
                                     <div class="card-body p-3 bg-white rounded-bottom">

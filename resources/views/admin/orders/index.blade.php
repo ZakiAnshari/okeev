@@ -45,12 +45,16 @@
                                                 {{ $order->created_at->timezone('Asia/Jakarta')->format('d-m-Y - ( H:i') }}
                                                 WIB )
                                             </td>
-                                            <td>New</td>
+                                            
+                                            <td style="text-transform: uppercase;">
+                                                {{ $order->status_transaksi }}
+                                            </td>
+
                                             <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
                                             <td style="width: 10px;">
                                                 @php
                                                     $statusClasses = [
-                                                        'PENDING' => 'bg-warning text-dark',
+                                                        'PENDING' => 'bg-warning text-white',
                                                         'Completed' => 'bg-success text-white',
                                                         'cancelled' => 'bg-danger text-white',
                                                     ];

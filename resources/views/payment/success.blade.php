@@ -36,9 +36,9 @@
     <div class="container py-5 mt-5">
 
         <!-- Back -->
-        <a href="/order-now" class="text-decoration-none d-flex align-items-center mb-4">
+        {{-- <a href="/order-now" class="text-decoration-none d-flex align-items-center mb-4">
             <i class="bx bx-arrow-back me-2"></i> Payment
-        </a>
+        </a> --}}
 
         <div class="d-flex justify-content-center">
             <div class="payment-card shadow-sm rounded-4 w-100" style="max-width: 480px;">
@@ -143,14 +143,14 @@
                 <!-- ACTION -->
                 <div class="d-flex gap-3 mt-4">
                     @if ($order->status !== 'Completed')
-                        <a href="{{ $order->invoice_url }}" target="_blank" class="btn btn-primary flex-fill">
+                        <a href="{{ $order->invoice_url }}" class="btn btn-primary flex-fill">
                             Bayar Sekarang
                         </a>
 
-                        <button class="btn btn-outline-primary flex-fill" data-bs-toggle="modal"
-                            data-bs-target="#statusModal">
-                            Cek Status
-                        </button>
+                        <form id="cancelForm" action="{{ route('order.cancel', $order->id) }}" method="POST" class="flex-fill ms-2" data-order-id="{{ $order->id }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger w-100">Batalkan Pesanan</button>
+                        </form>
                     @else
                         <!-- Jika sudah Completed, tampilkan tombol lanjut saja -->
                         <a href="{{ route('landing') }}" class="btn btn-primary flex-fill">
@@ -437,4 +437,123 @@
             })();
         </script>
     @endif
+
+    <script>
+        // Intercept cancel form to show SweetAlert confirmation and perform AJAX cancel
+        function confirmCancel(event) {
+            event.preventDefault();
+            const form = event.target;
+
+            const runCancel = () => {
+                const tokenInput = form.querySelector('input[name="_token"]');
+                const csrf = tokenInput ? tokenInput.value : '';
+                const fd = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    body: fd
+                }).then(async (res) => {
+                    let json = {};
+                    try { json = await res.json(); } catch (e) { /* ignore parse error */ }
+
+                    if (res.ok) {
+                        const msg = json.message || 'Pesanan dibatalkan.';
+                        const redirect = json.redirect || '/home';
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({ icon: 'success', title: 'Berhasil', text: msg }).then(() => {
+                                // Remove notification elements matching this order id
+                                try {
+                                    const orderId = form.dataset.orderId;
+                                    if (orderId) {
+                                        document.querySelectorAll('[data-order-id="' + orderId + '"]').forEach(el => el.remove());
+
+                                        // Update small badges/counts in header
+                                        const notifBtnBadge = document.querySelector('#notifBtn .badge');
+                                        if (notifBtnBadge) {
+                                            let v = parseInt(notifBtnBadge.textContent) || 0;
+                                            v = Math.max(0, v - 1);
+                                            if (v === 0) notifBtnBadge.remove(); else notifBtnBadge.textContent = v;
+                                        }
+
+                                        document.querySelectorAll('.notif-tabs .dot').forEach(d => {
+                                            let n = parseInt(d.textContent) || 0;
+                                            n = Math.max(0, n - 1);
+                                            if (n === 0) d.remove(); else d.textContent = n;
+                                        });
+                                    }
+                                } catch (e) { console.error(e); }
+
+                                window.location.href = redirect;
+                            });
+                        } else {
+                            try {
+                                const orderId = form.dataset.orderId;
+                                if (orderId) document.querySelectorAll('[data-order-id="' + orderId + '"]').forEach(el => el.remove());
+                            } catch (e) { }
+                            alert(msg);
+                            window.location.href = redirect;
+                        }
+                        return;
+                    }
+
+                    const errMsg = (json && (json.message || json.error)) || 'Gagal membatalkan pesanan.';
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({ icon: 'error', title: 'Gagal', text: errMsg });
+                    } else {
+                        alert(errMsg);
+                    }
+                }).catch((err) => {
+                    console.error('Cancel request failed', err);
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'Terjadi kesalahan. Silakan coba lagi.' });
+                    } else {
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    }
+                });
+            };
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Batalkan pesanan?',
+                    text: 'Pesanan Anda akan dibatalkan dan status akan diubah menjadi Cancelled.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) runCancel();
+                });
+            } else if (confirm('Batalkan pesanan?')) {
+                runCancel();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            function attachCancelListener() {
+                const f = document.getElementById('cancelForm');
+                if (f) f.addEventListener('submit', confirmCancel);
+            }
+
+            if (typeof Swal !== 'undefined') {
+                attachCancelListener();
+            } else {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+                s.onload = function() {
+                    attachCancelListener();
+                };
+                s.onerror = function(err) {
+                    console.error('Failed to load SweetAlert2 CDN', err);
+                    // still attach fallback listener to keep functionality
+                    attachCancelListener();
+                };
+                document.head.appendChild(s);
+            }
+        });
+    </script>
 @endsection
