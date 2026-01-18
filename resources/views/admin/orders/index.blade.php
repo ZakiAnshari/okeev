@@ -30,17 +30,16 @@
                                         <th>Nama Pemesan</th>
                                         <th>Telp</th>
                                         <th>Tanggal Pesan</th>
-                                        <th>Status</th>
 
                                         <th>Harga</th>
-                                        <th>Payment Status</th>
+                                        <th>Status</th>
                                         <th style="text-align: center; padding:10px 10px;">Aksi</th>
                                     </tr>
 
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $index => $order)
-                                        <tr>
+                                        <tr class="{{ (strtolower($order->status) === 'completed' && in_array(strtolower($order->status_transaksi), ['pending','new'])) ? 'table-warning' : '' }}">
                                             <td>{{ $index + 1 }}</td>
                                             {{-- <td>{{ $order->no_transaction }}</td> --}}
                                             <td>{{ $order->user->first_name }}</td>
@@ -49,30 +48,33 @@
                                                 {{ $order->created_at->timezone('Asia/Jakarta')->format('d-m-Y - ( H:i') }}
                                                 WIB )
                                             </td>
-                                            
-                                            <td style="text-transform: uppercase;">
-                                                {{ $order->status_transaksi }}
-                                            </td>
+
+
 
                                             <td>Rp {{ number_format($order->price, 0, ',', '.') }}</td>
-                                            <td style="width: 10px;">
-                                                @php
-                                                    $statusClasses = [
-                                                        'PENDING' => 'bg-warning text-white',
-                                                        'Completed' => 'bg-success text-white',
-                                                        'cancelled' => 'bg-danger text-white',
-                                                    ];
-                                                @endphp
-                                                <span
-                                                    class="badge {{ $statusClasses[$order->status] ?? 'bg-secondary text-white' }}">
-                                                    {{ ucfirst($order->status) }}
-                                                </span>
+                                            <td>
+                                                @if ($order->status_transaksi == 'pending')
+                                                    <span class="badge bg-secondary">Pending</span>
+                                                @elseif ($order->status_transaksi == 'new')
+                                                    <span class="badge bg-danger">New</span>
+                                                @elseif ($order->status_transaksi == 'processing')
+                                                    <span class="badge bg-info text-dark">Processing</span>
+                                                @elseif ($order->status_transaksi == 'being_sent')
+                                                    <span class="badge bg-primary">Being Sent</span>
+                                                @elseif ($order->status_transaksi == 'to_the_location')
+                                                    <span class="badge bg-warning text-dark">To The Location</span>
+                                                @elseif ($order->status_transaksi == 'delivered')
+                                                    <span class="badge bg-success">Delivered</span>
+                                                @elseif ($order->status_transaksi == 'cancelled')
+                                                    <span class="badge bg-danger">Cancelled</span>
+                                                @endif
                                             </td>
                                             <td style="text-align: center;padding:10px 10px;">
                                                 <a href="{{ route('orders.edit', $order->id) }}"
-                                                    class="btn btn-sm btn-primary">
-                                                    Open
+                                                    class="btn btn-icon btn-outline-info me-1" title="Detail">
+                                                    <i class="bx bx-show"></i>
                                                 </a>
+
                                             </td>
                                         </tr>
                                     @endforeach

@@ -590,7 +590,7 @@
                 });
             }
 
-            function handlePageShow(e) {
+            async function handlePageShow(e) {
                 // if page was restored from bfcache or navigation type is back_forward
                 const nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')) ? performance.getEntriesByType('navigation')[0] : null;
                 const isBack = e.persisted || (nav && nav.type === 'back_forward') || (performance && performance.navigation && performance.navigation.type === 2);
@@ -599,7 +599,20 @@
                 try {
                     if (localStorage.getItem(key)) {
                         localStorage.removeItem(key);
-                        // reload to get fresh state from server
+                        // check server for a pending order for this product and redirect to payment page if found
+                        try {
+                            const resp = await fetch("{{ url('/order/pending/' . $product->slug) }}", { credentials: 'same-origin' });
+                            if (resp.ok) {
+                                const data = await resp.json();
+                                if (data.found && data.order_id) {
+                                    window.location.href = '/payment/va/' + data.order_id;
+                                    return;
+                                }
+                            }
+                        } catch (fetchErr) {
+                            // ignore fetch errors and fall back to reload
+                        }
+                        // fallback: reload to get fresh state from server
                         location.reload();
                     }
                 } catch (err) {

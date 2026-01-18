@@ -140,14 +140,28 @@
             /* biru bootstrap */
             background-color: transparent !important;
         }
+        /* Make layout use flex column so footer stays at bottom */
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main.site-content {
+            flex: 1 0 auto;
+        }
     </style>
-    
+
     <!-- 🛑 Auto-Refresh Block untuk halaman payment -->
     <script>
         if (window.location.pathname.includes('payment/success') || window.location.pathname.includes('payment/failed')) {
             window.location.reload = () => false;
             window.history.go = () => false;
-            
+
             // Block auto-fetch polling
             const originalFetch = window.fetch;
             window.fetch = function(url, options) {
@@ -179,7 +193,13 @@
 
     <!-- End Header Area -->
 
-    @yield('content')
+    <main class="site-content">
+        @yield('content')
+    </main>
+
+    @php
+        $footer = \App\Models\HomeFooter::first();
+    @endphp
 
     <footer style="background-color: #F9F9F9;" class="pt-5">
         <div class="container">
@@ -191,9 +211,13 @@
                         </a>
                     </div>
                     <p class="text-secondary small">
-                        Lorem ipsum dolor sit amet consectetur. Velit fermentum mi consectetur egestas in mauris. Enim
-                        orci volutpat nullam ac sed dolor etiam nulla fringilla. Laoreet sagittis elementum elit ipsum
-                        cras aenean malesuada.
+                        @if($footer && $footer->description)
+                            {!! nl2br(e($footer->description)) !!}
+                        @else
+                            Lorem ipsum dolor sit amet consectetur. Velit fermentum mi consectetur egestas in mauris. Enim
+                            orci volutpat nullam ac sed dolor etiam nulla fringilla. Laoreet sagittis elementum elit ipsum
+                            cras aenean malesuada.
+                        @endif
                     </p>
                 </div>
 
@@ -201,7 +225,10 @@
                     <h5 class="fw-bold mb-3">Menu</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="#" class="text-decoration-none text-body">Vehicle</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Electric</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Accessories</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">About</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">News</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Contact</a></li>
                     </ul>
                 </div>
 
@@ -210,17 +237,19 @@
                     <ul class="list-unstyled">
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-envelope me-2"></i>
-                            <a href="mailto:okeev2025@gmail.com"
-                                class="text-decoration-none text-body small">okeev2025@gmail.com</a>
+                            @if($footer && $footer->email)
+                                <a href="mailto:{{ $footer->email }}" class="text-decoration-none text-body small">{{ $footer->email }}</a>
+                            @else
+                                <a href="mailto:okeev2025@gmail.com" class="text-decoration-none text-body small">okeev2025@gmail.com</a>
+                            @endif
                         </li>
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-telephone me-2"></i>
-                            <span class="text-body small">+62 5689 8546 253</span>
+                            <span class="text-body small">{{ $footer->handphone ?? '+62 5689 8546 253' }}</span>
                         </li>
                         <li class="mb-2 d-flex align-items-start">
                             <i class="bi bi-geo-alt me-2 mt-1"></i>
-                            <span class="text-body small">Lorem ipsum dolor sit amet consectetur. Velit fermentum mi
-                                consectetur egestas in mauris.</span>
+                            <span class="text-body small">{{ $footer->lokasi ?? 'Lorem ipsum dolor sit amet consectetur. Velit fermentum mi consectetur.' }}</span>
                         </li>
                     </ul>
                 </div>
@@ -229,7 +258,7 @@
 
         <div class="text-white text-center py-3" style="background-color: #30445C !important;">
             <div class="container">
-                <p class="mb-0 small">PT. Okeev 2025</p>
+                <p class="mb-0 small">Okeev {{ date('Y') }}</p>
             </div>
         </div>
     </footer>

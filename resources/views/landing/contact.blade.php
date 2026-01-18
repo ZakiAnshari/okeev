@@ -7,24 +7,29 @@
             <div class="row g-5 align-items-start">
                 <!-- LEFT CONTENT -->
                 <div class="col-lg-6">
+                    @php $homeContact = \App\Models\HomeContact::first(); @endphp
                     <h2 class="fw-bold mb-3" style="color:#232b44; font-size: 42px;">Contact Us</h2>
                     <p class="C sectmb-4 mb-4" style="color:#6c748a;">
-                        Lorem ipsum dolor sit amet consectetur. Id condimentum sed elit sagittis senectus feugiat.
-                        Congue erat sem tincidunt nulla sed mattis. Velit et gravida sit.
+                        @if($homeContact && $homeContact->description)
+                            {!! nl2br(e($homeContact->description)) !!}
+                        @else
+                            Lorem ipsum dolor sit amet consectetur. Id condimentum sed elit sagittis senectus feugiat.
+                            Congue erat sem tincidunt nulla sed mattis. Velit et gravida sit.
+                        @endif
                     </p>
 
                     <ul class="list-unstyled">
                         <li class="mb-3 d-flex align-items-center gap-2">
                             <i class="bx bxl-instagram" style="font-size: 24px; color:#00f2ea;"></i>
-                            <span>okeev.ig</span>
+                            <span>{{ $homeContact->instagram ?? 'okeev.ig' }}</span>
                         </li>
                         <li class="mb-3 d-flex align-items-center gap-2">
                             <i class="bx bxl-tiktok" style="font-size: 24px; color:#00f2ea;"></i>
-                            <span>okeev.tiktok</span>
+                            <span>{{ $homeContact->tiktok ?? 'okeev.tiktok' }}</span>
                         </li>
                         <li class="mb-3 d-flex align-items-center gap-2">
                             <i class="bx bxl-xing" style="font-size: 24px; color:#00f2ea;"></i>
-                            <span>okeev.x</span>
+                            <span>{{ $homeContact->x ?? 'okeev.x' }}</span>
                         </li>
                     </ul>
                 </div>

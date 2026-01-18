@@ -19,8 +19,33 @@
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
                                 @php
-                                    $vehicleSlugs = $categoriesPosition1
-                                        ->flatMap(fn($cat) => $cat->brands)
+                                    use App\Models\Category;
+
+                                    if (!isset($categoriesPosition1)) {
+                                        $categoriesPosition1 = Category::with('brands')
+                                            ->where('category_position_id', 1)
+                                            ->orderBy('name_category', 'asc')
+                                            ->get();
+                                    }
+
+                                    if (!isset($categoriesPosition2)) {
+                                        $categoriesPosition2 = Category::with('brands')
+                                            ->where('category_position_id', 2)
+                                            ->orderBy('name_category', 'asc')
+                                            ->get();
+                                    }
+
+                                    if (!isset($categoriesPosition3)) {
+                                        $categoriesPosition3 = Category::with('brands')
+                                            ->whereIn('category_position_id', [3, 4])
+                                            ->orderBy('name_category', 'asc')
+                                            ->get();
+                                    }
+
+                                    $vehicleSlugs = collect($categoriesPosition1)
+                                        ->flatMap(function ($cat) {
+                                            return $cat->brands ?? collect();
+                                        })
                                         ->pluck('slug')
                                         ->toArray();
                                 @endphp
@@ -76,14 +101,14 @@
                                         ->pluck('slug')
                                         ->toArray();
                                 @endphp
-                                <li
+                                {{-- <li
                                     class="nav-item dropdown position-static
                                     {{ in_array(request()->route('slug'), $electricSlugs) ? 'active' : '' }}">
 
                                     <a class="dd-menu collapsed" href="#" id="megaElectric" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         Electric
-                                        {{-- <i class='mx-1 bx bx-chevron-down'></i> --}}
+                                      
                                     </a>
 
                                     <div class="dropdown-menu nv-vehicle-dropdown" aria-labelledby="megaElectric">
@@ -120,7 +145,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li> --}}
 
                                 <li
                                     class="nav-item dropdown position-static
@@ -247,10 +272,10 @@
                                     @endphp
 
                                     <!-- Search -->
-                                    <div class="search-box">
+                                    <form action="{{ route('search.results') }}" method="get" class="search-box d-flex align-items-center" style="gap:8px;">
                                         <i class="bx bx-search"></i>
-                                        <input type="text" placeholder="Search">
-                                    </div>
+                                        <input style="background-color: #f5f5f7;" type="text" name="q" placeholder="Search" value="{{ request('q') }}" class="form-control" />
+                                    </form>
                                     <!-- Icon Buttons -->
                                     <div class="icon-box">
                                         <a href="{{ route('cart') }}" class="icon-btn position-relative">
@@ -372,11 +397,11 @@
                                                     })->map->count()->toArray();
                                                 @endphp
                                                 <div class="trans-steps">
-                                                    <div class="step active" data-status="new">
+                                                    <div class="step active" data-status="pending">
                                                         <div class="step-icon">
                                                             <i class="bx bx-time"></i>
-                                                            @if(($statusCounts['new'] ?? 0) > 0)
-                                                                <span class="step-dot">{{ $statusCounts['new'] }}</span>
+                                                            @if(($statusCounts['pending'] ?? 0) > 0)
+                                                                <span class="step-dot">{{ $statusCounts['pending'] }}</span>
                                                             @endif
                                                         </div>
                                                         <span>Waiting for<br>Confirmation</span>
@@ -1018,6 +1043,7 @@
 
         function statusLabelFromKey(key) {
             const map = {
+                'pending': 'Waiting For Confirmation',
                 'new': 'Waiting For Confirmation',
                 'processing': 'Process',
                 'being_sent': 'Being sent',

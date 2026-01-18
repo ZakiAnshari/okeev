@@ -1,6 +1,9 @@
 @extends('layout.user')
 @section('title', 'about')
 @section('content')
+    @php
+        $about = \App\Models\HomeAbout::first();
+    @endphp
     <br><br><br><br>
     <section class="mt-5">
         <div class="container position-relative text-center my-5 ">
@@ -49,17 +52,16 @@
                 <div class="col-md-6">
 
                     <p style="color: #1abc9c; font-weight: 500; font-size: 1rem; margin-bottom: 10px;">
-                        About Okeev
+                        {{ $about->section_label ?? 'About Okeev' }}
                     </p>
 
                     <h2 class="fw-bold mb-4" style="font-size: 2.4rem; color: #2c3e50; line-height: 1.2;">
-                        Trusted Multi-Brand<br>
-                        Electric Car Dealer
+                        {{ $about->title_main ?? 'Trusted Multi-Brand\nElectric Car Dealer' }}
                     </h2>
                     <br><br><br><br><br><br><br><br><br>
                     <!-- DIPINDAHKAN KE POSISI PALING BAWAH -->
                     <p style="color: #34495e; font-size: 1.1rem; font-weight: 500; margin-top: 40px;">
-                        Bringing You Into the Era of Future Mobility
+                        {{ $about->tagline ?? 'Bringing You Into the Era of Future Mobility' }}
                     </p>
 
                 </div>
@@ -67,26 +69,12 @@
                 <!-- KANAN -->
                 <div class="col-md-6">
 
-                    <p class="mb-2" style="color: #4d5b69; font-size: 1rem; line-height: 1.7;">
-                        Kendaraan listrik adalah inovasi teknologi otomotif yang muncul sebagai alternatif pengganti
-                        kendaraan konvensional yang berbahan bakar fosil. Kedaaraan listrik dianggap sebagai solusi dalam
-                        upaya untuk mengurangi atas dampak negatif dari polusi udara yag berasal dari kendaraan
-                        konvensional.
-                    </p>
+                    @if (!empty($about->description_main))
+                        <p class="mb-2" style="color: #4d5b69; font-size: 1rem; line-height: 1.7;">
+                            {{ $about->description_main }}</p>
+                    @endif
 
-                    <p class="mb-2" style="color: #4d5b69; font-size: 1rem; line-height: 1.7;">
-                        Perkembangan mobil listrik di Indonesia mulai mendapatkan perhatian pada tahun 2010, ketika
-                        kendaraan listrik lokal pertama kali diperkenalkan. Upaya ini mencerminkan semangat inovasi dan
-                        kepedulian terhadap lingkungan di Tanah Air. Pemerintah pun menunjukan komitmen kuat mendorong
-                        adopsi kendaraan listrik melalui berbagai kebijakan, seperti insentif pajak dan pembangunan
-                        infrastruktur pendukung, yang tertuang dalam roadmap kendaraan listrik 2021-2035.
-                    </p>
 
-                    <p class="mb-2" style="color: #4d5b69; font-size: 1rem; line-height: 1.7;">
-                        Dengan sudah pesatnya penggunaan kendaraan listrik, kami “OKEEV” meluncurkan aplikasi OKEEV hadir
-                        ditengah pesatnya kendaraan berlistrik dengan tujuan membantu perusahaan-perusahaan kendaraan
-                        listrik untuk meningkatkan penjualan dan juga menciptakan Indonesia yang ramah lingkungan.
-                    </p>
 
                 </div>
 
@@ -106,19 +94,10 @@
                 <!-- Right Description -->
                 <div class="col-lg-9 col-md-8 text-white" style="color:#dce4ea;">
                     <p class="mb-3" style="line-height:1.6;">
-                        OKEEV adalah Startup Inovatif yang berfokus pada penjualan kendaraan listrik baru dan produk
-                        elektronik modern.
-                        Berdiri dengan visi untuk mempercepat transisi menuju gaya hidup berkelanjutan dan cerdas, OKEEV
-                        hadir sebagai
-                        solusi terdepan bagi konsumen yang mencari produk ramah lingkungan, efisien, dan berkualitas tinggi.
+                        {{ $about->description_second }}
                     </p>
 
-                    <p style="line-height:1.6;">
-                        Kami menggabungkan teknologi digital, layanan pelanggan unggul, dan kemitraan strategis dengan
-                        berbagai merek
-                        terkemuka untuk menghadirkan pengalaman belanja yang mudah, transparan, dan terpercaya baik secara
-                        Online maupun Offline.
-                    </p>
+
                 </div>
 
             </div>
@@ -140,12 +119,16 @@
                     <h2 style="color:#31d2a8; font-weight:700; font-size:2.4rem;">Visi</h2>
 
                     <p style="color:#4d5b69; font-size:1.1rem; line-height:1.7; max-width:90%;">
-                        Menjadi platform terdepan di Asia Tenggara dalam penjualan kendaraan listrik dan elektronik pintar
-                        yang mendukung masa depan hijau dan digital.
+                        {{ $about->visi_description ?? 'Menjadi platform terdepan di Asia Tenggara dalam penjualan kendaraan listrik dan elektronik pintar yang mendukung masa depan hijau dan digital.' }}
                     </p>
 
-                    <img src="{{ asset('front_end/assets/images/logo/Frame 988.png') }}" class="img-fluid mt-4"
-                        style="border-radius:16px;">
+                    @if (!empty($about->visi_image))
+                        <img src="{{ asset('storage/' . $about->visi_image) }}" class="img-fluid mt-4"
+                            style="border-radius:16px;">
+                    @else
+                        <img src="{{ asset('front_end/assets/images/logo/Frame 988.png') }}" class="img-fluid mt-4"
+                            style="border-radius:16px;">
+                    @endif
 
                 </div>
 
@@ -158,33 +141,46 @@
 
                     <!-- Gambar kecil kanan -->
                     <div class="mb-4">
-                        <img src="{{ asset('front_end/assets/images/logo/misi.png') }}" class="img-fluid"
-                            style="width:100%; border-radius:12px;">
+                        @if (!empty($about->misi_image))
+                            <img src="{{ asset('storage/' . $about->misi_image) }}" class="img-fluid"
+                                style="width:100%; border-radius:12px;">
+                        @else
+                            <img src="{{ asset('front_end/assets/images/logo/misi.png') }}" class="img-fluid"
+                                style="width:100%; border-radius:12px;">
+                        @endif
                     </div>
 
                     <!-- Bullet list misi -->
                     <ul class="list-unstyled" style="color:#2c3e50; font-size:1.05rem; line-height:1.9;">
-                        <li class="d-flex mb-2">
-                            <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
-                            Menyediakan akses mudah ke kendaraan listrik dan perangkat elektronik berkualitas tinggi.
-                        </li>
+                        @foreach ([$about->title_1 ?? null, $about->title_2 ?? null, $about->title_3 ?? null, $about->title_4 ?? null] as $item)
+                            @if ($item)
+                                <li class="d-flex mb-2">
+                                    <i class="bi bi-circle-fill me-3"
+                                        style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
+                                    {{ $item }}
+                                </li>
+                            @endif
+                        @endforeach
 
-
-                        <li class="d-flex mb-2">
-                            <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
-                            Mendorong adopsi teknologi ramah lingkungan di seluruh lapisan masyarakat.
-                        </li>
-
-                        <li class="d-flex mb-2">
-                            <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
-                            Menghadirkan layanan pelanggan berbasis digital yang cepat, aman dan transparan.
-                        </li>
-
-                        <li class="d-flex mb-2">
-                            <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
-                            Membangun ekosistem berkelanjutan melalui kolaborasi dengan produsen dan penyedia infrastruktur
-                            hijau.
-                        </li>
+                        @unless ($about && ($about->title_1 || $about->title_2 || $about->title_3 || $about->title_4))
+                            <li class="d-flex mb-2">
+                                <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
+                                Menyediakan akses mudah ke kendaraan listrik dan perangkat elektronik berkualitas tinggi.
+                            </li>
+                            <li class="d-flex mb-2">
+                                <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
+                                Mendorong adopsi teknologi ramah lingkungan di seluruh lapisan masyarakat.
+                            </li>
+                            <li class="d-flex mb-2">
+                                <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
+                                Menghadirkan layanan pelanggan berbasis digital yang cepat, aman dan transparan.
+                            </li>
+                            <li class="d-flex mb-2">
+                                <i class="bi bi-circle-fill me-3" style="font-size:0.55rem; color:#213b56; margin-top:6px;"></i>
+                                Membangun ekosistem berkelanjutan melalui kolaborasi dengan produsen dan penyedia infrastruktur
+                                hijau.
+                            </li>
+                        @endunless
                     </ul>
 
                 </div>

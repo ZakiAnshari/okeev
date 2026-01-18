@@ -4,14 +4,46 @@
     {{-- SECTION 1 --}}
     <section class="image-section ">
         <div class="container">
-            <img src="{{ asset('front_end/assets/images/hero/wallpaper.png') }}" alt="Gambar Hero"
-                class="img-fluid responsive-image">
+            <div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner" style="border-radius:12px">
+                    @php
+                        $carouselItems = collect($homeContents ?? [])->filter(function($c) { return !empty($c->image) && ($c->is_active ?? true); })->values();
+                    @endphp
+
+                    @if($carouselItems->isNotEmpty())
+                        @foreach($carouselItems as $i => $item)
+                            <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $item->image) }}" class="d-block w-100" alt="...">
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="carousel-item active">
+                            <img src="{{ asset('front_end/assets/images/hero/wallpaper.png') }}" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" class="d-block w-100" alt="...">
+                        </div>
+                    @endif
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
             <div class="hero-content  mt-5">
-                <h2 class="hero-title">Masa Depan Berkendara Dimulai dari Sini</h2>
-                <p class="hero-subtitle">
-                    Temukan kendaraan listrik impian Anda dari berbagai merek ternama.
-                    Hemat energi, ramah lingkungan, dan siap mengubah cara Anda melaju.
-                </p>
+                @php $hero = ($homeContents ?? collect())->first(); @endphp
+                <h2 class="hero-title">{{ $hero->title ?? 'Masa Depan Berkendara Dimulai dari Sini' }}</h2>
+                <p class="hero-subtitle">{{ $hero->description ?? 'Temukan kendaraan listrik impian Anda dari berbagai merek ternama. Hemat energi, ramah lingkungan, dan siap mengubah cara Anda melaju.' }}</p>
+                @if(!empty($hero->button_text) && !empty($hero->button_link))
+                    <a href="{{ $hero->button_link }}" class="btn btn-primary mt-3">{{ $hero->button_text }}</a>
+                @endif
             </div>
         </div>
     </section>
@@ -130,14 +162,12 @@
 
     </section>
     <style>
+        /* Background union image */
         .bg-union-img {
             position: absolute;
             top: 80px;
-            /* Pas dengan bagian mulai background biru */
             transform: translateX(-50%);
-            /* Tetap rata agar tidak kabur bentuknya */
             width: 128%;
-            /* Melebar pas seperti contoh */
             height: 65%;
             z-index: 0;
         }
@@ -145,14 +175,58 @@
         .why-choose-us-section .container {
             position: relative;
             z-index: 2;
-            /* Konten di depan gambar */
         }
 
         .why-choose-us-section {
             padding: 80px 0;
             overflow: hidden;
-            /* Biar gambar tidak keluar area */
         }
+
+        /* HERO CAROUSEL: ensure all slides have equal visible area */
+        /* Make carousel transitions smooth (fade) */
+        .carousel.carousel-fade .carousel-item {
+            transition: opacity 1s ease-in-out;
+        }
+        .carousel.carousel-fade .carousel-item img {
+            /* HERO CAROUSEL: ensure all slides have equal visible area */
+            /* Add rounded corners to the carousel and clip overflow so images follow the radius */
+            #carouselExampleControls { border-radius: 12px; overflow: hidden; }
+            .carousel { border-radius: 12px; }
+
+            width: 100%;
+            height: clamp(448px, 45vh, 640px);
+            object-fit: cover;
+            display: block;
+        }
+
+        /* PRODUCT CARDS: unify image container and padding so all sides look equal */
+        .vehicle-img-wrapper {
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .product-images img {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+            padding: 16px !important;
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Brand logos uniform size */
+        .brand-grid { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+        .brand-box { flex: 0 0 auto; padding:6px; display:flex; align-items:center; justify-content:center; }
+        .brand-box img { max-height:48px; width:auto; object-fit:contain; display:block; }
+
+        /* Scroll wrapper smooth */
+        .scroll-wrapper { position:relative; }
+        #vehicle-scroll { scroll-behavior: smooth; }
     </style>
 
     {{-- SECTION 4 --}}
@@ -272,9 +346,9 @@
 
                                                 <div class="product-images">
                                                     @if ($product->images->first())
-                                                          <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                                    class="d-block mx-auto img-fluid p-4"
-                                                    style="" alt="Thumbnail">
+                                                        <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                            class="d-block mx-auto img-fluid p-4" style=""
+                                                            alt="Thumbnail">
                                                     @else
                                                         <img src="{{ asset('path/to/default-image.jpg') }}"
                                                             alt="No Image" class="img-fluid mb-2 vehicle-img w-100 p-4">

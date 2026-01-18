@@ -57,11 +57,11 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <style>
+        /* Fix SweetAlert scrollbar jump */
+
         body.swal2-shown {
-            overflow-y: scroll !important;
-            /* scroll tetap muncul */
             padding-right: 0 !important;
-            /* hilangkan padding tambahan */
+            overflow: hidden !important;
         }
 
 
@@ -152,7 +152,7 @@
                         <div
                             class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                             <div class="mb-2 mb-md-0">
-                                PT Okeev
+                                Okeev
                             </div>
 
                             <div>
@@ -191,6 +191,8 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     {{-- //confirmasi logout --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- SweetAlert include: render alert script after SweetAlert2 is loaded --}}
+    @include('sweetalert::alert')
     <script>
         function confirmLogout(event) {
             event.preventDefault();
@@ -563,14 +565,14 @@
     }
 </script>
 {{-- TEXT AREA --}}
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js"></script>
+{{-- <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js"></script>
 <script>
     ClassicEditor
         .create(document.querySelector('#editor'))
         .catch(error => {
             console.error(error);
         });
-</script>
+</script> --}}
 {{-- END TEXT AREA --}}
 
 {{-- INI SCRIPT UNTUK PREVIEW SEMUA IMAGE --}}
@@ -616,5 +618,27 @@
     });
 </script>
 
+{{-- INI TEXT EDITOR HUGERTE --}}
+<script src="https://cdn.jsdelivr.net/npm/hugerte@latest/hugerte.min.js"></script>
+<script>
+    hugerte.init({
+        selector: '#description',
+        height: 350,
+
+        branding: false, // ⬅️ INI KUNCINYA
+        elementpath: false, // ⬅️ HILANGKAN "p"
+
+        menubar: 'file edit view insert format tools table help',
+        plugins: [
+            'advlist autolink lists link image charmap preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | bold italic underline | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | ' +
+            'link image media table | code fullscreen'
+    });
+</script>
 
 </html>

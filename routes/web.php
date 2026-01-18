@@ -25,8 +25,14 @@ use App\Http\Middleware\DetectMobileRedirect;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Mobile\DriveController;
-use App\Http\Controllers\SpecificationController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Cms\HomeAboutController;
+use App\Http\Controllers\SpecificationController;
+use App\Http\Controllers\Cms\HomeFooterController;
+use App\Http\Controllers\Cms\HomeContactController;
+use App\Http\Controllers\Cms\HomeContentController;
+use App\Http\Controllers\Cms\HomeHeroSliderController;
+use App\Http\Controllers\SearchController;
 
 Route::middleware(['role_not_one', DetectMobileRedirect::class])->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -55,6 +61,8 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::get('/home', [HomeUserController::class, 'index']);
     Route::get('/profil/{slug}', [HomeUserController::class, 'showProfile'])->name('profil.show');
     Route::post('/profil-add', [HomeUserController::class, 'profilestore'])->name('profilestore.store');
+    // Search results
+    Route::get('/search', [SearchController::class, 'search'])->name('search.results');
 
     Route::get('/product/{productSlug}/testdrive', [LandingPageController::class, 'testdrive'])->name('landing.product.testdrive');
     Route::post('/product/{productSlug}/testdrive-add', [LandingPageController::class, 'store'])->name('testdrive.store');
@@ -69,11 +77,17 @@ Route::middleware(['auth', 'role'])->group(function () {
 
     Route::post('/order-invoice/{product:slug}', [OrderController::class, 'createInvoice'])->name('order.invoice');
     Route::get('/order/{product:slug}', [OrderController::class, 'show'])->name('order.show');
+    // Create invoice for cart (AJAX) -> returns JSON { invoice_url }
+    Route::post('/order-invoice-cart', [OrderController::class, 'createInvoiceCart'])->name('order.invoice.cart');
 
     // Allow user to cancel their own order (set status_transaksi -> cancelled)
     Route::post('/order/{order}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
 
     Route::get('/payment/va/{order}', [PaymentController::class, 'virtualAccount'])->name('payment.va');
+
+    // API: check if there's a pending order for the current authenticated user and product
+    Route::get('/order/pending/{productSlug}', [OrderController::class, 'checkPendingForProduct'])->name('order.checkPending');
+
 
     // Route::get('/payment/success', function () {return view('payment.success');})->name('payment.success');
 
@@ -183,7 +197,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // ORDER
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-    Route::post('/orders/{id}/edit', [OrderController::class, 'update'])->name('orders.update');
+    Route::put('/orders/{id}/edit', [OrderController::class, 'update'])->name('orders.update');
+    // Print order invoice
+    Route::get('/orders/{order}/print', [\App\Http\Controllers\OrderController::class, 'print'])->name('orders.print');
+
     // --------------------
     //NEWS
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');
@@ -203,6 +220,24 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/user-edit/{id}', [UserController::class, 'update']);
     Route::get('/user-destroy/{id}', [UserController::class, 'destroy']);
     Route::get('/user-show/{id}', [UserController::class, 'show'])->name('user.show');
+
+    // CMS Home - Hero Section
+    Route::get('/home/hero', [HomeHeroSliderController::class, 'index'])->name('cms.home.hero.index');
+    Route::post('/home/hero', [HomeHeroSliderController::class, 'store'])->name('cms.home.hero.store');
+    Route::put('/home/hero/{id}', [HomeHeroSliderController::class, 'update'])->name('cms.home.hero.update');
+    Route::delete('/home/destroy/{id}', [HomeHeroSliderController::class, 'destroy'])->name('cms.home.hero.destroy');
+    // CMS Home - Home Content
+    Route::get('/home/content', [HomeContentController::class, 'index'])->name('cms.home.content.index');
+    Route::post('/home/content', [HomeContentController::class, 'update'])->name('cms.home.content.update');
+    // CMS Home - About Content
+    Route::get('/home/about', [HomeAboutController::class, 'index'])->name('cms.home.about.index');
+    Route::post('/home/about', [HomeAboutController::class, 'update'])->name('cms.home.about.update');
+    // CMS Home - Contact Content
+    Route::get('/home/contact', [HomeContactController::class, 'index'])->name('cms.home.contact.index');
+    Route::post('/home/contact', [HomeContactController::class, 'update'])->name('cms.home.contact.update');
+    // CMS Home - Footer Content
+    Route::get('/home/footer', [HomeFooterController::class, 'index'])->name('cms.home.footer.index');
+    Route::post('/home/footer', [HomeFooterController::class, 'update'])->name('cms.home.footer.update');
 });
 
 // MOBILE ---------------------------------------------------------------------------------------------------------------------

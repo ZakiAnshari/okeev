@@ -2,6 +2,12 @@
 @section('title', 'detail')
 @section('content')
     <br><br>
+    <style>
+        /* Prevent layout shift when modals open/close by reserving scrollbar gutter */
+        html { overflow-y: scroll; scrollbar-gutter: stable; }
+        /* Prevent bootstrap from adding body padding which causes horizontal shift */
+        body.modal-open { padding-right: 0 !important; margin-right: 0 !important; }
+    </style>
     <section class="py-4 mt-5">
         <div class="container">
             <!-- Back Button -->
@@ -17,11 +23,19 @@
                     <div class="col-12">
                         <div id="productCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
                             <div class="carousel-inner bg-light rounded" style="max-height: 395px;">
-                                <div class="carousel-item active">
-                                    <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                        class="d-block mx-auto img-fluid p-4"
-                                        style="max-height: 395px; object-fit: contain;" alt="Thumbnail">
-                                </div>
+                                @forelse ($product->images as $key => $image)
+                                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $image->image) }}"
+                                            class="d-block mx-auto img-fluid p-4"
+                                            style="max-height: 395px; object-fit: contain;" alt="Image {{ $key }}">
+                                    </div>
+                                @empty
+                                    <div class="carousel-item active">
+                                        <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                            class="d-block mx-auto img-fluid p-4"
+                                            style="max-height: 395px; object-fit: contain;" alt="Thumbnail">
+                                    </div>
+                                @endforelse
                             </div>
 
                             <!-- Controls -->
@@ -38,16 +52,43 @@
                     </div>
 
                     <!-- Thumbnail -->
-                    <div class="col-12">
+                            <div class="col-12">
                         <div class="image-row-5">
                             @foreach ($product->images->take(5) as $key => $image)
-                                <div class="thumb-box"
-                                    onclick="bootstrap.Carousel.getInstance(document.getElementById('productCarousel')).to({{ $key }});">
+                                <div class="thumb-box" onclick="productCarouselTo({{ $key }})">
                                     <img src="{{ asset('storage/' . $image->image) }}" alt="" class="thumb-img">
                                 </div>
                             @endforeach
                         </div>
                     </div>
+
+                    <script>
+                        function productCarouselTo(index) {
+                            const el = document.getElementById('productCarousel');
+                            if (!el) return;
+
+                            // Try using Bootstrap API first (smooth, keeps internal state)
+                            try {
+                                const car = bootstrap.Carousel.getOrCreateInstance(el);
+                                if (car && typeof car.to === 'function') {
+                                    car.to(index);
+                                    return;
+                                }
+                            } catch (e) {
+                                // ignore and fallback to manual switch
+                            }
+
+                            // Fallback: manually toggle active class on carousel items
+                            const items = el.querySelectorAll('.carousel-item');
+                            items.forEach((it, i) => {
+                                if (i === index) {
+                                    it.classList.add('active');
+                                } else {
+                                    it.classList.remove('active');
+                                }
+                            });
+                        }
+                    </script>
                 </div>
 
                 <!-- Detail Kendaraan -->
@@ -79,7 +120,10 @@
                     <div class="col-md-6">
                         @if (Auth::check())
                             <button type="button" class="btn btn-outline-success w-100 py-2 add-to-cart-btn fw-bold"
-                                data-id="{{ $product->id }}">
+                                data-id="{{ $product->id }}"
+                                data-name="{{ $product->model_name }}"
+                                data-price="{{ $product->price }}"
+                                data-image="{{ asset('storage/' . ($product->images->first()->image ?? $product->thumbnail)) }}">
                                 <i class="bx bx-cart me-2"></i> Add to Cart
                             </button>
                         @else
@@ -186,6 +230,24 @@
     <section class="py-5">
         <div class="container">
             <!-- Top Navigation -->
+            <style>
+                .tech-nav{
+                    background: #fff;
+                    padding-top: .5rem;
+                    padding-bottom: .5rem;
+                    transition: box-shadow .2s;
+                }
+
+                .tech-nav.is-fixed{
+                    position: fixed !important;
+                    top: var(--nav-top, 120px) !important; /* set by JS to match navbar height */
+                    left: 0;
+                    right: 0;
+                    z-index: 1020; /* lower than navbar so navbar won't overlap */
+                    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+                }
+            </style>
+
             <ul class="nav justify-content-center border-bottom pb-2 mb-4 tech-nav">
                 <!-- Tab -->
                 @if ($product->category_id == 1)
@@ -229,7 +291,7 @@
                 @endif
             </ul>
 
-            @if (in_array($product->category_position_id, [2, 3, 4]))
+                @if (in_array($product->category_position_id, [2, 3, 4]))
 
                 <section class="py-5 container">
                     <div class="row gx-5">
@@ -249,6 +311,65 @@
                     </div>
                 </section>
             @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const nav = document.querySelector('.tech-nav');
+                    if (!nav) return;
+
+                    // detect navbar/header height
+                    const header = document.querySelector('.navbar') || document.querySelector('header') || document.querySelector('.header-title');
+                    const headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 120;
+
+                    // set CSS variable for top offset used by fixed class
+                    nav.style.setProperty('--nav-top', headerHeight + 'px');
+
+                    const navRect = nav.getBoundingClientRect();
+                    const navOffsetTop = navRect.top + window.pageYOffset;
+                    const navHeight = navRect.height;
+                    let placeholder = null;
+
+                    function makeFixed() {
+                        if (nav.classList.contains('is-fixed')) return;
+                        // create placeholder to avoid layout jump
+                        placeholder = document.createElement('div');
+                        placeholder.style.height = navHeight + 'px';
+                        nav.parentNode.insertBefore(placeholder, nav);
+
+                        // set nav fixed and match width/left to original position
+                        const rect = nav.getBoundingClientRect();
+                        nav.style.width = rect.width + 'px';
+                        nav.style.left = rect.left + 'px';
+                        nav.classList.add('is-fixed');
+                    }
+
+                    function removeFixed() {
+                        if (!nav.classList.contains('is-fixed')) return;
+                        nav.classList.remove('is-fixed');
+                        nav.style.width = '';
+                        nav.style.left = '';
+                        if (placeholder) { placeholder.remove(); placeholder = null; }
+                    }
+
+                    function onScroll() {
+                        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                        if (scrollY > navOffsetTop - headerHeight) {
+                            makeFixed();
+                        } else {
+                            removeFixed();
+                        }
+                    }
+
+                    window.addEventListener('scroll', onScroll, { passive: true });
+                    window.addEventListener('resize', function() {
+                        // recompute measurements
+                        removeFixed();
+                        nav.style.setProperty('--nav-top', (header ? Math.ceil(header.getBoundingClientRect().height) : 120) + 'px');
+                    });
+
+                    onScroll();
+                });
+            </script>
 
             @if ($product->category_id == 1)
                 <br><br>
@@ -548,68 +669,143 @@
             </script>
         </section>
         <section class="credit-section">
-            <div class="container text-center py-5">
-                <h5 class="credit-title" id="credit-heading">CREDIT CALCULATOR</h5>
-                <p class="powered">Powered by <span>OKKEV FINANCE</span></p>
-                <p class="sub-text">
-                    Our internal loans guarantee flexible financing options at competitive rates.
-                </p>
-            </div>
-
-            <div class="credit-box">
-                <div class="container py-5">
-                    <h5 class="text-center credit-subtitle">Monthly Installment Budget</h5>
-                    <h3 class="text-center credit-amount">Rp 3.886.600 / Months</h3>
-
-                    <p class="text-center desc-text mt-3">
-                        Calculate monthly installments that fit your budget by setting the down
-                        payment and loan period.
+                <div class="container text-center py-5">
+                    <h5 class="credit-title" id="credit-heading">CREDIT CALCULATOR</h5>
+                    <p class="powered">Powered by <span>OKKEV FINANCE</span></p>
+                    <p class="sub-text">
+                        Our internal loans guarantee flexible financing options at competitive rates.
                     </p>
-
-                    <div class="row g-4 mt-4">
-
-                        <div class="col-md-6">
-                            <label class="credit-label">Car Price</label>
-                            <input type="text" class="form-control credit-input" value="Rp 149.000.000">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="credit-label">Interest Rate</label>
-                            <input type="text" class="form-control credit-input" value="10.96 %">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="credit-label">Loan Amount</label>
-                            <input type="text" class="form-control credit-input" value="Rp 160.000.000">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="credit-label">Loan Period</label>
-                            <select class="form-control credit-input">
-                                <option>1 Tahun</option>
-                            </select>
-                        </div>
-
-                        <div class="col-12">
-                            <label class="credit-label">First Payment</label>
-                            <input type="text" class="form-control credit-input" value="Rp 55.000.000">
-                        </div>
-
-                    </div>
-
-                    <div class="mt-4 note-box">
-                        <p><strong>Important note:</strong> Requirements may vary from bank to bank. This calculation is
-                            purely
-                            a simulation.</p>
-                        <p>For cars outside Jakarta, the above calculation is not binding. Additional shipping costs are
-                            not
-                            included.</p>
-                        <p>The above calculation applies to a minimum down payment of IDR 10,000,000.</p>
-                    </div>
-
                 </div>
-            </div>
-        </section>
+
+                <div class="credit-box">
+                    <div class="container py-5">
+                        <h5 class="text-center credit-subtitle">Monthly Installment Budget</h5>
+                        <h3 class="text-center credit-amount" id="creditAmount">Rp 0 / Months</h3>
+
+                        <p class="text-center desc-text mt-3">
+                            Calculate monthly installments that fit your budget by setting the down
+                            payment and loan period.
+                        </p>
+
+                        <div class="row g-4 mt-4">
+
+                            <div class="col-md-6">
+                                <label class="credit-label">Car Price</label>
+                                <input id="carPrice" type="text" class="form-control credit-input" value="{{ 'Rp ' . number_format($product->price,0,',','.') }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="credit-label">Interest Rate (Annual %)</label>
+                                <input id="interestRate" type="text" class="form-control credit-input" value="10.96">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="credit-label">Loan Amount</label>
+                                <input id="loanAmount" type="text" class="form-control credit-input" value="{{ 'Rp ' . number_format($product->price,0,',','.') }}">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="credit-label">Loan Period (Years)</label>
+                                <select id="loanPeriod" class="form-control credit-input">
+                                    @for ($y = 1; $y <= 6; $y++)
+                                        <option value="{{ $y }}">{{ $y }} Tahun</option>
+                                    @endfor
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="credit-label">First Payment (Down Payment)</label>
+                                <input id="firstPayment" type="text" class="form-control credit-input" value="0">
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4 note-box">
+                            <p><strong>Important note:</strong> Requirements may vary from bank to bank. This calculation is
+                                purely a simulation.</p>
+                            <p>For cars outside Jakarta, the above calculation is not binding. Additional shipping costs are
+                                not included.</p>
+                            <p>The above calculation applies to a minimum down payment of IDR 10,000,000.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                (function(){
+                    const q = (s) => document.querySelector(s);
+                    const parseCurrency = (v) => {
+                        if (v === null || v === undefined) return 0;
+                        // strip everything except digits and minus (remove thousands separators)
+                        const n = String(v).replace(/[^0-9\-]/g, '');
+                        return n === '' ? 0 : Number(n);
+                    };
+
+                    const formatIDR = (value) => {
+                        if (!isFinite(value)) return 'Rp 0';
+                        return 'Rp ' + Number(value).toLocaleString('id-ID');
+                    };
+
+                    const carPriceEl = q('#carPrice');
+                    const interestEl = q('#interestRate');
+                    const loanAmountEl = q('#loanAmount');
+                    const loanPeriodEl = q('#loanPeriod');
+                    const firstPaymentEl = q('#firstPayment');
+                    const creditAmountEl = q('#creditAmount');
+
+                    const compute = () => {
+                        const loanAmount = parseCurrency(loanAmountEl.value);
+                        const firstPayment = parseCurrency(firstPaymentEl.value);
+                        const principal = Math.max(0, loanAmount - firstPayment);
+                        const annualRate = parseFloat(String(interestEl.value).replace(/[^0-9\.\-]/g,'')) || 0;
+                        const months = (parseInt(loanPeriodEl.value) || 1) * 12;
+                        const monthlyRate = annualRate / 100 / 12;
+
+                        let monthly = 0;
+                        if (principal <= 0 || months <= 0) {
+                            monthly = 0;
+                        } else if (monthlyRate === 0) {
+                            monthly = principal / months;
+                        } else {
+                            monthly = principal * (monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+                        }
+
+                        creditAmountEl.textContent = formatIDR(Math.round(monthly)) + ' / Months';
+                    };
+
+                    // attach listeners (debounced)
+                    let t;
+                    const debounceCompute = () => { clearTimeout(t); t = setTimeout(compute, 250); };
+
+                    [carPriceEl, interestEl, loanAmountEl, loanPeriodEl, firstPaymentEl].forEach(el => {
+                        if (!el) return;
+                        el.addEventListener('input', debounceCompute);
+                        el.addEventListener('change', debounceCompute);
+                    });
+
+                    // Auto-format currency inputs on blur (keeps editing easy)
+                    [carPriceEl, loanAmountEl, firstPaymentEl].forEach(el => {
+                        if (!el) return;
+                        el.addEventListener('blur', function() {
+                            const v = parseCurrency(this.value);
+                            this.value = formatIDR(v);
+                        });
+                        // on focus, show raw number for easier editing
+                        el.addEventListener('focus', function() {
+                            this.value = parseCurrency(this.value) || '';
+                        });
+                    });
+
+                    // initialize fields formatting
+                    [carPriceEl, loanAmountEl, firstPaymentEl].forEach(el => {
+                        if (!el) return;
+                        el.value = formatIDR(parseCurrency(el.value));
+                    });
+
+                    compute();
+                })();
+            </script>
     @endif
 
     @if ($product->category_id == 2)
@@ -891,73 +1087,165 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Modal: Pilih Warna -->
+    <div class="modal fade" id="colorModal" tabindex="-1" aria-labelledby="colorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="colorModalLabel">Pilih Warna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if($product->colors->isNotEmpty())
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex flex-wrap gap-3 justify-content-center mb-3">
+                                    @foreach($product->colors as $index => $color)
+                                        <div class="modal-color-circle d-flex flex-column align-items-center text-center" data-color-id="{{ $color->id }}" data-name="{{ $color->name }}" data-image="{{ asset('storage/' . $color->image) }}">
+                                            <div class="color-circle" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%);border:1px solid #ddd;cursor:pointer;" data-index="{{ $index }}"></div>
+                                            <div class="small mt-2">{{ $color->name }}</div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 text-center">
+                                <div class="p-3 border rounded-3">
+                                    <img src="@if($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif" id="modal-car-preview" class="img-fluid" style="max-height:180px; object-fit:contain; width:auto;">
+                                </div>
+                                <p class="fw-semibold fs-6 mt-2" id="modal-color-name">
+                                    @if ($product->colors->isNotEmpty())
+                                        {{ $product->colors->first()->name }}
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                    @else
+                        <p>Tidak ada pilihan warna untuk produk ini.</p>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddToCart">Tambah ke Keranjang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.add-to-cart-btn');
+            const colorModalEl = document.getElementById('colorModal');
+            const colorModal = new bootstrap.Modal(colorModalEl);
+            let currentProduct = {};
 
             buttons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    // Ambil data dari atribut tombol
-                    const productName = this.dataset.name;
+                    currentProduct.id = this.dataset.id;
+                    currentProduct.name = this.dataset.name || '{{ $product->model_name }}';
+                    currentProduct.price = this.dataset.price || '{{ $product->price }}';
+                    currentProduct.image = this.dataset.image || '{{ asset('storage/' . $product->thumbnail) }}';
 
-                    // Optional: kirim data ke backend via AJAX untuk menambahkan ke cart
-                    fetch('/cart/add', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                product_id: this.dataset.id,
-                                product_name: this.dataset.name,
-                                price: this.dataset.price,
-                                image: this.dataset.image
-                            })
+                    colorModal.show();
+                });
+            });
+
+            // Handle selection when clicking color circles inside modal
+            colorModalEl.querySelectorAll('.modal-color-circle .color-circle').forEach(circle => {
+                circle.addEventListener('click', function() {
+                    // remove active from other circles
+                    colorModalEl.querySelectorAll('.modal-color-circle').forEach(c => c.classList.remove('active'));
+                    const parent = this.closest('.modal-color-circle');
+                    parent.classList.add('active');
+
+                    // update preview image and name
+                    const img = parent.getAttribute('data-image');
+                    const name = parent.getAttribute('data-name');
+                    const preview = document.getElementById('modal-car-preview');
+                    const nameEl = document.getElementById('modal-color-name');
+                    if (preview) preview.src = img;
+                    if (nameEl) nameEl.textContent = name;
+                });
+            });
+
+            // ensure default selection when showing modal
+            colorModalEl.addEventListener('shown.bs.modal', function() {
+                const first = colorModalEl.querySelector('.modal-color-circle');
+                if (first && !colorModalEl.querySelector('.modal-color-circle.active')) {
+                    first.classList.add('active');
+                    const img = first.getAttribute('data-image');
+                    const name = first.getAttribute('data-name');
+                    const preview = document.getElementById('modal-car-preview');
+                    const nameEl = document.getElementById('modal-color-name');
+                    if (preview) preview.src = img;
+                    if (nameEl) nameEl.textContent = name;
+                }
+            });
+
+            document.getElementById('confirmAddToCart').addEventListener('click', function() {
+                const active = colorModalEl.querySelector('.modal-color-circle.active');
+                const colorId = active ? active.getAttribute('data-color-id') : null;
+                const colorName = active ? active.getAttribute('data-name') : null;
+
+                // Kirim data ke backend
+                fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: currentProduct.id,
+                            product_name: currentProduct.name,
+                            price: currentProduct.price,
+                            image: currentProduct.image,
+                            color_id: colorId,
+                            color_name: colorName
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Update cart dot immediately (use server-provided count if available)
-                                try {
-                                    const dot = document.getElementById('cartDot');
-                                    if (dot) {
-                                        if (typeof data.cart_count !== 'undefined') {
-                                            dot.style.display = data.cart_count > 0 ? 'inline-block' : 'none';
-                                        } else {
-                                            dot.style.display = 'inline-block';
-                                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            try {
+                                const dot = document.getElementById('cartDot');
+                                if (dot) {
+                                    if (typeof data.cart_count !== 'undefined') {
+                                        dot.style.display = data.cart_count > 0 ? 'inline-block' : 'none';
+                                    } else {
+                                        dot.style.display = 'inline-block';
                                     }
-                                } catch (e) {
-                                    console.warn('Could not update cart dot', e);
                                 }
-
-                                // SweetAlert notification
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: productName + ' telah ditambahkan ke keranjang.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal!',
-                                    text: 'Produk gagal ditambahkan ke keranjang.'
-                                });
+                            } catch (e) {
+                                console.warn('Could not update cart dot', e);
                             }
-                        })
-                        .catch(error => {
-                            console.error(error);
+
+                            colorModal.hide();
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: currentProduct.name + ' telah ditambahkan ke keranjang.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Error!',
-                                text: 'Terjadi kesalahan saat menambahkan produk.'
+                                title: 'Gagal!',
+                                text: data.message || 'Produk gagal ditambahkan ke keranjang.'
                             });
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat menambahkan produk.'
                         });
-                });
+                    });
             });
         });
     </script>
@@ -1031,7 +1319,7 @@
 
 
     <script>
-        const offset = 120; // jarak dari atas, sesuaikan dengan tinggi navbar
+        const offset = 160; // jarak dari atas, sesuaikan dengan tinggi navbar
 
         const tabs = [{
                 tabId: 'tech-tab',

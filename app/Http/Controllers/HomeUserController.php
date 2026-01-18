@@ -149,7 +149,7 @@ class HomeUserController extends Controller
 
     public function cart()
     {
-        $cartItems = Cart::with('product')
+        $cartItems = Cart::with(['product', 'color'])
             ->where('user_id', Auth::id())
             ->get();
 
@@ -195,20 +195,26 @@ class HomeUserController extends Controller
     // HomeUserController.php
     public function addToCart(Request $request)
     {
+        $colorId = $request->color_id ?? null;
+        $colorName = $request->color_name ?? null;
+
         $cart = Cart::firstOrCreate(
             [
                 'user_id'    => Auth::id(),
-                'product_id' => $request->product_id
+                'product_id' => $request->product_id,
+                'color_id'   => $colorId,
             ],
             [
-                'quantity' => 0
+                'quantity'   => 0,
+                'color_name' => $colorName,
             ]
         );
 
         $cart->increment('quantity');
 
         return response()->json([
-            'success' => true
+            'success'    => true,
+            'cart_count' => Cart::where('user_id', auth()->id())->sum('quantity')
         ]);
     }
 

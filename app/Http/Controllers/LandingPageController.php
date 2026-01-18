@@ -8,8 +8,10 @@ use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Testdrive;
+use App\Models\HomeContent;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Schema;
 
 class LandingPageController extends Controller
 {
@@ -44,6 +46,13 @@ class LandingPageController extends Controller
         // Chunk brands untuk grid
         $brandChunks = $brands->chunk(4);
 
+        // Ambil home contents, order by `position` if exists else by id
+        if (Schema::hasColumn('home_contents', 'position')) {
+            $homeContents = HomeContent::orderBy('position', 'asc')->get();
+        } else {
+            $homeContents = HomeContent::orderBy('id', 'asc')->get();
+        }
+
         // Pilih view berdasarkan device
         $view = $request->is_mobile ? 'mobile.home' : 'landing.home';
 
@@ -55,6 +64,7 @@ class LandingPageController extends Controller
             'categoriesPosition3',
             'brands',
             'brandChunks'
+            , 'homeContents'
         ));
     }
 
@@ -122,7 +132,7 @@ class LandingPageController extends Controller
 
         // Ambil kategori khusus category_position_id = 3 beserta brand-nya
         $categoriesPosition3 = Category::with('brands')
-            ->where('category_position_id', [3, 4])
+            ->whereIn('category_position_id', [3, 4])
             ->orderBy('name_category', 'asc')
             ->get();
 

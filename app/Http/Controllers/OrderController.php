@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Cart;
 use App\Models\Category;
 use Xendit\Configuration;
 use Illuminate\Http\Request;
@@ -119,11 +120,92 @@ class OrderController extends Controller
             'invoice_url'    => $invoice['invoice_url'],
             'grand_total'    => $grandTotal,
             'status'         => 'PENDING',
-            'status_transaksi' => 'new',
+            'status_transaksi' => 'pending',
         ]);
 
         // 6️⃣ REDIRECT KE XENDIT (buka di tab yang sama)
         return redirect()->away($invoice['invoice_url']);
+    }
+
+    /**
+     * Create an invoice for multiple cart items and return the Xendit invoice URL as JSON.
+     */
+    public function createInvoiceCart(Request $request)
+    {
+        $request->validate([
+            'cart_ids' => 'required|array|min:1',
+            'cart_ids.*' => 'integer'
+        ]);
+
+        $userId = Auth::id();
+        if (!$userId) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $cartIds = $request->input('cart_ids', []);
+
+        $carts = Cart::with(['product', 'color'])
+            ->whereIn('id', $cartIds)
+            ->where('user_id', $userId)
+            ->get();
+
+        if ($carts->isEmpty()) {
+            return response()->json(['error' => 'No cart items found'], 400);
+        }
+
+        $serviceFee = 2000;
+        $grandTotal = 0;
+        foreach ($carts as $c) {
+            $price = $c->product->price ?? 0;
+            $qty = $c->quantity ?? 1;
+            $grandTotal += ($price * $qty);
+        }
+        $grandTotal = (int) $grandTotal + (int) $serviceFee;
+
+        $externalId = 'INV-' . uniqid();
+
+        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
+
+        try {
+            $apiInstance = new InvoiceApi();
+            $invoice = $apiInstance->createInvoice(
+                new CreateInvoiceRequest([
+                    'external_id' => $externalId,
+                    'amount' => (int) $grandTotal,
+                    'currency' => 'IDR',
+                    'description' => 'Order (cart)',
+                    'success_redirect_url' => route('payment.success', ['external_id' => $externalId]),
+                    'failure_redirect_url' => route('payment.failed', ['external_id' => $externalId]),
+                ])
+            );
+        } catch (\Throwable $e) {
+            report($e);
+            return response()->json(['error' => 'Failed to create invoice: ' . $e->getMessage()], 500);
+        }
+
+        // Create order records linked by the same external_id
+        foreach ($carts as $c) {
+            $price = $c->product->price ?? 0;
+            $qty = $c->quantity ?? 1;
+            $colorName = $c->color_name ?? optional($c->color)->name ?? '';
+
+            Order::create([
+                'user_id' => $userId,
+                'product_id' => $c->product->id,
+                'external_id' => $externalId,
+                'no_transaction' => $externalId,
+                'model_name' => $c->product->model_name ?? $c->product->name ?? '',
+                'color' => $colorName,
+                'qty' => $qty,
+                'price' => $price,
+                'invoice_url' => $invoice['invoice_url'] ?? '',
+                'grand_total' => ($price * $qty),
+                'status' => 'PENDING',
+                'status_transaksi' => 'pending',
+            ]);
+        }
+
+        return response()->json(['invoice_url' => $invoice['invoice_url']]);
     }
 
 
@@ -133,7 +215,8 @@ class OrderController extends Controller
         $callbackToken = env('XENDIT_CALLBACK_TOKEN');
 
         try {
-            $order = Order::where('external_id', $request->external_id)->first();
+            // Find all orders that belong to the same invoice (external_id)
+            $orders = Order::where('external_id', $request->external_id)->get();
 
             if (!$callbackToken) {
                 return response()->json([
@@ -150,15 +233,13 @@ class OrderController extends Controller
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 
-            if ($order) {
-                if ($request->status === 'PAID') {
-                    $order->update([
-                        'status' => 'Completed'
-                    ]);
-                } else {
-                    $order->update([
-                        'status' => 'Failed'
-                    ]);
+            if ($orders->isNotEmpty()) {
+                foreach ($orders as $ord) {
+                    if ($request->status === 'PAID') {
+                        $ord->update(['status' => 'Completed']);
+                    } else {
+                        $ord->update(['status' => 'Failed']);
+                    }
                 }
             }
 
@@ -198,14 +279,63 @@ class OrderController extends Controller
         $orders = Order::findOrFail($id);
 
         $request->validate([
-            'status_transaksi' => 'required|in:new,processing,being_sent,to_the_location,delivered,cancelled',
+            // accept both legacy 'new' and 'pending' as initial states
+            'status_transaksi' => 'required|in:pending,new,processing,being_sent,to_the_location,delivered,cancelled',
         ]);
 
-        $orders->status_transaksi = $request->input('status_transaksi');
+        $newStatus = $request->input('status_transaksi');
+        $orders->status_transaksi = $newStatus;
         $orders->save();
 
+        if ($newStatus === 'processing') {
+            Alert::info('Info', 'Order masuk proses — Anda dapat mengubah status selanjutnya.');
+            return redirect()->route('orders.edit', $orders->id)->with('status_transaksi', 'processing');
+        }
+
         Alert::success('Success', 'Order berhasil diperbarui');
-        return redirect()->route('orders.index');
+        return redirect()->route('orders.edit', $orders->id);
+    }
+
+    /**
+     * Return the latest pending order id for the authenticated user and given product slug.
+     * Used by frontend to redirect back to the payment page when returning from Xendit.
+     */
+    public function checkPendingForProduct($productSlug)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return response()->json(['found' => false], 200);
+        }
+
+        $product = Product::where('slug', $productSlug)->first();
+        if (!$product) {
+            return response()->json(['found' => false], 200);
+        }
+
+        $order = Order::where('user_id', $userId)
+            ->where('product_id', $product->id)
+            ->where(function ($q) {
+                $q->where('status', 'PENDING')
+                  ->orWhere('status_transaksi', 'pending');
+            })
+            ->latest()
+            ->first();
+
+        if ($order) {
+            return response()->json(['found' => true, 'order_id' => $order->id], 200);
+        }
+
+        return response()->json(['found' => false], 200);
+    }
+
+    /**
+     * Show printable invoice for an order.
+     */
+    public function print($id)
+    {
+        $order = Order::with(['user', 'product'])->findOrFail($id);
+
+        return view('admin.orders.print', compact('order'));
     }
 
     /**

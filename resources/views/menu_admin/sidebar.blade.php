@@ -7,14 +7,20 @@
             </div>
         </a>
     </div>
-
     <!-- Digital Clock -->
-    <div id="digital-clock" class="text-center my-2"></div>
-
+    <div id="digital-clock" class="text-center"></div>
+    <br>
     <div class="menu-inner-shadow"></div>
 
     @php
-        $newOrdersCount = \App\Models\Order::where('status_transaksi', 'new')->count();
+        // Count distinct invoices (external_id) for new orders so multi-item invoices count as one
+        $newOrdersCount = \App\Models\Order::whereRaw("LOWER(COALESCE(status_transaksi,'')) = 'new'")
+            ->distinct('external_id')->count('external_id');
+
+        // Count distinct invoices where payment is Completed but transaction status still pending/new
+        $paidButUnprocessedCount = \App\Models\Order::whereRaw("LOWER(COALESCE(status,'')) = 'completed'")
+            ->whereRaw("LOWER(COALESCE(status_transaksi,'')) IN ('pending','new')")
+            ->distinct('external_id')->count('external_id');
     @endphp
 
     <ul class="menu-inner py-1">
@@ -26,12 +32,59 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('slider') ? 'active' : '' }}">
-            <a href="/slider" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-images"></i>
-                <div data-i18n="Analytics">Slider</div>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">CMS</span></li>
+
+        @php
+            $manageContentActive =
+                request()->routeIs('cms.*') || request()->routeIs('cms.home.hero.*') || Request::is('admin/content*');
+        @endphp
+
+        <li class="menu-item {{ $manageContentActive ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div>Manage Content</div>
             </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('cms.home.hero.*') ? 'active' : '' }}">
+                    <a href="{{ route('cms.home.hero.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-images"></i>
+                        <div class="ms-2">Hero Content</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->routeIs('cms.home.content.*') ? 'active' : '' }}">
+                    <a href="{{ route('cms.home.content.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-home"></i>
+                        <div class="ms-2">Home</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->routeIs('cms.home.about.*') ? 'active' : '' }}">
+                    <a href="{{ route('cms.home.about.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-info-circle"></i>
+                        <div class="ms-2">About</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->routeIs('cms.home.contact.*') ? 'active' : '' }}">
+                    <a href="{{ route('cms.home.contact.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-phone"></i>
+                        <div class="ms-2">Contact</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ request()->routeIs('cms.home.footer.*') ? 'active' : '' }}">
+                    <a href="{{ route('cms.home.footer.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-layout"></i>
+                        <div class="ms-2">Footer</div>
+                    </a>
+                </li>
+            </ul>
         </li>
+
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">MANAGEMENT </span></li>
+
 
         <li class="menu-item {{ Request::is('category*') ? 'active' : '' }}">
             <a href="/category" class="menu-link">
@@ -58,10 +111,16 @@
             <a href="/orders" class="menu-link d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <i class="menu-icon tf-icons bx bx-receipt"></i>
-                    <div class="ms-2" data-i18n="Test Drive Booking">Orders</div>
+                    <div class="" data-i18n="Test Drive Booking">Orders</div>
                 </div>
-                @if($newOrdersCount > 0)
-                    <span class="badge bg-danger" style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $newOrdersCount }}</span>
+                @if ($newOrdersCount > 0)
+                    <span class="badge bg-danger"
+                        style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $newOrdersCount }}</span>
+                @endif
+                @if ($paidButUnprocessedCount > 0)
+                    <span class="badge bg-success ms-1"
+                        title="Pembayaran lunas tapi belum diproses"
+                        style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $paidButUnprocessedCount }}</span>
                 @endif
             </a>
         </li>
@@ -87,6 +146,8 @@
                 <div data-i18n="Contact">Messages</div>
             </a>
         </li>
+
+
 
         {{-- User --}}
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Hak Akses</span></li>
