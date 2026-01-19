@@ -94,7 +94,7 @@
                 <!-- Right Description -->
                 <div class="col-lg-9 col-md-8 text-white" style="color:#dce4ea;">
                     <p class="mb-3" style="line-height:1.6;">
-                        {{ $about->description_second }}
+                        {{ $about->description_second ?? '' }}
                     </p>
 
 
