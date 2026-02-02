@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Testdrive;
 use App\Models\HomeContent;
+use App\Models\HomeTestimonial;
+use App\Models\HomeHeroSlider;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Schema;
@@ -53,6 +55,12 @@ class LandingPageController extends Controller
             $homeContents = HomeContent::orderBy('id', 'asc')->get();
         }
 
+        // Ambil hero sliders yang aktif
+        $sliders = HomeHeroSlider::where('is_active', 1)->orderBy('position', 'asc')->get();
+
+        // Ambil testimonial yang aktif
+        $testimonials = HomeTestimonial::where('status', true)->latest()->get();
+
         // Pilih view berdasarkan device
         $view = $request->is_mobile ? 'mobile.home' : 'landing.home';
 
@@ -63,8 +71,10 @@ class LandingPageController extends Controller
             'categoriesPosition2',
             'categoriesPosition3',
             'brands',
-            'brandChunks'
-            , 'homeContents'
+            'brandChunks',
+            'homeContents',
+            'sliders',
+            'testimonials'
         ));
     }
 

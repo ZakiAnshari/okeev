@@ -1,5 +1,5 @@
 @extends('layout.mobile.app')
-@section('title', 'login')
+@section('title', 'register')
 @section('content')
 
     <style>
@@ -63,7 +63,8 @@
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        textarea {
             width: 100%;
             padding: 16px 20px;
             border: none;
@@ -74,9 +75,37 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5;
+        }
+
         input::placeholder {
             color: #D3D3D3;
             font-weight: 400;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300C4F0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 196, 240, 0.1);
         }
 
         /* Wrapper input */
@@ -223,52 +252,100 @@
     </style>
 
     <div class="container">
-
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <a href="/" style=" text-decoration: none;color: inherit;">
             <div class="logo" style="margin-top:-50px">
-                <h1 class="mb-4 mt-4">OKEEV</h1>
+                <h5 style="color: white" class="m-0">Daftar</h5>
+                <h1 class="mb-4">OKEEV</h1>
             </div>
         </a>
 
-        <p class="subtitle">Masuk ke akun Anda</p>
+        <p class="subtitle">Isi informasi Anda dibawah ini</p>
 
-        @if (session('registered'))
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Registrasi Berhasil',
-                        text: 'Silakan login dengan akun Anda',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                });
-            </script>
+        @if ($errors->any())
+            <div
+                style="background: #ff6b6b; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px;">
+                @foreach ($errors->all() as $error)
+                    <p style="margin: 5px 0;">• {{ $error }}</p>
+                @endforeach
+            </div>
         @endif
 
-        <form action="{{ url('/m/login') }}" method="POST" class="mb-3">
+        <form action="{{ route('register-store') }}" method="POST" class="mb-3">
             @csrf
 
             <div class="form-group">
+                <input type="text" placeholder="Nama Depan" name="first_name" value="{{ old('first_name') }}" required>
+                @error('first_name')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Nama Belakang" name="second_name" value="{{ old('second_name') }}"
+                    required>
+                @error('second_name')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <input type="text" placeholder="Nomor Telepon" name="phone" value="{{ old('phone') }}" required>
+                @error('phone')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <input type="text" placeholder="Email" name="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+
+            <div class="form-group">
+                <textarea name="city" placeholder="Alamat/Kota" required>{{ old('city') }}</textarea>
+                @error('city')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <select name="gender" required>
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+                @error('gender')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
                 <div class="input-wrapper">
-                    <input type="password" id="password" placeholder="Kata Sandi" name="password" required>
+                    <input type="password" id="password" placeholder="Kata Sandi (min. 6 karakter)" name="password"
+                        required>
                     <button type="button" class="eye-icon" onclick="togglePassword()">
                         <i id="eyeIcon" class="bx bx-show"></i>
                     </button>
                 </div>
+                @error('password')
+                    <span style="color: #ff6b6b; font-size: 12px;">{{ $message }}</span>
+                @enderror
             </div>
 
-            <div class="forgot-password">
-                <a href="#">Lupa kata sandi ?</a>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="password" id="password_confirmation" placeholder="Konfirmasi Kata Sandi"
+                        name="password_confirmation" required>
+                    <button type="button" class="eye-icon" onclick="togglePasswordConfirm()">
+                        <i id="eyeIconConfirm" class="bx bx-show"></i>
+                    </button>
+                </div>
             </div>
 
             <button type="submit" class="btn-primary">
                 <span style="font-size:18px">
-                    Masuk
+                    Daftar
                 </span>
             </button>
         </form>
@@ -293,26 +370,29 @@
         </a>
 
         <p class="footer-text mt-5">
-            Belum punya akun?
-            <a href="{{ route('register.index') }}">Daftar</a>
+            Sudah punya akun?
+            <a href="{{ route('login.index') }}">Masuk</a>
         </p>
 
     </div>
 
     <script>
         function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-            } else {
-                passwordInput.type = 'password';
-            }
-        }
-    </script>
-    <script>
-        function togglePassword() {
             const input = document.getElementById('password');
             const icon = document.getElementById('eyeIcon');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bx-show', 'bx-hide');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bx-hide', 'bx-show');
+            }
+        }
+
+        function togglePasswordConfirm() {
+            const input = document.getElementById('password_confirmation');
+            const icon = document.getElementById('eyeIconConfirm');
 
             if (input.type === 'password') {
                 input.type = 'text';

@@ -46,12 +46,12 @@
                 <span class="category-text">Electric<br>Motor</span>
             </a>
 
-            <a href="{{ route('showelectric.show') }}" class="category-item">
+            {{-- <a href="{{ route('showelectric.show') }}" class="category-item">
                 <div class="category-icon">
                     <img src="{{ asset('front_end/assets/images/logo/3.jpg') }}" alt="Electronic">
                 </div>
                 <span class="category-text">Electronic</span>
-            </a>
+            </a> --}}
 
             <a href="{{ route('showaccessories.show') }}" class="category-item">
                 <div class="category-icon">
@@ -65,15 +65,52 @@
     <!-- Promo Banner -->
     <div class="container content-container">
         <div class="promo-banner">
-            <img src="{{ asset('front_end/assets/images/logo/Mobile.jpg') }}" alt="Electric Vehicle Promo">
+            <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                <div class="carousel-inner" style="border-radius: 12px; overflow: hidden; height: 215px;">
+                    @if (isset($sliders) && $sliders->isNotEmpty())
+                        @foreach ($sliders as $index => $slider)
+                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }} h-100">
+                                <img src="{{ asset('storage/' . $slider->image) }}" class="d-block w-100 h-100"
+                                    alt="{{ $slider->title ?? 'Promo Banner' }}" style="object-fit: cover;">
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="carousel-item active h-100">
+                            <img src="{{ asset('front_end/assets/images/logo/Mobile.jpg') }}" class="d-block w-100 h-100"
+                                alt="Electric Vehicle Promo" style="object-fit: cover;">
+                        </div>
+                    @endif
+                </div>
+
+                @if (isset($sliders) && $sliders->isNotEmpty() && $sliders->count() > 1)
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="prev"
+                        style="background-color: rgba(0,0,0,0.3); border-radius: 50%; width: 32px; height: 32px; left: 10px; padding: 4px; top: 50%; transform: translateY(-50%);">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"
+                            style="width: 16px; height: 16px; display: inline-block;"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                        data-bs-slide="next"
+                        style="background-color: rgba(0,0,0,0.3); border-radius: 50%; width: 32px; height: 32px; right: 10px; padding: 4px; top: 50%; transform: translateY(-50%);">
+                        <span class="carousel-control-next-icon" aria-hidden="true"
+                            style="width: 16px; height: 16px; display: inline-block;"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                @endif
+            </div>
         </div>
     </div>
 
     <!-- Main Text -->
     <div class="container content-container main-text-section">
-        <h6 class="heading-hero mb-2">The Future of Driving Starts Here</h6>
-        <p>Temukan kendaraan listrik impian Anda dari berbagai merek ternama. Hemat energi, ramah lingkungan, dan siap
-            mengubah cara Anda melaju.</p>
+        @php $hero = ($homeContents ?? collect())->first(); @endphp
+        <h6 class="heading-hero mb-2">{{ $hero->about_title ?? 'Masa Depan Berkendara Dimulai dari Sini' }}</h6>
+        <p> {{ $hero->about_description ?? 'Temukan kendaraan listrik impian Anda dari berbagai merek ternama. Hemat energi, ramah lingkungan, dan siap mengubah cara Anda melaju.' }}
+        </p>
+        @if (!empty($hero->button_text) && !empty($hero->button_link))
+            <a href="{{ $hero->button_link }}" class="btn btn-primary mt-3">{{ $hero->button_text }}</a>
+        @endif
     </div>
 
     <!-- Slider Section -->
@@ -137,11 +174,11 @@
                     <div class="feature-header">
                         <img src="{{ asset('front_end/assets/images/logo/mobileicon-Photoroom.png') }}"
                             class="feature-icon" alt="">
-                        <h5>Pilihan Merek & Model Lengkap</h5>
+                        <h5>{{ $hero->why_title_1 ?? 'Pilihan Merek & Model Lengkap' }}</h5>
                     </div>
                     <hr class="feature-line">
                     <p class="feature-desc">
-                        Semua merek mobil listrik favorit Anda tersedia di satu showroom.
+                       {{ $hero->why_description_1 ?? 'Semua merek mobil listrik favorit Anda tersedia di satu showroom.' }}
                     </p>
                 </div>
 
@@ -151,13 +188,13 @@
                     <div class="feature-header">
                         <img src="{{ asset('front_end/assets/images/logo/mobileicon2-Photoroom.png') }}"
                             class="feature-icon" alt="">
-                        <h5>Test Drive Kendaraan yang di inginkan</h5>
+                        <h5>{{ $hero->why_title_2 ?? 'Test Drive Kendaraan yang di inginkan' }}</h5>
                     </div>
 
                     <hr class="feature-line">
 
                     <p class="feature-desc">
-                        Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.
+                        {{ $hero->why_description_2 ?? 'Rasakan sendiri performa mobil listrik favorit Anda sebelum memutuskan.' }}
                     </p>
                 </div>
 
@@ -166,14 +203,13 @@
                     <div class="feature-header">
                         <img src="{{ asset('front_end/assets/images/logo/mobileicon3-Photoroom.png') }}"
                             class="feature-icon" alt="">
-                        <h5>Komitmen pada Lingkungan</h5>
+                        <h5>{{ $hero->why_title_3 ?? 'Komitmen pada Lingkungan' }}</h5>
                     </div>
 
                     <hr class="feature-line">
 
                     <p class="feature-desc">
-                        Dengan setiap mobil listrik yang terjual, kita bersama selangkah lebih dekat
-                        menuju masa depan hijau.
+                        {{ $hero->why_description_3 ?? 'Dengan setiap mobil listrik yang terjual, kita bersama selangkah lebih dekat menuju masa depan hijau.' }}
                     </p>
                 </div>
 

@@ -6,7 +6,11 @@ use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Product;
 use App\Models\Technology;
+use App\Models\HomeHeroSlider;
+use App\Models\HomeContent;
+use App\Models\HomeTestimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -22,10 +26,28 @@ class HomeController extends Controller
 
         $brands = Brand::all();
 
+        // Ambil home contents, order by `position` jika ada
+        if (Schema::hasColumn('home_contents', 'position')) {
+            $homeContents = HomeContent::orderBy('position', 'asc')->get();
+        } else {
+            $homeContents = HomeContent::orderBy('id', 'asc')->get();
+        }
+
+        // Ambil hero sliders yang aktif
+        $sliders = HomeHeroSlider::where('is_active', 1)
+            ->orderBy('position', 'asc')
+            ->get();
+
+        // Ambil testimonial yang aktif
+        $testimonials = HomeTestimonial::where('status', true)->latest()->get();
+
         // kirim flag biasa
         return view('mobile.home', [
             'brands' => $brands,
             'products' => $products,
+            'homeContents' => $homeContents,
+            'sliders' => $sliders,
+            'testimonials' => $testimonials,
         ]);
     }
 

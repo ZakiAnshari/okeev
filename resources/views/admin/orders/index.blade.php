@@ -39,7 +39,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $index => $order)
-                                        <tr class="{{ (strtolower($order->status) === 'completed' && in_array(strtolower($order->status_transaksi), ['pending','new'])) ? 'table-warning' : '' }}">
+                                        <tr class="{{ (strtolower($order->status) === 'completed' && in_array(strtolower($order->status_transaksi), ['pending','new'])) ? 'table-success' : '' }}">
                                             <td>{{ $index + 1 }}</td>
                                             {{-- <td>{{ $order->no_transaction }}</td> --}}
                                             <td>{{ $order->user->first_name }}</td>

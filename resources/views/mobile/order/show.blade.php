@@ -21,7 +21,7 @@
     <br>
     <div class="container my-4 mt-5">
         <img id="carImage"
-            src="{{ $product->colors->first()->image ? asset('storage/' . $product->colors->first()->image) : asset('placeholder.png') }}"
+            src="{{ $product->colors->first() && $product->colors->first()->image ? asset('storage/' . $product->colors->first()->image) : asset('placeholder.png') }}"
             class="card-img-top mb-3 rounded" alt="Car Image">
         <div class=" p-3 shadow-sm" style="max-width: 350px;">
             <!-- Gambar Mobil -->
@@ -46,7 +46,7 @@
                 <div class="d-flex flex-wrap justify-content-center gap-4 mb-3 mt-4">
                     @forelse($product->colors as $index => $color)
                         <div class="color-circle {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"
-                            data-name="{{ $color->name }}" data-image="{{ asset('storage/' . $color->image) }}"
+                            data-name="{{ $color->name ?? '' }}" data-image="{{ $color->image ? asset('storage/' . $color->image) : asset('placeholder.png') }}"
                             style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%); cursor: pointer;">
                         </div>
                     @empty
@@ -79,7 +79,7 @@
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="qty" id="qty_input" value="1">
 
-                <input type="hidden" name="color" id="color" value="{{ $product->colors->first()->name }}">
+                <input type="hidden" name="color" id="color" value="{{ $product->colors->first()?->name ?? '' }}">
 
                 <input type="hidden" name="price" id="price" value="{{ $product->price }}">
                 <input type="hidden" name="grand_total" id="grand_total" value="{{ $product->grand_total }}">

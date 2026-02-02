@@ -14,24 +14,31 @@ return new class extends Migration
         Schema::create('home_contents', function (Blueprint $table) {
             $table->id();
 
+            // ===== FIRST SECTION (ABOUT US) =====
+            $table->string('about_title')->nullable();
+            $table->text('about_description')->nullable();
 
-            // Konten utama Home
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
+            // ===== SECOND SECTION (WHY CHOOSE US) =====
+            $table->string('why_title_1')->nullable();
+            $table->text('why_description_1')->nullable();
 
-            // CTA
-            $table->string('button_text')->nullable();
-            $table->string('button_link')->nullable();
+            $table->string('why_title_2')->nullable();
+            $table->text('why_description_2')->nullable();
 
-            // Media
-            $table->string('image')->nullable();
+            $table->string('why_title_3')->nullable();
+            $table->text('why_description_3')->nullable();
 
-            // Status
+            // ===== THIRD SECTION (COLLABORATION) =====
+            $table->string('collaboration_customer')->nullable();
+            $table->string('collaboration_customer_happy')->nullable();
+
+            // ===== STATUS =====
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

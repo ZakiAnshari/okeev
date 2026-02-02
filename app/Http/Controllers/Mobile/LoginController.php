@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -17,33 +18,36 @@ class LoginController extends Controller
     public function mobileauthenticating(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required|string',
+            'email' => 'required|email',
             'password' => 'required|string',
         ], [
-            'username.required' => 'Username harus diisi!',
+            'email.required' => 'Email harus diisi!',
+            'email.email' => 'Format email tidak valid!',
             'password.required' => 'Password harus diisi!',
         ]);
 
-        $user = User::where('username', $credentials['username'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
-            alert()->error('Login Gagal', 'Username tidak ditemukan');
+            toast('Email tidak ditemukan', 'error')
+                ->position('top-end')
+                ->autoClose(3000)
+                ->width('fit-content');
             return back()->withInput();
         }
 
-        if (!Auth::attempt($credentials)) {
-            alert()->error('Login Gagal', 'Password salah');
+        if (!Hash::check($request->password, $user->password)) {
+            toast('Password salah', 'error')
+                ->position('top-end')
+                ->autoClose(3000)
+                ->width('fit-content');
             return back()->withInput();
         }
 
+        Auth::login($user);
         $request->session()->regenerate();
 
-
-        // ✅ SATU KALI SAJA
-        alert()->success(
-            'Login Berhasil',
-            'Selamat datang ' . auth()->user()->username . ' di aplikasi Okeev!'
-        );
+        toast('Login Berhasil! Selamat datang ' . $user->first_name . ' di aplikasi Okeev!', 'success');
 
         if ($user->role_id == 2) {
             return redirect()->intended('/m');

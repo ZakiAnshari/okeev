@@ -10,6 +10,7 @@ use App\Http\Controllers\FiturController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PowerController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DimensiController;
 use App\Http\Controllers\FeatureController;
@@ -31,8 +32,8 @@ use App\Http\Controllers\SpecificationController;
 use App\Http\Controllers\Cms\HomeFooterController;
 use App\Http\Controllers\Cms\HomeContactController;
 use App\Http\Controllers\Cms\HomeContentController;
+use App\Http\Controllers\Cms\HomeTestimonialController;
 use App\Http\Controllers\Cms\HomeHeroSliderController;
-use App\Http\Controllers\SearchController;
 
 Route::middleware(['role_not_one', DetectMobileRedirect::class])->group(function () {
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -229,6 +230,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // CMS Home - Home Content
     Route::get('/home/content', [HomeContentController::class, 'index'])->name('cms.home.content.index');
     Route::post('/home/content', [HomeContentController::class, 'update'])->name('cms.home.content.update');
+    // CMS Home - Testimonial
+    Route::post('/home/testimonial-add', [HomeTestimonialController::class, 'store'])->name('cms.home.testimonial.store');
+    Route::get('/home/testimonial/{id}/edit', [HomeTestimonialController::class, 'edit'])->name('cms.home.testimonial.edit');
+    Route::post('/home/testimonial/{id}/edit', [HomeTestimonialController::class, 'update'])->name('cms.home.testimonial.update');
+    Route::get('/home/testimonial-destroy/{id}', [HomeTestimonialController::class, 'destroy'])->name('cms.home.testimonial.destroy');
     // CMS Home - About Content
     Route::get('/home/about', [HomeAboutController::class, 'index'])->name('cms.home.about.index');
     Route::post('/home/about', [HomeAboutController::class, 'update'])->name('cms.home.about.update');
@@ -276,6 +282,9 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
 
     Route::get('/login', [App\Http\Controllers\Mobile\LoginController::class, 'index'])->name('login.index');
     Route::post('/login', [App\Http\Controllers\Mobile\LoginController::class, 'mobileauthenticating']);
+
+    Route::get('/register', [App\Http\Controllers\Mobile\RegisterController::class, 'register'])->name('register.index');
+    Route::post('/register', [App\Http\Controllers\Mobile\RegisterController::class, 'registerprocess'])->name('register-store');
     // LOGOUT
     Route::post('/logout', [App\Http\Controllers\Mobile\LoginController::class, 'logout'])
         ->name('mobile.logout');
