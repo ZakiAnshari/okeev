@@ -85,49 +85,52 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <div class="container py-4">
-            <div class="cart-card">
+            <div class="cart-card mb-3">
 
                 <!-- Select all -->
-                <div class="d-flex align-items-center mb-3">
-                    <label class="check-wrapper">
+                <div class="d-flex align-items-center ">
+                    <label class="check-wrapper select-all">
                         <input class="check-input" type="checkbox" checked>
                         <span class="check-box"></span>
                     </label>
                     <span class="fw-medium ms-2">select all products</span>
                 </div>
 
-                <!-- Cart Item -->
-                <div class="cart-item d-flex align-items-center">
-                    <label class="check-wrapper me-3">
-                        <input class="check-input" type="checkbox" checked>
-                        <span class="check-box"></span>
-                    </label>
 
+
+            </div>
+            <!-- Cart Item -->
+            <div class="cart-item d-flex align-items-center">
+                <label class="check-wrapper">
+                    <input class="check-input" type="checkbox" checked>
+                    <span class="check-box"></span>
+                </label>
+
+                <div class="item-left d-flex flex-column align-items-start me-3">
                     <img src="https://via.placeholder.com/90x70" class="product-img" alt="product">
-
-                    <div class="ms-3 flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <small class="text-muted d-block">Menunggu Pembayaran</small>
-                                <div class="fw-semibold text-primary product-title">
-                                    ASUS Zenbook A14 (UX3407)
-                                </div>
-                            </div>
-                            <div class="price-text">
-                                Rp 14.999.000
+                    <div class="price-text mt-2">
+                        Rp 14.999.000
+                    </div>
+                </div>
+                <div class="ms-0 flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small class="text-muted d-block"style="font-size: 12px">Menunggu Pembayaran</small>
+                            <div class="fw-semibold text-primary product-title" style="font-size: 12px">
+                                ASUS Zenbook A14 (UX3407)
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-start align-items-center mt-3">
-                            <div class="qty-box">
-                                <button class="qty-btn">−</button>
-                                <span class="qty-number">1</span>
-                                <button class="qty-btn">+</button>
-                            </div>
+                    </div>
+
+                    <div class="d-flex justify-content-start align-items-center mt-3">
+                        <div class="qty-box">
+                            <button class="qty-btn">−</button>
+                            <span class="qty-number">1</span>
+                            <button class="qty-btn">+</button>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -149,9 +152,12 @@
             border-radius: 12px;
             padding: 12px;
             background: #ffffff;
-            border: 1px solid rgba(25,195,125,0.06);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+            border: 1px solid rgba(25, 195, 125, 0.06);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
             gap: 12px;
+            position: relative;
+            padding-left: 56px;
+            /* space for absolute checkbox */
         }
 
         .product-img {
@@ -161,7 +167,7 @@
             border-radius: 10px;
             border: 1px solid #f0f0f0;
             background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
 
         .qty-box {
@@ -197,6 +203,21 @@
             justify-content: center;
         }
 
+        /* Keep the select-all checkbox inline (not absolute) */
+        .check-wrapper.select-all {
+            position: static;
+            margin: 0;
+        }
+
+        /* Position item checkboxes inside cart items */
+        .cart-item .check-wrapper {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 3;
+            margin: 0;
+        }
+
         .check-wrapper .check-input {
             display: none;
         }
@@ -211,7 +232,7 @@
             position: relative;
         }
 
-        .check-wrapper .check-input:checked + .check-box {
+        .check-wrapper .check-input:checked+.check-box {
             background: #19c37d;
         }
 
@@ -228,7 +249,7 @@
             opacity: 0;
         }
 
-        .check-wrapper .check-input:checked + .check-box::after {
+        .check-wrapper .check-input:checked+.check-box::after {
             opacity: 1;
         }
 
