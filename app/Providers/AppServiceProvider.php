@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Cart;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Force HTTPS (kecuali di local)
+        URL::forceScheme('https');
         View::composer('*', function ($view) {
             $cartCount = Auth::check()
                 ? Cart::where('user_id', Auth::id())->sum('quantity')
