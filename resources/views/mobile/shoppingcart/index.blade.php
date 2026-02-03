@@ -84,7 +84,7 @@
     <div class="container py-4">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <div class="container py-4">
+        <div class="container pb-5">
             <div class="cart-card mb-3">
 
                 <!-- Select all -->
@@ -256,7 +256,129 @@
         .product-title {
             max-width: 180px;
         }
+
+        /* Footer wrapper styles */
+        .bf-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            padding: 25px 16px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+        }
+
+        .bf-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .bf-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .bf-left .check-wrapper {
+            position: static;
+        }
+
+        .bf-left .check-box {
+            background: #19c37d;
+            border-color: #19c37d;
+            width: 24px;
+            height: 24px;
+        }
+
+        .bf-left .check-box::after {
+            opacity: 1;
+            left: 5px;
+            top: 2px;
+            width: 6px;
+            height: 12px;
+        }
+
+        .bf-all-text {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .bf-middle {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .bf-total-label {
+            color: #888888;
+            font-size: 11px;
+        }
+
+        .bf-total-price {
+            color: #e53935;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .bf-btn-buy {
+            background: #0099ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        /* .bf-btn-buy:hover {
+            background: #0077cc;
+        } */
+
+        .bf-btn-buy {
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #00DAD7, #006BE5);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .bf-btn-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 107, 229, 0.35);
+        }
     </style>
 
+    <div class="bf-wrapper">
+        <div class="bf-content">
+            <div class="bf-left">
+                <label class="check-wrapper select-all">
+                    <input class="check-input" type="checkbox" checked>
+                    <span class="check-box"></span>
+                </label>
+                <span class="bf-all-text">All</span>
+            </div>
+            <div class="bf-middle">
+                <span class="bf-total-label">Total</span>
+                <span class="bf-total-price">Rp 194.000.000</span>
+            </div>
+            <button class="bf-btn-buy">BUY</button>
+
+        </div>
+    </div>
 
 @endsection

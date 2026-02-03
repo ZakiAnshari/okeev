@@ -89,7 +89,6 @@ Route::middleware(['auth', 'role'])->group(function () {
     // API: check if there's a pending order for the current authenticated user and product
     Route::get('/order/pending/{productSlug}', [OrderController::class, 'checkPendingForProduct'])->name('order.checkPending');
 
-
     // Route::get('/payment/success', function () {return view('payment.success');})->name('payment.success');
 
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');

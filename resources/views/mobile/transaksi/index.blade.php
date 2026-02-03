@@ -116,6 +116,9 @@
             padding: 16px;
         }
 
+        /* ensure legacy category-content sections with class 'hidden' stay hidden */
+        .category-content.hidden { display: none !important; }
+
         .section-title {
             font-size: 16px;
             font-weight: 600;
@@ -289,39 +292,52 @@
 
 
         <div class="category-tabs">
-            <div class="category-tab active" onclick="changeCategory('waiting')">
-                <div class="category-icon-waiting mb-2">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time.jpg') }}" alt="Waiting Icon"
-                        class="category-img-waiting">
-                    <span class="badge">2</span>
+            @php
+                $userOrdersForCounts = \App\Models\Order::where('user_id', auth()->id() ?? 0)->get();
+                $statusCounts = $userOrdersForCounts->groupBy(function ($o) {
+                    return strtolower($o->status_transaksi ?? $o->status ?? 'unknown');
+                })->map->count()->toArray();
+            @endphp
+
+            <div class="category-tab {{ (isset($statusCounts['pending']) && $statusCounts['pending']>0) ? 'active' : '' }}" data-status="pending" onclick="changeCategory('waiting')">
+                <div class="category-icon-waiting mb-2" style="position:relative;">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time.jpg') }}" alt="Waiting Icon" class="category-img-waiting">
+                    @if(($statusCounts['pending'] ?? 0) > 0)
+                        <span class="badge">{{ $statusCounts['pending'] }}</span>
+                    @endif
                 </div>
                 <div class="category-label">Waiting for<br>Confirmation</div>
             </div>
 
-            <div class="category-tab" onclick="changeCategory('waiting')">
-                <div class="category-icon-waiting mb-2">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time (1).jpg') }}" alt="Waiting Icon"
-                        class="category-img-waiting">
+            <div class="category-tab {{ (isset($statusCounts['processing']) && $statusCounts['processing']>0) ? 'active' : '' }}" data-status="processing" onclick="changeCategory('processing')">
+                <div class="category-icon-waiting mb-2" style="position:relative;">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time (1).jpg') }}" alt="Processing Icon" class="category-img-waiting">
+                    @if(($statusCounts['processing'] ?? 0) > 0)
+                        <span class="badge">{{ $statusCounts['processing'] }}</span>
+                    @endif
                 </div>
                 <div class="category-label">Process</div>
             </div>
 
-            <div class="category-tab" onclick="changeCategory('sent')">
-                <div class="category-icon-waiting mb-2">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time (2).jpg') }}" alt="Waiting Icon"
-                        class="category-img-waiting">
+            <div class="category-tab {{ (isset($statusCounts['being_sent']) && $statusCounts['being_sent']>0) ? 'active' : '' }}" data-status="being_sent" onclick="changeCategory('sent')">
+                <div class="category-icon-waiting mb-2" style="position:relative;">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time (2).jpg') }}" alt="Sent Icon" class="category-img-waiting">
+                    @if(($statusCounts['being_sent'] ?? 0) > 0)
+                        <span class="badge">{{ $statusCounts['being_sent'] }}</span>
+                    @endif
                 </div>
                 <div class="category-label">Being<br>Sent</div>
             </div>
 
-            <div class="category-tab" onclick="changeCategory('location')">
-                <div class="category-icon-waiting mb-2">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time (3).jpg') }}" alt="Waiting Icon"
-                        class="category-img-waiting">
+            <div class="category-tab {{ (isset($statusCounts['to_the_location']) && $statusCounts['to_the_location']>0) ? 'active' : '' }}" data-status="to_the_location" onclick="changeCategory('location')">
+                <div class="category-icon-waiting mb-2" style="position:relative;">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/tdesign_time (3).jpg') }}" alt="Location Icon" class="category-img-waiting">
+                    @if(($statusCounts['to_the_location'] ?? 0) > 0)
+                        <span class="badge">{{ $statusCounts['to_the_location'] }}</span>
+                    @endif
                 </div>
                 <div class="category-label">to the<br>Location</div>
             </div>
-
 
         </div>
 
@@ -335,7 +351,8 @@
             @endphp
 
             @foreach ($orders as $item)
-                <a href="{{ route('payment.vam', $item->id) }}" class="trans-card-link countdown-link">
+                @php $ts = strtolower($item->status_transaksi ?? $item->status ?? ''); @endphp
+                <a href="{{ route('payment.vam', $item->id) }}" class="trans-card-link countdown-link" data-status="{{ $ts }}">
 
                     <div class="trans-card d-flex align-items-center p-2 mb-3 shadow-sm rounded-3"
                         style="background: #fff; gap: 12px;">
@@ -378,6 +395,7 @@
                     </div>
                 </a>
             @endforeach
+            <div id="transEmpty" class="empty-state" style="display:none; padding:40px 0;">Tidak ada transaksi untuk status ini.</div>
 
             <!-- Process -->
             <div id="process-content" class="category-content hidden">
@@ -451,6 +469,62 @@
     </script>
 
     <script>
+        // Category/tab filtering for transactions
+        function changeCategory(key) {
+            const map = {
+                'waiting': ['pending','new'],
+                'waiting2': ['pending','new'],
+                'processing': ['processing'],
+                'sent': ['being_sent'],
+                'location': ['to_the_location']
+            };
+
+            const wanted = map[key] || [key];
+            const cards = document.querySelectorAll('.trans-card-link');
+            let shown = 0;
+
+            cards.forEach(a => {
+                const s = (a.dataset.status || '').toLowerCase();
+                if (wanted.includes(s)) {
+                    a.style.display = '';
+                    shown++;
+                } else {
+                    a.style.display = 'none';
+                }
+            });
+
+            // toggle empty message
+            const empty = document.getElementById('transEmpty');
+            if (empty) empty.style.display = (shown === 0) ? '' : 'none';
+
+            // update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+            const activeKeyMap = {
+                'waiting': 0,
+                'processing': 1,
+                'sent': 2,
+                'location': 3
+            };
+            // find first tab matching wanted status and mark active if possible
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                const ds = tab.dataset.status || '';
+                if (wanted.includes(ds)) tab.classList.add('active');
+            });
+        }
+
+        // apply initial category based on active tab (or default to waiting)
+        document.addEventListener('DOMContentLoaded', function() {
+            const active = document.querySelector('.category-tab.active');
+            if (active) {
+                const status = active.dataset.status || 'pending';
+                // map back to our changeCategory keys
+                if (status === 'pending') changeCategory('waiting');
+                else changeCategory(status);
+            } else {
+                changeCategory('waiting');
+            }
+        });
+
         document.querySelectorAll('.countdown').forEach(function(el) {
             const createdAt = parseInt(el.dataset.created) * 1000; // timestamp ke ms
             const duration = parseInt(el.dataset.duration) * 1000; // detik ke ms
