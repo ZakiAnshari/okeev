@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Models\News;
 use App\Models\Brand;
+use App\Models\Contact;
 use App\Models\Feature;
 use App\Models\Product;
+use App\Models\HomeAbout;
 use App\Models\Technology;
-use App\Models\HomeHeroSlider;
+use App\Models\HomeContact;
 use App\Models\HomeContent;
-use App\Models\HomeTestimonial;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
+use App\Models\HomeHeroSlider;
+use App\Models\HomeTestimonial;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
@@ -171,7 +175,7 @@ class HomeController extends Controller
     {
         // Ambil product berdasarkan slug
         $product = \App\Models\Product::where('slug', $productSlug)
-            ->with(['features', 'technologies', 'colors', 'specifications', 'details','powers','dimensis','suspensis','fiturs']) // load relasi langsung
+            ->with(['features', 'technologies', 'colors', 'specifications', 'details', 'powers', 'dimensis', 'suspensis', 'fiturs']) // load relasi langsung
             ->firstOrFail();
 
         // Ambil feature & technology khusus product ini
@@ -186,7 +190,7 @@ class HomeController extends Controller
         $fiturs = $product->fiturs;
 
         // Kirim data ke view
-        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications', 'details','powers','dimensis','suspensis','fiturs'));
+        return view('mobile.vehicle.detail', compact('product', 'features', 'technologies', 'colors', 'specifications', 'details', 'powers', 'dimensis', 'suspensis', 'fiturs'));
     }
 
 
@@ -203,14 +207,14 @@ class HomeController extends Controller
 
     public function newss()
     {
-        // Kembalikan view tanpa data
-        return view('mobile.news.index');
+        $news = News::latest()->get();
+        return view('mobile.news.index', compact('news'));
     }
 
-    public function newssdetail()
+    public function newssdetail($slug)
     {
-        // Kembalikan view tanpa data
-        return view('mobile.news.detail');
+        $news = News::where('slug', $slug)->firstOrFail();
+        return view('mobile.news.detail', compact('news'));
     }
 
     public function profilm()
@@ -224,13 +228,54 @@ class HomeController extends Controller
 
     public function about()
     {
-        // Kembalikan view tanpa data
-        return view('mobile.about.index');
+        $about = HomeAbout::first();
+        return view('mobile.about.index', compact('about'));
     }
 
     public function contact()
     {
-        // Kembalikan view tanpa data
-        return view('mobile.contact.index');
+        $homeContact = HomeContact::first();
+        return view('mobile.contact.index', compact('homeContact'));
+    }
+
+    public function notification()
+    {
+        $homeContact = HomeContact::first();
+        return view('mobile.notifikasi.index', compact('homeContact'));
+    }
+
+    public function shoppingcart()
+    {
+       
+        return view('mobile.shoppingcart.index');
+    }
+
+    public function contactstores(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'phone'   => 'nullable|string|max:50',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        // Cek email duplicate
+        if (Contact::where('email', $validated['email'])->exists()) {
+            Alert::error('Gagal', 'Email ini sudah pernah digunakan!');
+            return back()->withInput();
+        }
+
+        // Cek phone duplicate
+        if (!empty($validated['phone']) && Contact::where('phone', $validated['phone'])->exists()) {
+            Alert::error('Gagal', 'Nomor telepon ini sudah pernah digunakan!');
+            return back()->withInput();
+        }
+
+        // Simpan data
+        Contact::create($validated);
+        Alert::success('Berhasil', 'Pesan Anda telah berhasil dikirim.');
+        return back();
     }
 }

@@ -24,19 +24,46 @@
         .container {
             max-width: 480px;
             margin: 0 auto;
-            background-color: white;
+            /* background-color: white; */
             min-height: 100vh;
         }
 
         .header {
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 16px;
             background-color: white;
             border-bottom: 1px solid #e0e0e0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
+            height: 56px;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .back-btn-img {
+            position: absolute;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-icon {
+            width: 24px;
+            height: 24px;
         }
 
         .back-btn {
@@ -57,6 +84,7 @@
 
         .article-content {
             padding: 20px;
+            margin-top: 56px;
         }
 
         .article-title {
@@ -215,39 +243,91 @@
             color: #9e9e9e;
         }
 
+        /* Liked state */
+        .btn-action.liked {
+            background-color: #e6f0ff;
+            border: 1px solid rgba(26, 115, 232, 0.15);
+        }
+
+        .btn-action.liked i {
+            color: #1a73e8;
+        }
+
+        /* Toast notification */
+        .toast-notify {
+            position: fixed;
+            top: 72px;
+            right: 16px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+
+        .toast-notify.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Simple share menu (fallback) */
+        .share-menu {
+            position: absolute;
+            background: #fff;
+            border: 1px solid #eee;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            padding: 8px;
+            border-radius: 8px;
+            z-index: 9998;
+            display: flex;
+            gap: 8px;
+        }
+
+        .share-menu button {
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: none;
+            background: #f7f7f7;
+            cursor: pointer;
+        }
+
         .header {
             height: 56px;
             /* tinggi header */
         }
-
-        .absolute-center {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: 600;
-        }
     </style>
     <div class="container">
-        <div class="header">
+        <div class="header ">
+            <div class="container header-container">
+                <a href="{{ route('newss.show') }}" class="back-btn-img">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
+                </a>
+                <div class="header-title">Detail News</div>
+            </div>
+        </div>
+        {{-- <div class="header">
             <a href="{{ route('newss.show') }}" class="back-btn">←</a>
 
             <div class="header-title absolute-center">Detail News</div>
-        </div>
+        </div> --}}
 
         <div class="article-content">
-            <h1 class="article-title">2026 Rivian R1T Quad Motor Is the Quickest Truck We've Tested</h1>
+            <h1 class="article-title"> {{ $news->title }}</h1>
             <div class="article-meta">
-                <span>By <a href="#" class="author-link">Mike Sutton</a></span>
+                <span>By <a href="#" class="author-link">{{ $news->author }}</a></span>
                 <span>•</span>
-                <span>Published: Nov 28, 2025</span>
+                <span>Published: {{ \Carbon\Carbon::parse($news->published_at)->format('M d, Y') }}</span>
             </div>
             <div class="action-buttons mb-3">
-                <button class="btn-action">
+                <button type="button" class="btn-action btn-like" onclick="handleLike(event, {{ $news->id }})" title="Like this article">
                     <i class="bx bx-like"></i>
                 </button>
 
-                <button class="btn-action">
+                <button type="button" class="btn-action btn-share" onclick="handleShare(event, {!! json_encode(route('newssdetail.show', $news->slug)) !!}, {!! json_encode($news->title) !!})" title="Share this article">
                     <i class="bx bx-share-alt"></i>
                 </button>
             </div>
@@ -257,49 +337,125 @@
 
 
 
-            <img src="{{ asset('front_end/assets/images/logo/mobile/blue-crossover-autumn-bend-car-motion 1.jpg') }}"
-                alt="Rivian R1T" class="article-image">
+            <img src="{{ asset('storage/' . $news->thumbnail) }}" alt="Rivian R1T" class="article-image">
 
             <div class="article-body">
-                <ul class="news-list">
-                    <li>
-                        Rivian's updated R1T model is not only intensely quick for a pickup but was also quicker than the
-                        <span class="highlight-text">60 mph in only 2.6 seconds</span> and covers the quarter-mile in 11.2
-                        seconds
-                        at 117 mph.
-                    </li>
-
-                    <li>
-                        While the <a href="#" class="link-text">Tesla Cybertruck Beast</a> matches the Rivian's
-                        zero-to-60-mph time,
-                        the R1T bested it around our test track at 1:06.5, about three-tenths behind by 100 mph.
-                    </li>
-
-                    <li>
-                        The quad-motor electric pickup we've tested, a
-                        <a href="#" class="link-text">2024 Ford F-150 Lightning</a>,
-                        needs a comparatively tepid 4.0 seconds to hit 60.
-                    </li>
-                </ul>
-
-
-                <h3>Performance Highlights</h3>
-                <p>Welcome to Car and Driver's <a href="#" class="link-text">Testing Hub</a>, where we've been
-                    chronicling vehicle performance since 1956 to provide objective data to inform your purchase decisions.
-                    During a recent spate of vehicle launches, some exotic cars that otherwise fly under the radar now stand
-                    out as they set new records for acceleration capability.</p>
-
-                <p>Electric vehicles have redefined what we consider performance. The quad-motor R1T sets the benchmark
-                    among electric trucks, posting standout numbers on both the drag strip and road course. The R1T does 60
-                    mph in a scant around 60 mph times of the 700-plus-horsepower <a href="#" class="link-text">Ram
-                        1500 TRX</a> is 3.7 seconds, the 702-hp <a href="#" class="link-text">Ford F-150 Raptor R</a>
-                    does it in 3.6 seconds, and the 1012-hp <a href="#" class="link-text">GMC Hummer EV</a> requires
-                    more 3 seconds.</p>
-
-                <p>Yet even the pace seems quaint when stacked next to some of the seriously speedy wheel-drive quad-motor
-                    R1T recently clobbering the stopwatch at our test track, hitting 60 mph in 2.6 seconds. It tied the <a
-                        href="#" class="link-text">GMC Hummer EV</a>.</p>
+                {!! $news->content !!}
             </div>
         </div>
     </div>
+
+    <script>
+        function showToast(message) {
+            let t = document.querySelector('.toast-notify');
+            if (!t) {
+                t = document.createElement('div');
+                t.className = 'toast-notify';
+                document.body.appendChild(t);
+            }
+            t.textContent = message;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 1800);
+        }
+
+        function handleLike(event, newsId) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const btn = event.currentTarget || event.target.closest('.btn-action');
+            if (!btn) return;
+
+            const key = 'liked_' + newsId;
+            const isLiked = localStorage.getItem(key) === '1';
+
+            if (isLiked) {
+                localStorage.removeItem(key);
+                btn.classList.remove('liked');
+                showToast('Removed like');
+            } else {
+                localStorage.setItem(key, '1');
+                btn.classList.add('liked');
+                showToast('Added to likes');
+            }
+
+            // Optional: send to server
+            // fetch(`/api/news/${newsId}/like`, { method: 'POST' });
+        }
+
+        function handleShare(event, url, title) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // url may be absolute (route()) or relative
+            const fullUrl = (/^https?:\/\//i.test(url)) ? url : (window.location.origin + url);
+
+            if (navigator.share) {
+                navigator.share({
+                    title: title || 'OKEEV News',
+                    text: title || '',
+                    url: fullUrl
+                }).catch(() => {
+                    // fallback
+                    openShareFallback(fullUrl, title);
+                });
+            } else {
+                openShareFallback(fullUrl, title);
+            }
+        }
+
+        function openShareFallback(fullUrl, title) {
+            // Small inline fallback chooser: WhatsApp, Telegram, Copy
+            const menu = document.createElement('div');
+            menu.className = 'share-menu';
+
+            const waBtn = document.createElement('button');
+            waBtn.textContent = 'WhatsApp';
+            waBtn.onclick = () => {
+                const waUrl = 'https://wa.me/?text=' + encodeURIComponent((title ? title + '\n' : '') + fullUrl);
+                window.open(waUrl, '_blank');
+                document.body.removeChild(menu);
+            };
+
+            const tgBtn = document.createElement('button');
+            tgBtn.textContent = 'Telegram';
+            tgBtn.onclick = () => {
+                const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(fullUrl) + '&text=' + encodeURIComponent(title || '');
+                window.open(tgUrl, '_blank');
+                document.body.removeChild(menu);
+            };
+
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = 'Copy Link';
+            copyBtn.onclick = () => {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(fullUrl).then(() => showToast('Link copied'));
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = fullUrl;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); showToast('Link copied'); } catch { alert(fullUrl); }
+                    document.body.removeChild(ta);
+                }
+                if (menu.parentNode) document.body.removeChild(menu);
+            };
+
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = 'Close';
+            closeBtn.onclick = () => { if (menu.parentNode) document.body.removeChild(menu); };
+
+            menu.appendChild(waBtn);
+            menu.appendChild(tgBtn);
+            menu.appendChild(copyBtn);
+            menu.appendChild(closeBtn);
+
+            // place menu near top-right for simplicity
+            menu.style.top = (window.scrollY + 90) + 'px';
+            menu.style.right = '16px';
+            menu.style.position = 'fixed';
+
+            document.body.appendChild(menu);
+        }
+    </script>
 @endsection

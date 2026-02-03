@@ -191,30 +191,17 @@
 
         <!-- ABOUT SECTION -->
         <section class="container about-section">
-            <h3 class="okeev-intro__title">Introducing Okeev</h3>
-            <h2 class="okeev-hero-heading">Trusted Multi-Brand Electric Car Dealer</h2>
+            <h3 class="okeev-intro__title"> {{ $about->section_label ?? 'About Okeev' }}</h3>
+            <h2 class="okeev-hero-heading"> {{ $about->title_main ?? 'Trusted Multi-Brand\nElectric Car Dealer' }}</h2>
 
             <p class="okeev-intro-text">
-                Bringing You Into the Era of Future Mobility
+                {{ $about->tagline ?? 'Bringing You Into the Era of Future Mobility' }}
             </p>
 
-            <p class="okeev-hero__text">
-                Kendaraan listrik adalah inovasi teknologi otomotif yang mampu merubah cara masyarakat Indonesia dalam
-                berkendara. Dengan kendaraan listrik, masyarakat berkendara dengan efisien tanpa udara yang tercemar,
-                menghemat serta dengan regulasi dan juga estate yang berkembang tetap terkontrol dan tertata maksimum.
-            </p>
-
-            <p class="okeev-hero__text">
-                Perkembangan mobil listrik di Indonesia mulai menunjukkan momen yang penting. Hal tersebut dapat kita lihat
-                mulai dari 2015 bahwa pemerintah sudah mulai melakukan audit kendaraan dan lokal pertama kali telah
-                dilaksanakan. Hingga trend saat ini, industri otomotif lokal telah mengembangkan berbagai model mobil
-                listrik untuk kepentingan terhadap lingkungan Tanah Air.
-            </p>
-
-            <p class="okeev-hero__text m-0">
-                OKEEV berperan aktif dalam membantu jalannya kebijakan pemerintah melalui pembangunan infrastruktur
-                pendukung, yang terfokus dalam roaming service dan pembangunan pemetaan.
-            </p>
+            @if (!empty($about->description_main))
+                <p class="okeev-hero__text mb-2" style="color: #4d5b69; font-size: 1rem; line-height: 1.7;">
+                    {{ $about->description_main }}</p>
+            @endif
         </section>
 
     </div>
@@ -225,17 +212,10 @@
             <h1 class="okeev-about-heading">About OKEEV</h1>
 
             <p class="okeev-hero__text_about">
-                OKEEV adalah Startup Inovatif yang berfokus pada penjualan kendaraan listrik baru dan produk elektronik
-                modern.
-                Berdiri dengan visi untuk mempercepat transisi menuju gaya hidup berkelanjutan dan cerdas.
+                {{ $about->description_second ?? '' }}
             </p>
 
-            <p class="okeev-hero__text_about">
-                Kami menggabungkan teknologi digital, layanan pelanggan unggul, dan kemitraan strategis dengan berbagai
-                merek
-                terkemuka untuk menghadirkan pengalaman belanja yang mudah, transparan, dan terpercaya baik secara Online
-                maupun Offline.
-            </p>
+
         </div>
     </section>
 
@@ -243,13 +223,17 @@
         <div class="container pb-4 pt-4">
             <h1 class="okeev-about-Visi">Visi</h1>
             <p class="okeev-hero__text_visi">
-                Menjadi dealer mobil listrik yang paling dipercaya pelanggan melalui kualitas produk, pelayanan tulus, dan
-                pengalaman pembelian yang memberikan rasa aman.
+                {{ $about->visi_description ?? 'Menjadi platform terdepan di Asia Tenggara dalam penjualan kendaraan listrik dan elektronik pintar yang mendukung masa depan hijau dan digital.' }}
             </p>
 
             <div class="okeev-visi-image">
-                <img src="{{ asset('front_end/assets/images/logo/mobile/man-woman-closing-deal 1.jpg') }}" alt="Visi OKEEV"
-                    class="okeev-visi-img">
+                @if (!empty($about->visi_image))
+                    <img src="{{ asset('storage/' . $about->visi_image) }}" class="img-fluid mt-4"
+                        style="border-radius:16px;">
+                @else
+                    <img src="{{ asset('front_end/assets/images/logo/Frame 988.png') }}" class="img-fluid mt-4"
+                        style="border-radius:16px;">
+                @endif
             </div>
         </div>
 
@@ -258,16 +242,20 @@
 
 
             <div class="okeev-visi-image">
-                <img src="{{ asset('front_end/assets/images/logo/mobile/young-couple-talking-sales-person-car-showroom 1.jpg') }}"
-                    alt="Misi OKEEV" class="okeev-visi-img">
+                @if (!empty($about->misi_image))
+                    <img src="{{ asset('storage/' . $about->misi_image) }}" class="img-fluid"
+                        style="width:100%; border-radius:12px;">
+                @else
+                    <img src="{{ asset('front_end/assets/images/logo/misi.png') }}" class="img-fluid"
+                        style="width:100%; border-radius:12px;">
+                @endif
             </div>
 
             <ul class="bullet-list">
-                <li>Menyediakan akses mudah ke kendaraan listrik dan produk terberkualitas tinggi.</li>
-                <li>Memberikan adopsi teknologi ramah lingkungan di seluruh lapisan masyarakat.</li>
-                <li>Membangun layanan pelanggan berbasis digital yang cepat, aman dan transparan.</li>
-                <li>Membangun ekosistem berkelanjutan melalui dengan jaringan penjualan dan penyedia infrastruktur hijau.
-                </li>
+                <li>{{ $about->title_1 }}</li>
+                <li>{{ $about->title_2 }}</li>
+                <li>{{ $about->title_3 }}</li>
+                <li>{{ $about->title_4 }}</li>
             </ul>
         </div>
     </section>
@@ -326,8 +314,9 @@
                 <div class="okeev-about-frame-col"
                     style="display: flex; flex-direction: column; align-items: center; text-align: center;">
 
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/Frame 1027.png') }}" alt="Consultation Services"
-                        class="okeev-about-frame-img" style="width: clamp(100px, 20vw, 200px); height: auto;">
+                    <img src="{{ asset('front_end/assets/images/logo/mobile/Frame 1027.png') }}"
+                        alt="Consultation Services" class="okeev-about-frame-img"
+                        style="width: clamp(100px, 20vw, 200px); height: auto;">
 
 
                     <p class="okeev-about-frame-text">
@@ -347,19 +336,19 @@
             <h6 class="okeev-title mb-3">Electronic and Smart Devices</h6>
 
             <div class="okeev-card-list mb-4">
-                <div class="okeev-card-item">Smart Home Appliances</div>
-                <div class="okeev-card-item">Gadget and Accessories Electronics</div>
-                <div class="okeev-card-item">Renewable Energy Product</div>
+                <div class="okeev-card-item">{{ $about->fourth_title_1 }}</div>
+                <div class="okeev-card-item">{{ $about->fourth_title_2 }}</div>
+                <div class="okeev-card-item">{{ $about->fourth_title_3 }}</div>
             </div>
 
             <!-- Support Services -->
             <h6 class="okeev-title mb-3">Support Services</h6>
 
             <ul class="okeev-support-list">
-                <li>Platform E-Commerce berbasis teknologi AI untuk rekomendasi produk</li>
-                <li>Program Trade-In dan pembiayaan flexible</li>
-                <li>Layanan purna jual dan servis terintegrasi</li>
-                <li>Pengiriman cepat dan ramah lingkungan</li>
+                <li>{{ $about->support_service_1 }}</li>
+                <li>{{ $about->support_service_2 }}</li>
+                <li>{{ $about->support_service_3 }}</li>
+                <li>{{ $about->support_service_4 }}</li>
             </ul>
 
         </div>

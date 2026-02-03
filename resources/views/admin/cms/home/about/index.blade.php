@@ -229,15 +229,6 @@
                                   <div class="row mb-3">
                                       <div class="col-md-4 mb-2">
                                           <label class="form-label"> First Title Electronic And Smart Devices </label>
-                                          <input type="text" name="title" class="form-control"
-                                              placeholder="Masukkan judul konten"
-                                              value="{{ old('title', $content->title ?? '') }}">
-                                          @error('title')
-                                              <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                          @enderror
-                                      </div>
-                                      <div class="col-md-4 mb-2">
-                                          <label class="form-label"> Second Title Electronic And Smart Devices </label>
                                           <input type="text" name="fourth_title_1" class="form-control"
                                               placeholder="Masukkan judul konten"
                                               value="{{ old('fourth_title_1', $about->fourth_title_1 ?? '') }}">
@@ -246,7 +237,7 @@
                                           @enderror
                                       </div>
                                       <div class="col-md-4 mb-2">
-                                          <label class="form-label"> Third Title Electronic And Smart Devices </label>
+                                          <label class="form-label"> Second Title Electronic And Smart Devices </label>
                                           <input type="text" name="fourth_title_2" class="form-control"
                                               placeholder="Masukkan judul konten"
                                               value="{{ old('fourth_title_2', $about->fourth_title_2 ?? '') }}">
@@ -263,6 +254,7 @@
                                               <small class="text-danger d-block mt-1">{{ $message }}</small>
                                           @enderror
                                       </div>
+                                     
                                   </div>
 
                                   <div class="row">

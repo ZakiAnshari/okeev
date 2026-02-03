@@ -79,24 +79,22 @@
 
 
     <div class="container">
-        <div class="content pt-5">
+        <div class="content pt-3">
             <p class="description">
-                Lorem ipsum dolor sit amet consectetur. Id condimentum mauris et elit sagittis senectus feugiat. Congue erat
-                sem
-                tincidunt nulla sed mattis. Velit at gravida sit.
+                {!! nl2br(e($homeContact->description)) !!}
             </p>
 
             <!-- Contact Information -->
             <div class="contact-item mb-3">
                 <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols_mail.jpg') }}" alt="Email"
                     class=" contact-icon-img">
-                <span class="contact-text mx-2">okeev2025@gmail.com</span>
+                <span class="contact-text mx-2">{{ $homeContact->email ?? 'okeev@gmail.com' }}</span>
             </div>
 
             <div class="contact-item">
                 <img src="{{ asset('front_end/assets/images/logo/mobile/ic_baseline-phone.jpg') }}" alt="Phone"
                     class=" contact-icon-img">
-                <span class="contact-text mx-2">+62 5889 9546 253</span>
+                <span class="contact-text mx-2">{{ $homeContact->phone ?? '+62 5889 9546 253' }}</span>
             </div>
 
 
@@ -108,17 +106,17 @@
                 <div class="contact-item mb-3 pt-3">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/formkit_instagram.jpg') }}" alt="Email"
                         class="  contact-icon-img">
-                    <span class="contact-text mx-2">okeev.ig</span>
+                    <span class="contact-text mx-2">{{ $homeContact->instagram ?? 'okeev.ig' }}</span>
                 </div>
                 <div class="contact-item mb-3">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/lineicons_tiktok-alt.jpg') }}" alt="Email"
                         class="  contact-icon-img">
-                    <span class="contact-text mx-2">okeev.tiktok</span>
+                    <span class="contact-text mx-2">{{ $homeContact->tiktok ?? 'okeev.tiktok' }}</span>
                 </div>
                 <div class="contact-item mb-3">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/Frame 984.jpg') }}" alt="Email"
                         class="  contact-icon-img">
-                    <span class="contact-text mx-2">okeev.x</span>
+                    <span class="contact-text mx-2">{{ $homeContact->x ?? 'okeev.x' }}</span>
                 </div>
 
             </div>
@@ -129,31 +127,32 @@
         <div class="container">
             <div class="okeev-contact-wrapper">
                 <div class="okeev-contact-card">
-                    <form onsubmit="handleSubmit(event)">
+                    <form method="POST" action="{{ route('contact.store') }}">
+                        @csrf
 
                         <div class="okeev-contact-group">
                             <label class="okeev-contact-label">Name</label>
-                            <input type="text" class="okeev-contact-input" placeholder="Enter your name" required>
+                            <input name="name" type="text" class="okeev-contact-input" placeholder="Enter your name" value="{{ old('name') }}" required>
                         </div>
 
                         <div class="okeev-contact-group">
                             <label class="okeev-contact-label">Email</label>
-                            <input type="email" class="okeev-contact-input" placeholder="Enter your email" required>
+                            <input name="email" type="email" class="okeev-contact-input" placeholder="Enter your email" value="{{ old('email') }}" required>
                         </div>
 
                         <div class="okeev-contact-group">
                             <label class="okeev-contact-label">Phone</label>
-                            <input type="tel" class="okeev-contact-input" placeholder="+62" required>
+                            <input name="phone" type="tel" class="okeev-contact-input" placeholder="+62" value="{{ old('phone') }}">
                         </div>
 
                         <div class="okeev-contact-group">
                             <label class="okeev-contact-label">Subject</label>
-                            <input type="text" class="okeev-contact-input" placeholder="Ex: Career" required>
+                            <input name="subject" type="text" class="okeev-contact-input" placeholder="Ex: Career" value="{{ old('subject') }}" required>
                         </div>
 
                         <div class="okeev-contact-group">
                             <label class="okeev-contact-label">Message</label>
-                            <textarea class="okeev-contact-textarea" placeholder="Type your message here..." required></textarea>
+                            <textarea name="message" class="okeev-contact-textarea" placeholder="Type your message here..." required>{{ old('message') }}</textarea>
                         </div>
 
                         <button type="submit" class="okeev-contact-submit">

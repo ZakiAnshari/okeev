@@ -11,7 +11,7 @@
                     <img src="{{ asset('front_end/assets/images/logo/logo.png') }}" alt="OKEEV Logo">
                 </div>
                 <button class="icon-btn" style="background: none">
-                    <a href="#">
+                    <a href="{{ route('notification.index') }}">
                         <img src="{{ asset('front_end/assets/images/logo/bel.jpg') }}" alt="Belt" class="icon-img">
                     </a>
                 </button>
@@ -23,7 +23,7 @@
                     <i class="bi bi-search search-icon"></i>
                     <input type="text" class="search-bar" placeholder="Search Vehicle / Electronic">
                 </div>
-                <a href="#" class="icon-btn">
+                <a href="{{ route('shoppingcart.index') }}" class="icon-btn">
                     <img src="{{ asset('front_end/assets/images/logo/cart.jpg') }}" alt="Cart" class="icon-img">
                 </a>
             </div>
@@ -178,7 +178,7 @@
                     </div>
                     <hr class="feature-line">
                     <p class="feature-desc">
-                       {{ $hero->why_description_1 ?? 'Semua merek mobil listrik favorit Anda tersedia di satu showroom.' }}
+                        {{ $hero->why_description_1 ?? 'Semua merek mobil listrik favorit Anda tersedia di satu showroom.' }}
                     </p>
                 </div>
 
@@ -233,42 +233,59 @@
 
     <!-- Counting Section -->
     <div class="container content-container counting-section mt-5">
-        <div class="row p-3">
+        <div class="row mb-4 text-center">
             <div class="col-4">
-                <div class="count-item">
-                    <h3>28</h3>
-                    <p>Collaboration<br>with brands</p>
-                </div>
+                <h2 class="fw-bold text-primary"><span class="counter"
+                        data-target="{{ $brands->count() }}">0</span></h2>
+                <p class="text-muted small mb-0">Collaboration<br>with brands</p>
             </div>
             <div class="col-4">
-                <div class="count-item">
-                    <h3>500+</h3>
-                    <p>Customer</p>
-                </div>
+                <h2 class="fw-bold text-primary"><span class="counter"
+                        data-target="{{ $hero->collaboration_customer ?? 0 }}">{{ $hero->collaboration_customer ?? 0 }}</span>
+                </h2>
+                <p class="text-muted small mb-0">Customer</p>
             </div>
             <div class="col-4">
-                <div class="count-item">
-                    <h3>497</h3>
-                    <p>Customer<br>Happy</p>
-                </div>
+                <h2 class="fw-bold text-primary"><span class="counter"
+                        data-target="{{ $hero->collaboration_customer_happy ?? 0 }}">{{ $hero->collaboration_customer_happy ?? 0 }}</span>
+                </h2>
+                <p class="text-muted small mb-0">Customer Happy</p>
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col-12">
-                <div class="customer-profiles">
-                    <div class="profile-img">
-                        <img src="{{ asset('front_end/assets/images/logo/mobile/1.jpg') }}" alt="profile">
-                    </div>
-                    <div class="profile-img">
-                        <img src="{{ asset('front_end/assets/images/logo/mobile/2.jpg') }}" alt="profile">
-                    </div>
-                    <div class="profile-img">
-                        <img src="{{ asset('front_end/assets/images/logo/mobile/3.jpg') }}" alt="profile">
-                    </div>
-                    <div class="customer-text text-start mx-4">
-                        <h4>Million of happy customers</h4>
-                        <p>Lorem ipsum dolor sit amet</p>
+                <div class="d-flex align-items-center">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#testimonialModal"
+                        style="text-decoration: none;">
+                        <div class="me-3 d-flex" style="gap: -8px; cursor: pointer;">
+                            @forelse($testimonials->take(3) as $testimonial)
+                                @if ($testimonial->profile_picture)
+                                    <img src="{{ asset($testimonial->profile_picture) }}"
+                                        class="rounded-circle border border-white" width="45" height="45"
+                                        style="object-fit: cover; flex-shrink: 0; margin-left: -8px; cursor: pointer; transition: transform 0.2s ease-in-out;"
+                                        alt="{{ $testimonial->name }}" title="{{ $testimonial->name }}"
+                                        onmouseover="this.style.transform='scale(1.1)'"
+                                        onmouseout="this.style.transform='scale(1)'">
+                                @endif
+                            @empty
+                                <img src="{{ asset('front_end/assets/images/logo/Group 16.png') }}"
+                                    class="rounded-circle border border-white" width="45" height="45"
+                                    style="object-fit: cover; flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease-in-out;"
+                                    onmouseover="this.style.transform='scale(1.1)'"
+                                    onmouseout="this.style.transform='scale(1)'" alt="">
+                                <img src="{{ asset('front_end/assets/images/logo/Group 17.png') }}"
+                                    class="rounded-circle border border-white" width="45" height="45"
+                                    style="object-fit: cover; flex-shrink: 0; margin-left: -8px; cursor: pointer; transition: transform 0.2s ease-in-out;"
+                                    onmouseover="this.style.transform='scale(1.1)'"
+                                    onmouseout="this.style.transform='scale(1)'" alt="">
+                            @endforelse
+                        </div>
+                    </a>
+                    <div>
+                        <h5 class="fw-bold mb-1">Million of happy customers</h5>
+                        <p class="text-muted small mb-0">{{ $testimonials->count() }} Testimonial from our happy
+                            customers</p>
                     </div>
                 </div>
             </div>
@@ -299,8 +316,6 @@
             @endforeach
         </div>
 
-
-
         <div id="electric-brands" class="brand-grid p-3 tab-content">
             @foreach ($brands->where('category_position_id', 2) as $brand)
                 <div class="brand-item">
@@ -315,17 +330,14 @@
     <!-- Most Searched Section -->
     <div class="container content-container most-searched-section p-3">
         <div class="strip-divider"></div>
-
         <h3 class="text-center">The Most Searched Vehicle</h3>
 
-        {{-- <div class="search-tabs p-3">
+        <div class="search-tabs p-3">
             <button class="search-tab active">In Stock</button>
             <button class="search-tab">Sedan</button>
             <button class="search-tab">SUV</button>
             <button class="search-tab">Motorcycle</button>
-        </div> --}}
-
-
+        </div>
 
         <div class="row">
             <!-- Vehicle Card 1 -->
@@ -384,6 +396,48 @@
         </div>
     </div>
 
+    </div>
+
+    <!-- Testimonial Modal -->
+    <div class="modal fade" id="testimonialModal" tabindex="-1" aria-labelledby="testimonialModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="testimonialModalLabel">Customer Testimonials</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @forelse($testimonials as $testimonial)
+                        <div class="testimonial-item mb-4 pb-3 border-bottom">
+                            <div class="d-flex align-items-start">
+                                @if ($testimonial->profile_picture)
+                                    <img src="{{ asset($testimonial->profile_picture) }}"
+                                        class="rounded-circle me-3" width="50" height="50"
+                                        style="object-fit: cover;" alt="{{ $testimonial->name }}">
+                                @else
+                                    <img src="{{ asset('front_end/assets/images/logo/Group 16.png') }}"
+                                        class="rounded-circle me-3" width="50" height="50"
+                                        style="object-fit: cover;" alt="">
+                                @endif
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold mb-1">{{ $testimonial->name ?? 'Anonymous' }}</h6>
+                                    <div class="mb-2">
+                                        @for ($i = 0; $i < ($testimonial->rating ?? 5); $i++)
+                                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>
+                                        @endfor
+                                    </div>
+                                    <p class="small text-muted mb-0">{{ $testimonial->message ?? $testimonial->testimonial }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-5">
+                            <p class="text-muted">Belum ada testimonial dari pelanggan.</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
     </div>
 
     @include('sweetalert::alert')

@@ -141,9 +141,18 @@
         </li>
 
         <li class="menu-item {{ Request::is('Contact*') ? 'active' : '' }}">
-            <a href="/Contact" class="menu-link position-relative">
-                <i class="menu-icon tf-icons bx bx-envelope"></i>
-                <div data-i18n="Contact">Messages</div>
+            <a href="/Contact" class="menu-link d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <i class="menu-icon tf-icons bx bx-envelope"></i>
+                    <div data-i18n="Contact">Messages</div>
+                </div>
+                @php
+                    $newMessagesCount = \App\Models\Contact::where('created_at', '>=', now()->subDay())->count();
+                @endphp
+                @if ($newMessagesCount > 0)
+                    <span class="badge bg-danger"
+                        style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $newMessagesCount }}</span>
+                @endif
             </a>
         </li>
 

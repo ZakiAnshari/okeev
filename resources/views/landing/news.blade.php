@@ -18,8 +18,6 @@
                                         style="object-fit: cover;">
                                 </div>
                             </a>
-
-
                             <div class="card-body">
                                 <a href="{{ route('News.detail', $item->slug) }}">
                                     <h6 class="fw-semibold mb-3" style="color:#1a2a3a;">
@@ -29,16 +27,13 @@
                                 <div class="d-flex justify-content-between align-items-center text-muted"
                                     style="font-size:14px;">
                                     <span>{{ \Carbon\Carbon::parse($item->published_at)->format('M d, Y') }}</span>
-
                                     <div class="d-flex gap-3">
                                         <i class="bi bi-share share-btn" style="cursor:pointer;" data-url="{{ route('News.detail', $item->slug) }}" data-title="{{ $item->title }}"></i>
                                         <i class="bi bi-bookmark bookmark-btn" style="cursor:pointer;"></i>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 @empty
                     <p class="text-center">Tidak ada News untuk Hari ini.</p>

@@ -184,57 +184,37 @@
         </div>
 
         <div class="news-grid">
-            <!-- News Card 1 -->
-            <a href="{{ route('newssdetail.show') }}" class="news-card">
-                <div class="news-image">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/blue-crossover-autumn-bend-car-motion 1.jpg') }}"
-                        alt="Rivian Dual Motor">
-                </div>
-                <div class="news-content">
-                    <div class="news-title">Rivian's Quad-Motor R1T Can Outrun Corvettes</div>
-                    <div class="news-footer">
-                        <span class="news-date">Nov 28, 2025</span>
-                        <div class="news-actions">
-                            <button class="action-btn" onclick="shareNews(event, 1)">
-                                <svg fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
-                                </svg>
-                            </button>
-                            <button class="action-btn" onclick="bookmarkNews(event, 1)">
-                                <svg fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z" />
-                                </svg>
-                            </button>
+            <!-- News Cards -->
+            @forelse($news->where('status', 'published') as $item)
+                <a href="{{ route('newssdetail.show', $item->slug) }}" class="news-card">
+                    <div class="news-image">
+                        <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">{{ $item->title }}</div>
+                        <div class="news-footer">
+                            <span class="news-date">{{ \Carbon\Carbon::parse($item->published_at)->format('M d, Y') }}</span>
+                            <div class="news-actions">
+                                <button class="action-btn" onclick="shareNews(event, {{ $item->id }})" data-url="{{ route('News.detail', $item->slug) }}" data-title="{{ $item->title }}">
+                                    <svg fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+                                    </svg>
+                                </button>
+                                <button class="action-btn" onclick="bookmarkNews(event, {{ $item->id }})">
+                                    <svg fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </a>
+            @empty
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #999;">
+                    <p>Tidak ada news untuk saat ini</p>
                 </div>
-            </a>
-            <a href="#" class="news-card">
-                <div class="news-image">
-                    <img src="{{ asset('front_end/assets/images/logo/mobile/offroader-jeep-driving-highway 1.jpg') }}"
-                        alt="Rivian Dual Motor">
-                </div>
-                <div class="news-content">
-                    <div class="news-title">Rivian's Quad-Motor R1T Can Outrun Corvettes</div>
-                    <div class="news-footer">
-                        <span class="news-date">Nov 28, 2025</span>
-                        <div class="news-actions">
-                            <button class="action-btn" onclick="shareNews(event, 1)">
-                                <svg fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
-                                </svg>
-                            </button>
-                            <button class="action-btn" onclick="bookmarkNews(event, 1)">
-                                <svg fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </a>
+            @endforelse
         </div>
     </div>
 
