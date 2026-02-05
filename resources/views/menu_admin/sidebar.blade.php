@@ -15,12 +15,14 @@
     @php
         // Count distinct invoices (external_id) for new orders so multi-item invoices count as one
         $newOrdersCount = \App\Models\Order::whereRaw("LOWER(COALESCE(status_transaksi,'')) = 'new'")
-            ->distinct('external_id')->count('external_id');
+            ->distinct('external_id')
+            ->count('external_id');
 
         // Count distinct invoices where payment is Completed but transaction status still pending/new
         $paidButUnprocessedCount = \App\Models\Order::whereRaw("LOWER(COALESCE(status,'')) = 'completed'")
             ->whereRaw("LOWER(COALESCE(status_transaksi,'')) IN ('pending','new')")
-            ->distinct('external_id')->count('external_id');
+            ->distinct('external_id')
+            ->count('external_id');
     @endphp
 
     <ul class="menu-inner py-1">
@@ -64,6 +66,13 @@
                     <a href="{{ route('cms.home.about.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-info-circle"></i>
                         <div class="ms-2">About</div>
+                    </a>
+                </li>
+
+                <li class="menu-item {{ Request::is('news*') ? 'active' : '' }}">
+                    <a href="/news" class="menu-link position-relative">
+                        <i class="menu-icon tf-icons bx bxs-news"></i>
+                        <div data-i18n="News">News</div>
                     </a>
                 </li>
 
@@ -118,8 +127,7 @@
                         style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $newOrdersCount }}</span>
                 @endif
                 @if ($paidButUnprocessedCount > 0)
-                    <span class="badge bg-success ms-1"
-                        title="Pembayaran lunas tapi belum diproses"
+                    <span class="badge bg-success ms-1" title="Pembayaran lunas tapi belum diproses"
                         style="border-radius:6px; min-width:28px; padding:0.25rem 0.45rem; text-align:center;">{{ $paidButUnprocessedCount }}</span>
                 @endif
             </a>
@@ -133,12 +141,7 @@
             </a>
         </li>
 
-        <li class="menu-item {{ Request::is('news*') ? 'active' : '' }}">
-            <a href="/news" class="menu-link position-relative">
-                <i class="menu-icon tf-icons bx bxs-news"></i>
-                <div data-i18n="News">News</div>
-            </a>
-        </li>
+
 
         <li class="menu-item {{ Request::is('Contact*') ? 'active' : '' }}">
             <a href="/Contact" class="menu-link d-flex align-items-center justify-content-between">

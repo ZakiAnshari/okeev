@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Force HTTPS (kecuali di local)
-        // URL::forceScheme('https');
+        URL::forceScheme('https');
         View::composer('*', function ($view) {
             $cartCount = Auth::check()
                 ? Cart::where('user_id', Auth::id())->sum('quantity')

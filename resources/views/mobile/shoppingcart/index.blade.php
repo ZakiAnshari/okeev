@@ -99,39 +99,48 @@
 
 
             </div>
-            <!-- Cart Item -->
-            <div class="cart-item d-flex align-items-center">
-                <label class="check-wrapper">
-                    <input class="check-input" type="checkbox" checked>
-                    <span class="check-box"></span>
-                </label>
+            @if(isset($cartItems) && $cartItems->isNotEmpty())
+                @foreach($cartItems as $item)
+                    <div class="cart-item d-flex align-items-center" data-cart-id="{{ $item->id }}" data-price="{{ $item->product->price ?? 0 }}" data-qty="{{ $item->quantity }}">
+                        <label class="check-wrapper">
+                            <input class="check-input cart-check" type="checkbox" checked>
+                            <span class="check-box"></span>
+                        </label>
 
-                <div class="item-left d-flex flex-column align-items-start me-3">
-                    <img src="https://via.placeholder.com/90x70" class="product-img" alt="product">
-                    <div class="price-text mt-2">
-                        Rp 14.999.000
-                    </div>
-                </div>
-                <div class="ms-0 flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <small class="text-muted d-block"style="font-size: 12px">Menunggu Pembayaran</small>
-                            <div class="fw-semibold text-primary product-title" style="font-size: 12px">
-                                ASUS Zenbook A14 (UX3407)
+                        <div class="item-left d-flex flex-column align-items-start me-3">
+                            <img src="{{ $item->product->thumbnail ? asset('storage/' . $item->product->thumbnail) : ($item->product->image ?? 'https://via.placeholder.com/90x70') }}" class="product-img" alt="product">
+                            <div class="price-text mt-2">
+                                Rp {{ number_format($item->product->price ?? 0, 0, ',', '.') }}
                             </div>
                         </div>
+                        <div class="ms-0 flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <small class="text-muted d-block" style="font-size: 12px">{{ strtoupper($item->status ?? 'Menunggu Pembayaran') }}</small>
+                                    <div class="fw-semibold text-primary product-title" style="font-size: 12px">
+                                        {{ $item->product->model_name ?? $item->product->name }}
+                                    </div>
+                                    @if(!empty($item->color_name))
+                                        <div class="small">Warna: {{ $item->color_name }}</div>
+                                    @endif
+                                </div>
 
-                    </div>
+                            </div>
 
-                    <div class="d-flex justify-content-start align-items-center mt-3">
-                        <div class="qty-box">
-                            <button class="qty-btn">−</button>
-                            <span class="qty-number">1</span>
-                            <button class="qty-btn">+</button>
+                            <div class="d-flex justify-content-start align-items-center mt-3">
+                                <div class="qty-box">
+                                    <button class="qty-btn" data-action="decrease" data-id="{{ $item->id }}">−</button>
+                                    <span class="qty-number">{{ $item->quantity }}</span>
+                                    <button class="qty-btn" data-action="increase" data-id="{{ $item->id }}">+</button>
+                                </div>
+                                <button class="row-close-btn" data-id="{{ $item->id }}" title="Hapus">✕</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                @endforeach
+            @else
+                <div class="text-center py-5">Keranjang kosong.</div>
+            @endif
         </div>
 
     </div>
@@ -361,24 +370,253 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 107, 229, 0.35);
         }
+        .bf-btn-cancel {
+            background: #e53935;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .bf-btn-cancel:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(229, 57, 53, 0.25); }
+
+        /* per-row close button */
+        .row-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: rgba(0,0,0,0.04);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .row-close-btn:hover { background: rgba(229,57,53,0.08); color: #e53935; }
     </style>
 
     <div class="bf-wrapper">
         <div class="bf-content">
-            <div class="bf-left">
-                <label class="check-wrapper select-all">
-                    <input class="check-input" type="checkbox" checked>
-                    <span class="check-box"></span>
-                </label>
-                <span class="bf-all-text">All</span>
-            </div>
             <div class="bf-middle">
                 <span class="bf-total-label">Total</span>
-                <span class="bf-total-price">Rp 194.000.000</span>
+                <span class="bf-total-price">Rp {{ number_format($total ?? 0, 0, ',', '.') }}</span>
             </div>
-            <button class="bf-btn-buy">BUY</button>
-
+            <div style="display:flex;gap:8px;align-items:center;">
+                <button id="checkoutBtn" class="bf-btn-buy">BUY</button>
+            </div>
         </div>
     </div>
-
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const totalEl = document.querySelector('.bf-total-price');
+
+        function formatRp(value) {
+            return 'Rp ' + (Number(value) || 0).toLocaleString('id-ID');
+        }
+
+        function recalcTotal() {
+            const checked = Array.from(document.querySelectorAll('.cart-check')).filter(i => i.checked);
+            let sum = 0;
+            checked.forEach(cb => {
+                const row = cb.closest('[data-cart-id]');
+                if (!row) return;
+                const price = Number(row.dataset.price || 0);
+                const qtyEl = row.querySelector('.qty-number');
+                const qty = Number(qtyEl ? qtyEl.textContent.trim() : row.dataset.qty || 0);
+                sum += price * qty;
+            });
+            totalEl.textContent = formatRp(sum);
+            return sum;
+        }
+
+        // initial calc
+        recalcTotal();
+
+        checkoutBtn && checkoutBtn.addEventListener('click', async function () {
+            const checked = Array.from(document.querySelectorAll('.cart-check'))
+                .filter(i => i.checked)
+                .map(i => i.closest('[data-cart-id]').dataset.cartId);
+
+            if (!checked.length) {
+                Swal.fire('Info', 'Pilih minimal 1 produk untuk checkout', 'info');
+                return;
+            }
+
+            try {
+                const res = await fetch("{{ route('mobile.order.invoice.cart') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ cart_ids: checked })
+                });
+                const data = await res.json();
+                if (res.ok && data.invoice_url) {
+                    window.location.href = data.invoice_url;
+                } else {
+                    Swal.fire('Error', data.error || 'Gagal membuat invoice', 'error');
+                }
+            } catch (err) {
+                Swal.fire('Error', err.message || 'Gagal menghubungi server', 'error');
+            }
+        });
+
+        // select-all handling (top + footer) and sync with individual items
+        const selectAllInputs = Array.from(document.querySelectorAll('.check-wrapper.select-all .check-input'));
+
+        function setAllChecked(checked) {
+            document.querySelectorAll('.cart-check').forEach(cb => cb.checked = checked);
+            selectAllInputs.forEach(s => s.checked = checked);
+        }
+
+        selectAllInputs.forEach(s => {
+            s.addEventListener('change', (e) => {
+                setAllChecked(e.target.checked);
+                recalcTotal();
+            });
+        });
+
+        // Keep select-all checkboxes in sync when individual items change
+        function syncSelectAllState() {
+            const checks = Array.from(document.querySelectorAll('.cart-check'));
+            if (!checks.length) return;
+            const allChecked = checks.every(c => c.checked);
+            selectAllInputs.forEach(s => s.checked = allChecked);
+        }
+
+        document.querySelectorAll('.cart-check').forEach(ch => ch.addEventListener('change', function () { syncSelectAllState(); recalcTotal(); }));
+
+        // simple qty handlers (calls web endpoints)
+        document.querySelectorAll('[data-action]').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const action = this.dataset.action;
+                const id = this.dataset.id;
+                const url = action === 'increase' ? '/cart/increase' : '/cart/decrease';
+                try {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        body: JSON.stringify({ id })
+                    });
+                    const json = await res.json();
+                    if (json.qty !== undefined) {
+                        // update qty on page
+                        const el = document.querySelector('[data-cart-id="' + id + '"] .qty-number');
+                        if (el) el.textContent = json.qty;
+                        const row = document.querySelector('[data-cart-id="' + id + '"]');
+                        if (row) row.dataset.qty = json.qty;
+                        // recalc total without reload
+                        recalcTotal();
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            });
+        });
+
+        // Close (delete) selected cart items
+        const closeBtn = document.getElementById('closeBtn');
+        closeBtn && closeBtn.addEventListener('click', async function () {
+            const checked = Array.from(document.querySelectorAll('.cart-check'))
+                .filter(i => i.checked)
+                .map(i => i.closest('[data-cart-id]').dataset.cartId);
+
+            if (!checked.length) {
+                Swal.fire('Info', 'Pilih minimal 1 produk untuk dihapus', 'info');
+                return;
+            }
+
+            const confirm = await Swal.fire({
+                title: 'Batalkan pesanan?',
+                text: 'Produk yang dipilih akan dihapus dari keranjang.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            });
+
+            if (!confirm.isConfirmed) return;
+
+            try {
+                const promises = checked.map(id => fetch('/cart/' + id, {
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' }
+                }));
+
+                const results = await Promise.all(promises);
+                const ok = results.every(r => r.ok);
+                if (ok) {
+                    Swal.fire('Berhasil', 'Produk terhapus dari keranjang.', 'success');
+                    // remove rows from DOM and recalc
+                    checked.forEach(id => {
+                        const row = document.querySelector('[data-cart-id="' + id + '"]');
+                        if (row) row.remove();
+                    });
+                    recalcTotal();
+                    // update cart badge in layout if present
+                    const badge = document.querySelector('.cart-badge');
+                    if (badge) {
+                        // try to fetch new count
+                        fetch('/cart')
+                            .then(() => location.reload())
+                            .catch(() => location.reload());
+                    }
+                } else {
+                    Swal.fire('Gagal', 'Beberapa item gagal dihapus. Silakan coba lagi.', 'error');
+                }
+            } catch (err) {
+                Swal.fire('Error', err.message || 'Terjadi kesalahan', 'error');
+            }
+        });
+
+        // per-row close (delete single item)
+        document.querySelectorAll('.row-close-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const id = this.dataset.id;
+                const confirmed = await Swal.fire({
+                    title: 'Hapus item?',
+                    text: 'Item ini akan dihapus dari keranjang.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus',
+                    cancelButtonText: 'Batal'
+                });
+
+                if (!confirmed.isConfirmed) return;
+
+                try {
+                    const res = await fetch('/cart/' + id, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' }
+                    });
+                    if (res.ok) {
+                        const row = document.querySelector('[data-cart-id="' + id + '"]');
+                        if (row) row.remove();
+                        recalcTotal();
+                        Swal.fire('Terhapus', 'Item berhasil dihapus.', 'success');
+                        // refresh badge or reload to keep counts consistent
+                        const badge = document.querySelector('.cart-badge');
+                        if (badge) { location.reload(); }
+                    } else {
+                        Swal.fire('Gagal', 'Gagal menghapus item.', 'error');
+                    }
+                } catch (err) {
+                    Swal.fire('Error', err.message || 'Terjadi kesalahan', 'error');
+                }
+            });
+        });
+    });
+</script>
+@endpush

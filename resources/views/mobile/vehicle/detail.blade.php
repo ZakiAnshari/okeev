@@ -128,7 +128,7 @@
                         Test Drive
                     </button>
 
-                    <button class="car-btn-outline-01 w-50" onclick="location.href='#'">
+                    <button class="car-btn-outline-01 w-50" onclick="addToCartModal()">
                         <img src="{{ asset('front_end/assets/images/logo/mobile/ri_shopping-bag-fill.png') }}"
                             alt="Cart Icon" class="car-btn-icon-01">
                         Add to Cart
@@ -493,33 +493,33 @@
 
                     <div class="cc-group">
                         <label>Car Price</label>
-                        <input type="text" value="Rp 149.000.000" readonly>
+                        <input id="cc-car-price" type="text" value="Rp {{ number_format($product->price, 0, ',', '.') }}" readonly data-raw="{{ $product->price }}">
                     </div>
 
                     <div class="cc-group">
                         <label>Loan Amount</label>
-                        <input type="text" value="Rp 160.000.000" readonly>
+                        <input id="cc-loan-amount" type="text" value="Rp 0" readonly data-raw="0">
                     </div>
 
                     <div class="cc-group">
-                        <label>First Payment</label>
-                        <input type="text" value="Rp 55.000.000">
+                        <label>Down Payment</label>
+                        <input id="cc-first-payment" type="text" value="0">
                     </div>
 
                     <div class="cc-group">
-                        <label>Interest Rate</label>
-                        <input type="text" value="10.96 %">
+                        <label>Interest Rate (Annual %)</label>
+                        <input id="cc-interest-rate" type="text" value="10.96">
                     </div>
 
                     <div class="cc-group">
                         <label>Tenure</label>
                         <div class="cc-select">
-                            <select>
-                                <option>1 Year</option>
-                                <option>2 Years</option>
-                                <option>3 Years</option>
-                                <option>4 Years</option>
-                                <option>5 Years</option>
+                            <select id="cc-tenure">
+                                <option value="1">1 Year</option>
+                                <option value="2">2 Years</option>
+                                <option value="3" selected>3 Years</option>
+                                <option value="4">4 Years</option>
+                                <option value="5">5 Years</option>
                             </select>
                             <span>›</span>
                         </div>
@@ -527,12 +527,18 @@
 
                 </div>
 
-                <div class="cc-note">
+                <div class="cc-result p-3 mt-3" style="border-top:1px solid #e5e7eb">
+                    <p class="mb-1"><strong>Estimated Monthly Installment</strong></p>
+                    <h3 id="cc-monthly">Rp 0</h3>
+                    <p class="text-muted small mt-2">This is a simulation. Final terms may vary.</p>
+                </div>
+
+                <div class="cc-note mt-2">
                     <p><strong>Important note:</strong> Requirements may vary from bank to bank. This calculation is
                         purely a
                         simulation.</p>
                     <p>For cars outside Jakarta, additional shipping costs and regional taxes may apply.</p>
-                    <p>This above calculation applies to a minimum down payment of not 10,000,000</p>
+                    <p>Minimum down payment may apply.</p>
                 </div>
 
             </div>
@@ -589,7 +595,7 @@
                     Test Drive
                 </button>
             @else
-                <button class="bf-btn bf-btn-outline w-50" onclick="window.location='#'">
+                <button class="bf-btn bf-btn-outline w-50" onclick="addToCartModal()">
                     + Cart
                 </button>
             @endif
@@ -758,6 +764,240 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elPrice = document.getElementById('cc-car-price');
+            const elLoan = document.getElementById('cc-loan-amount');
+            const elDown = document.getElementById('cc-first-payment');
+            const elInterest = document.getElementById('cc-interest-rate');
+            const elTenure = document.getElementById('cc-tenure');
+            const elMonthly = document.getElementById('cc-monthly');
+
+            if (!elPrice || !elLoan || !elDown || !elInterest || !elTenure || !elMonthly) return;
+
+            const parseNumber = (v) => {
+                if (v === null || v === undefined) return 0;
+                if (typeof v === 'number') return v;
+                // remove non digit and minus
+                const cleaned = String(v).replace(/[^0-9\-.,]/g, '').replace(/\./g, '').replace(/,/g, '.');
+                const n = parseFloat(cleaned);
+                return isNaN(n) ? 0 : n;
+            };
+
+            const formatIDR = (num) => {
+                try {
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Math.round(num));
+                } catch (e) {
+                    return 'Rp ' + Math.round(num).toLocaleString('id-ID');
+                }
+            };
+
+            const calculate = () => {
+                const price = parseNumber(elPrice.dataset.raw || elPrice.value);
+                const down = parseNumber(elDown.value);
+                const annualRate = parseNumber(elInterest.value);
+                const years = parseInt(elTenure.value) || 0;
+
+                const loanAmount = Math.max(0, price - down);
+                elLoan.dataset.raw = loanAmount;
+                elLoan.value = formatIDR(loanAmount);
+
+                const n = years * 12;
+                const r = (annualRate / 100) / 12; // monthly rate
+
+                let monthly = 0;
+                if (n <= 0 || loanAmount <= 0) {
+                    monthly = 0;
+                } else if (r === 0) {
+                    monthly = loanAmount / n;
+                } else {
+                    monthly = loanAmount * (r / (1 - Math.pow(1 + r, -n)));
+                }
+
+                elMonthly.textContent = formatIDR(monthly);
+            };
+
+            // Format down payment input on blur (allow typing raw numbers)
+            elDown.addEventListener('blur', function() {
+                const v = parseNumber(this.value);
+                this.value = v ? formatIDR(v) : 0;
+                calculate();
+            });
+
+            // If user focuses, show raw number
+            elDown.addEventListener('focus', function() {
+                const v = parseNumber(this.value);
+                this.value = v ? v : '';
+            });
+
+            elInterest.addEventListener('input', calculate);
+            elTenure.addEventListener('change', calculate);
+
+            // also recalculate on load
+            calculate();
+        });
+    </script>
+
+    <!-- Add to Cart Modal -->
+    <div class="modal fade" id="cartColorModal" tabindex="-1" aria-labelledby="cartColorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold" id="cartColorLabel">Pilih Warna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if ($product->colors->isNotEmpty())
+                        <div class="d-flex flex-wrap justify-content-center gap-3">
+                            @foreach($product->colors as $index => $color)
+                                <div class="color-circle-modal {{ $index === 0 ? 'active' : '' }}"
+                                    data-color-id="{{ $color->id }}"
+                                    data-color-name="{{ $color->name }}"
+                                    style="background: linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%); cursor: pointer; width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; transition: all 0.2s;"
+                                    onclick="selectColor(this)">
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="text-center mt-3 fw-semibold" id="selectedColorName">{{ $product->colors->first()?->name ?? '' }}</p>
+                    @else
+                        <p class="text-center text-muted">Tidak ada warna tersedia</p>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmAddToCart()">Tambah ke Keranjang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cartColorModal;
+        let currentProduct = {
+            id: {{ $product->id }},
+            name: '{{ $product->model_name }}',
+            price: {{ $product->price }},
+            image: '{{ asset('storage/' . $product->thumbnail) }}'
+        };
+
+        function addToCartModal() {
+            @if ($product->colors->isNotEmpty())
+                if (!cartColorModal) {
+                    cartColorModal = new bootstrap.Modal(document.getElementById('cartColorModal'));
+                }
+                cartColorModal.show();
+            @else
+                addToCartDirect();
+            @endif
+        }
+
+        function selectColor(element) {
+            const colorCircles = document.querySelectorAll('.color-circle-modal');
+            colorCircles.forEach(c => {
+                c.style.borderColor = 'transparent';
+            });
+            element.style.borderColor = '#0d6efd';
+            
+            const colorName = element.getAttribute('data-color-name');
+            document.getElementById('selectedColorName').textContent = colorName;
+        }
+
+        function confirmAddToCart() {
+            const active = document.querySelector('.color-circle-modal.active, .color-circle-modal[style*="rgb"]');
+            const selectedEl = document.querySelector('.color-circle-modal[style*="#0d6efd"]') || document.querySelector('.color-circle-modal.active');
+            
+            const colorId = selectedEl ? selectedEl.getAttribute('data-color-id') : null;
+            const colorName = selectedEl ? selectedEl.getAttribute('data-color-name') : null;
+
+            // Send to backend
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    product_id: currentProduct.id,
+                    product_name: currentProduct.name,
+                    price: currentProduct.price,
+                    image: currentProduct.image,
+                    color_id: colorId,
+                    color_name: colorName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    cartColorModal.hide();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: currentProduct.name + ' telah ditambahkan ke keranjang.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message || 'Produk gagal ditambahkan ke keranjang.'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menambahkan produk.'
+                });
+            });
+        }
+
+        function addToCartDirect() {
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    product_id: currentProduct.id,
+                    product_name: currentProduct.name,
+                    price: currentProduct.price,
+                    image: currentProduct.image,
+                    color_id: null,
+                    color_name: null
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: currentProduct.name + ' telah ditambahkan ke keranjang.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message || 'Produk gagal ditambahkan ke keranjang.'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menambahkan produk.'
+                });
+            });
+        }
+    </script>
 
     @include('sweetalert::alert')
 @endsection

@@ -19,12 +19,21 @@
 
             <!-- Bottom Row: Search Bar dan Cart -->
             <div class="navbar-bottom">
-                <div class="search-wrapper">
-                    <i class="bi bi-search search-icon"></i>
-                    <input type="text" class="search-bar" placeholder="Search Vehicle / Electronic">
-                </div>
-                <a href="{{ route('shoppingcart.index') }}" class="icon-btn">
-                    <img src="{{ asset('front_end/assets/images/logo/cart.jpg') }}" alt="Cart" class="icon-img">
+                <form action="{{ route('search.index') }}" method="GET" class="search-wrapper-form w-100">
+                    <div class="search-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" name="q" class="search-bar" placeholder="Search Vehicle / Electronic" value="{{ request('q') }}">
+                    </div>
+                </form>
+                
+                <a href="{{ route('shoppingcart.index') }}" class="icon-btn position-relative" style="display:inline-block;">
+                    <img src="{{ asset('front_end/assets/images/logo/cart.jpg') }}" alt="Cart" class="icon-img" style="width:18px;height:18px;object-fit:cover;">
+                    @php
+                        $cartCount = auth()->check() ? \App\Models\Cart::where('user_id', auth()->id())->sum('quantity') : 0;
+                    @endphp
+                    @if($cartCount > 0)
+                        <span class="cart-badge">{{ $cartCount }}</span>
+                    @endif
                 </a>
             </div>
         </div>
@@ -61,6 +70,34 @@
             </a>
         </div>
     </div>
+
+    <style>
+        .cart-badge {
+            position: absolute;
+            top: 4px;
+            right: 2px;
+            background: #e53935;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 999px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            line-height: 1;
+            transform: translate(20%, -20%);
+        }
+        /* center the cart icon inside the navbar bottom */
+        .navbar-bottom .icon-btn.position-relative {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+        }
+        .navbar-bottom .icon-btn.position-relative .icon-img {
+            display: block;
+            margin: 0;
+        }
+    </style>
 
     <!-- Promo Banner -->
     <div class="container content-container">
@@ -119,37 +156,41 @@
             <div class="slider-section">
                 <div class="slider-container">
                     <div class="slider-card">
-                        <img src="{{ asset('front_end/assets/images/logo/background2.jpg') }}" alt="Electric Vehicle 1"
-                            class="slider-card-img">
+                        <img src="{{ asset('front_end/assets/images/logo/i20_bev_dynamics_battery-pre-conditioning_3to2 1.png') }}"
+                            alt="Electric Vehicle 1" class="slider-card-img">
                         <div class="slider-card-overlay">
                             <button class="see-more-btn">See more →</button>
                         </div>
                     </div>
                     <div class="slider-card">
-                        <img src="{{ asset('front_end/assets/images/logo/background.jpg') }}" alt="Electric Vehicle 2"
-                            class="slider-card-img">
-                        <div class="slider-card-overlay">
-                            <button class="see-more-btn">See more →</button>
-                        </div>
-                    </div>
-                    <div class="slider-card-short">
-                        <img src="assets/slider/slider3.jpg" alt="Electric Vehicle 3" class="slider-card-img">
+                        <img src="{{ asset('front_end/assets/images/logo/section-atto3-c 1.png') }}"
+                            alt="Electric Vehicle 2" class="slider-card-img">
                         <div class="slider-card-overlay">
                             <button class="see-more-btn">See more →</button>
                         </div>
                     </div>
                     <div class="slider-card">
-                        <img src="assets/slider/slider4.jpg" alt="Electric Vehicle 4" class="slider-card-img">
+                        <img src="{{ asset('front_end/assets/images/logo/m100-city-side-2-gigapixel-AVLxXkBxLpS4zPXY 1.png') }}"
+                            alt="Electric Vehicle 2" class="slider-card-img">
                         <div class="slider-card-overlay">
                             <button class="see-more-btn">See more →</button>
                         </div>
                     </div>
-                    <div class="slider-card-short">
-                        <img src="assets/slider/slider5.jpg" alt="Electric Vehicle 5" class="slider-card-img">
+                    <div class="slider-card">
+                        <img src="{{ asset('front_end/assets/images/logo/VFe34_ExteriorFront_SH01.09 1.png') }}"
+                            alt="Electric Vehicle 4" class="slider-card-img">
                         <div class="slider-card-overlay">
                             <button class="see-more-btn">See more →</button>
                         </div>
                     </div>
+                    <div class="slider-card">
+                        <img src="{{ asset('front_end/assets/images/logo/20251016_195817_5b21d1fe91 1.png') }}"
+                            alt="Electric Vehicle 2" class="slider-card-img">
+                        <div class="slider-card-overlay">
+                            <button class="see-more-btn">See more →</button>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -160,6 +201,8 @@
     <!-- WHY CHOOSE US -->
     <!-- Why Choose Us -->
     <section class="why-choose">
+
+ 
 
 
 
@@ -235,8 +278,8 @@
     <div class="container content-container counting-section mt-5">
         <div class="row mb-4 text-center">
             <div class="col-4">
-                <h2 class="fw-bold text-primary"><span class="counter"
-                        data-target="{{ $brands->count() }}">0</span></h2>
+                <h2 class="fw-bold text-primary"><span class="counter" data-target="{{ $brands->count() }}">0</span>
+                </h2>
                 <p class="text-muted small mb-0">Collaboration<br>with brands</p>
             </div>
             <div class="col-4">
@@ -392,14 +435,14 @@
                     </div>
                 </a>
             </div>
-
         </div>
     </div>
 
     </div>
 
     <!-- Testimonial Modal -->
-    <div class="modal fade" id="testimonialModal" tabindex="-1" aria-labelledby="testimonialModalLabel" aria-hidden="true">
+    <div class="modal fade" id="testimonialModal" tabindex="-1" aria-labelledby="testimonialModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-0">
@@ -411,9 +454,9 @@
                         <div class="testimonial-item mb-4 pb-3 border-bottom">
                             <div class="d-flex align-items-start">
                                 @if ($testimonial->profile_picture)
-                                    <img src="{{ asset($testimonial->profile_picture) }}"
-                                        class="rounded-circle me-3" width="50" height="50"
-                                        style="object-fit: cover;" alt="{{ $testimonial->name }}">
+                                    <img src="{{ asset($testimonial->profile_picture) }}" class="rounded-circle me-3"
+                                        width="50" height="50" style="object-fit: cover;"
+                                        alt="{{ $testimonial->name }}">
                                 @else
                                     <img src="{{ asset('front_end/assets/images/logo/Group 16.png') }}"
                                         class="rounded-circle me-3" width="50" height="50"
@@ -426,7 +469,8 @@
                                             <i class="bi bi-star-fill" style="color: #ffc107;"></i>
                                         @endfor
                                     </div>
-                                    <p class="small text-muted mb-0">{{ $testimonial->message ?? $testimonial->testimonial }}</p>
+                                    <p class="small text-muted mb-0">
+                                        {{ $testimonial->message ?? $testimonial->testimonial }}</p>
                                 </div>
                             </div>
                         </div>

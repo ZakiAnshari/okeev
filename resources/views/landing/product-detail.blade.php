@@ -4,9 +4,16 @@
     <br><br>
     <style>
         /* Prevent layout shift when modals open/close by reserving scrollbar gutter */
-        html { overflow-y: scroll; scrollbar-gutter: stable; }
+        html {
+            overflow-y: scroll;
+            scrollbar-gutter: stable;
+        }
+
         /* Prevent bootstrap from adding body padding which causes horizontal shift */
-        body.modal-open { padding-right: 0 !important; margin-right: 0 !important; }
+        body.modal-open {
+            padding-right: 0 !important;
+            margin-right: 0 !important;
+        }
     </style>
     <section class="py-4 mt-5">
         <div class="container">
@@ -52,7 +59,7 @@
                     </div>
 
                     <!-- Thumbnail -->
-                            <div class="col-12">
+                    <div class="col-12">
                         <div class="image-row-5">
                             @foreach ($product->images->take(5) as $key => $image)
                                 <div class="thumb-box" onclick="productCarouselTo({{ $key }})">
@@ -120,8 +127,7 @@
                     <div class="col-md-6">
                         @if (Auth::check())
                             <button type="button" class="btn btn-outline-success w-100 py-2 add-to-cart-btn fw-bold"
-                                data-id="{{ $product->id }}"
-                                data-name="{{ $product->model_name }}"
+                                data-id="{{ $product->id }}" data-name="{{ $product->model_name }}"
                                 data-price="{{ $product->price }}"
                                 data-image="{{ asset('storage/' . ($product->images->first()->image ?? $product->thumbnail)) }}">
                                 <i class="bx bx-cart me-2"></i> Add to Cart
@@ -231,20 +237,22 @@
         <div class="container">
             <!-- Top Navigation -->
             <style>
-                .tech-nav{
+                .tech-nav {
                     background: #fff;
                     padding-top: .5rem;
                     padding-bottom: .5rem;
                     transition: box-shadow .2s;
                 }
 
-                .tech-nav.is-fixed{
+                .tech-nav.is-fixed {
                     position: fixed !important;
-                    top: var(--nav-top, 120px) !important; /* set by JS to match navbar height */
+                    top: var(--nav-top, 120px) !important;
+                    /* set by JS to match navbar height */
                     left: 0;
                     right: 0;
-                    z-index: 1020; /* lower than navbar so navbar won't overlap */
-                    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+                    z-index: 1020;
+                    /* lower than navbar so navbar won't overlap */
+                    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
                 }
             </style>
 
@@ -291,7 +299,7 @@
                 @endif
             </ul>
 
-                @if (in_array($product->category_position_id, [2, 3, 4]))
+            @if (in_array($product->category_position_id, [2, 3, 4]))
 
                 <section class="py-5 container">
                     <div class="row gx-5">
@@ -318,7 +326,8 @@
                     if (!nav) return;
 
                     // detect navbar/header height
-                    const header = document.querySelector('.navbar') || document.querySelector('header') || document.querySelector('.header-title');
+                    const header = document.querySelector('.navbar') || document.querySelector('header') || document
+                        .querySelector('.header-title');
                     const headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 120;
 
                     // set CSS variable for top offset used by fixed class
@@ -348,7 +357,10 @@
                         nav.classList.remove('is-fixed');
                         nav.style.width = '';
                         nav.style.left = '';
-                        if (placeholder) { placeholder.remove(); placeholder = null; }
+                        if (placeholder) {
+                            placeholder.remove();
+                            placeholder = null;
+                        }
                     }
 
                     function onScroll() {
@@ -360,11 +372,14 @@
                         }
                     }
 
-                    window.addEventListener('scroll', onScroll, { passive: true });
+                    window.addEventListener('scroll', onScroll, {
+                        passive: true
+                    });
                     window.addEventListener('resize', function() {
                         // recompute measurements
                         removeFixed();
-                        nav.style.setProperty('--nav-top', (header ? Math.ceil(header.getBoundingClientRect().height) : 120) + 'px');
+                        nav.style.setProperty('--nav-top', (header ? Math.ceil(header.getBoundingClientRect()
+                            .height) : 120) + 'px');
                     });
 
                     onScroll();
@@ -669,143 +684,148 @@
             </script>
         </section>
         <section class="credit-section">
-                <div class="container text-center py-5">
-                    <h5 class="credit-title" id="credit-heading">CREDIT CALCULATOR</h5>
-                    <p class="powered">Powered by <span>OKKEV FINANCE</span></p>
-                    <p class="sub-text">
-                        Our internal loans guarantee flexible financing options at competitive rates.
+            <div class="container text-center py-5">
+                <h5 class="credit-title" id="credit-heading">CREDIT CALCULATOR</h5>
+                <p class="powered">Powered by <span>OKKEV FINANCE</span></p>
+                <p class="sub-text">
+                    Our internal loans guarantee flexible financing options at competitive rates.
+                </p>
+            </div>
+
+            <div class="credit-box">
+                <div class="container py-5">
+                    <h5 class="text-center credit-subtitle">Monthly Installment Budget</h5>
+                    <h3 class="text-center credit-amount" id="creditAmount">Rp 0 / Months</h3>
+
+                    <p class="text-center desc-text mt-3">
+                        Calculate monthly installments that fit your budget by setting the down
+                        payment and loan period.
                     </p>
-                </div>
 
-                <div class="credit-box">
-                    <div class="container py-5">
-                        <h5 class="text-center credit-subtitle">Monthly Installment Budget</h5>
-                        <h3 class="text-center credit-amount" id="creditAmount">Rp 0 / Months</h3>
+                    <div class="row g-4 mt-4">
 
-                        <p class="text-center desc-text mt-3">
-                            Calculate monthly installments that fit your budget by setting the down
-                            payment and loan period.
-                        </p>
-
-                        <div class="row g-4 mt-4">
-
-                            <div class="col-md-6">
-                                <label class="credit-label">Car Price</label>
-                                <input id="carPrice" type="text" class="form-control credit-input" value="{{ 'Rp ' . number_format($product->price,0,',','.') }}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="credit-label">Interest Rate (Annual %)</label>
-                                <input id="interestRate" type="text" class="form-control credit-input" value="10.96">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="credit-label">Loan Amount</label>
-                                <input id="loanAmount" type="text" class="form-control credit-input" value="{{ 'Rp ' . number_format($product->price,0,',','.') }}">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="credit-label">Loan Period (Years)</label>
-                                <select id="loanPeriod" class="form-control credit-input">
-                                    @for ($y = 1; $y <= 6; $y++)
-                                        <option value="{{ $y }}">{{ $y }} Tahun</option>
-                                    @endfor
-                                </select>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="credit-label">First Payment (Down Payment)</label>
-                                <input id="firstPayment" type="text" class="form-control credit-input" value="0">
-                            </div>
-
+                        <div class="col-md-6">
+                            <label class="credit-label">Car Price</label>
+                            <input id="carPrice" type="text" class="form-control credit-input"
+                                value="{{ 'Rp ' . number_format($product->price, 0, ',', '.') }}">
                         </div>
 
-                        <div class="mt-4 note-box">
-                            <p><strong>Important note:</strong> Requirements may vary from bank to bank. This calculation is
-                                purely a simulation.</p>
-                            <p>For cars outside Jakarta, the above calculation is not binding. Additional shipping costs are
-                                not included.</p>
-                            <p>The above calculation applies to a minimum down payment of IDR 10,000,000.</p>
+                        <div class="col-md-6">
+                            <label class="credit-label">Interest Rate (Annual %)</label>
+                            <input id="interestRate" type="text" class="form-control credit-input" value="10.96">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="credit-label">Loan Amount</label>
+                            <input id="loanAmount" type="text" class="form-control credit-input"
+                                value="{{ 'Rp ' . number_format($product->price, 0, ',', '.') }}">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="credit-label">Loan Period (Years)</label>
+                            <select id="loanPeriod" class="form-control credit-input">
+                                @for ($y = 1; $y <= 6; $y++)
+                                    <option value="{{ $y }}">{{ $y }} Tahun</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="credit-label">First Payment (Down Payment)</label>
+                            <input id="firstPayment" type="text" class="form-control credit-input" value="0">
                         </div>
 
                     </div>
+
+                    <div class="mt-4 note-box">
+                        <p><strong>Important note:</strong> Requirements may vary from bank to bank. This calculation is
+                            purely a simulation.</p>
+                        <p>For cars outside Jakarta, the above calculation is not binding. Additional shipping costs are
+                            not included.</p>
+                        <p>The above calculation applies to a minimum down payment of IDR 10,000,000.</p>
+                    </div>
+
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <script>
-                (function(){
-                    const q = (s) => document.querySelector(s);
-                    const parseCurrency = (v) => {
-                        if (v === null || v === undefined) return 0;
-                        // strip everything except digits and minus (remove thousands separators)
-                        const n = String(v).replace(/[^0-9\-]/g, '');
-                        return n === '' ? 0 : Number(n);
-                    };
+        <script>
+            (function() {
+                const q = (s) => document.querySelector(s);
+                const parseCurrency = (v) => {
+                    if (v === null || v === undefined) return 0;
+                    // strip everything except digits and minus (remove thousands separators)
+                    const n = String(v).replace(/[^0-9\-]/g, '');
+                    return n === '' ? 0 : Number(n);
+                };
 
-                    const formatIDR = (value) => {
-                        if (!isFinite(value)) return 'Rp 0';
-                        return 'Rp ' + Number(value).toLocaleString('id-ID');
-                    };
+                const formatIDR = (value) => {
+                    if (!isFinite(value)) return 'Rp 0';
+                    return 'Rp ' + Number(value).toLocaleString('id-ID');
+                };
 
-                    const carPriceEl = q('#carPrice');
-                    const interestEl = q('#interestRate');
-                    const loanAmountEl = q('#loanAmount');
-                    const loanPeriodEl = q('#loanPeriod');
-                    const firstPaymentEl = q('#firstPayment');
-                    const creditAmountEl = q('#creditAmount');
+                const carPriceEl = q('#carPrice');
+                const interestEl = q('#interestRate');
+                const loanAmountEl = q('#loanAmount');
+                const loanPeriodEl = q('#loanPeriod');
+                const firstPaymentEl = q('#firstPayment');
+                const creditAmountEl = q('#creditAmount');
 
-                    const compute = () => {
-                        const loanAmount = parseCurrency(loanAmountEl.value);
-                        const firstPayment = parseCurrency(firstPaymentEl.value);
-                        const principal = Math.max(0, loanAmount - firstPayment);
-                        const annualRate = parseFloat(String(interestEl.value).replace(/[^0-9\.\-]/g,'')) || 0;
-                        const months = (parseInt(loanPeriodEl.value) || 1) * 12;
-                        const monthlyRate = annualRate / 100 / 12;
+                const compute = () => {
+                    const loanAmount = parseCurrency(loanAmountEl.value);
+                    const firstPayment = parseCurrency(firstPaymentEl.value);
+                    const principal = Math.max(0, loanAmount - firstPayment);
+                    const annualRate = parseFloat(String(interestEl.value).replace(/[^0-9\.\-]/g, '')) || 0;
+                    const months = (parseInt(loanPeriodEl.value) || 1) * 12;
+                    const monthlyRate = annualRate / 100 / 12;
 
-                        let monthly = 0;
-                        if (principal <= 0 || months <= 0) {
-                            monthly = 0;
-                        } else if (monthlyRate === 0) {
-                            monthly = principal / months;
-                        } else {
-                            monthly = principal * (monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
-                        }
+                    let monthly = 0;
+                    if (principal <= 0 || months <= 0) {
+                        monthly = 0;
+                    } else if (monthlyRate === 0) {
+                        monthly = principal / months;
+                    } else {
+                        monthly = principal * (monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+                    }
 
-                        creditAmountEl.textContent = formatIDR(Math.round(monthly)) + ' / Months';
-                    };
+                    creditAmountEl.textContent = formatIDR(Math.round(monthly)) + ' / Months';
+                };
 
-                    // attach listeners (debounced)
-                    let t;
-                    const debounceCompute = () => { clearTimeout(t); t = setTimeout(compute, 250); };
+                // attach listeners (debounced)
+                let t;
+                const debounceCompute = () => {
+                    clearTimeout(t);
+                    t = setTimeout(compute, 250);
+                };
 
-                    [carPriceEl, interestEl, loanAmountEl, loanPeriodEl, firstPaymentEl].forEach(el => {
-                        if (!el) return;
-                        el.addEventListener('input', debounceCompute);
-                        el.addEventListener('change', debounceCompute);
+                [carPriceEl, interestEl, loanAmountEl, loanPeriodEl, firstPaymentEl].forEach(el => {
+                    if (!el) return;
+                    el.addEventListener('input', debounceCompute);
+                    el.addEventListener('change', debounceCompute);
+                });
+
+                // Auto-format currency inputs on blur (keeps editing easy)
+                [carPriceEl, loanAmountEl, firstPaymentEl].forEach(el => {
+                    if (!el) return;
+                    el.addEventListener('blur', function() {
+                        const v = parseCurrency(this.value);
+                        this.value = formatIDR(v);
                     });
-
-                    // Auto-format currency inputs on blur (keeps editing easy)
-                    [carPriceEl, loanAmountEl, firstPaymentEl].forEach(el => {
-                        if (!el) return;
-                        el.addEventListener('blur', function() {
-                            const v = parseCurrency(this.value);
-                            this.value = formatIDR(v);
-                        });
-                        // on focus, show raw number for easier editing
-                        el.addEventListener('focus', function() {
-                            this.value = parseCurrency(this.value) || '';
-                        });
+                    // on focus, show raw number for easier editing
+                    el.addEventListener('focus', function() {
+                        this.value = parseCurrency(this.value) || '';
                     });
+                });
 
-                    // initialize fields formatting
-                    [carPriceEl, loanAmountEl, firstPaymentEl].forEach(el => {
-                        if (!el) return;
-                        el.value = formatIDR(parseCurrency(el.value));
-                    });
+                // initialize fields formatting
+                [carPriceEl, loanAmountEl, firstPaymentEl].forEach(el => {
+                    if (!el) return;
+                    el.value = formatIDR(parseCurrency(el.value));
+                });
 
-                    compute();
-                })();
-            </script>
+                compute();
+            })();
+        </script>
     @endif
 
     @if ($product->category_id == 2)
@@ -1096,13 +1116,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @if($product->colors->isNotEmpty())
+                    @if ($product->colors->isNotEmpty())
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="d-flex flex-wrap gap-3 justify-content-center mb-3">
-                                    @foreach($product->colors as $index => $color)
-                                        <div class="modal-color-circle d-flex flex-column align-items-center text-center" data-color-id="{{ $color->id }}" data-name="{{ $color->name }}" data-image="{{ asset('storage/' . $color->image) }}">
-                                            <div class="color-circle" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%);border:1px solid #ddd;cursor:pointer;" data-index="{{ $index }}"></div>
+                                    @foreach ($product->colors as $index => $color)
+                                        <div class="modal-color-circle d-flex flex-column align-items-center text-center"
+                                            data-color-id="{{ $color->id }}" data-name="{{ $color->name }}"
+                                            data-image="{{ asset('storage/' . $color->image) }}">
+                                            <div class="color-circle"
+                                                style="width:56px;height:56px;border-radius:50%;background:linear-gradient(to bottom, #000 50%, {{ $color->hex }} 50%);border:1px solid #ddd;cursor:pointer;"
+                                                data-index="{{ $index }}"></div>
                                             <div class="small mt-2">{{ $color->name }}</div>
                                         </div>
                                     @endforeach
@@ -1111,7 +1135,9 @@
 
                             <div class="col-md-6 text-center">
                                 <div class="p-3 border rounded-3">
-                                    <img src="@if($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif" id="modal-car-preview" class="img-fluid" style="max-height:180px; object-fit:contain; width:auto;">
+                                    <img src="@if ($product->colors->isNotEmpty()) {{ asset('storage/' . $product->colors->first()->image) }} @endif"
+                                        id="modal-car-preview" class="img-fluid"
+                                        style="max-height:180px; object-fit:contain; width:auto;">
                                 </div>
                                 <p class="fw-semibold fs-6 mt-2" id="modal-color-name">
                                     @if ($product->colors->isNotEmpty())
@@ -1146,7 +1172,8 @@
                     currentProduct.id = this.dataset.id;
                     currentProduct.name = this.dataset.name || '{{ $product->model_name }}';
                     currentProduct.price = this.dataset.price || '{{ $product->price }}';
-                    currentProduct.image = this.dataset.image || '{{ asset('storage/' . $product->thumbnail) }}';
+                    currentProduct.image = this.dataset.image ||
+                        '{{ asset('storage/' . $product->thumbnail) }}';
 
                     colorModal.show();
                 });
@@ -1156,7 +1183,8 @@
             colorModalEl.querySelectorAll('.modal-color-circle .color-circle').forEach(circle => {
                 circle.addEventListener('click', function() {
                     // remove active from other circles
-                    colorModalEl.querySelectorAll('.modal-color-circle').forEach(c => c.classList.remove('active'));
+                    colorModalEl.querySelectorAll('.modal-color-circle').forEach(c => c.classList
+                        .remove('active'));
                     const parent = this.closest('.modal-color-circle');
                     parent.classList.add('active');
 
@@ -1212,7 +1240,8 @@
                                 const dot = document.getElementById('cartDot');
                                 if (dot) {
                                     if (typeof data.cart_count !== 'undefined') {
-                                        dot.style.display = data.cart_count > 0 ? 'inline-block' : 'none';
+                                        dot.style.display = data.cart_count > 0 ? 'inline-block' :
+                                            'none';
                                     } else {
                                         dot.style.display = 'inline-block';
                                     }

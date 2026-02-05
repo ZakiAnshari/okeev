@@ -8,9 +8,11 @@ use App\Models\Contact;
 use App\Models\Feature;
 use App\Models\Product;
 use App\Models\HomeAbout;
+use App\Models\Order;
 use App\Models\Technology;
 use App\Models\HomeContact;
 use App\Models\HomeContent;
+use App\Models\Testdrive;
 use Illuminate\Http\Request;
 use App\Models\HomeHeroSlider;
 use App\Models\HomeTestimonial;
@@ -240,14 +242,59 @@ class HomeController extends Controller
 
     public function notification()
     {
+        $userId = Auth::id();
         $homeContact = HomeContact::first();
-        return view('mobile.notifikasi.index', compact('homeContact'));
+        
+        $notifOrders = [];
+        $notifTestdrives = [];
+        $notifCount = 0;
+        
+        if ($userId) {
+            // Get recent orders for this user
+            $notifOrders = Order::where('user_id', $userId)
+                ->where(function ($q) {
+                    $q->whereIn('status', ['PENDING', 'Failed', 'Completed'])
+                      ->orWhereIn('status_transaksi', ['PENDING', 'Failed', 'Completed']);
+                })
+                ->whereRaw("LOWER(COALESCE(status,'')) != 'cancelled'")
+                ->whereRaw("LOWER(COALESCE(status_transaksi,'')) != 'cancelled'")
+                ->with('product')
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+            
+            // Get recent test drives (all, since no user_id in testdrive table)
+            // Filter by user email or name if available
+            $user = Auth::user();
+            $notifTestdrives = Testdrive::with('product')
+                ->where(function ($q) use ($user) {
+                    if ($user) {
+                        $q->where('email', $user->email)
+                          ->orWhere('telp', $user->phone ?? '');
+                    }
+                })
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+            
+            $notifCount = $notifOrders->count() + $notifTestdrives->count();
+        }
+        
+        return view('mobile.notifikasi.index', compact('homeContact', 'notifOrders', 'notifTestdrives', 'notifCount'));
     }
 
     public function shoppingcart()
     {
-       
-        return view('mobile.shoppingcart.index');
+        $cartItems = \App\Models\Cart::with(['product', 'color'])
+            ->where('user_id', Auth::id())
+            ->get();
+
+        $total = 0;
+        foreach ($cartItems as $c) {
+            $total += ($c->product->price ?? 0) * ($c->quantity ?? 1);
+        }
+
+        return view('mobile.shoppingcart.index', compact('cartItems', 'total'));
     }
 
     public function contactstores(Request $request)
@@ -277,5 +324,55 @@ class HomeController extends Controller
         Contact::create($validated);
         Alert::success('Berhasil', 'Pesan Anda telah berhasil dikirim.');
         return back();
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('q', '');
+        $sortBy = $request->get('sort', 'latest');
+        $priceMin = $request->get('price_min');
+        $priceMax = $request->get('price_max');
+        $category = $request->get('category');
+
+        // Base query untuk products
+        $products = Product::query()
+            ->where('stock_status', 'in_stock')
+            ->where(function ($q) use ($query) {
+                if (!empty($query)) {
+                    $q->where('model_name', 'like', '%' . $query . '%')
+                      ->orWhere('description', 'like', '%' . $query . '%')
+                      ->orWhereHas('brand', function ($subQ) use ($query) {
+                          $subQ->where('name_brand', 'like', '%' . $query . '%');
+                      });
+                }
+            });
+
+        // Filter by category
+        if (!empty($category)) {
+            $products->where('category_id', $category);
+        }
+
+        // Filter by price range
+        if (!empty($priceMin)) {
+            $products->where('price', '>=', $priceMin);
+        }
+        if (!empty($priceMax)) {
+            $products->where('price', '<=', $priceMax);
+        }
+
+        // Sort
+        if ($sortBy === 'price_low') {
+            $products->orderBy('price', 'asc');
+        } elseif ($sortBy === 'price_high') {
+            $products->orderBy('price', 'desc');
+        } else {
+            $products->orderBy('created_at', 'desc');
+        }
+
+        $results = $products->paginate(12);
+        $categories = \App\Models\Category::all();
+        $brands = Brand::all();
+
+        return view('mobile.search.index', compact('results', 'categories', 'brands', 'query', 'sortBy', 'priceMin', 'priceMax', 'category'));
     }
 }

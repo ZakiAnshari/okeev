@@ -10,6 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('front_end/assets/css/mobile.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- 🛑 Block auto-refresh untuk halaman payment -->
+    <script>
+        if (window.location.pathname.includes('m/payment/success') || window.location.pathname.includes('m/payment/failed')) {
+            window.location.reload = () => false;
+            window.history.go = () => false;
+        }
+    </script>
 
 </head>
 
@@ -29,7 +38,7 @@
     @endif
 
     <!-- Hotbar -->
-    @if (!request()->routeIs('login.index', 'register.index','shoppingcart.index', 'profilm.show','vehiclecard.product','drive.index','payment.vam'))
+    @if (!request()->routeIs('login.index', 'register.index','shoppingcart.index', 'profilm.show','vehiclecard.product','drive.index','payment.vam', 'mobile.payment.success', 'mobile.payment.failed'))
         <div class="bottom-nav">
             <div class="bottom-nav-container">
                 <a href="{{ route('transaksi.show') }}"
@@ -119,6 +128,8 @@
         });
     </script>
     @include('sweetalert::alert')
+
+    @stack('scripts')
 
 </body>
 

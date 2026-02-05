@@ -267,8 +267,23 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/order/{product:slug}', [App\Http\Controllers\Mobile\OrderController::class, 'show'])->name('order.show');
     Route::post('/order/{product:slug}/invoice', [App\Http\Controllers\Mobile\OrderController::class, 'createInvoice'])->name('order.invoice');
 
+    // Create invoice for cart (mobile) -> returns JSON { invoice_url }
+    Route::post('/order-invoice-cart', [App\Http\Controllers\Mobile\OrderController::class, 'createInvoiceCart'])->name('mobile.order.invoice.cart');
+
     Route::get('/payment/va/{order}', [App\Http\Controllers\Mobile\PaymentController::class, 'virtualAccount'])
         ->name('payment.vam');
+
+    Route::post('/order/{order}/cancel', [App\Http\Controllers\Mobile\OrderController::class, 'cancel'])
+        ->name('mobile.order.cancel');
+
+    Route::get('/order/pending/{productSlug}', [App\Http\Controllers\Mobile\OrderController::class, 'checkPendingForProduct'])
+        ->name('mobile.order.checkPending');
+
+    Route::get('/payment/success', [App\Http\Controllers\Mobile\PaymentController::class, 'success'])
+        ->name('mobile.payment.success');
+
+    Route::get('/payment/failed', [App\Http\Controllers\Mobile\PaymentController::class, 'failed'])
+        ->name('mobile.payment.failed');
 
     Route::get('/transaksi', [App\Http\Controllers\Mobile\HomeController::class, 'transaksi'])->name('transaksi.show');
     Route::get('/newss', [App\Http\Controllers\Mobile\HomeController::class, 'newss'])->name('newss.show');
@@ -281,6 +296,7 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
 
     Route::get('/notification', [App\Http\Controllers\Mobile\HomeController::class, 'notification'])->name('notification.index');
     Route::get('/shoppingcart', [App\Http\Controllers\Mobile\HomeController::class, 'shoppingcart'])->name('shoppingcart.index');
+    Route::get('/search', [App\Http\Controllers\Mobile\HomeController::class, 'search'])->name('search.index');
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
 

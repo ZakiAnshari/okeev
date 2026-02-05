@@ -569,7 +569,7 @@
                         <div class="row g-4" style="flex-wrap: nowrap; min-width: min-content;">
                             @forelse($products as $product)
                                 <div class="col-12 col-md-6 col-lg-2 mb-4"
-                                    style="flex: 0 0 calc(20% - 10px); min-width: 250px;">
+                                    style="flex: 0 0 calc(20% - 10px); min-width: 300px;">
                                     @if (in_array($product->category_id, [1, 2]))
                                         <div class="vehicle-card rounded shadow-sm h-100"
                                             style="border: 1px solid #F1F1F1 !important;">

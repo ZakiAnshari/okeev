@@ -70,7 +70,7 @@
 
     <div class="header ">
         <div class="container header-container">
-            <a href="{{ route('mobile.home') }}" class="back-btn-img">
+            <a href="#" class="back-btn-img" onclick="(function(){ if(window.history.length>1){ history.back(); } else { window.location='{{ route('mobile.home') }}'; } })(); return false;">
                 <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
             </a>
             <div class="header-title">Notification</div>
@@ -78,49 +78,84 @@
     </div>
 
 
-   
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <div class="container py-4">
         <div class="">
 
-            <!-- ITEM 1 -->
-            <div class="notification-item">
-                <div class="icon-circle">
-                    $
+            @if (($notifCount ?? 0) === 0)
+                <div class="p-4 text-center text-muted">
+                    <p>Tidak ada notifikasi.</p>
                 </div>
-                <div class="flex-grow-1 ms-3">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h6 class="fw-bold mb-1">ORDER VEHICLE</h6>
-                        <small class="text-success fw-semibold">2.00 AM</small>
-                    </div>
-                    <p class="text-muted mb-1 small">
-                        You have placed an order & will immediately make payment for the
-                        WULING vehicle - New Air Ev...
-                    </p>
-                    <a href="#" class="details-link">Details...</a>
-                </div>
-            </div>
+            @else
 
-            <hr>
+                {{-- ORDER NOTIFICATIONS --}}
+                @foreach ($notifOrders ?? [] as $n)
+                    <a href="{{ route('payment.va', $n->id) }}" class="text-decoration-none text-body">
+                        <div class="notification-item">
+                            @php
+                                $iconClass = 'bg-danger';
+                                $iconName = 'bx-dollar-circle';
+                                if (strtolower($n->status ?? '') === 'pending') {
+                                    $iconClass = 'bg-warning';
+                                } elseif (in_array(strtolower($n->status ?? ''), ['completed', 'paid'])) {
+                                    $iconClass = 'bg-success';
+                                    $iconName = 'bx-check-circle';
+                                }
+                            @endphp
+                            <div class="icon-circle {{ $iconClass }}">
+                                <i class="bx {{ $iconName }}"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                @php
+                                    $notifLabel = 'ORDER';
+                                    $st = strtolower($n->status_transaksi ?? $n->status ?? '');
+                                    if ($st === 'being_sent') {
+                                        $notifLabel = 'BEING SENT';
+                                    } elseif ($st === 'processing') {
+                                        $notifLabel = 'PROCESS';
+                                    } elseif ($st === 'to_the_location') {
+                                        $notifLabel = 'TO LOCATION';
+                                    } elseif (in_array($st, ['completed', 'paid'])) {
+                                        $notifLabel = 'COMPLETED';
+                                    }
+                                @endphp
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h6 class="fw-bold mb-1">{{ $notifLabel }}</h6>
+                                    <small class="text-muted fw-semibold">{{ $n->created_at->diffForHumans() }}</small>
+                                </div>
+                                <p class="text-muted mb-1 small">
+                                    {{ Str::limit('Pesanan ' . $n->model_name . ' - ' . $n->qty . ' item. Total Rp ' . number_format($n->grand_total, 0, ',', '.'), 90) }}
+                                </p>
+                                <a href="{{ route('payment.va', $n->id) }}" class="details-link">Details...</a>
+                            </div>
+                        </div>
+                    </a>
+                    <hr>
+                @endforeach
 
-            <!-- ITEM 2 -->
-            <div class="notification-item d-flex">
-                <div class="icon-circle">
-                    🚗
-                </div>
-                <div class="flex-grow-1 ms-3">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h6 class="fw-bold mb-1">TEST DRIVE</h6>
-                        <small class="text-muted fw-semibold">Yesterday</small>
+                {{-- TEST DRIVE NOTIFICATIONS --}}
+                @foreach ($notifTestdrives ?? [] as $t)
+                    <div class="notification-item">
+                        <div class="icon-circle bg-info">
+                            <i class="bx bx-car"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="fw-bold mb-1">TEST DRIVE</h6>
+                                <small class="text-muted fw-semibold">{{ optional($t->created_at)->diffForHumans() }}</small>
+                            </div>
+                            <p class="text-muted mb-1 small">
+                                {{ Str::limit(($t->first_name ?? 'User') . ' requested a test drive' . (optional($t->product)->model_name ? ' - ' . optional($t->product)->model_name : ''), 90) }}
+                            </p>
+                            <a href="#" class="details-link">Details...</a>
+                        </div>
                     </div>
-                    <p class="text-muted mb-1 small">
-                        You apply to do a test drive of the WULING vehicle - New Air Ev...
-                    </p>
-                    <a href="#" class="details-link">Details...</a>
-                </div>
-            </div>
+                    <hr>
+                @endforeach
+
+            @endif
 
         </div>
     </div>
@@ -145,14 +180,30 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: #e8faf3;
-            color: #19c37d;
-            font-size: 18px;
+            color: white;
+            font-size: 20px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+        }
+
+        .icon-circle.bg-danger {
+            background-color: #dc3545;
+        }
+
+        .icon-circle.bg-warning {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .icon-circle.bg-success {
+            background-color: #28a745;
+        }
+
+        .icon-circle.bg-info {
+            background-color: #17a2b8;
         }
 
         .details-link {
