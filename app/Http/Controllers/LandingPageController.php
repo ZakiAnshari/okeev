@@ -41,7 +41,7 @@ class LandingPageController extends Controller
             ->get();
 
         // Ambil semua brand (optional, tetap untuk grid)
-        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id')
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'category_id', 'category_position_id')
             ->orderBy('name_brand', 'asc')
             ->get();
 

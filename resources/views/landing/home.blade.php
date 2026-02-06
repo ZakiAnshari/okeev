@@ -230,10 +230,11 @@
 
         /* Brand logos uniform size */
         .brand-grid {
-            display: flex;
+            /* display: flex; */
             flex-wrap: wrap;
             gap: 12px;
-            align-items: center;
+            align-items: flex-start;
+            justify-content: flex-start;
         }
 
         .brand-box {
@@ -273,7 +274,7 @@
                     <!-- === VEHICLE ICONS === -->
                     <div id="vehicle-logos" class="brand-grid">
                         @foreach ($brands as $brand)
-                            @if ($brand->category_id == 1)
+                            @if ($brand->category_position_id == 1)
                                 <div class="brand-box">
                                     <img src="{{ asset('storage/' . $brand->image) }}" class="img-fluid"
                                         alt="{{ $brand->name_brand }}">
@@ -285,7 +286,7 @@
                     <!-- === ELECTRIC ICONS === -->
                     <div id="electric-logos" class="d-none brand-grid">
                         @foreach ($brands as $brand)
-                            @if ($brand->category_id == 4)
+                            @if ($brand->category_position_id == 4)
                                 <div class="brand-box">
                                     <img src="{{ asset('storage/' . $brand->image) }}" class="img-fluid"
                                         alt="{{ $brand->name_brand }}">
@@ -298,8 +299,7 @@
                     <div class="d-flex justify-content-between mt-3">
                         <a href="#" id="btn-vehicle"
                             class="text-decoration-none fw-semibold text-info active-link">&lt; Vehicle</a>
-                        <a href="#" id="btn-electric"
-                            class="text-decoration-none fw-semibold text-muted">Accessories
+                        <a href="#" id="btn-electric" class="text-decoration-none fw-semibold text-muted">Accessories
                             &gt;</a>
                     </div>
                 </div>
@@ -332,22 +332,22 @@
                             <div class="me-3 d-flex" style="gap: -8px; cursor: pointer;">
                                 @forelse($testimonials->take(3) as $testimonial)
                                     @if ($testimonial->profile_picture)
-                                        <img src="{{ asset($testimonial->profile_picture) }}"
-                                            class="rounded-circle border border-white" width="45" height="45"
-                                            style="object-fit: cover; flex-shrink: 0; margin-left: -8px; cursor: pointer; transition: transform 0.2s ease-in-out;"
+                                        <img src="{{ asset($testimonial->profile_picture) }}" class="border border-white"
+                                            width="45" height="45"
+                                            style="object-fit: cover; flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease-in-out; border-radius: 50%; display: block;"
                                             alt="{{ $testimonial->name }}" title="{{ $testimonial->name }}"
                                             onmouseover="this.style.transform='scale(1.1)'"
                                             onmouseout="this.style.transform='scale(1)'">
                                     @endif
                                 @empty
                                     <img src="{{ asset('front_end/assets/images/logo/Group 16.png') }}"
-                                        class="rounded-circle border border-white" width="45" height="45"
-                                        style="object-fit: cover; flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease-in-out;"
+                                        class="border border-white" width="45" height="45"
+                                        style="object-fit: cover; flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease-in-out; border-radius: 50%; display: block;"
                                         onmouseover="this.style.transform='scale(1.1)'"
                                         onmouseout="this.style.transform='scale(1)'" alt="">
                                     <img src="{{ asset('front_end/assets/images/logo/Group 17.png') }}"
-                                        class="rounded-circle border border-white" width="45" height="45"
-                                        style="object-fit: cover; flex-shrink: 0; margin-left: -8px; cursor: pointer; transition: transform 0.2s ease-in-out;"
+                                        class="border border-white" width="45" height="45"
+                                        style="object-fit: cover; flex-shrink: 0; cursor: pointer; transition: transform 0.2s ease-in-out; border-radius: 50%; display: block;"
                                         onmouseover="this.style.transform='scale(1.1)'"
                                         onmouseout="this.style.transform='scale(1)'" alt="">
                                 @endforelse
@@ -389,13 +389,13 @@
                                             <!-- Profile Picture -->
                                             <div class="flex-shrink-0">
                                                 @if ($testimonial->profile_picture)
-                                                    <img src="{{ asset($testimonial->profile_picture) }}"
-                                                        class="rounded-circle" width="70" height="70"
-                                                        style="object-fit: cover; border: 3px solid #30445C; box-shadow: 0 2px 8px rgba(48, 68, 92, 0.15);"
+                                                    <img src="{{ asset($testimonial->profile_picture) }}" class="border"
+                                                        width="70" height="70"
+                                                        style="object-fit: cover; border: 3px solid #30445C; box-shadow: 0 2px 8px rgba(48, 68, 92, 0.15); border-radius: 50%; display: block;"
                                                         alt="{{ $testimonial->name }}">
                                                 @else
-                                                    <div class="rounded-circle d-flex align-items-center justify-content-center"
-                                                        style="width: 70px; height: 70px; background: linear-gradient(135deg, #658FC2, #30445C); color: white; font-weight: bold; font-size: 28px; box-shadow: 0 2px 8px rgba(48, 68, 92, 0.15);">
+                                                    <div class="d-flex align-items-center justify-content-center"
+                                                        style="width: 70px; height: 70px; background: linear-gradient(135deg, #658FC2, #30445C); color: white; font-weight: bold; font-size: 28px; box-shadow: 0 2px 8px rgba(48, 68, 92, 0.15); border-radius: 50%; flex-shrink: 0;">
                                                         {{ strtoupper(substr($testimonial->name, 0, 1)) }}
                                                     </div>
                                                 @endif
@@ -552,14 +552,15 @@
                 </div>
 
                 <!-- Tabs -->
-                <ul class="nav nav-pills justify-content-center mb-4">
+                <ul class="nav nav-pills justify-content-center mb-4" id="productTabs">
                     <li class="nav-item">
-                        <a class="nav-link active px-3 py-1" href="#">In Stock</a>
+                        <a class="nav-link active px-3 py-1" href="#" data-tab="in-stock">In Stock</a>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#">Sedan</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#">SUV</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#">Motorcycle</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#" data-tab="sedan">Sedan</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#" data-tab="suv">SUV</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#"
+                            data-tab="motorcycle">Motorcycle</a></li>
                 </ul>
 
                 <!-- Scrollable cards -->
@@ -670,7 +671,74 @@
                 </div>
 
                 <script>
+                    // Counter Animation
+                    function animateCounters() {
+                        const counters = document.querySelectorAll('.counter');
+                        counters.forEach(counter => {
+                            const target = parseInt(counter.getAttribute('data-target'));
+                            let current = 0;
+                            const increment = Math.ceil(target / 50);
+                            
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= target) {
+                                    counter.textContent = target;
+                                    clearInterval(timer);
+                                } else {
+                                    counter.textContent = current;
+                                }
+                            }, 20);
+                        });
+                    }
+
                     document.addEventListener('DOMContentLoaded', function() {
+                        // Start counter animation
+                        animateCounters();
+
+                        // Tab Navigation Handler
+                        const tabLinks = document.querySelectorAll('#productTabs .nav-link');
+
+                        tabLinks.forEach(link => {
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault(); // Cegah default link behavior
+
+                                // Remove active class dari semua link
+                                tabLinks.forEach(l => l.classList.remove('active'));
+
+                                // Add active class ke link yang diklik
+                                this.classList.add('active');
+                            });
+                        });
+
+                        // Brand Switch Handler
+                        const btnVehicle = document.getElementById('btn-vehicle');
+                        const btnElectric = document.getElementById('btn-electric');
+                        const vehicleLogos = document.getElementById('vehicle-logos');
+                        const electricLogos = document.getElementById('electric-logos');
+
+                        if (btnVehicle && btnElectric && vehicleLogos && electricLogos) {
+                            btnVehicle.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                vehicleLogos.classList.remove('d-none');
+                                electricLogos.classList.add('d-none');
+                                btnVehicle.classList.remove('text-muted');
+                                btnVehicle.classList.add('text-info');
+                                btnElectric.classList.remove('text-info');
+                                btnElectric.classList.add('text-muted');
+                            });
+
+                            btnElectric.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                vehicleLogos.classList.add('d-none');
+                                electricLogos.classList.remove('d-none');
+                                btnElectric.classList.remove('text-muted');
+                                btnElectric.classList.add('text-info');
+                                btnVehicle.classList.remove('text-info');
+                                btnVehicle.classList.add('text-muted');
+                            });
+                        }
+
+                        // Scroll functionality
                         const scrollContainer = document.getElementById('vehicle-scroll');
                         const scrollLeftBtn = document.getElementById('scrollLeft');
                         const scrollRightBtn = document.getElementById('scrollRight');

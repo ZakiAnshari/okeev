@@ -289,6 +289,7 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::get('/newss', [App\Http\Controllers\Mobile\HomeController::class, 'newss'])->name('newss.show');
     Route::get('/newss/detail/{slug}', [App\Http\Controllers\Mobile\HomeController::class, 'newssdetail'])->name('newssdetail.show');
     Route::get('/profilm', [App\Http\Controllers\Mobile\HomeController::class, 'profilm'])->name('profilm.show');
+    Route::post('/profile-store', [App\Http\Controllers\Mobile\HomeController::class, 'profilestorem'])->name('profilestorem.store');
     Route::get('/about', [App\Http\Controllers\Mobile\HomeController::class, 'about'])->name('about.show');
 
     Route::get('/contact', [App\Http\Controllers\Mobile\HomeController::class, 'contact'])->name('contact.index');

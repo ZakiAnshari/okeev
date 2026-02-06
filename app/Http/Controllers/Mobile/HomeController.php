@@ -375,4 +375,47 @@ class HomeController extends Controller
 
         return view('mobile.search.index', compact('results', 'categories', 'brands', 'query', 'sortBy', 'priceMin', 'priceMax', 'category'));
     }
+
+    public function profilestorem(Request $request)
+    {
+        try {
+            // Validate input
+            $validated = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . Auth::id(),
+                'contact' => 'required|string|max:255',
+                'city' => 'nullable|string|max:255',
+                'image_provile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            $user = Auth::user();
+
+            // Update user data
+            $user->first_name = $validated['first_name'];
+            $user->email = $validated['email'];
+            $user->contact = $validated['contact'];
+            $user->city = $validated['city'] ?? $user->city;
+
+            // Handle image upload
+            if ($request->hasFile('image_provile')) {
+                // Delete old image if exists
+                if ($user->image_provile && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->image_provile)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($user->image_provile);
+                }
+
+                // Store new image
+                $imagePath = $request->file('image_provile')->store('profiles', 'public');
+                $user->image_provile = $imagePath;
+            }
+
+            $user->save();
+
+            Alert::success('Success', 'Profil berhasil diperbarui');
+            return redirect()->route('profilm.show');
+
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Gagal memperbarui profil: ' . $e->getMessage());
+            return back();
+        }
+    }
 }

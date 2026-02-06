@@ -112,7 +112,7 @@
                             </div>
                         @endforeach
                     @else
-                        <div class="carousel-item active h-100">
+                        <div class="carousel-item active h-100">vehicle
                             <img src="{{ asset('front_end/assets/images/logo/Mobile.jpg') }}" class="d-block w-100 h-100"
                                 alt="Electric Vehicle Promo" style="object-fit: cover;">
                         </div>
@@ -345,7 +345,7 @@
             </button>
 
             <button class="collab-tab" onclick="showTab('electric')">
-                Electric
+                Accessories
             </button>
         </div>
 
@@ -360,7 +360,7 @@
         </div>
 
         <div id="electric-brands" class="brand-grid p-3 tab-content">
-            @foreach ($brands->where('category_position_id', 2) as $brand)
+            @foreach ($brands->where('category_position_id', 4) as $brand)
                 <div class="brand-item">
                     <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->name_brand }}"
                         class="brand-logo">

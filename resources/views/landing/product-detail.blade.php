@@ -2,7 +2,7 @@
 @section('title', 'detail')
 @section('content')
     <br><br>
-    <style>
+    {{-- <style>
         /* Prevent layout shift when modals open/close by reserving scrollbar gutter */
         html {
             overflow-y: scroll;
@@ -14,7 +14,7 @@
             padding-right: 0 !important;
             margin-right: 0 !important;
         }
-    </style>
+    </style> --}}
     <section class="py-4 mt-5">
         <div class="container">
             <!-- Back Button -->

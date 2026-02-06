@@ -255,6 +255,89 @@
             text-decoration: none;
             color: inherit;
         }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 16px;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            color: var(--dark-bg);
+            font-size: 18px;
+        }
+
+        .modal-body {
+            padding: 24px 16px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: #1DCDFE;
+            box-shadow: 0 0 0 3px rgba(29, 205, 254, 0.1);
+        }
+
+        .modal-footer {
+            border-top: 1px solid #f0f0f0;
+            padding: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-footer .btn {
+            border-radius: 8px;
+            padding: 8px 16px;
+        }
+
+        .btn-primary {
+            background-color: #1DCDFE;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-bg);
+        }
+
+        .btn-secondary {
+            background-color: #37474f;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #263238;
+        }
+
+        /* Error styling */
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 4px;
+        }
     </style>
     <div class="container">
         <div class="header">
@@ -271,14 +354,14 @@
                     @endphp
 
                     <div class="profile-pic">
-                        <img src="{{ $user->image_provile
-                            ? asset('storage/' . $user->image_provile)
-                            : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=667eea&color=fff' }}"
+                        <img src="{{ Auth::user()->image_provile
+                                ? asset('storage/' . Auth::user()->image_provile)
+                                : asset('front_end/assets/images/hero/mobil.png') }}"
                             alt="Profile">
                     </div>
 
                     <div class="profile-info">
-                        <h2 class="mb-1">{{ $user->name }}</h2>
+                        <h2 class="mb-1">{{ $user->first_name }}</h2>
                         <p class="mb-0">{{ $user->email }}</p>
                     </div>
                 </div>
@@ -294,7 +377,7 @@
                     <div class="profile-info-item">
                         <img src="{{ asset('front_end/assets/images/logo/mobile/gridicons_location.jpg') }}" alt="Location"
                             class="profile-icon-img">
-                        <p class="mb-0">{{ $user->contact }}</p>
+                        <p class="mb-0">{{ $user->city }}</p>
                     </div>
 
                 </div>
@@ -303,7 +386,7 @@
 
 
                 <div class="button-group">
-                    <button class="btn btn-edit" style="border-radius: 20px" onclick="editProfile()">
+                    <button class="btn btn-edit" style="border-radius: 20px" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
@@ -338,6 +421,74 @@
             </div>
         @endguest
 
+        <!-- Edit Profile Modal -->
+        @auth
+        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('profilestorem.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control @error('first_name') is-invalid @enderror" 
+                                    id="first_name" name="first_name" 
+                                    value="{{ old('first_name', Auth::user()->first_name ?? '') }}" required>
+                                @error('first_name')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                    id="email" name="email" 
+                                    value="{{ old('email', Auth::user()->email ?? '') }}" required>
+                                @error('email')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="contact" class="form-label">Contact</label>
+                                <input type="text" class="form-control @error('contact') is-invalid @enderror" 
+                                    id="contact" name="contact" 
+                                    value="{{ old('contact', Auth::user()->contact ?? '') }}" required>
+                                @error('contact')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="city" class="form-label">City / Address</label>
+                                <input type="text" class="form-control @error('city') is-invalid @enderror" 
+                                    id="city" name="city" 
+                                    value="{{ old('city', Auth::user()->city ?? '') }}">
+                                @error('city')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="image_provile" class="form-label">Profile Picture</label>
+                                <input type="file" class="form-control @error('image_provile') is-invalid @enderror" 
+                                    id="image_provile" name="image_provile" accept="image/*">
+                                <small class="text-muted">Leave blank if you don't want to change</small>
+                                @error('image_provile')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endauth
+
 
         <div class="menu-section">
             <a href="{{ route('about.show') }}">
@@ -361,6 +512,7 @@
     </div>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         function confirmLogout(event) {

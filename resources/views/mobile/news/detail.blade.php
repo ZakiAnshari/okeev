@@ -363,8 +363,16 @@
             event.preventDefault();
             event.stopPropagation();
 
-            const btn = event.currentTarget || event.target.closest('.btn-action');
-            if (!btn) return;
+            // Get the button that was clicked
+            let btn = event.target;
+            while (btn && !btn.classList.contains('btn-like')) {
+                btn = btn.parentElement;
+            }
+
+            if (!btn) {
+                console.log('Button not found');
+                return;
+            }
 
             const key = 'liked_' + newsId;
             const isLiked = localStorage.getItem(key) === '1';
@@ -372,23 +380,23 @@
             if (isLiked) {
                 localStorage.removeItem(key);
                 btn.classList.remove('liked');
-                showToast('Removed like');
+                showToast('❤️ Like removed');
             } else {
                 localStorage.setItem(key, '1');
                 btn.classList.add('liked');
-                showToast('Added to likes');
+                showToast('❤️ Added to likes');
             }
-
-            // Optional: send to server
-            // fetch(`/api/news/${newsId}/like`, { method: 'POST' });
         }
 
         function handleShare(event, url, title) {
             event.preventDefault();
             event.stopPropagation();
 
-            // url may be absolute (route()) or relative
-            const fullUrl = (/^https?:\/\//i.test(url)) ? url : (window.location.origin + url);
+            // Ensure url is properly formatted
+            let fullUrl = url;
+            if (!/^https?:\/\//i.test(fullUrl)) {
+                fullUrl = window.location.origin + (fullUrl.startsWith('/') ? '' : '/') + fullUrl;
+            }
 
             if (navigator.share) {
                 navigator.share({
@@ -396,7 +404,6 @@
                     text: title || '',
                     url: fullUrl
                 }).catch(() => {
-                    // fallback
                     openShareFallback(fullUrl, title);
                 });
             } else {
@@ -405,55 +412,61 @@
         }
 
         function openShareFallback(fullUrl, title) {
-            // Small inline fallback chooser: WhatsApp, Telegram, Copy
             const menu = document.createElement('div');
             menu.className = 'share-menu';
+            menu.style.position = 'fixed';
+            menu.style.top = '100px';
+            menu.style.right = '20px';
+            menu.style.zIndex = '9998';
 
             const waBtn = document.createElement('button');
-            waBtn.textContent = 'WhatsApp';
+            waBtn.textContent = '📱 WhatsApp';
             waBtn.onclick = () => {
                 const waUrl = 'https://wa.me/?text=' + encodeURIComponent((title ? title + '\n' : '') + fullUrl);
                 window.open(waUrl, '_blank');
-                document.body.removeChild(menu);
+                if (menu.parentNode) menu.parentNode.removeChild(menu);
             };
 
             const tgBtn = document.createElement('button');
-            tgBtn.textContent = 'Telegram';
+            tgBtn.textContent = '✈️ Telegram';
             tgBtn.onclick = () => {
                 const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(fullUrl) + '&text=' + encodeURIComponent(title || '');
                 window.open(tgUrl, '_blank');
-                document.body.removeChild(menu);
+                if (menu.parentNode) menu.parentNode.removeChild(menu);
             };
 
             const copyBtn = document.createElement('button');
-            copyBtn.textContent = 'Copy Link';
+            copyBtn.textContent = '📋 Copy Link';
             copyBtn.onclick = () => {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(fullUrl).then(() => showToast('Link copied'));
+                    navigator.clipboard.writeText(fullUrl).then(() => showToast('Link copied to clipboard!'));
                 } else {
                     const ta = document.createElement('textarea');
                     ta.value = fullUrl;
                     document.body.appendChild(ta);
                     ta.select();
-                    try { document.execCommand('copy'); showToast('Link copied'); } catch { alert(fullUrl); }
+                    try {
+                        document.execCommand('copy');
+                        showToast('Link copied to clipboard!');
+                    } catch {
+                        alert('Could not copy: ' + fullUrl);
+                    }
                     document.body.removeChild(ta);
                 }
-                if (menu.parentNode) document.body.removeChild(menu);
+                if (menu.parentNode) menu.parentNode.removeChild(menu);
             };
 
             const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'Close';
-            closeBtn.onclick = () => { if (menu.parentNode) document.body.removeChild(menu); };
+            closeBtn.textContent = '✕ Close';
+            closeBtn.style.background = '#f0f0f0';
+            closeBtn.onclick = () => {
+                if (menu.parentNode) menu.parentNode.removeChild(menu);
+            };
 
             menu.appendChild(waBtn);
             menu.appendChild(tgBtn);
             menu.appendChild(copyBtn);
             menu.appendChild(closeBtn);
-
-            // place menu near top-right for simplicity
-            menu.style.top = (window.scrollY + 90) + 'px';
-            menu.style.right = '16px';
-            menu.style.position = 'fixed';
 
             document.body.appendChild(menu);
         }

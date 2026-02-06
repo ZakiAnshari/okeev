@@ -858,8 +858,8 @@
     /* RED BADGE */
     .dot {
         position: absolute;
-        top: 8px;
-        right: 35%;
+        /* top: 8px; */
+        right: 15%;
         background: #ff3b30;
         color: #fff;
         font-size: 10px;

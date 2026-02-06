@@ -69,10 +69,10 @@
                     </a>
                 </li>
 
-                <li class="menu-item {{ Request::is('news*') ? 'active' : '' }}">
-                    <a href="/news" class="menu-link position-relative">
+                <li class="menu-item {{ request()->routeIs('news.*') ? 'active' : '' }}">
+                    <a href="{{ route('news.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bxs-news"></i>
-                        <div data-i18n="News">News</div>
+                        <div class="ms-2">News</div>
                     </a>
                 </li>
 
