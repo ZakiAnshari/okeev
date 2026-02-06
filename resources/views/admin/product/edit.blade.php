@@ -155,34 +155,19 @@
                                 <!-- Input File -->
                                 <input type="file" name="thumbnail" class="form-control" id="thumbnailInput">
                                 <!-- Tampilkan file lama jika ada -->
-                                @if (isset($product) && $product->thumbnail)
+                                @if (isset($products) && $products->thumbnail)
                                     <small class="text-muted d-block mt-1">
-                                        Old data: {{ $product->thumbnail }}
+                                        Old data: {{ $products->thumbnail }}
                                     </small>
 
                                     <!-- Opsional: Preview gambar lama -->
-                                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Old Thumbnail"
+                                    <img src="{{ asset('storage/' . $products->thumbnail) }}" alt="Old Thumbnail"
                                         class="img-thumbnail mt-2" width="150">
                                 @endif
                             </div>
 
 
-                            <!-- Preview Thumbnail -->
-                            <div class="col-lg-12 mb-3">
-                                <div class="text-center">
-                                    @if (!empty($product->thumbnail))
-                                        <!-- Jika sudah ada thumbnail di database -->
-                                        <img id="thumbnailPreview" src="{{ asset('storage/' . $product->thumbnail) }}"
-                                            alt="Thumbnail"
-                                            style="width:150px;height:150px;object-fit:cover;border:1px solid #ccc;border-radius:6px;">
-                                    @else
-                                        <!-- Jika belum ada thumbnail -->
-                                        <img id="thumbnailPreview" src="#"
-                                            style="width:150px;height:150px;object-fit:cover;border:1px solid #ccc;border-radius:6px;display:none;">
-                                    @endif
-
-                                </div>
-                            </div>
+                         
 
                             <!-- Script Preview (Auto tampil ketika upload thumbnail baru) -->
                             <script>

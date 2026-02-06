@@ -30,7 +30,9 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $brands = Brand::all();
+        $brands = Brand::select('id', 'name_brand', 'slug', 'image', 'wallpaper', 'category_id', 'category_position_id')
+            ->orderBy('name_brand', 'asc')
+            ->get();
 
         // Ambil home contents, order by `position` jika ada
         if (Schema::hasColumn('home_contents', 'position')) {

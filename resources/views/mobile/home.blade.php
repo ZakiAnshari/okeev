@@ -159,7 +159,7 @@
                         <img src="{{ asset('front_end/assets/images/logo/i20_bev_dynamics_battery-pre-conditioning_3to2 1.png') }}"
                             alt="Electric Vehicle 1" class="slider-card-img">
                         <div class="slider-card-overlay">
-                            <button class="see-more-btn">See more →</button>
+                            <button class="see-more-btn">Selengkapnya →</button>
                         </div>
                     </div>
                     <div class="slider-card">
@@ -195,6 +195,122 @@
             </div>
         </div>
     </div>
+
+    <!-- Brand Wallpaper Section (Mobile) -->
+    {{-- <div class="container content-container mt-5">
+        <h4 class="mb-4" style="color: #30445C; font-weight: bold;">Featured Brands</h4>
+        <div class="row g-3">
+            @php
+                $b0 = $brands->get(0);
+                $b1 = $brands->get(1);
+                $b2 = $brands->get(2);
+                $b3 = $brands->get(3);
+                $b4 = $brands->get(4);
+            @endphp
+
+            <!-- Brand 1 & 2 (Full width on mobile) -->
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="brand-wallpaper-card" style="height: 200px; overflow: hidden; border-radius: 8px; position: relative;">
+                    @if($b0 && $b0->wallpaper)
+                        <img src="{{ asset('storage/' . $b0->wallpaper) }}" alt="{{ $b0->name_brand }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @else
+                        <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Wallpaper" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @endif
+                    <div class="image-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                        @if($b0 && $b0->image)
+                            <img src="{{ asset('storage/' . $b0->image) }}" alt="{{ $b0->name_brand }}" style="height: 32px; object-fit: contain; margin-bottom: 8px; display: block;">
+                        @endif
+                        @if($b0)
+                            <button type="button" class="btn btn-sm btn-light" style="font-size: 12px; padding: 4px 12px;" onclick="window.location='{{ url('/brand/'.$b0->slug) }}'">
+                                Selengkapnya →
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="brand-wallpaper-card" style="height: 200px; overflow: hidden; border-radius: 8px; position: relative;">
+                    @if($b1 && $b1->wallpaper)
+                        <img src="{{ asset('storage/' . $b1->wallpaper) }}" alt="{{ $b1->name_brand }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @else
+                        <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" alt="Wallpaper" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @endif
+                    <div class="image-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                        @if($b1 && $b1->image)
+                            <img src="{{ asset('storage/' . $b1->image) }}" alt="{{ $b1->name_brand }}" style="height: 32px; object-fit: contain; margin-bottom: 8px; display: block;">
+                        @endif
+                        @if($b1)
+                            <button type="button" class="btn btn-sm btn-light" style="font-size: 12px; padding: 4px 12px;" onclick="window.location='{{ url('/brand/'.$b1->slug) }}'">
+                                Selengkapnya →
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand 3, 4, 5 (Responsive grid) -->
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="brand-wallpaper-card" style="height: 150px; overflow: hidden; border-radius: 8px; position: relative;">
+                    @if($b2 && $b2->wallpaper)
+                        <img src="{{ asset('storage/' . $b2->wallpaper) }}" alt="{{ $b2->name_brand }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @else
+                        <img src="{{ asset('front_end/assets/images/hero/Frame 7.png') }}" alt="Wallpaper" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @endif
+                    <div class="image-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                        @if($b2 && $b2->image)
+                            <img src="{{ asset('storage/' . $b2->image) }}" alt="{{ $b2->name_brand }}" style="height: 24px; object-fit: contain; margin-bottom: 6px; display: block;">
+                        @endif
+                        @if($b2)
+                            <button type="button" class="btn btn-sm btn-light" style="font-size: 11px; padding: 3px 8px;" onclick="window.location='{{ url('/brand/'.$b2->slug) }}'">
+                                Selengkapnya →
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="brand-wallpaper-card" style="height: 150px; overflow: hidden; border-radius: 8px; position: relative;">
+                    @if($b3 && $b3->wallpaper)
+                        <img src="{{ asset('storage/' . $b3->wallpaper) }}" alt="{{ $b3->name_brand }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @else
+                        <img src="{{ asset('front_end/assets/images/hero/Frame 9.png') }}" alt="Wallpaper" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @endif
+                    <div class="image-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                        @if($b3 && $b3->image)
+                            <img src="{{ asset('storage/' . $b3->image) }}" alt="{{ $b3->name_brand }}" style="height: 24px; object-fit: contain; margin-bottom: 6px; display: block;">
+                        @endif
+                        @if($b3)
+                            <button type="button" class="btn btn-sm btn-light" style="font-size: 11px; padding: 3px 8px;" onclick="window.location='{{ url('/brand/'.$b3->slug) }}'">
+                                Selengkapnya →
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="brand-wallpaper-card" style="height: 150px; overflow: hidden; border-radius: 8px; position: relative;">
+                    @if($b4 && $b4->wallpaper)
+                        <img src="{{ asset('storage/' . $b4->wallpaper) }}" alt="{{ $b4->name_brand }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @else
+                        <img src="{{ asset('front_end/assets/images/hero/Frame 8.png') }}" alt="Wallpaper" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    @endif
+                    <div class="image-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                        @if($b4 && $b4->image)
+                            <img src="{{ asset('storage/' . $b4->image) }}" alt="{{ $b4->name_brand }}" style="height: 24px; object-fit: contain; margin-bottom: 6px; display: block;">
+                        @endif
+                        @if($b4)
+                            <button type="button" class="btn btn-sm btn-light" style="font-size: 11px; padding: 3px 8px;" onclick="window.location='{{ url('/brand/'.$b4->slug) }}'">
+                                Selengkapnya →
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
 
 
 

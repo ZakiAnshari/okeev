@@ -113,34 +113,50 @@ class HomeUserController extends Controller
         try {
             $request->validate(
                 [
-                    'image_provile' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+                    'first_name' => 'required|string|max:255',
+                    'email' => 'required|email|unique:users,email,' . $user->id,
+                    'contact' => 'required|string|max:20',
+                    'city' => 'nullable|string|max:500',
+                    'image_provile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
                 ],
                 [
-                    'image_provile.required' => 'Silakan pilih gambar terlebih dahulu.',
-                    'image_provile.image'    => 'File yang diunggah harus berupa gambar.',
-                    'image_provile.mimes'    => 'Format gambar harus JPG, JPEG, atau PNG.',
-                    'image_provile.max'      => 'Ukuran gambar maksimal 2MB.',
+                    'first_name.required' => 'Nama depan harus diisi.',
+                    'email.required' => 'Email harus diisi.',
+                    'email.email' => 'Format email tidak valid.',
+                    'email.unique' => 'Email sudah terdaftar.',
+                    'contact.required' => 'Nomor kontak harus diisi.',
+                    'image_provile.image' => 'File harus berupa gambar.',
+                    'image_provile.mimes' => 'Format gambar harus JPG, JPEG, atau PNG.',
+                    'image_provile.max' => 'Ukuran gambar maksimal 2MB.',
                 ]
             );
         } catch (ValidationException $e) {
-            Alert::error('Upload Gagal', $e->validator->errors()->first());
+            Alert::error('Gagal', $e->validator->errors()->first());
             return back();
         }
 
-        // Hapus foto lama jika ada
-        if ($user->image_provile && Storage::disk('public')->exists($user->image_provile)) {
-            Storage::disk('public')->delete($user->image_provile);
+        // Update data profil
+        $user->first_name = $request->first_name;
+        $user->email = $request->email;
+        $user->contact = $request->contact;
+        $user->city = $request->city;
+
+        // Handle image upload (opsional)
+        if ($request->hasFile('image_provile')) {
+            // Hapus foto lama jika ada
+            if ($user->image_provile && Storage::disk('public')->exists($user->image_provile)) {
+                Storage::disk('public')->delete($user->image_provile);
+            }
+
+            // Upload foto baru
+            $path = $request->file('image_provile')->store('profile', 'public');
+            $user->image_provile = $path;
         }
 
-        // Upload foto baru
-        $path = $request->file('image_provile')->store('profile', 'public');
-
-        // Simpan ke database
-        $user->image_provile = $path;
         $user->save();
 
         // Notifikasi sukses
-        Alert::success('Berhasil', 'Foto profil berhasil diperbarui');
+        Alert::success('Berhasil', 'Profil berhasil diperbarui');
 
         return back();
     }

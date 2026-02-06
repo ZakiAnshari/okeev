@@ -30,18 +30,30 @@
                     <div class="col-12">
                         <div id="productCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
                             <div class="carousel-inner bg-light rounded" style="max-height: 395px;">
-                                @forelse ($product->images as $key => $image)
-                                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                                        <img src="{{ asset('storage/' . $image->image) }}"
-                                            class="d-block mx-auto img-fluid p-4"
-                                            style="max-height: 395px; object-fit: contain;" alt="Image {{ $key }}">
-                                    </div>
-                                @empty
+                                <!-- Thumbnail as First Image -->
+                                @if ($product->thumbnail)
                                     <div class="carousel-item active">
                                         <img src="{{ asset('storage/' . $product->thumbnail) }}"
                                             class="d-block mx-auto img-fluid p-4"
                                             style="max-height: 395px; object-fit: contain;" alt="Thumbnail">
                                     </div>
+                                @endif
+
+                                <!-- Product Images -->
+                                @forelse ($product->images as $key => $image)
+                                    <div class="carousel-item {{ $product->thumbnail ? '' : ($key === 0 ? 'active' : '') }}">
+                                        <img src="{{ asset('storage/' . $image->image) }}"
+                                            class="d-block mx-auto img-fluid p-4"
+                                            style="max-height: 395px; object-fit: contain;" alt="Image {{ $key }}">
+                                    </div>
+                                @empty
+                                    @if (!$product->thumbnail)
+                                        <div class="carousel-item active">
+                                            <img src="{{ asset('front_end/assets/images/placeholder.png') }}"
+                                                class="d-block mx-auto img-fluid p-4"
+                                                style="max-height: 395px; object-fit: contain;" alt="No Image">
+                                        </div>
+                                    @endif
                                 @endforelse
                             </div>
 
@@ -61,8 +73,13 @@
                     <!-- Thumbnail -->
                     <div class="col-12">
                         <div class="image-row-5">
-                            @foreach ($product->images->take(5) as $key => $image)
-                                <div class="thumb-box" onclick="productCarouselTo({{ $key }})">
+                            @if ($product->thumbnail)
+                                <div class="thumb-box" onclick="productCarouselTo(0)">
+                                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Thumbnail" class="thumb-img">
+                                </div>
+                            @endif
+                            @foreach ($product->images->take(4) as $key => $image)
+                                <div class="thumb-box" onclick="productCarouselTo({{ $product->thumbnail ? $key + 1 : $key }})">
                                     <img src="{{ asset('storage/' . $image->image) }}" alt="" class="thumb-img">
                                 </div>
                             @endforeach

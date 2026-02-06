@@ -50,52 +50,129 @@
     <section id="features" class="features section">
         <div class="container">
             <div class="row">
+                @php
+                    // prepare first 5 brands (preserve keys)
+                    $b0 = $brands->get(0);
+                    $b1 = $brands->get(1);
+                    $b2 = $brands->get(2);
+                    $b3 = $brands->get(3);
+                    $b4 = $brands->get(4);
+                @endphp
+
+                <!-- Large left (always wallpaper for size) -->
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s">
-                        <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Gambar Besar"
-                            class="img-fluid rounded">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 350px; overflow: hidden; border-radius: 8px;">
+                        @if($b0 && $b0->wallpaper)
+                            <img src="{{ asset('storage/' . $b0->wallpaper) }}" alt="{{ $b0->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @else
+                            <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @endif
                         <div class="image-overlay">
-                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @if($b0)
+                                <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
+                                    @if($b0->image)
+                                        <img src="{{ asset('storage/' . $b0->image) }}" alt="{{ $b0->name_brand }}" style="height:36px;object-fit:contain;" />
+                                    @endif
+                                    {{-- <strong class="text-white">{{ $b0->name_brand }}</strong> --}}
+                                </div>
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b0->slug) }}'">Selengkapnya →</button>
+                            @else
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @endif
                         </div>
                     </div>
                 </div>
 
+                <!-- Large right (always wallpaper for size) -->
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s">
-                        <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" alt="Gambar Besar"
-                            class="img-fluid rounded">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 350px; overflow: hidden; border-radius: 8px;">
+                        @if($b1 && $b1->wallpaper)
+                            <img src="{{ asset('storage/' . $b1->wallpaper) }}" alt="{{ $b1->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @else
+                            <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @endif
                         <div class="image-overlay">
-                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @if($b1)
+                                <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
+                                    @if($b1->image)
+                                        <img src="{{ asset('storage/' . $b1->image) }}" alt="{{ $b1->name_brand }}" style="height:36px;object-fit:contain;" />
+                                    @endif
+                                    {{-- <strong class="text-white">{{ $b1->name_brand }}</strong> --}}
+                                </div>
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b1->slug) }}'">Selengkapnya →</button>
+                            @else
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Small boxes -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-feature feature-fixed-size wow fadeInUp" data-wow-delay=".2s" style="height: 250px; overflow: hidden; border-radius: 8px;">
+                        @if($b2 && $b2->wallpaper)
+                            <img src="{{ asset('storage/' . $b2->wallpaper) }}" alt="{{ $b2->name_brand }}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @else
+                            <img src="{{ asset('front_end/assets/images/hero/Frame 7.png') }}" alt="Gambar Besar" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @endif
+                        <div class="image-overlay">
+                            @if($b2)
+                                <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
+                                    @if($b2->image)
+                                        <img src="{{ asset('storage/' . $b2->image) }}" alt="{{ $b2->name_brand }}" style="height:28px;object-fit:contain;" />
+                                    @endif
+                                    {{-- <strong class="text-white">{{ $b2->name_brand }}</strong> --}}
+                                </div>
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b2->slug) }}'">Selengkapnya →</button>
+                            @else
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @endif
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-feature feature-fixed-size wow fadeInUp" data-wow-delay=".2s">
-                        <img src="{{ asset('front_end/assets/images/hero/Frame 7.png') }}" alt="Gambar Besar"
-                            class="img-fluid">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 250px; overflow: hidden; border-radius: 8px;">
+                        @if($b3 && $b3->wallpaper)
+                            <img src="{{ asset('storage/' . $b3->wallpaper) }}" alt="{{ $b3->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @else
+                            <img src="{{ asset('front_end/assets/images/hero/Frame 9.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @endif
                         <div class="image-overlay">
-                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @if($b3)
+                                <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
+                                    @if($b3->image)
+                                        <img src="{{ asset('storage/' . $b3->image) }}" alt="{{ $b3->name_brand }}" style="height:28px;object-fit:contain;" />
+                                    @endif
+                                    {{-- <strong class="text-white">{{ $b3->name_brand }}</strong> --}}
+                                </div>
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b3->slug) }}'">Selengkapnya →</button>
+                            @else
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @endif
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s">
-                        <img src="{{ asset('front_end/assets/images/hero/Frame 9.png') }}" alt="Gambar Besar"
-                            class="img-fluid rounded">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 250px; overflow: hidden; border-radius: 8px;">
+                        @if($b4 && $b4->wallpaper)
+                            <img src="{{ asset('storage/' . $b4->wallpaper) }}" alt="{{ $b4->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @else
+                            <img src="{{ asset('front_end/assets/images/hero/Frame 8.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        @endif
                         <div class="image-overlay">
-                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s">
-                        <img src="{{ asset('front_end/assets/images/hero/Frame 8.png') }}" alt="Gambar Besar"
-                            class="img-fluid rounded">
-                        <div class="image-overlay">
-                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @if($b4)
+                                <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
+                                    @if($b4->image)
+                                        <img src="{{ asset('storage/' . $b4->image) }}" alt="{{ $b4->name_brand }}" style="height:28px;object-fit:contain;" />
+                                    @endif
+                                    {{-- <strong class="text-white">{{ $b4->name_brand }}</strong> --}}
+                                </div>
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b4->slug) }}'">Selengkapnya →</button>
+                            @else
+                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                            @endif
                         </div>
                     </div>
                 </div>

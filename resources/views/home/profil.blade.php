@@ -97,6 +97,11 @@
                                 }
                             }
                         </style>
+                        <!-- Tombol Edit -->
+                        <button type="button" class="btn btn-primary w-100 py-2 mb-2" style="border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="bi bi-pencil-square me-2"></i> Edit Profil
+                        </button>
+
                         <!-- Tombol Keluar -->
                         <!-- Logout Form -->
                         <form id="logoutForm" action="{{ route('user.logout') }}" method="POST">
@@ -142,6 +147,63 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Edit Profil -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('profilestore.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control @error('first_name') is-invalid @enderror" 
+                                id="first_name" name="first_name" 
+                                value="{{ old('first_name', Auth::user()->first_name ?? '') }}" required>
+                            @error('first_name')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                id="email" name="email" 
+                                value="{{ old('email', Auth::user()->email ?? '') }}" required>
+                            @error('email')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact" class="form-label">Contact</label>
+                            <input type="text" class="form-control @error('contact') is-invalid @enderror" 
+                                id="contact" name="contact" 
+                                value="{{ old('contact', Auth::user()->contact ?? '') }}" required>
+                            @error('contact')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City / Address</label>
+                            <textarea class="form-control @error('city') is-invalid @enderror" 
+                                id="city" name="city" rows="4">{{ old('city', Auth::user()->city ?? '') }}</textarea>
+                            @error('city')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                       
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <style>
         .profile-img {
             width: 320px;
@@ -150,6 +212,15 @@
             /* potong rapi tanpa merusak rasio */
             object-position: center;
             border-radius: 12px;
+        }
+
+        /* Prevent scrollbar dari hilang saat modal dibuka */
+        html {
+            scrollbar-gutter: stable;
+        }
+
+        body.modal-open {
+            padding-right: 0 !important;
         }
     </style>
     @include('sweetalert::alert')

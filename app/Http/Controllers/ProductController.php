@@ -161,6 +161,7 @@ class ProductController extends Controller
             'stock_status'   => 'required|in:in_stock,out_of_stock',
             'featured'       => 'nullable|boolean',
             'description'    => 'nullable|string',
+            'thumbnail'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'images.*'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -178,6 +179,19 @@ class ProductController extends Controller
         // HANDLE SLUG
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['model_name']);
+        }
+
+        // ============================
+        // UPDATE THUMBNAIL (OPTIONAL)
+        // ============================
+        if ($request->hasFile('thumbnail')) {
+            // Hapus thumbnail lama jika ada
+            if ($product->thumbnail) {
+                Storage::disk('public')->delete($product->thumbnail);
+            }
+            // Upload thumbnail baru
+            $validated['thumbnail'] = $request->file('thumbnail')
+                ->store('images', 'public');
         }
 
         // ============================
