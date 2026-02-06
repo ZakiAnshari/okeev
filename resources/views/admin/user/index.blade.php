@@ -66,7 +66,7 @@
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="name" class="form-label">Nama</label>
-                                                            <input type="text" name="name" class="form-control"
+                                                            <input type="text" name="first_name" class="form-control"
                                                                 id="name" required>
                                                         </div>
                                                         <div class="mb-3">
@@ -130,7 +130,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Lengkap</th>
+                                        <th>Nama</th>
                                         <th>Contact</th>
                                         <th>Hak Akses</th>
                                         <th style="width: 80px; text-align: center;">Aksi</th>
@@ -140,7 +140,7 @@
                                     @forelse ($users  as $index => $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->first_name }}</td>
                                             <td>{{ $item->contact }}</td>
                                             <td>
                                                 <span class="d-flex align-items-center gap-2">

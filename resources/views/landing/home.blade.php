@@ -55,7 +55,7 @@
                         <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Gambar Besar"
                             class="img-fluid rounded">
                         <div class="image-overlay">
-                            <a href="#" class="selengkapnya-btn">Selengkapnya →</a>
+                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                         <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" alt="Gambar Besar"
                             class="img-fluid rounded">
                         <div class="image-overlay">
-                            <a href="#" class="selengkapnya-btn">Selengkapnya →</a>
+                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                         <img src="{{ asset('front_end/assets/images/hero/Frame 7.png') }}" alt="Gambar Besar"
                             class="img-fluid">
                         <div class="image-overlay">
-                            <a href="#" class="selengkapnya-btn">Selengkapnya →</a>
+                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                         <img src="{{ asset('front_end/assets/images/hero/Frame 9.png') }}" alt="Gambar Besar"
                             class="img-fluid rounded">
                         <div class="image-overlay">
-                            <a href="#" class="selengkapnya-btn">Selengkapnya →</a>
+                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                         </div>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <img src="{{ asset('front_end/assets/images/hero/Frame 8.png') }}" alt="Gambar Besar"
                             class="img-fluid rounded">
                         <div class="image-overlay">
-                            <a href="#" class="selengkapnya-btn">Selengkapnya →</a>
+                            <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                         </div>
                     </div>
                 </div>
@@ -297,9 +297,9 @@
 
                     <!-- Switch -->
                     <div class="d-flex justify-content-between mt-3">
-                        <a href="#" id="btn-vehicle"
-                            class="text-decoration-none fw-semibold text-info active-link">&lt; Vehicle</a>
-                        <a href="#" id="btn-electric" class="text-decoration-none fw-semibold text-muted">Accessories
+                        <a href="javascript:void(0);" id="btn-vehicle"
+                            class="text-decoration-none fw-semibold text-info active-link" style="cursor: pointer;">&lt; Vehicle</a>
+                        <a href="javascript:void(0);" id="btn-electric" class="text-decoration-none fw-semibold text-muted" style="cursor: pointer;">Accessories
                             &gt;</a>
                     </div>
                 </div>
@@ -670,123 +670,152 @@
 
                 </div>
 
-                <script>
-                    // Counter Animation
-                    function animateCounters() {
-                        const counters = document.querySelectorAll('.counter');
-                        counters.forEach(counter => {
-                            const target = parseInt(counter.getAttribute('data-target'));
-                            let current = 0;
-                            const increment = Math.ceil(target / 50);
-                            
-                            const timer = setInterval(() => {
-                                current += increment;
-                                if (current >= target) {
-                                    counter.textContent = target;
-                                    clearInterval(timer);
-                                } else {
-                                    counter.textContent = current;
-                                }
-                            }, 20);
-                        });
-                    }
-
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Start counter animation
-                        animateCounters();
-
-                        // Tab Navigation Handler
-                        const tabLinks = document.querySelectorAll('#productTabs .nav-link');
-
-                        tabLinks.forEach(link => {
-                            link.addEventListener('click', function(e) {
-                                e.preventDefault(); // Cegah default link behavior
-
-                                // Remove active class dari semua link
-                                tabLinks.forEach(l => l.classList.remove('active'));
-
-                                // Add active class ke link yang diklik
-                                this.classList.add('active');
-                            });
-                        });
-
-                        // Brand Switch Handler
-                        const btnVehicle = document.getElementById('btn-vehicle');
-                        const btnElectric = document.getElementById('btn-electric');
-                        const vehicleLogos = document.getElementById('vehicle-logos');
-                        const electricLogos = document.getElementById('electric-logos');
-
-                        if (btnVehicle && btnElectric && vehicleLogos && electricLogos) {
-                            btnVehicle.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                vehicleLogos.classList.remove('d-none');
-                                electricLogos.classList.add('d-none');
-                                btnVehicle.classList.remove('text-muted');
-                                btnVehicle.classList.add('text-info');
-                                btnElectric.classList.remove('text-info');
-                                btnElectric.classList.add('text-muted');
-                            });
-
-                            btnElectric.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                vehicleLogos.classList.add('d-none');
-                                electricLogos.classList.remove('d-none');
-                                btnElectric.classList.remove('text-muted');
-                                btnElectric.classList.add('text-info');
-                                btnVehicle.classList.remove('text-info');
-                                btnVehicle.classList.add('text-muted');
-                            });
-                        }
-
-                        // Scroll functionality
-                        const scrollContainer = document.getElementById('vehicle-scroll');
-                        const scrollLeftBtn = document.getElementById('scrollLeft');
-                        const scrollRightBtn = document.getElementById('scrollRight');
-                        const scrollAmount = 350;
-
-                        if (scrollLeftBtn && scrollRightBtn && scrollContainer) {
-                            scrollLeftBtn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                scrollContainer.scrollBy({
-                                    left: -scrollAmount,
-                                    behavior: 'smooth'
-                                });
-                            });
-
-                            scrollRightBtn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                scrollContainer.scrollBy({
-                                    left: scrollAmount,
-                                    behavior: 'smooth'
-                                });
-                            });
-
-                            // Hide/show scroll buttons based on scroll position
-                            function updateScrollButtons() {
-                                const hasScroll = scrollContainer.scrollWidth > scrollContainer.clientWidth;
-                                if (!hasScroll) {
-                                    scrollLeftBtn.style.display = 'none';
-                                    scrollRightBtn.style.display = 'none';
-                                    return;
-                                }
-                                scrollLeftBtn.style.display = 'block';
-                                scrollRightBtn.style.display = 'block';
-
-                                scrollLeftBtn.style.opacity = scrollContainer.scrollLeft > 0 ? '1' : '0.3';
-                                scrollRightBtn.style.opacity =
-                                    scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth -
-                                        10) ? '1' : '0.3';
-                            }
-
-                            scrollContainer.addEventListener('scroll', updateScrollButtons);
-                            window.addEventListener('resize', updateScrollButtons);
-                            updateScrollButtons();
-                        }
-                    });
-                </script>
-
             </div>
         </section>
     @endif
+
+    <!-- Global Scripts - Always run regardless of products -->
+    <script>
+        // Counter Animation - INDEPENDENT SCRIPT
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                
+                // Skip if target is NaN or 0
+                if (isNaN(target) || target === 0) {
+                    return;
+                }
+
+                let current = 0;
+                const increment = Math.ceil(target / 50);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = current;
+                    }
+                }, 20);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start counter animation immediately
+            animateCounters();
+
+            // Tab Navigation Handler
+            const tabLinks = document.querySelectorAll('#productTabs .nav-link');
+
+            if (tabLinks.length > 0) {
+                tabLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        tabLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+            }
+
+            // Brand Switch Handler - dengan error checking
+            const btnVehicle = document.getElementById('btn-vehicle');
+            const btnElectric = document.getElementById('btn-electric');
+            const vehicleLogos = document.getElementById('vehicle-logos');
+            const electricLogos = document.getElementById('electric-logos');
+
+            if (btnVehicle && btnElectric && vehicleLogos && electricLogos) {
+                function showVehicle() {
+                    vehicleLogos.classList.remove('d-none');
+                    electricLogos.classList.add('d-none');
+                    btnVehicle.classList.remove('text-muted');
+                    btnVehicle.classList.add('text-info', 'active-link');
+                    btnElectric.classList.remove('text-info', 'active-link');
+                    btnElectric.classList.add('text-muted');
+                }
+
+                function showElectric() {
+                    vehicleLogos.classList.add('d-none');
+                    electricLogos.classList.remove('d-none');
+                    btnElectric.classList.remove('text-muted');
+                    btnElectric.classList.add('text-info', 'active-link');
+                    btnVehicle.classList.remove('text-info', 'active-link');
+                    btnVehicle.classList.add('text-muted');
+                }
+
+                btnVehicle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showVehicle();
+                    return false;
+                });
+
+                btnElectric.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showElectric();
+                    return false;
+                });
+
+                btnVehicle.onclick = function(e) {
+                    e.preventDefault();
+                    showVehicle();
+                    return false;
+                };
+
+                btnElectric.onclick = function(e) {
+                    e.preventDefault();
+                    showElectric();
+                    return false;
+                };
+
+                console.log('Brand switch handlers attached');
+            }
+
+            // Scroll functionality
+            const scrollContainer = document.getElementById('vehicle-scroll');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+            const scrollAmount = 350;
+
+            if (scrollLeftBtn && scrollRightBtn && scrollContainer) {
+                scrollLeftBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollContainer.scrollBy({
+                        left: -scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+
+                scrollRightBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollContainer.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+
+                function updateScrollButtons() {
+                    const hasScroll = scrollContainer.scrollWidth > scrollContainer.clientWidth;
+                    if (!hasScroll) {
+                        scrollLeftBtn.style.display = 'none';
+                        scrollRightBtn.style.display = 'none';
+                        return;
+                    }
+                    scrollLeftBtn.style.display = 'block';
+                    scrollRightBtn.style.display = 'block';
+
+                    scrollLeftBtn.style.opacity = scrollContainer.scrollLeft > 0 ? '1' : '0.3';
+                    scrollRightBtn.style.opacity =
+                        scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth - 10) ? '1' : '0.3';
+                }
+
+                scrollContainer.addEventListener('scroll', updateScrollButtons);
+                window.addEventListener('resize', updateScrollButtons);
+                updateScrollButtons();
+            }
+        });
+    </script>
     @include('sweetalert::alert')
 @endsection

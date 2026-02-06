@@ -29,7 +29,7 @@
                         <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Gambar Besar"
                             class="img-fluid rounded">
                         <div class="image-overlay">
-                            <a href="#" class="selengkapnya-btn">Selengkapnya →</a>
+                            <a href="" class="selengkapnya-btn">Selengkapnya →</a>
                         </div>
                     </div>
                 </div>
@@ -160,9 +160,9 @@
 
                     <!-- Switch -->
                     <div class="d-flex justify-content-between mt-3">
-                        <a href="#" id="btn-vehicle"
-                            class="text-decoration-none fw-semibold text-info active-link">&lt; Vehicle</a>
-                        <a href="#" id="btn-electric" class="text-decoration-none fw-semibold text-muted">Electric
+                        <a href="javascript:void(0);" id="btn-vehicle"
+                            class="text-decoration-none fw-semibold text-info active-link" style="cursor: pointer;">&lt; Vehicle</a>
+                        <a href="javascript:void(0);" id="btn-electric" class="text-decoration-none fw-semibold text-muted" style="cursor: pointer;">Electric
                             &gt;</a>
                     </div>
                 </div>

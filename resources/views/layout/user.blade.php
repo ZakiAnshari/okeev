@@ -225,11 +225,11 @@
                 <div class="col-md-4 mb-4">
                     <h5 class="fw-bold mb-3">Menu</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Vehicle</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Accessories</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">About</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">News</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Contact</a></li>
+                        {{-- <li class="mb-2"><a href="#" class="text-decoration-none text-body">Vehicle</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-body">Accessories</a></li> --}}
+                        <li class="mb-2"><a href="/about" class="text-decoration-none text-body">About</a></li>
+                        <li class="mb-2"><a href="/News" class="text-decoration-none text-body">News</a></li>
+                        <li class="mb-2"><a href="/contact" class="text-decoration-none text-body">Contact</a></li>
                     </ul>
                 </div>
 
