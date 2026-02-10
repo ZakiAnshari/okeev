@@ -12,6 +12,137 @@
         </div> --}}
     </section>
 
+    <!-- Filter Section -->
+    <section class="filter-section py-3">
+        <div class="container">
+            <!-- Filter Toggle Button & Sort -->
+            <div class="d-flex justify-content-between align-items-center mb-0 gap-2 flex-wrap">
+                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                    <i class="bi bi-funnel"></i> Filter Produk
+                    @php
+                        $activeFilters = 0;
+                        if (request('category_id')) $activeFilters++;
+                        if (request('min_price') || request('max_price')) $activeFilters++;
+                        if (request('min_km') || request('max_km')) $activeFilters++;
+                        if (request('min_kwh') || request('max_kwh')) $activeFilters++;
+                    @endphp
+                    @if($activeFilters > 0)
+                        <span class="badge bg-danger ms-2">{{ $activeFilters }}</span>
+                    @endif
+                </button>
+
+                <!-- Sort Dropdown -->
+                <div class="sort-dropdown">
+                    <form method="GET" action="{{ route('landing.cars', $brand->slug) }}" class="d-inline">
+                        <!-- Preserve existing filters -->
+                        <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                        <input type="hidden" name="min_price" value="{{ request('min_price') }}">
+                        <input type="hidden" name="max_price" value="{{ request('max_price') }}">
+                        <input type="hidden" name="min_km" value="{{ request('min_km') }}">
+                        <input type="hidden" name="max_km" value="{{ request('max_km') }}">
+                        <input type="hidden" name="min_kwh" value="{{ request('min_kwh') }}">
+                        <input type="hidden" name="max_kwh" value="{{ request('max_kwh') }}">
+                        
+                        <select class="form-select form-select-sm" name="sort" onchange="this.form.submit()" style="min-width: 220px;">
+                            <option value="">Urutkan berdasarkan: Terkait</option>
+                            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>
+                                Harga Rendah ke Tinggi
+                            </option>
+                            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>
+                                Harga Tinggi ke Rendah
+                            </option>
+                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>
+                                Terbaru
+                            </option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Filter Form Collapse -->
+            <div class="collapse mt-3" id="filterCollapse">
+                <div class="card border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <form method="GET" action="{{ route('landing.cars', $brand->slug) }}" class="row g-3">
+                            <!-- Filter Jenis Tipe Mobil -->
+                            {{-- <div class="col-lg-3 col-md-6">
+                                <label for="category" class="form-label fw-semibold">Tipe</label>
+                                <select class="form-select form-select-sm" id="category" name="category_id">
+                                    <option value="">-- Semua Tipe --</option>
+                                    @foreach($productCategories as $cat)
+                                        @if($cat->brands && $cat->brands->count() > 0)
+                                            <optgroup label="{{ $cat->name_category }}">
+                                                @foreach($cat->brands as $brandItem)
+                                                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
+                                                        {{ $brandItem->name_brand }}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+                                        @else
+                                            <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
+                                                {{ $cat->name_category }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+                            <!-- Filter Range Harga -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="min_price" class="form-label fw-semibold">Harga Minimum</label>
+                                <input type="number" class="form-control form-control-sm" id="min_price" name="min_price" 
+                                    placeholder="0" step="1000000" value="{{ request('min_price') }}">
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label for="max_price" class="form-label fw-semibold">Harga Maksimal</label>
+                                <input type="number" class="form-control form-control-sm" id="max_price" name="max_price" 
+                                    placeholder="999999999" step="1000000" value="{{ request('max_price') }}">
+                            </div>
+
+                            <!-- Filter Range KM -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="min_km" class="form-label fw-semibold">Jangkauan Minimum (KM)</label>
+                                <input type="number" class="form-control form-control-sm" id="min_km" name="min_km" 
+                                    placeholder="0" step="10" value="{{ request('min_km') }}">
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label for="max_km" class="form-label fw-semibold">Jangkauan Maksimal (KM)</label>
+                                <input type="number" class="form-control form-control-sm" id="max_km" name="max_km" 
+                                    placeholder="1000" step="10" value="{{ request('max_km') }}">
+                            </div>
+
+                            <!-- Filter Range kWh -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="min_kwh" class="form-label fw-semibold">Kap. Baterai Min (kWh)</label>
+                                <input type="number" class="form-control form-control-sm" id="min_kwh" name="min_kwh" 
+                                    placeholder="0" step="1" value="{{ request('min_kwh') }}">
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label for="max_kwh" class="form-label fw-semibold">Kap. Baterai Max (kWh)</label>
+                                <input type="number" class="form-control form-control-sm" id="max_kwh" name="max_kwh" 
+                                    placeholder="100" step="1" value="{{ request('max_kwh') }}">
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-12 pt-2">
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-search"></i> Cari
+                                </button>
+                                <a href="{{ route('landing.cars', $brand->slug) }}" class="btn btn-outline-secondary btn-sm ms-2">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     @if (in_array($brand->category_position_id, [2, 3, 4]))
         <div class="container my-5">
             <div class="row g-3">

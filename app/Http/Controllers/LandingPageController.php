@@ -88,13 +88,79 @@ class LandingPageController extends Controller
         $brand = Brand::where('slug', $slug)->firstOrFail();
 
         // Ambil semua produk yang memiliki brand yang sama sekaligus load relasi category
-        $products = Product::with('category')
+        $query = Product::with(['category', 'details', 'images'])
             ->where('brand_id', $brand->id)
             ->whereHas('category', function ($q) {
                 $q->whereIn('category_position_id', [1, 2, 3, 4]);
-            })
-            ->get();
+            });
 
+        // Filter berdasarkan kategori (jenis tipe mobil)
+        if (request('category_id')) {
+            $query->where('category_id', request('category_id'));
+        }
+
+        // Filter berdasarkan range harga
+        if (request('min_price')) {
+            $query->where('price', '>=', request('min_price'));
+        }
+        if (request('max_price')) {
+            $query->where('price', '<=', request('max_price'));
+        }
+
+        // Filter berdasarkan range KM
+        if (request('min_km')) {
+            $query->where('miles', '>=', request('min_km'));
+        }
+        if (request('max_km')) {
+            $query->where('miles', '<=', request('max_km'));
+        }
+
+        // Filter berdasarkan range kWh
+        // Asumsi: kWh disimpan di table details dengan label 'kwh' atau 'battery_capacity'
+        if (request('min_kwh') || request('max_kwh')) {
+            $query->whereHas('details', function ($q) {
+                if (request('min_kwh')) {
+                    $q->where('label', 'like', '%kwh%')
+                      ->orWhere('label', 'like', '%battery%')
+                      ->where('nilai', '>=', request('min_kwh'));
+                }
+                if (request('max_kwh')) {
+                    $q->where('label', 'like', '%kwh%')
+                      ->orWhere('label', 'like', '%battery%')
+                      ->where('nilai', '<=', request('max_kwh'));
+                }
+            }, '>=', 1);
+        }
+
+        // Apply sorting
+        $sort = request('sort');
+        switch ($sort) {
+            case 'price_low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            default:
+                $query->orderBy('id', 'desc');
+        }
+
+        $products = $query->get();
+
+        // Ambil kategori unik dari produk yang tersedia
+        $productCategoryIds = Product::where('brand_id', $brand->id)
+            ->whereHas('category', function ($q) {
+                $q->whereIn('category_position_id', [1, 2, 3, 4]);
+            })
+            ->distinct()
+            ->pluck('category_id');
+
+        $productCategories = Category::with('brands')->whereIn('id', $productCategoryIds)
+            ->orderBy('name_category', 'asc')
+            ->get();
 
         // Ambil kategori khusus category_position_id = 1 dan 2 untuk navbar
         $categoriesPosition1 = Category::with('brands')
@@ -116,6 +182,7 @@ class LandingPageController extends Controller
         return view('landing.brand-detail', compact(
             'brand',
             'products',
+            'productCategories',
             'brandChunks',
             'categoriesPosition1',
             'categoriesPosition2',

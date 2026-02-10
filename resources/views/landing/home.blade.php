@@ -644,7 +644,7 @@
                 <div class="scroll-wrapper position-relative">
                     <div class="overflow-auto pb-3" id="vehicle-scroll">
                         <!-- CARD -->
-                        <div class="row g-4" style="flex-wrap: nowrap; min-width: min-content;">
+                        <div class="row g-4" style="flex-wrap: nowrap;">
                             @forelse($products as $product)
                                 <div class="col-12 col-md-6 col-lg-2 mb-4"
                                     style="flex: 0 0 calc(20% - 10px); min-width: 300px;">
