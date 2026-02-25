@@ -72,12 +72,15 @@ class ProductController extends Controller
             'slug'          => 'nullable|string|max:255',
             'miles'         => 'nullable|integer',
             'seats'         => 'nullable|integer',
-            'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'battery'       => 'nullable|numeric',
+            'charging'      => 'nullable|numeric',
+            'drive_type'    => 'nullable|in:FWD,RWD,AWD,Dual Motor',
+            'thumbnail'     => 'nullable|image|mimes:png|max:2048',
             'price'         => 'required|numeric',
             'stock_status'  => 'required|in:in_stock,out_of_stock',
             'featured'      => 'nullable|boolean',
             'description'   => 'nullable|string',
-            'images.*'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'images.*'      => 'nullable|image|mimes:png|max:2048',
         ]);
 
         // 🔥 AMBIL CATEGORY
@@ -157,12 +160,15 @@ class ProductController extends Controller
             'slug'           => 'nullable|string|max:255',
             'miles'          => 'nullable|integer',
             'seats'          => 'nullable|integer',
+            'battery'        => 'nullable|numeric',
+            'charging'       => 'nullable|numeric',
+            'drive_type'     => 'nullable|in:FWD,RWD,AWD,Dual Motor',
             'price'          => 'required|numeric',
             'stock_status'   => 'required|in:in_stock,out_of_stock',
             'featured'       => 'nullable|boolean',
             'description'    => 'nullable|string',
-            'thumbnail'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'images.*'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail'      => 'nullable|image|mimes:png|max:2048',
+            'images.*'       => 'nullable|image|mimes:png|max:2048',
         ]);
 
         // 🔥 AMBIL CATEGORY BARU

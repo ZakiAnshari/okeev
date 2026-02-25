@@ -27,6 +27,10 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->integer('miles')->nullable();
             $table->integer('seats')->nullable();
+
+            $table->integer('battery')->nullable();
+            $table->integer('charging')->nullable();
+            $table->string('drive_type')->nullable();
             // PRICES
             $table->bigInteger('price');
             // INVENTORY

@@ -260,13 +260,6 @@
                 // jangan pakai columns kalau tabel biasa (blade render)
             });
         });
-
-        // Fungsi konfirmasi delete
-        function confirmDeletebrand(slug, name) {
-            if (confirm(`Apakah Anda yakin ingin menghapus brand "${name}"?`)) {
-                window.location.href = `/brands/delete/${slug}`;
-            }
-        }
     </script>
 
 

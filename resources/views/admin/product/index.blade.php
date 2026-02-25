@@ -52,7 +52,6 @@
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="row">
-
                                                     <!-- Category -->
                                                     <div class="col-lg-6 mb-3">
                                                         <label class="form-label">Category</label>
@@ -115,6 +114,75 @@
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
+                                                    <div class="col-lg-6 mb-3">
+                                                        <label class="form-label">Featured</label>
+                                                        <select name="featured" class="form-control">
+                                                            <option value="0"
+                                                                {{ old('featured') == 0 ? 'selected' : '' }}>Tidak</option>
+                                                            <option value="1"
+                                                                {{ old('featured') == 1 ? 'selected' : '' }}>Ya</option>
+                                                        </select>
+                                                        @error('featured')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+
+                                                    <!-- Electric Car Fields - Battery, Charging, Drive Type -->
+                                                    <div id="electric-fields"
+                                                        style="display: none; width: 100%; margin-top: 0px;">
+                                                        <div class="row">
+
+                                                            <!-- Battery -->
+                                                            <div class="col-lg-4 mb-3" id="battery-field">
+                                                                <label class="form-label">Battery (kWh)</label>
+                                                                <input type="number" name="battery" id="battery"
+                                                                    class="form-control" placeholder="Contoh: 60"
+                                                                    step="0.1" value="{{ old('battery') }}">
+                                                                @error('battery')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                            </div>
+
+                                                            <!-- Charging -->
+                                                            <div class="col-lg-4 mb-3">
+                                                                <label class="form-label">Charging (kW)</label>
+                                                                <input type="number" name="charging" id="charging"
+                                                                    class="form-control" placeholder="Contoh: 11"
+                                                                    step="0.1" value="{{ old('charging') }}">
+                                                                @error('charging')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                            </div>
+
+                                                            <!-- Drive Type -->
+                                                            <div class="col-lg-4 mb-3">
+                                                                <label class="form-label">Drive Type</label>
+                                                                <select name="drive_type" id="drive_type"
+                                                                    class="form-control">
+                                                                    <option value="">-- Pilih Drive Type --</option>
+                                                                    <option value="FWD"
+                                                                        {{ old('drive_type') == 'FWD' ? 'selected' : '' }}>
+                                                                        FWD (Front-Wheel Drive)
+                                                                    </option>
+                                                                    <option value="RWD"
+                                                                        {{ old('drive_type') == 'RWD' ? 'selected' : '' }}>
+                                                                        RWD (Rear-Wheel Drive)
+                                                                    </option>
+                                                                    <option value="AWD"
+                                                                        {{ old('drive_type') == 'AWD' ? 'selected' : '' }}>
+                                                                        AWD (All-Wheel Drive)
+                                                                    </option>
+                                                                    <option value="Dual Motor"
+                                                                        {{ old('drive_type') == 'Dual Motor' ? 'selected' : '' }}>
+                                                                        Dual Motor Performance
+                                                                    </option>
+                                                                </select>
+                                                                @error('drive_type')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                                     <!-- Price -->
                                                     <div class="col-lg-6 mb-3">
@@ -144,20 +212,6 @@
                                                         @enderror
                                                     </div>
 
-                                                    <!-- Featured -->
-                                                    <div class="col-lg-6 mb-3">
-                                                        <label class="form-label">Featured</label>
-                                                        <select name="featured" class="form-control">
-                                                            <option value="0"
-                                                                {{ old('featured') == 0 ? 'selected' : '' }}>Tidak</option>
-                                                            <option value="1"
-                                                                {{ old('featured') == 1 ? 'selected' : '' }}>Ya</option>
-                                                        </select>
-                                                        @error('featured')
-                                                            <small class="text-danger">{{ $message }}</small>
-                                                        @enderror
-                                                    </div>
-
                                                     <!-- Description -->
                                                     <div class="col-12 mb-3" id="description-field">
                                                         <label class="form-label">Description</label>
@@ -170,10 +224,11 @@
                                                     <!-- Thumbnail Image -->
                                                     <div class="col-12 mb-3">
                                                         <label class="form-label">Thumbnail</label>
-                                                        <input type="file" name="thumbnail" class="form-control">
+                                                        <input type="file" name="thumbnail" class="form-control"
+                                                            accept="image/png">
                                                         <small class="text-muted">
-                                                            Hanya 1 gambar. Format: JPG, PNG, atau JPEG. Ukuran maksimal
-                                                            2MB.
+                                                            Format PNG transparan (tanpa background), maksimal 2MB.
+                                                            Gunakan background transparan (alpha channel).
                                                         </small>
                                                         @error('thumbnail')
                                                             <small class="text-danger">{{ $message }}</small>
@@ -184,65 +239,15 @@
                                                     <div class="col-12 mb-3">
                                                         <label class="form-label">Images</label>
                                                         <input type="file" name="images[]" class="form-control"
-                                                            multiple>
+                                                            multiple accept="image/png">
                                                         <small class="text-muted">
-                                                            Maksimal 5 file. Format gambar: JPG, PNG, atau JPEG. Ukuran
-                                                            maksimal per file 2MB.
+                                                            Maksimal 5 file. Hanya format PNG. Ukuran maksimal per file 2MB.
                                                         </small>
                                                         @error('images')
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
-
-
-
                                                 </div>
-
-                                                {{-- ============================= --}}
-                                                {{-- SCRIPT AGAR BRAND TETAP MUNCUL --}}
-                                                {{-- ============================= --}}
-                                                <script>
-                                                    document.addEventListener("DOMContentLoaded", function() {
-
-                                                        const selectedCategory = "{{ old('category_id') }}";
-                                                        const selectedBrand = "{{ old('brand_id') }}";
-
-                                                        // Ketika category berubah → load brand via AJAX
-                                                        document.getElementById("category-select").addEventListener("change", function() {
-                                                            loadBrands(this.value);
-                                                        });
-
-                                                        // Jika sebelumnya validasi gagal → load ulang otomatis
-                                                        if (selectedCategory) {
-                                                            loadBrands(selectedCategory, selectedBrand);
-                                                        }
-
-                                                        function loadBrands(categoryId, selectedBrandId = null) {
-
-                                                            fetch(`/get-brands/${categoryId}`)
-                                                                .then(response => response.json())
-                                                                .then(data => {
-
-                                                                    let brandSelect = document.getElementById("brand-select");
-                                                                    brandSelect.innerHTML = '<option value="">-- Pilih Brand --</option>';
-
-                                                                    data.forEach(brand => {
-                                                                        brandSelect.innerHTML += `
-                        <option value="${brand.id}"
-                            ${selectedBrandId == brand.id ? "selected" : ""}>
-                            ${brand.name_brand}
-                        </option>
-                    `;
-                                                                    });
-
-                                                                })
-                                                                .catch(() => {
-                                                                    console.log("Gagal mengambil brand.");
-                                                                });
-                                                        }
-                                                    });
-                                                </script>
-
                                             </div>
                                             <!-- Footer -->
                                             <div class="modal-footer">
@@ -263,7 +268,7 @@
                                         <th>Kategori</th>
                                         <th>Model</th>
                                         <th>Harga</th>
-                                        <th>Stock</th>
+                                        {{-- <th>Stock</th> --}}
                                         <th style="width: 100px; text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
@@ -275,20 +280,19 @@
                                             <td>{{ $item->category->name_category }}</td>
                                             <td>{{ $item->model_name }}</td>
                                             <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 @if ($item->stock_status == 'in_stock')
                                                     <span class="badge bg-label-success">In Stock</span>
                                                 @else
                                                     <span class="badge bg-label-danger">Out of Stock</span>
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td class="text-center">
                                                 <a href="{{ url('product-show/' . $item->slug) }}"
                                                     class="btn btn-icon btn-outline-info" title="Detail">
                                                     <i class="bx bx-show"></i>
                                                     {{-- <span>Detail</span> --}}
                                                 </a>
-
                                                 <a href="{{ url('product/' . $item->slug . '/edit') }}"
                                                     class="btn btn-icon btn-outline-primary" title="Edit">
                                                     <i class="bx bx-edit-alt"></i>
@@ -372,11 +376,13 @@
         const milesField = document.getElementById('miles-field');
         const seatsField = document.getElementById('seats-field');
         const descriptionField = document.getElementById('description-field');
+        const electricFields = document.getElementById('electric-fields');
 
         function checkFields() {
             let selectedOption = categorySelect.options[categorySelect.selectedIndex];
+            let categoryId = selectedOption.value;
             let positionId = selectedOption.getAttribute('data-position');
-            let categoryName = selectedOption.getAttribute('data-name'); // ambil name_category
+            let categoryName = selectedOption.getAttribute('data-name');
 
             const hiddenPositions = ["2", "3", "4"];
 
@@ -396,6 +402,17 @@
                 seatsField.querySelector('input').value = "";
             }
 
+            // electric fields logic: tampil hanya jika category_id = 1
+            if (categoryId === "1") {
+                electricFields.style.display = "block";
+            } else {
+                electricFields.style.display = "none";
+                // Clear electric fields
+                document.getElementById('battery').value = "";
+                document.getElementById('charging').value = "";
+                document.getElementById('drive_type').value = "";
+            }
+
             // description logic
             if (positionId === "1") {
                 descriptionField.style.display = "none";
@@ -410,6 +427,49 @@
         // Jalankan ketika halaman pertama kali dimuat
         checkFields();
     </script>
+    {{-- ============================= --}}
+    {{-- SCRIPT AGAR BRAND TETAP MUNCUL --}}
+    {{-- ============================= --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
 
+            const selectedCategory = "{{ old('category_id') }}";
+            const selectedBrand = "{{ old('brand_id') }}";
+
+            // Ketika category berubah → load brand via AJAX
+            document.getElementById("category-select").addEventListener("change", function() {
+                loadBrands(this.value);
+            });
+
+            // Jika sebelumnya validasi gagal → load ulang otomatis
+            if (selectedCategory) {
+                loadBrands(selectedCategory, selectedBrand);
+            }
+
+            function loadBrands(categoryId, selectedBrandId = null) {
+
+                fetch(`/get-brands/${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        let brandSelect = document.getElementById("brand-select");
+                        brandSelect.innerHTML = '<option value="">-- Pilih Brand --</option>';
+
+                        data.forEach(brand => {
+                            brandSelect.innerHTML += `
+                                                    <option value="${brand.id}"
+                                                        ${selectedBrandId == brand.id ? "selected" : ""}>
+                                                        ${brand.name_brand}
+                                                    </option>
+                                                    `;
+                        });
+
+                    })
+                    .catch(() => {
+                        console.log("Gagal mengambil brand.");
+                    });
+            }
+        });
+    </script>
     @include('sweetalert::alert')
 @endsection

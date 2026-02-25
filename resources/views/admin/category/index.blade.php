@@ -52,34 +52,15 @@
                                             <div class="modal-body">
                                                 <div class="row justify-content-center">
                                                     <div class="row">
-                                                        <!-- Select Category Position -->
-                                                        <div class="col-lg-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Category Position</label>
-                                                                <select name="category_position_id" class="form-control">
-                                                                    <option value="">-- Pilih Position --</option>
-                                                                    @foreach ($positions as $pos)
-                                                                        @if ($pos->id != 1)
-                                                                            <option value="{{ $pos->id }}">
-                                                                                {{ $pos->category_position }}
-                                                                            </option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-
-                                                                @error('category_position_id')
-                                                                    <small class="text-danger">{{ $message }}</small>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
+                                                        <!-- Hidden Category Position (Set to Aksesoris & Suku Cadang EV) -->
+                                                        <input type="hidden" name="category_position_id" value="4">
 
                                                         <!-- Nama Category -->
-                                                        <div class="col-lg-8">
+                                                        <div class="col-lg-12">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Nama Category</label>
                                                                 <input type="text" name="name_category"
                                                                     class="form-control" value="{{ old('name_category') }}">
-
                                                                 @error('name_category')
                                                                     <small class="text-danger">{{ $message }}</small>
                                                                 @enderror

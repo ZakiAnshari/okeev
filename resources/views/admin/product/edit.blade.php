@@ -43,6 +43,7 @@
                                 <select id="category-select" name="category_id" class="form-control" disabled>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}" data-position="{{ $cat->category_position_id }}"
+                                            data-name="{{ $cat->name_category }}"
                                             {{ $products->category_id == $cat->id ? 'selected' : '' }}>
                                             {{ $cat->name_category }}
                                         </option>
@@ -140,6 +141,61 @@
                                 </select>
                             </div>
 
+                            <!-- Electric Car Fields - Battery, Charging, Drive Type -->
+                            <div id="electric-fields" style="display: none; width: 100%; margin-top: 0px;">
+                                <div class="row">
+                                    <!-- Battery -->
+                                    <div class="col-lg-4 mb-3" id="battery-field">
+                                        <label class="form-label">Battery (kWh)</label>
+                                        <input type="number" name="battery" id="battery"
+                                            class="form-control" placeholder="Contoh: 60"
+                                            step="0.1" value="{{ old('battery', $products->battery) }}">
+                                        @error('battery')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Charging -->
+                                    <div class="col-lg-4 mb-3">
+                                        <label class="form-label">Charging (kW)</label>
+                                        <input type="number" name="charging" id="charging"
+                                            class="form-control" placeholder="Contoh: 11"
+                                            step="0.1" value="{{ old('charging', $products->charging) }}">
+                                        @error('charging')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Drive Type -->
+                                    <div class="col-lg-4 mb-3">
+                                        <label class="form-label">Drive Type</label>
+                                        <select name="drive_type" id="drive_type"
+                                            class="form-control">
+                                            <option value="">-- Pilih Drive Type --</option>
+                                            <option value="FWD"
+                                                {{ old('drive_type', $products->drive_type) == 'FWD' ? 'selected' : '' }}>
+                                                FWD (Front-Wheel Drive)
+                                            </option>
+                                            <option value="RWD"
+                                                {{ old('drive_type', $products->drive_type) == 'RWD' ? 'selected' : '' }}>
+                                                RWD (Rear-Wheel Drive)
+                                            </option>
+                                            <option value="AWD"
+                                                {{ old('drive_type', $products->drive_type) == 'AWD' ? 'selected' : '' }}>
+                                                AWD (All-Wheel Drive)
+                                            </option>
+                                            <option value="Dual Motor"
+                                                {{ old('drive_type', $products->drive_type) == 'Dual Motor' ? 'selected' : '' }}>
+                                                Dual Motor Performance
+                                            </option>
+                                        </select>
+                                        @error('drive_type')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- DESCRIPTION -->
                             <div class="col-12 mb-3" id="description-field">
                                 <label class="form-label">Deskripsi Produk</label>
@@ -220,6 +276,27 @@
             </div>
         </div>
     </div>
+    {{-- SELECT2 INITIALIZATION --}}
+    <script>
+        $(document).ready(function() {
+            // Select2 untuk Brand
+            $('#brand-select').select2({
+                theme: "bootstrap-4",
+                placeholder: "-- Pilih Brand --",
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Select2 untuk Category (readonly, hanya untuk tampilan)
+            $('#category-select').select2({
+                theme: "bootstrap-4",
+                placeholder: "-- Pilih Kategori --",
+                allowClear: false,
+                width: '100%',
+                disabled: true
+            });
+        });
+    </script>
     {{-- INI SCRIPT UNTUK MEBEDAKAN BRAND DI CATEGORY --}}
     <script>
         document.getElementById('category-select').addEventListener('change', function() {
@@ -237,6 +314,8 @@
                             brandSelect.innerHTML +=
                                 `<option value="${brand.id}">${brand.name_brand}</option>`;
                         });
+                        // Reinitialize Select2 after AJAX load
+                        $('#brand-select').val(null).trigger('change');
                     });
             }
         });
@@ -248,11 +327,13 @@
         const milesField = document.getElementById('miles-field');
         const seatsField = document.getElementById('seats-field');
         const descriptionField = document.getElementById('description-field');
+        const electricFields = document.getElementById('electric-fields');
 
         function checkFields() {
             let selectedOption = categorySelect.options[categorySelect.selectedIndex];
             let positionId = selectedOption.getAttribute('data-position');
             let categoryName = selectedOption.getAttribute('data-name');
+            let categoryId = selectedOption.value;
 
             const hiddenPositions = ["2", "3", "4"];
 
@@ -276,6 +357,16 @@
             } else {
                 descriptionField.style.display = "block";
             }
+
+            // Electric Fields (Battery, Charging, Drive Type)
+            if (categoryId === "1") {
+                electricFields.style.display = "block";
+            } else {
+                electricFields.style.display = "none";
+                document.getElementById('battery').value = "";
+                document.getElementById('charging').value = "";
+                document.getElementById('drive_type').value = "";
+            }
         }
 
         // Trigger ketika berubah
@@ -284,27 +375,6 @@
         // ⬅️ PENTING: Jalankan saat halaman edit pertama kali terbuka
         document.addEventListener("DOMContentLoaded", function() {
             checkFields();
-        });
-    </script>
-    {{-- INI SCRIPT UNTUK MEBEDAKAN BRAND DI CATEGORY --}}
-    <script>
-        document.getElementById('category-select').addEventListener('change', function() {
-            let categoryId = this.value;
-
-            // Kosongkan dahulu brand
-            let brandSelect = document.getElementById('brand-select');
-            brandSelect.innerHTML = '<option value="">-- Pilih Brand --</option>';
-
-            if (categoryId) {
-                fetch('/get-brands/' + categoryId)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(brand => {
-                            brandSelect.innerHTML +=
-                                `<option value="${brand.id}">${brand.name_brand}</option>`;
-                        });
-                    });
-            }
         });
     </script>
     @include('sweetalert::alert')

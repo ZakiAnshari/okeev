@@ -23,7 +23,10 @@ class Product extends Model
         'stock_status',
         'featured',
         'description',
-        'thumbnail'
+        'thumbnail',
+        'battery',
+        'charging',
+        'drive_type'
     ];
 
     use HasSlug;

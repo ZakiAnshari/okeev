@@ -16,23 +16,63 @@ class AuthController extends Controller
 
     public function registerprocess(Request $request)
     {
-        $validated = $request->validate([
-            'first_name'          => 'required|string|max:255',
-            'second_name'      => 'required|string|max:255|unique:users,second_name',
-            'contact'       => 'required|string|max:20',
-            'email'         => 'required|email|max:255|unique:users,email',
-            'jenis_kelamin' => 'required',
-            'password'      => 'required|string|min:6|confirmed',
-            'city' => 'required|string|max:255',
+        \Log::info('Register request received', [
+            'all' => $request->all(),
+            'method' => $request->method(),
         ]);
+        
+        try {
+            // Validasi input
+            $validated = $request->validate([
+                'first_name'        => 'required|string|max:255',
+                'second_name'       => 'required|string|max:255',
+                'contact'           => 'required|string|max:20|unique:users,contact',
+                'email'             => 'required|email|max:255|unique:users,email',
+                'city'              => 'required|string|max:255',
+                'jenis_kelamin'     => 'required|in:Laki-laki,Perempuan',
+                'password'          => 'required|string|min:6|confirmed',
+            ], [
+                'first_name.required' => 'Nama depan harus diisi.',
+                'second_name.required' => 'Nama belakang harus diisi.',
+                'contact.required' => 'Nomor telepon harus diisi.',
+                'contact.unique' => 'Nomor telepon sudah terdaftar.',
+                'email.required' => 'Email harus diisi.',
+                'email.email' => 'Format email tidak valid.',
+                'email.unique' => 'Email sudah terdaftar.',
+                'city.required' => 'Kota harus diisi.',
+                'jenis_kelamin.required' => 'Jenis kelamin harus dipilih.',
+                'password.required' => 'Password harus diisi.',
+                'password.min' => 'Password minimal 6 karakter.',
+                'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            ]);
 
-        $validated['password'] = Hash::make($validated['password']);
-        $validated['role_id'] = 2;
+            \Log::info('Validation passed', $validated);
 
-        User::create($validated);
+            // Hash password
+            $validated['password'] = Hash::make($validated['password']);
+            $validated['role_id'] = 2;
 
-        alert()->success('Registrasi Berhasil', 'Silakan login');
-        return redirect()->route('login');
+            \Log::info('Creating user with data', $validated);
+
+            // Create user
+            $user = User::create($validated);
+
+            \Log::info('User created successfully', ['id' => $user->id, 'email' => $user->email]);
+
+            if (!$user || !$user->id) {
+                throw new \Exception('Gagal menyimpan data user ke database');
+            }
+
+            // Success message dan redirect ke login
+            return redirect()->route('login')->with('success', 'Registrasi Berhasil! Silakan login');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::warning('Validation failed', $e->errors());
+            return back()->withErrors($e->validator)->withInput();
+        } catch (\Throwable $e) {
+            \Log::error('Register error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return back()->withErrors(['error' => 'Error: ' . $e->getMessage()])->withInput();
+        }
     }
 
     public function login()

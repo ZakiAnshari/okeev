@@ -79,7 +79,24 @@
                         </div>
                         <!-- /Logo -->
 
-                        <form action="{{ route('register-store') }}" method="POST" class="mb-3">
+                        @if ($errors->any())
+                            <div class="alert alert-danger mb-3" style="border-radius: 8px;">
+                                <strong>❌ Registrasi Gagal!</strong>
+                                <ul class="mb-0 mt-2">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div class="alert alert-success mb-3" style="border-radius: 8px;">
+                                <strong>✅ {{ session('success') }}</strong>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('register-store') }}" method="POST" class="mb-3" novalidate>
                             @csrf
 
                             <!-- First Name -->
@@ -91,7 +108,7 @@
                                 <input type="text" id="first_name" name="first_name"
                                     class="form-control @error('first_name') is-invalid @enderror"
                                     value="{{ old('first_name') }}" placeholder="Enter your first name"
-                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" />
+                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                 @error('first_name')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -108,7 +125,7 @@
                                 <input type="text" id="second_name" name="second_name"
                                     class="form-control @error('second_name') is-invalid @enderror"
                                     value="{{ old('second_name') }}" placeholder="Enter your second name"
-                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" />
+                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                 @error('second_name')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -125,7 +142,7 @@
                                 <input type="text" id="contact" name="contact"
                                     class="form-control @error('contact') is-invalid @enderror"
                                     placeholder="08xxxxxxxxxx" value="{{ old('contact') }}"
-                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" />
+                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                 @error('contact')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -138,10 +155,10 @@
                                     <span>Email</span>
                                 </label>
 
-                                <input type="text" id="email" name="email"
+                                <input type="email" id="email" name="email"
                                     class="form-control @error('email') is-invalid @enderror"
                                     placeholder="Enter your email" value="{{ old('email') }}"
-                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" />
+                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                 @error('email')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -154,7 +171,7 @@
                                 </label>
 
                                 <textarea id="city" name="city" rows="3" class="form-control @error('city') is-invalid @enderror"
-                                    placeholder="Enter your city" style="background:#30445C;color:#fff;border:1px solid #30445C;">{{ old('city') }}</textarea>
+                                    placeholder="Enter your city" style="background:#30445C;color:#fff;border:1px solid #30445C;" required>{{ old('city') }}</textarea>
 
                                 @error('city')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -170,7 +187,7 @@
 
                                 <select name="jenis_kelamin"
                                     class="form-control @error('jenis_kelamin') is-invalid @enderror"
-                                    style="background:#30445C;color:#fff;border:1px solid #30445C;">
+                                    style="background:#30445C;color:#fff;border:1px solid #30445C;" required>
                                     <option value="" disabled selected>-- Pilih --</option>
                                     <option value="Laki-laki"
                                         {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
@@ -186,7 +203,6 @@
                             </div>
 
                             <!-- Password -->
-                            <!-- Password -->
                             <div class="mb-3 form-password-toggle">
                                 <label for="password" class="form-label d-flex justify-content-between">
                                     <span>Password</span>
@@ -195,8 +211,8 @@
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror"
-                                        placeholder="Password minimal 8 karakter" aria-describedby="toggle-password"
-                                        style="background:#30445C;color:#fff;border:1px solid #30445C;" />
+                                        placeholder="Password minimal 6 karakter" aria-describedby="toggle-password"
+                                        style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                     <span class="input-group-text cursor-pointer" id="toggle-password"
                                         style="background:#30445C;color:#fff;border:1px solid #30445C;">
@@ -211,7 +227,6 @@
 
 
                             <!-- Password Confirmation -->
-                            <!-- Password Confirmation -->
                             <div class="mb-3 form-password-toggle">
                                 <label for="password_confirmation" class="form-label d-flex justify-content-between">
                                     <span>Confirm Password</span>
@@ -221,7 +236,7 @@
                                     <input type="password" id="password_confirmation" name="password_confirmation"
                                         class="form-control" placeholder="Ulangi password"
                                         aria-describedby="toggle-password-confirm"
-                                        style="background:#30445C;color:#fff;border:1px solid #30445C;" />
+                                        style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                     <span class="input-group-text cursor-pointer" id="toggle-password-confirm"
                                         style="background:#30445C;color:#fff;border:1px solid #30445C;">
@@ -235,7 +250,7 @@
 
 
                             <!-- Submit -->
-                            <button class="btn d-grid w-100"
+                            <button type="submit" class="btn d-grid w-100"
                                 style="background:linear-gradient(94.57deg,#1DCDFE -0.65%,#35F5C6 135.25%);border:none;border-radius:50px;color:#30445C;font-weight:700;">
                                 REGISTER
                             </button>
@@ -285,6 +300,13 @@
                     icon.classList.replace('bx-show', 'bx-hide');
                 }
             });
+        });
+
+        // Debug form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            console.log('Form submitted');
+            const formData = new FormData(this);
+            console.log('Form data:', Object.fromEntries(formData));
         });
     </script>
 
