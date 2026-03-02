@@ -695,7 +695,15 @@
                     <li class="nav-item">
                         <a class="nav-link active px-3 py-1" href="#" data-tab="in-stock">In Stock</a>
                     </li>
-                    
+                    @php
+                        $cat1Brands = $products->where('category_id', 1)->pluck('brand_id')->unique();
+                        $brandsData = \App\Models\Brand::whereIn('id', $cat1Brands)->get();
+                    @endphp
+                    @foreach($brandsData as $brand)
+                        <li class="nav-item">
+                            <a class="nav-link px-3 py-1" href="#" data-tab="brand-{{ $brand->id }}">{{ $brand->name_brand }}</a>
+                        </li>
+                    @endforeach
                     <li class="nav-item"><a class="nav-link px-3 py-1" href="#"
                             data-tab="motorcycle">Motorcycle</a>
                     </li>
@@ -706,16 +714,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
                             
-                            <button class="btn btn-sm btn-outline-secondary brand-filter-btn" data-brand="all">All Brands</button>
-                            @php
-                                $cat1Brands = $products->where('category_id', 1)->pluck('brand_id')->unique();
-                                $brandsData = \App\Models\Brand::whereIn('id', $cat1Brands)->get();
-                            @endphp
-                            @foreach($brandsData as $brand)
-                                <button class="btn btn-sm btn-outline-secondary brand-filter-btn" data-brand="{{ $brand->id }}">
-                                    {{ $brand->name_brand }}
-                                </button>
-                            @endforeach
+                           
                         </div>
                     </div>
                 </div>
@@ -926,7 +925,7 @@
                                     </div>
                                 </div>
                             @empty
-                                <p class="text-center">Tidak ada produk untuk brand ini.</p>
+                               
                             @endforelse
                         </div>
 
@@ -1036,6 +1035,10 @@
                             } else if (tabName === 'motorcycle') {
                                 // Motorcycle: category_id === 2 AND stock_status === 'in_stock'
                                 shouldShow = category === '2' && stock === 'in_stock';
+                            } else if (tabName.startsWith('brand-')) {
+                                // specific brand under category 1
+                                const bId = tabName.split('-')[1];
+                                shouldShow = category === '1' && stock === 'in_stock' && brand === bId;
                             } else if (tabName === 'sedan') {
                                 // Sedan: brand_id === 1 AND stock_status === 'in_stock'
                                 shouldShow = brand === '1' && stock === 'in_stock';

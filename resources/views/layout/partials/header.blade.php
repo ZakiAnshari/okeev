@@ -7,7 +7,7 @@
                     <nav class="navbar navbar-expand-lg">
                         <a href="/" class="d-inline-block">
                             <img src="{{ asset('front_end/assets/images/logo/logo.png') }}" alt="Logo"
-                                class="img-fluid logo-header">
+                                class="img-fluid logo-header okeev-logo">
                         </a>
                         <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

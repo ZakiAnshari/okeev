@@ -7,7 +7,7 @@
     <title>Okeev</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/front_end/assets/images/favicon.svg') }}" />
+    <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="{{ asset('/front_end/assets/images/okeec-removebg-preview.png') }}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('/front_end/assets/css/bootstrap.min.css') }}" />
@@ -104,16 +104,17 @@
         }
 
         .logo-header {
-            max-width: 125px;
             /* ukuran default untuk layar besar */
-            height: auto;
+            width: auto !important;
+            height: 10px !important;
             transition: all 0.3s ease;
         }
 
         /* Ukuran menengah */
         @media (max-width: 992px) {
             .logo-header {
-                max-width: 150px;
+                max-width: 120px !important;
+                max-height: 45px !important;
             }
 
         }
@@ -121,7 +122,32 @@
         /* Ukuran kecil (HP) */
         @media (max-width: 576px) {
             .logo-header {
-                max-width: 110px;
+                max-width: 90px !important;
+                max-height: 35px !important;
+            }
+        }
+
+        .okeev-logo {
+            /* override rules for new unique class */
+            width: auto !important;
+            height: 30px !important;
+            transition: all 0.3s ease;
+        }
+
+        /* Ukuran menengah */
+        @media (max-width: 992px) {
+            .okeev-logo {
+                max-width: 120px !important;
+                max-height: 45px !important;
+            }
+
+        }
+
+        /* Ukuran kecil (HP) */
+        @media (max-width: 576px) {
+            .okeev-logo {
+                max-width: 90px !important;
+                max-height: 35px !important;
             }
         }
 
