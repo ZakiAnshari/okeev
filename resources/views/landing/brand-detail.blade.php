@@ -326,10 +326,9 @@
                                         <div class="text-center mb-2">
 
                                             <!-- Row 1 -->
-                                            <div class="row mb-2 justify-content-center">
-
+                                            <div class="row mb-2">
                                                 <!-- Range -->
-                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                <div class="col-6 d-flex flex-column align-items-center">
                                                     <img src="{{ asset('front_end/assets/images/3.png') }}"
                                                         width="22" class="mb-2">
                                                     <p class="small text-black mb-0 fw-semibold">
@@ -338,14 +337,13 @@
                                                 </div>
 
                                                 <!-- Fuel -->
-                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                <div class="col-6 d-flex flex-column align-items-center">
                                                     <img src="{{ asset('front_end/assets/images/2.png') }}"
                                                         width="23" class="mb-2">
                                                     <p class="small text-black mb-0 fw-semibold">
                                                         Electric
                                                     </p>
                                                 </div>
-
                                             </div>
 
                                         </div>

@@ -191,16 +191,16 @@
 
         <!-- ABOUT SECTION -->
         <section class="container about-section">
-            <h3 class="okeev-intro__title"> {{ $about->section_label ?? 'About Okeev' }}</h3>
-            <h2 class="okeev-hero-heading"> {{ $about->title_main ?? 'Trusted Multi-Brand\nElectric Car Dealer' }}</h2>
+                <h3 class="okeev-intro__title"> {{ $about?->section_label ?? 'About Okeev' }}</h3>
+                <h2 class="okeev-hero-heading"> {{ $about?->title_main ?? 'Trusted Multi-Brand\nElectric Car Dealer' }}</h2>
 
             <p class="okeev-intro-text">
-                {{ $about->tagline ?? 'Bringing You Into the Era of Future Mobility' }}
+                    {{ $about?->tagline ?? 'Bringing You Into the Era of Future Mobility' }}
             </p>
 
-            @if (!empty($about->description_main))
+            @if (!empty($about) && !empty($about->description_main))
                 <p class="okeev-hero__text mb-2" style="color: #4d5b69; font-size: 1rem; line-height: 1.7;">
-                    {{ $about->description_main }}</p>
+                    {{ $about?->description_main }}</p>
             @endif
         </section>
 
@@ -212,7 +212,7 @@
             <h1 class="okeev-about-heading">About OKEEV</h1>
 
             <p class="okeev-hero__text_about">
-                {{ $about->description_second ?? '' }}
+                {{ $about?->description_second ?? '' }}
             </p>
 
 
@@ -223,12 +223,12 @@
         <div class="container pb-4 pt-4">
             <h1 class="okeev-about-Visi">Visi</h1>
             <p class="okeev-hero__text_visi">
-                {{ $about->visi_description ?? 'Menjadi platform terdepan di Asia Tenggara dalam penjualan kendaraan listrik dan elektronik pintar yang mendukung masa depan hijau dan digital.' }}
+                {{ $about?->visi_description ?? 'Menjadi platform terdepan di Asia Tenggara dalam penjualan kendaraan listrik dan elektronik pintar yang mendukung masa depan hijau dan digital.' }}
             </p>
 
             <div class="okeev-visi-image">
-                @if (!empty($about->visi_image))
-                    <img src="{{ asset('storage/' . $about->visi_image) }}" class="img-fluid mt-4"
+                @if (!empty($about) && !empty($about?->visi_image))
+                    <img src="{{ asset('storage/' . $about?->visi_image) }}" class="img-fluid mt-4"
                         style="border-radius:16px;">
                 @else
                     <img src="{{ asset('front_end/assets/images/logo/Frame 988.png') }}" class="img-fluid mt-4"
@@ -242,8 +242,8 @@
 
 
             <div class="okeev-visi-image">
-                @if (!empty($about->misi_image))
-                    <img src="{{ asset('storage/' . $about->misi_image) }}" class="img-fluid"
+                @if (!empty($about) && !empty($about?->misi_image))
+                    <img src="{{ asset('storage/' . $about?->misi_image) }}" class="img-fluid"
                         style="width:100%; border-radius:12px;">
                 @else
                     <img src="{{ asset('front_end/assets/images/logo/misi.png') }}" class="img-fluid"
@@ -252,10 +252,10 @@
             </div>
 
             <ul class="bullet-list">
-                <li>{{ $about->title_1 }}</li>
-                <li>{{ $about->title_2 }}</li>
-                <li>{{ $about->title_3 }}</li>
-                <li>{{ $about->title_4 }}</li>
+                <li>{{ $about?->title_1 ?? '' }}</li>
+                <li>{{ $about?->title_2 ?? '' }}</li>
+                <li>{{ $about?->title_3 ?? '' }}</li>
+                <li>{{ $about?->title_4 ?? '' }}</li>
             </ul>
         </div>
     </section>
@@ -336,19 +336,19 @@
             <h6 class="okeev-title mb-3">Electronic and Smart Devices</h6>
 
             <div class="okeev-card-list mb-4">
-                <div class="okeev-card-item">{{ $about->fourth_title_1 }}</div>
-                <div class="okeev-card-item">{{ $about->fourth_title_2 }}</div>
-                <div class="okeev-card-item">{{ $about->fourth_title_3 }}</div>
+                <div class="okeev-card-item">{{ $about?->fourth_title_1 ?? '' }}</div>
+                <div class="okeev-card-item">{{ $about?->fourth_title_2 ?? '' }}</div>
+                <div class="okeev-card-item">{{ $about?->fourth_title_3 ?? '' }}</div>
             </div>
 
             <!-- Support Services -->
             <h6 class="okeev-title mb-3">Support Services</h6>
 
             <ul class="okeev-support-list">
-                <li>{{ $about->support_service_1 }}</li>
-                <li>{{ $about->support_service_2 }}</li>
-                <li>{{ $about->support_service_3 }}</li>
-                <li>{{ $about->support_service_4 }}</li>
+                <li>{{ $about?->support_service_1 ?? '' }}</li>
+                <li>{{ $about?->support_service_2 ?? '' }}</li>
+                <li>{{ $about?->support_service_3 ?? '' }}</li>
+                <li>{{ $about?->support_service_4 ?? '' }}</li>
             </ul>
 
         </div>

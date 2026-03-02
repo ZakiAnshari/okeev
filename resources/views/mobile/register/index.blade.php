@@ -271,7 +271,7 @@
             </div>
         @endif
 
-        <form action="{{ route('register-store') }}" method="POST" class="mb-3">
+        <form action="{{ route('mobile.register-store') }}" method="POST" class="mb-3">
             @csrf
 
             <div class="form-group">

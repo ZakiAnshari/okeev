@@ -93,12 +93,20 @@
                                                         @enderror
                                                     </div>
 
-                                                    <!-- Publish Date -->
+                                                    <!-- Publish Date Range -->
                                                     <div class="col-lg-6 mb-3">
-                                                        <label class="form-label">Tanggal Publish</label>
-                                                        <input type="datetime-local" name="published_at"
-                                                            class="form-control" value="{{ old('published_at') }}">
-                                                        @error('published_at')
+                                                        <label class="form-label">Awal Publish</label>
+                                                        <input type="datetime-local" name="published_start"
+                                                            class="form-control" value="{{ old('published_start') }}">
+                                                        @error('published_start')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="col-lg-6 mb-3">
+                                                        <label class="form-label">Akhir Publish</label>
+                                                        <input type="datetime-local" name="published_end"
+                                                            class="form-control" value="{{ old('published_end') }}">
+                                                        @error('published_end')
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
@@ -152,7 +160,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($news as $item)
-                                        <tr>
+                                    <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->title }}</td>
                                             <td>{{ $item->author }}</td>
@@ -164,8 +172,16 @@
                                                 @endif
                                             </td>
 
-                                            <td>{{ \Carbon\Carbon::parse($item->published_at)->translatedFormat('d F Y | H:i') }}
-                                                WIB
+                                            <td>
+                                                @if ($item->published_start && $item->published_end)
+                                                    {{ \Carbon\Carbon::parse($item->published_start)->translatedFormat('d F Y | H:i') }} - {{ \Carbon\Carbon::parse($item->published_end)->translatedFormat('d F Y | H:i') }} WIB
+                                                @elseif ($item->published_start)
+                                                    Mulai: {{ \Carbon\Carbon::parse($item->published_start)->translatedFormat('d F Y | H:i') }} WIB
+                                                @elseif ($item->published_end)
+                                                    Sampai: {{ \Carbon\Carbon::parse($item->published_end)->translatedFormat('d F Y | H:i') }} WIB
+                                                @else
+                                                    -
+                                                @endif
                                             </td>
 
                                             <td class="text-center">
@@ -195,7 +211,13 @@
     </div>
 
     <script>
-        function confirmDeletenews(slug, model_name) {
+        // Initialize CKEditor for news editor
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => console.error(error));
+    </script>
+
+    <script>
             Swal.fire({
                 title: 'Yakin ingin menghapus?',
                 text: `"${model_name}" akan dihapus secara permanen!`,
@@ -225,11 +247,9 @@
     {{-- DATATABLES NEWS --}}
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
     <!-- Responsive -->
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>

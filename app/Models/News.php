@@ -16,6 +16,8 @@ class News extends Model
         'author',
         'status',
         'published_at',
+        'published_start',
+        'published_end',
     ];
 
     use HasSlug;

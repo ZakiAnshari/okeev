@@ -89,13 +89,23 @@
                                 @enderror
                             </div>
 
-                            <!-- Publish Date -->
+                            <!-- Publish Date Range -->
                             <div class="col-lg-6 mb-3">
-                                <label class="form-label">Tanggal Publish</label>
-                                <input type="datetime-local" name="published_at" class="form-control"
-                                    value="{{ old('published_at', $news->published_at ? date('Y-m-d\TH:i', strtotime($news->published_at)) : '') }}">
+                                <label class="form-label">Awal Publish</label>
+                                <input type="datetime-local" name="published_start" class="form-control"
+                                    value="{{ old('published_start', $news->published_start ? date('Y-m-d\TH:i', strtotime($news->published_start)) : '') }}">
 
-                                @error('published_at')
+                                @error('published_start')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <label class="form-label">Akhir Publish</label>
+                                <input type="datetime-local" name="published_end" class="form-control"
+                                    value="{{ old('published_end', $news->published_end ? date('Y-m-d\TH:i', strtotime($news->published_end)) : '') }}">
+
+                                @error('published_end')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -149,6 +159,11 @@
 
     {{-- JS Preview Thumbnail --}}
     <script>
+        // Initialize CKEditor for news editor
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => console.error(error));
+
         document.getElementById('thumbnailInput').addEventListener('change', function(e) {
             const img = document.getElementById('thumbnailPreview');
             img.style.display = 'block';

@@ -90,19 +90,25 @@
                             </div>
                         @endif
 
+                        @if (session('error'))
+                            <div class="alert alert-danger mb-3" style="border-radius: 8px;">
+                                <strong>❌ Error: </strong>{{ session('error') }}
+                            </div>
+                        @endif
+
                         @if (session('success'))
                             <div class="alert alert-success mb-3" style="border-radius: 8px;">
                                 <strong>✅ {{ session('success') }}</strong>
                             </div>
                         @endif
 
-                        <form action="{{ route('register-store') }}" method="POST" class="mb-3" novalidate>
+                        <form action="{{ route('register-store') }}" method="POST" class="mb-3 needs-validation" novalidate>
                             @csrf
 
                             <!-- First Name -->
                             <div class="mb-3">
-                                <label for="first_name" class="form-label d-flex justify-content-between">
-                                    <span>First Name</span>
+                                <label for="first_name" class="form-label">
+                                    <span>First Name <span class="text-danger">*</span></span>
                                 </label>
 
                                 <input type="text" id="first_name" name="first_name"
@@ -111,7 +117,9 @@
                                     style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
                                 @error('first_name')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block" style="color: #ff6b6b;">
+                                        {{ $message }}
+                                    </div>
                                 @enderror
                             </div>
 
@@ -188,7 +196,7 @@
                                 <select name="jenis_kelamin"
                                     class="form-control @error('jenis_kelamin') is-invalid @enderror"
                                     style="background:#30445C;color:#fff;border:1px solid #30445C;" required>
-                                    <option value="" disabled selected>-- Pilih --</option>
+                                    <option value="" disabled {{ !old('jenis_kelamin') ? 'selected' : '' }}>-- Pilih --</option>
                                     <option value="Laki-laki"
                                         {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
                                         Laki-laki</option>
@@ -234,7 +242,8 @@
 
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password_confirmation" name="password_confirmation"
-                                        class="form-control" placeholder="Ulangi password"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        placeholder="Ulangi password"
                                         aria-describedby="toggle-password-confirm"
                                         style="background:#30445C;color:#fff;border:1px solid #30445C;" required />
 
@@ -243,6 +252,10 @@
                                         <i class="bx bx-hide"></i>
                                     </span>
                                 </div>
+
+                                @error('password_confirmation')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
 
@@ -250,7 +263,7 @@
 
 
                             <!-- Submit -->
-                            <button type="submit" class="btn d-grid w-100"
+                            <button type="submit" class="btn d-grid w-100" id="submitBtn"
                                 style="background:linear-gradient(94.57deg,#1DCDFE -0.65%,#35F5C6 135.25%);border:none;border-radius:50px;color:#30445C;font-weight:700;">
                                 REGISTER
                             </button>
@@ -270,6 +283,8 @@
 
     <!-- / Content -->
 
+    @include('sweetalert::alert')
+
     <style>
         /* HILANGKAN ICON PASSWORD BAWAAN BROWSER (Chrome / Edge) */
         input[type="password"]::-ms-reveal,
@@ -287,26 +302,83 @@
         }
     </style>
     <script>
-        document.querySelectorAll('.form-password-toggle .input-group-text').forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const input = this.parentElement.querySelector('input');
-                const icon = this.querySelector('i');
+        // Pastikan DOM sudah fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Register form initialized');
 
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.classList.replace('bx-hide', 'bx-show');
-                } else {
-                    input.type = 'password';
-                    icon.classList.replace('bx-show', 'bx-hide');
-                }
+            // Password toggle functionality
+            const passwordToggles = document.querySelectorAll('.form-password-toggle .input-group-text');
+            passwordToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+
+                    if (input) {
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            icon.classList.remove('bx-hide');
+                            icon.classList.add('bx-show');
+                        } else {
+                            input.type = 'password';
+                            icon.classList.remove('bx-show');
+                            icon.classList.add('bx-hide');
+                        }
+                    }
+                });
             });
-        });
 
-        // Debug form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            console.log('Form submitted');
-            const formData = new FormData(this);
-            console.log('Form data:', Object.fromEntries(formData));
+            // Form submission handler
+            const form = document.querySelector('form');
+            const submitBtn = document.getElementById('submitBtn');
+            let isSubmitting = false;
+
+            if (form && submitBtn) {
+                form.addEventListener('submit', function(e) {
+                    console.log('Form submit event triggered');
+                    
+                    // Prevent double submission
+                    if (isSubmitting) {
+                        console.log('Submission already in progress, preventing double submit');
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    const password = document.getElementById('password');
+                    const passwordConfirm = document.getElementById('password_confirmation');
+
+                    // Validasi password match SEBELUM submit
+                    if (password && passwordConfirm) {
+                        if (password.value !== passwordConfirm.value) {
+                            console.log('Password mismatch detected');
+                            e.preventDefault();
+                            alert('❌ Password dan konfirmasi password tidak cocok!');
+                            passwordConfirm.classList.add('is-invalid');
+                            passwordConfirm.focus();
+                            return false;
+                        }
+                    }
+
+                    // Set loading state
+                    isSubmitting = true;
+                    submitBtn.disabled = true;
+                    const originalText = submitBtn.textContent;
+                    submitBtn.innerHTML = 'Loading...';
+
+                    console.log('Form is being submitted with following data:');
+                    const formData = new FormData(form);
+                    for (let [key, value] of formData) {
+                        if (key !== 'password' && key !== 'password_confirmation') {
+                            console.log(key + ':', value);
+                        }
+                    }
+
+                    // Form akan submit secara normal ke server
+                    // Jika ada error validation, page akan refresh dengan error messages
+                });
+            } else {
+                console.error('Form or submit button not found!');
+            }
         });
     </script>
 

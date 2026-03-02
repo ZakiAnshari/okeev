@@ -20,12 +20,13 @@ class NewsController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'title'        => 'required|string|max:255|unique:news,title',
-            'content'      => 'required',
-            'thumbnail'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'author'       => 'required|string|max:100',
-            'status'       => 'required|in:draft,published',
-            'published_at' => 'nullable|date',
+            'title'            => 'required|string|max:255|unique:news,title',
+            'content'          => 'required',
+            'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'author'           => 'required|string|max:100',
+            'status'           => 'required|in:draft,published',
+            'published_start'  => 'nullable|date',
+            'published_end'    => 'nullable|date|after_or_equal:published_start',
         ]);
 
         // Upload thumbnail bila ada
@@ -36,12 +37,13 @@ class NewsController extends Controller
 
         // Simpan ke database
         News::create([
-            'title'        => $validated['title'],
-            'content'      => $validated['content'],
-            'thumbnail'    => $thumbnailPath,
-            'author'       => $validated['author'],
-            'status'       => $validated['status'],
-            'published_at' => $validated['published_at'] ?? null,
+            'title'            => $validated['title'],
+            'content'          => $validated['content'],
+            'thumbnail'        => $thumbnailPath,
+            'author'           => $validated['author'],
+            'status'           => $validated['status'],
+            'published_start'  => $validated['published_start'] ?? null,
+            'published_end'    => $validated['published_end'] ?? null,
         ]);
 
         Alert::success('Success', 'News berhasil ditambahkan');
@@ -64,12 +66,13 @@ class NewsController extends Controller
 
         // Validasi input (unique title kecuali dirinya sendiri)
         $validated = $request->validate([
-            'title'        => 'required|string|max:255|unique:news,title,' . $news->id,
-            'content'      => 'required|string',
-            'author'       => 'required|string|max:100',
-            'status'       => 'required|in:draft,published',
-            'published_at' => 'nullable|date',
-            'thumbnail'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'title'            => 'required|string|max:255|unique:news,title,' . $news->id,
+            'content'          => 'required|string',
+            'author'           => 'required|string|max:100',
+            'status'           => 'required|in:draft,published',
+            'published_start'  => 'nullable|date',
+            'published_end'    => 'nullable|date|after_or_equal:published_start',
+            'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Jika title berubah → update slug

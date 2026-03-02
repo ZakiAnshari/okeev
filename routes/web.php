@@ -305,7 +305,7 @@ Route::prefix('m')->middleware([DetectMobileRedirect::class])->group(function ()
     Route::post('/login', [App\Http\Controllers\Mobile\LoginController::class, 'mobileauthenticating']);
 
     Route::get('/register', [App\Http\Controllers\Mobile\RegisterController::class, 'register'])->name('register.index');
-    Route::post('/register', [App\Http\Controllers\Mobile\RegisterController::class, 'registerprocess'])->name('register-store');
+    Route::post('/register', [App\Http\Controllers\Mobile\RegisterController::class, 'registerprocess'])->name('mobile.register-store');
     // LOGOUT
     Route::post('/logout', [App\Http\Controllers\Mobile\LoginController::class, 'logout'])
         ->name('mobile.logout');

@@ -72,39 +72,86 @@
 
                             <div class="vehicle-info">
                                 <h6 class="mb-1">{{ $p->brand->name_brand ?? '-' }}</h6>
-                                <p class="text-semibold">{{ $p->model_name }}</p>
-                                <div class="vehicle-specs p-4">
-                                    <!-- Miles -->
-                                    <div class="spec-item">
-                                        <div class="spec-icon mb-1">
-                                            <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
-                                                class="spec-icon-img">
-                                        </div>
-                                        <div class="spec-value">{{ $p->miles }} Miles</div>
-                                    </div>
-
-                                    <!-- Type -->
-                                    <div class="spec-item">
-                                        <div class="spec-icon mb-1">
-                                            <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols-light_electric-bolt-rounded.jpg') }}"
-                                                class="spec-icon-img">
-                                        </div>
-                                        <div class="spec-value">Electric</div>
-                                    </div>
-
-                                    <!-- Seats -->
-                                    @if ($p->category_id != 2)
-                                        <div class="spec-item">
-                                            <div class="spec-icon mb-1">
-                                                <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
-                                                    class="spec-icon-img">
+                                <p class="text-semibold" style="margin-bottom:0;">{{ $p->model_name }}</p>
+                                <div class="p-0">
+                                    <hr>
+                                    <div class="row g-2">
+                                        <!-- Row 1: Miles, Electric, Seats -->
+                                        <div class="col-4 text-center">
+                                            <div
+                                                style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('front_end/assets/images/logo/mobile/ion_speedometer.jpg') }}"
+                                                    class="spec-icon-img"
+                                                    style="height: 32px; object-fit: contain;">
+                                                <div class="spec-value mt-3" style="font-size: 13px; font-weight: 600;">
+                                                    {{ $p->miles }} Miles</div>
                                             </div>
-                                            <div class="spec-value">{{ $p->seats }} Seat</div>
                                         </div>
-                                    @endif
+
+                                        <div class="col-4 text-center">
+                                            <div
+                                                style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <img src="{{ asset('front_end/assets/images/logo/mobile/material-symbols-light_electric-bolt-rounded.jpg') }}"
+                                                    class="spec-icon-img"
+                                                    style="height: 32px; object-fit: contain; ">
+                                                <div class="spec-value mt-3" style="font-size: 13px; font-weight: 600;">Electric
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if ($p->category_id != 2)
+                                            <div class="col-4 text-center">
+                                                <div
+                                                    style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                    <img src="{{ asset('front_end/assets/images/logo/mobile/Group.jpg') }}"
+                                                        class="spec-icon-img"
+                                                        style="height: 32px; object-fit: contain; margin-bottom: 6px;">
+                                                    <div class="spec-value mt-3" style="font-size: 13px; font-weight: 600;">
+                                                        {{ $p->seats }} Seat</div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="col-4">
+                                                <div style="height: 80px;"></div>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="row g-2 mt-2">
+                                        <!-- Row 2: Battery, Charging, Drive Type -->
+                                        <div class="col-4 text-center">
+                                            <div
+                                                style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <i class="bi bi-battery-full"
+                                                    style="font-size: 32px; color: #28a745; margin-bottom: 6px;"></i>
+                                                <div class="spec-value" style="font-size: 13px; font-weight: 600;">
+                                                    {{ $p->battery ?? '-' }} kW </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 text-center">
+                                            <div
+                                                style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <i class="bi bi-ev-station"
+                                                    style="font-size: 32px; color: #ffc107; margin-bottom: 6px;"></i>
+                                                <div class="spec-value" style="font-size: 13px; font-weight: 600;">
+                                                    {{ $p->charging ?? '-' }} kWh</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 text-center">
+                                            <div
+                                                style="height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <i class="bi bi-car-front"
+                                                    style="font-size: 32px; color: #007bff; margin-bottom: 6px;"></i>
+                                                <div class="spec-value" style="font-size: 13px; font-weight: 600;">
+                                                    {{ $p->drive_type ?? '-' }} </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
-
+                                <hr>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="vehicle-price">
                                         IDR {{ number_format($p->price, 0, ',', '.') }}

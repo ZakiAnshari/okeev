@@ -61,23 +61,32 @@
 
                 <!-- Large left (always wallpaper for size) -->
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 350px; overflow: hidden; border-radius: 8px;">
-                        @if($b0 && $b0->wallpaper)
-                            <img src="{{ asset('storage/' . $b0->wallpaper) }}" alt="{{ $b0->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s"
+                        style="height: 350px; overflow: hidden; border-radius: 8px;">
+                        @if ($b0 && $b0->wallpaper)
+                            <img src="{{ asset('storage/' . $b0->wallpaper) }}" alt="{{ $b0->name_brand }}"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @else
-                            <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ asset('front_end/assets/images/hero/wallpaper1.png') }}" alt="Gambar Besar"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @endif
                         <div class="image-overlay">
-                            @if($b0)
+                            @if ($b0)
                                 <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
-                                    @if($b0->image)
-                                        <img src="{{ asset('storage/' . $b0->image) }}" alt="{{ $b0->name_brand }}" style="height:36px;object-fit:contain;" />
+                                    @if ($b0->image)
+                                        <img src="{{ asset('storage/' . $b0->image) }}" alt="{{ $b0->name_brand }}"
+                                            style="height:36px;object-fit:contain;" />
                                     @endif
                                     {{-- <strong class="text-white">{{ $b0->name_brand }}</strong> --}}
                                 </div>
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b0->slug) }}'">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;"
+                                    onclick="window.location='{{ url('/brand/' . $b0->slug) }}'">Selengkapnya →</button>
                             @else
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                             @endif
                         </div>
                     </div>
@@ -85,23 +94,32 @@
 
                 <!-- Large right (always wallpaper for size) -->
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 350px; overflow: hidden; border-radius: 8px;">
-                        @if($b1 && $b1->wallpaper)
-                            <img src="{{ asset('storage/' . $b1->wallpaper) }}" alt="{{ $b1->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s"
+                        style="height: 350px; overflow: hidden; border-radius: 8px;">
+                        @if ($b1 && $b1->wallpaper)
+                            <img src="{{ asset('storage/' . $b1->wallpaper) }}" alt="{{ $b1->name_brand }}"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @else
-                            <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ asset('front_end/assets/images/hero/wallpaper2.png') }}" alt="Gambar Besar"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @endif
                         <div class="image-overlay">
-                            @if($b1)
+                            @if ($b1)
                                 <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
-                                    @if($b1->image)
-                                        <img src="{{ asset('storage/' . $b1->image) }}" alt="{{ $b1->name_brand }}" style="height:36px;object-fit:contain;" />
+                                    @if ($b1->image)
+                                        <img src="{{ asset('storage/' . $b1->image) }}" alt="{{ $b1->name_brand }}"
+                                            style="height:36px;object-fit:contain;" />
                                     @endif
                                     {{-- <strong class="text-white">{{ $b1->name_brand }}</strong> --}}
                                 </div>
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b1->slug) }}'">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;"
+                                    onclick="window.location='{{ url('/brand/' . $b1->slug) }}'">Selengkapnya →</button>
                             @else
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                             @endif
                         </div>
                     </div>
@@ -109,69 +127,94 @@
 
                 <!-- Small boxes -->
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-feature feature-fixed-size wow fadeInUp" data-wow-delay=".2s" style="height: 250px; overflow: hidden; border-radius: 8px;">
-                        @if($b2 && $b2->wallpaper)
-                            <img src="{{ asset('storage/' . $b2->wallpaper) }}" alt="{{ $b2->name_brand }}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <div class="single-feature feature-fixed-size wow fadeInUp" data-wow-delay=".2s"
+                        style="height: 250px; overflow: hidden; border-radius: 8px;">
+                        @if ($b2 && $b2->wallpaper)
+                            <img src="{{ asset('storage/' . $b2->wallpaper) }}" alt="{{ $b2->name_brand }}"
+                                class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @else
-                            <img src="{{ asset('front_end/assets/images/hero/Frame 7.png') }}" alt="Gambar Besar" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ asset('front_end/assets/images/hero/Frame 7.png') }}" alt="Gambar Besar"
+                                class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @endif
                         <div class="image-overlay">
-                            @if($b2)
+                            @if ($b2)
                                 <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
-                                    @if($b2->image)
-                                        <img src="{{ asset('storage/' . $b2->image) }}" alt="{{ $b2->name_brand }}" style="height:28px;object-fit:contain;" />
+                                    @if ($b2->image)
+                                        <img src="{{ asset('storage/' . $b2->image) }}" alt="{{ $b2->name_brand }}"
+                                            style="height:28px;object-fit:contain;" />
                                     @endif
                                     {{-- <strong class="text-white">{{ $b2->name_brand }}</strong> --}}
                                 </div>
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b2->slug) }}'">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;"
+                                    onclick="window.location='{{ url('/brand/' . $b2->slug) }}'">Selengkapnya →</button>
                             @else
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                             @endif
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 250px; overflow: hidden; border-radius: 8px;">
-                        @if($b3 && $b3->wallpaper)
-                            <img src="{{ asset('storage/' . $b3->wallpaper) }}" alt="{{ $b3->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s"
+                        style="height: 250px; overflow: hidden; border-radius: 8px;">
+                        @if ($b3 && $b3->wallpaper)
+                            <img src="{{ asset('storage/' . $b3->wallpaper) }}" alt="{{ $b3->name_brand }}"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @else
-                            <img src="{{ asset('front_end/assets/images/hero/Frame 9.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ asset('front_end/assets/images/hero/Frame 9.png') }}" alt="Gambar Besar"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @endif
                         <div class="image-overlay">
-                            @if($b3)
+                            @if ($b3)
                                 <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
-                                    @if($b3->image)
-                                        <img src="{{ asset('storage/' . $b3->image) }}" alt="{{ $b3->name_brand }}" style="height:28px;object-fit:contain;" />
+                                    @if ($b3->image)
+                                        <img src="{{ asset('storage/' . $b3->image) }}" alt="{{ $b3->name_brand }}"
+                                            style="height:28px;object-fit:contain;" />
                                     @endif
                                     {{-- <strong class="text-white">{{ $b3->name_brand }}</strong> --}}
                                 </div>
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b3->slug) }}'">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;"
+                                    onclick="window.location='{{ url('/brand/' . $b3->slug) }}'">Selengkapnya →</button>
                             @else
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                             @endif
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s" style="height: 250px; overflow: hidden; border-radius: 8px;">
-                        @if($b4 && $b4->wallpaper)
-                            <img src="{{ asset('storage/' . $b4->wallpaper) }}" alt="{{ $b4->name_brand }}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    <div class="single-feature wow fadeInUp" data-wow-delay=".2s"
+                        style="height: 250px; overflow: hidden; border-radius: 8px;">
+                        @if ($b4 && $b4->wallpaper)
+                            <img src="{{ asset('storage/' . $b4->wallpaper) }}" alt="{{ $b4->name_brand }}"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @else
-                            <img src="{{ asset('front_end/assets/images/hero/Frame 8.png') }}" alt="Gambar Besar" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ asset('front_end/assets/images/hero/Frame 8.png') }}" alt="Gambar Besar"
+                                class="img-fluid rounded"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         @endif
                         <div class="image-overlay">
-                            @if($b4)
+                            @if ($b4)
                                 <div class="overlay-brand d-flex align-items-center gap-2 mb-2">
-                                    @if($b4->image)
-                                        <img src="{{ asset('storage/' . $b4->image) }}" alt="{{ $b4->name_brand }}" style="height:28px;object-fit:contain;" />
+                                    @if ($b4->image)
+                                        <img src="{{ asset('storage/' . $b4->image) }}" alt="{{ $b4->name_brand }}"
+                                            style="height:28px;object-fit:contain;" />
                                     @endif
                                     {{-- <strong class="text-white">{{ $b4->name_brand }}</strong> --}}
                                 </div>
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;" onclick="window.location='{{ url('/brand/'.$b4->slug) }}'">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;"
+                                    onclick="window.location='{{ url('/brand/' . $b4->slug) }}'">Selengkapnya →</button>
                             @else
-                                <button type="button" class="selengkapnya-btn" style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
+                                <button type="button" class="selengkapnya-btn"
+                                    style="background: none; border: none; cursor: pointer;">Selengkapnya →</button>
                             @endif
                         </div>
                     </div>
@@ -337,7 +380,24 @@
         #vehicle-scroll {
             scroll-behavior: smooth;
         }
-    </style>
+
+        /* Brand Filter Styles */
+        .brand-filter-btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .brand-filter-btn:hover {
+            background-color: #30445C;
+            color: white;
+            border-color: #30445C;
+        }
+
+        .brand-filter-btn.active {
+            background-color: #30445C;
+            color: white;
+            border-color: #30445C;
+        }
 
     {{-- SECTION 4 --}}
     <section class="py-5 bg-white">
@@ -375,8 +435,10 @@
                     <!-- Switch -->
                     <div class="d-flex justify-content-between mt-3">
                         <a href="javascript:void(0);" id="btn-vehicle"
-                            class="text-decoration-none fw-semibold text-info active-link" style="cursor: pointer;">&lt; Vehicle</a>
-                        <a href="javascript:void(0);" id="btn-electric" class="text-decoration-none fw-semibold text-muted" style="cursor: pointer;">Accessories
+                            class="text-decoration-none fw-semibold text-info active-link" style="cursor: pointer;">&lt;
+                            Vehicle</a>
+                        <a href="javascript:void(0);" id="btn-electric"
+                            class="text-decoration-none fw-semibold text-muted" style="cursor: pointer;">Accessories
                             &gt;</a>
                     </div>
                 </div>
@@ -633,96 +695,235 @@
                     <li class="nav-item">
                         <a class="nav-link active px-3 py-1" href="#" data-tab="in-stock">In Stock</a>
                     </li>
-
-                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#" data-tab="sedan">Sedan</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 py-1" href="#" data-tab="suv">SUV</a></li>
+                    
                     <li class="nav-item"><a class="nav-link px-3 py-1" href="#"
-                            data-tab="motorcycle">Motorcycle</a></li>
+                            data-tab="motorcycle">Motorcycle</a>
+                    </li>
                 </ul>
+
+                <!-- Brand Filter for Category 1 -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                            
+                            <button class="btn btn-sm btn-outline-secondary brand-filter-btn" data-brand="all">All Brands</button>
+                            @php
+                                $cat1Brands = $products->where('category_id', 1)->pluck('brand_id')->unique();
+                                $brandsData = \App\Models\Brand::whereIn('id', $cat1Brands)->get();
+                            @endphp
+                            @foreach($brandsData as $brand)
+                                <button class="btn btn-sm btn-outline-secondary brand-filter-btn" data-brand="{{ $brand->id }}">
+                                    {{ $brand->name_brand }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Scrollable cards -->
                 <div class="scroll-wrapper position-relative">
                     <div class="overflow-auto pb-3" id="vehicle-scroll">
                         <!-- CARD -->
                         <div class="row g-4" style="flex-wrap: nowrap;">
-                            @forelse($products as $product)
+                            {{-- CATEGORY ID 1 - Display All Specs --}}
+                            @forelse($products->where('category_id', 1) as $product)
                                 <div class="col-12 col-md-6 col-lg-2 mb-4"
-                                    style="flex: 0 0 calc(20% - 10px); min-width: 300px;">
-                                    @if (in_array($product->category_id, [1, 2]))
-                                        <div class="vehicle-card rounded shadow-sm h-100"
-                                            style="border: 1px solid #F1F1F1 !important;">
+                                    style="flex: 0 0 calc(20% - 10px); min-width: 300px;"
+                                    data-product-card
+                                    data-category="{{ $product->category_id }}"
+                                    data-stock="{{ $product->stock_status }}"
+                                    data-brand="{{ $product->brand_id }}">
+                                    <div class="vehicle-card rounded shadow-sm h-100"
+                                        style="border: 1px solid #F1F1F1 !important;">
 
-                                            <!-- Image -->
-                                            <div class="vehicle-img-wrapper"
-                                                style="background: radial-gradient(50% 50% at 50% 50%, #658FC2 0%, #30445C 100%);
-                                                border-radius: 4px 4px 0 0;">
-                                                <div class="product-images">
-                                                    @if ($product->thumbnail)
-                                                        <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                                            class="d-block mx-auto img-fluid p-4"
-                                                            alt="{{ $product->model_name }}">
-                                                    @else
-                                                        <img src="{{ asset('front_end/assets/images/placeholder.jpg') }}"
-                                                            alt="No Image" class="img-fluid mb-2 vehicle-img w-100 p-4">
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                            <!-- Detail -->
-                                            <div class="card-body p-3 bg-white rounded-bottom">
-                                                <h6 class="fw-semibold text-dark mb-0">{{ $product->brand->name_brand }}
-                                                </h6>
-                                                <p class="fw-bold text-secondary small mb-1">{{ $product->model_name }}
-                                                </p>
-                                                <hr class="my-2">
-
-                                                <!-- Icons -->
-                                                <div class="d-flex justify-content-between text-center mb-2 mt-sm-3">
-
-                                                    <div class="icon-box flex-fill d-flex flex-column align-items-center">
-                                                        <img src="{{ asset('front_end/assets/images/3.png') }}"
-                                                            width="22" class="mb-1">
-                                                        <p class="small text-black mb-0 fw-semibold">{{ $product->miles }}
-                                                            Miles</p>
-                                                    </div>
-
-                                                    <div class="icon-box flex-fill d-flex flex-column align-items-center">
-                                                        <img src="{{ asset('front_end/assets/images/2.png') }}"
-                                                            width="23" class="mb-1">
-                                                        <p class="small text-black mb-0 fw-semibold">Electric</p>
-                                                    </div>
-
-                                                    @if ($product->category_id == 1)
-                                                        <div
-                                                            class="icon-box flex-fill d-flex flex-column align-items-center">
-                                                            <img src="{{ asset('front_end/assets/images/1.png') }}"
-                                                                width="21" class="mb-1">
-                                                            <p class="small text-black mb-0 fw-semibold">
-                                                                {{ $product->seats }} Seat</p>
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                                <hr class="my-2">
-
-                                                <!-- Price & Detail Link -->
-                                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                                    <p class="fw-bold text-danger mb-0">
-                                                        IDR {{ number_format($product->price, 0, ',', '.') }}
-                                                    </p>
-
-                                                    <a href="{{ route('landing.product', $product->slug) }}"
-                                                        class="text-decoration-none fw-semibold d-flex align-items-center"
-                                                        style="color: #30445C !important;">
-                                                        Detail
-                                                        <img src="{{ asset('front_end/assets/images/icon.png') }}"
-                                                            width="10" class="mb-1 ms-2">
-                                                    </a>
-                                                </div>
-
+                                        <!-- Image -->
+                                        <div class="vehicle-img-wrapper"
+                                            style="background: radial-gradient(50% 50% at 50% 50%, #658FC2 0%, #30445C 100%);
+                                            border-radius: 4px 4px 0 0;">
+                                            <div class="product-images">
+                                                @if ($product->thumbnail)
+                                                    <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                        class="d-block mx-auto img-fluid p-4"
+                                                        alt="{{ $product->model_name }}">
+                                                @else
+                                                    <img src="{{ asset('front_end/assets/images/placeholder.jpg') }}"
+                                                        alt="No Image" class="img-fluid mb-2 vehicle-img w-100 p-4">
+                                                @endif
                                             </div>
                                         </div>
-                                    @endif
+
+                                        <!-- Detail -->
+                                        <div class="card-body p-3 bg-white rounded-bottom">
+                                            <h6 class="fw-semibold text-dark mb-0">{{ $product->brand->name_brand }}
+                                            </h6>
+                                            <p class="fw-bold text-secondary small mb-1">{{ $product->model_name }}
+                                            </p>
+                                            <hr class="my-2">
+
+                                            <!-- Icons -->
+                                            <div class="text-center mb-2">
+                                                <div class="text-center mb-2">
+                                                    <!-- Row 1 -->
+                                                    <div class="row mb-2">
+                                                        <!-- Range -->
+                                                        <div class="col-4 d-flex flex-column align-items-center spec-miles">
+                                                            <img src="{{ asset('front_end/assets/images/3.png') }}"
+                                                                width="22" class="mb-2">
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                {{ $product->miles }} Miles
+                                                            </p>
+                                                        </div>
+
+                                                        <!-- Fuel -->
+                                                        <div class="col-4 d-flex flex-column align-items-center spec-electric">
+                                                            <img src="{{ asset('front_end/assets/images/2.png') }}"
+                                                                width="23" class="mb-2">
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                Electric
+                                                            </p>
+                                                        </div>
+
+                                                        <!-- Seats -->
+                                                        <div class="col-4 d-flex flex-column align-items-center spec-seats">
+                                                            <img src="{{ asset('front_end/assets/images/1.png') }}"
+                                                                width="21" class="mb-2">
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                {{ $product->seats }} Seat
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Row 2 -->
+                                                    <div class="row mt-lg-3 spec-advanced">
+                                                        <!-- Battery -->
+                                                        <div class="col-4 d-flex flex-column align-items-center">
+                                                            <i class="bi bi-battery-full fs-5 mb-1 text-success"></i>
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                {{ $product->battery }} kWh
+                                                            </p>
+                                                        </div>
+
+                                                        <!-- Charging -->
+                                                        <div class="col-4 d-flex flex-column align-items-center">
+                                                            <i class="bi bi-ev-station fs-5 mb-1 text-warning"></i>
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                {{ $product->charging }} kW
+                                                            </p>
+                                                        </div>
+
+                                                        <!-- Drive Type -->
+                                                        <div class="col-4 d-flex flex-column align-items-center">
+                                                            <i class="bi bi-car-front fs-5 mb-1 text-primary"></i>
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                {{ $product->drive_type }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr class="my-2">
+
+                                            <!-- Price & Detail Link -->
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <p class="fw-bold text-danger mb-0">
+                                                    IDR {{ number_format($product->price, 0, ',', '.') }}
+                                                </p>
+
+                                                <a href="{{ route('landing.product', $product->slug) }}"
+                                                    class="text-decoration-none fw-semibold d-flex align-items-center"
+                                                    style="color: #30445C !important;">
+                                                    Detail
+                                                    <img src="{{ asset('front_end/assets/images/icon.png') }}"
+                                                        width="10" class="mb-1 ms-2">
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                            @endforelse
+
+                            {{-- CATEGORY ID 2 - Display Only Miles & Electric --}}
+                            @forelse($products->where('category_id', 2) as $product)
+                                <div class="col-12 col-md-6 col-lg-2 mb-4"
+                                    style="flex: 0 0 calc(20% - 10px); min-width: 300px;"
+                                    data-product-card
+                                    data-category="{{ $product->category_id }}"
+                                    data-stock="{{ $product->stock_status }}"
+                                    data-brand="{{ $product->brand_id }}">
+                                    <div class="vehicle-card rounded shadow-sm h-100"
+                                        style="border: 1px solid #F1F1F1 !important;">
+
+                                        <!-- Image -->
+                                        <div class="vehicle-img-wrapper"
+                                            style="background: radial-gradient(50% 50% at 50% 50%, #658FC2 0%, #30445C 100%);
+                                            border-radius: 4px 4px 0 0;">
+                                            <div class="product-images">
+                                                @if ($product->thumbnail)
+                                                    <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                                        class="d-block mx-auto img-fluid p-4"
+                                                        alt="{{ $product->model_name }}">
+                                                @else
+                                                    <img src="{{ asset('front_end/assets/images/placeholder.jpg') }}"
+                                                        alt="No Image" class="img-fluid mb-2 vehicle-img w-100 p-4">
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <!-- Detail -->
+                                        <div class="card-body p-3 bg-white rounded-bottom">
+                                            <h6 class="fw-semibold text-dark mb-0">{{ $product->brand->name_brand }}
+                                            </h6>
+                                            <p class="fw-bold text-secondary small mb-1">{{ $product->model_name }}
+                                            </p>
+                                            <hr class="my-2">
+
+                                            <!-- Icons - Only Miles & Electric -->
+                                            <div class="text-center mb-2">
+                                                <div class="text-center mb-2">
+                                                    <!-- Row 1 - Only 2 items (Miles & Electric) -->
+                                                    <div class="row mb-2">
+                                                        <!-- Range -->
+                                                        <div class="col-6 d-flex flex-column align-items-center">
+                                                            <img src="{{ asset('front_end/assets/images/3.png') }}"
+                                                                width="22" class="mb-2">
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                {{ $product->miles }} Miles
+                                                            </p>
+                                                        </div>
+
+                                                        <!-- Fuel -->
+                                                        <div class="col-6 d-flex flex-column align-items-center">
+                                                            <img src="{{ asset('front_end/assets/images/2.png') }}"
+                                                                width="23" class="mb-2">
+                                                            <p class="small text-black mb-0 fw-semibold">
+                                                                Electric
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr class="my-2">
+
+                                            <!-- Price & Detail Link -->
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <p class="fw-bold text-danger mb-0">
+                                                    IDR {{ number_format($product->price, 0, ',', '.') }}
+                                                </p>
+
+                                                <a href="{{ route('landing.product', $product->slug) }}"
+                                                    class="text-decoration-none fw-semibold d-flex align-items-center"
+                                                    style="color: #30445C !important;">
+                                                    Detail
+                                                    <img src="{{ asset('front_end/assets/images/icon.png') }}"
+                                                        width="10" class="mb-1 ms-2">
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                             @empty
                                 <p class="text-center">Tidak ada produk untuk brand ini.</p>
@@ -758,7 +959,7 @@
             const counters = document.querySelectorAll('.counter');
             counters.forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-target'));
-                
+
                 // Skip if target is NaN or 0
                 if (isNaN(target) || target === 0) {
                     return;
@@ -766,7 +967,7 @@
 
                 let current = 0;
                 const increment = Math.ceil(target / 50);
-                
+
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
@@ -783,17 +984,80 @@
             // Start counter animation immediately
             animateCounters();
 
-            // Tab Navigation Handler
+            // Tab Navigation Handler dengan filtering
             const tabLinks = document.querySelectorAll('#productTabs .nav-link');
+            const productCards = document.querySelectorAll('[data-product-card]');
+            const brandFilterBtns = document.querySelectorAll('.brand-filter-btn');
+            let selectedBrand = 'all';
+
+            // Brand filter handler
+            if (brandFilterBtns.length > 0) {
+                brandFilterBtns.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Remove active class dari semua brand buttons
+                        brandFilterBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        selectedBrand = this.getAttribute('data-brand');
+                        
+                        // Re-filter products with current tab
+                        const activeTab = document.querySelector('#productTabs .nav-link.active');
+                        if (activeTab) {
+                            activeTab.click();
+                        }
+                    });
+                });
+            }
 
             if (tabLinks.length > 0) {
                 tabLinks.forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
+                        const tabName = this.getAttribute('data-tab');
+                        
+                        // Remove active class dari semua tab
                         tabLinks.forEach(l => l.classList.remove('active'));
                         this.classList.add('active');
+
+                        // Filter produk berdasarkan tab yang dipilih
+                        productCards.forEach(card => {
+                            const category = card.getAttribute('data-category');
+                            const stock = card.getAttribute('data-stock');
+                            const brand = card.getAttribute('data-brand');
+                            let shouldShow = false;
+
+                            if (tabName === 'in-stock') {
+                                // In Stock: category_id === 1 AND stock_status === 'in_stock'
+                                shouldShow = category === '1' && stock === 'in_stock';
+                                // Apply brand filter if not "all"
+                                if (shouldShow && selectedBrand !== 'all') {
+                                    shouldShow = brand === selectedBrand;
+                                }
+                            } else if (tabName === 'motorcycle') {
+                                // Motorcycle: category_id === 2 AND stock_status === 'in_stock'
+                                shouldShow = category === '2' && stock === 'in_stock';
+                            } else if (tabName === 'sedan') {
+                                // Sedan: brand_id === 1 AND stock_status === 'in_stock'
+                                shouldShow = brand === '1' && stock === 'in_stock';
+                            } else if (tabName === 'suv') {
+                                // SUV: brand_id === 1 AND stock_status === 'in_stock'
+                                shouldShow = brand === '1' && stock === 'in_stock';
+                            }
+
+                            if (shouldShow) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
                     });
                 });
+
+                // Trigger default tab (In Stock)
+                const defaultTab = document.querySelector('[data-tab="in-stock"]');
+                if (defaultTab) {
+                    defaultTab.click();
+                }
             }
 
             // Brand Switch Handler - dengan error checking
@@ -885,7 +1149,8 @@
 
                     scrollLeftBtn.style.opacity = scrollContainer.scrollLeft > 0 ? '1' : '0.3';
                     scrollRightBtn.style.opacity =
-                        scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth - 10) ? '1' : '0.3';
+                        scrollContainer.scrollLeft < (scrollContainer.scrollWidth - scrollContainer.clientWidth -
+                            10) ? '1' : '0.3';
                 }
 
                 scrollContainer.addEventListener('scroll', updateScrollButtons);

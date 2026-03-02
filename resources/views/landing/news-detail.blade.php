@@ -7,7 +7,7 @@
 
             <!-- Back Button -->
             <a href="/News" class="text-decoration-none mb-3 d-inline-block">
-                ← Detail News
+                <i class="bi bi-arrow-left me-1"></i> Detail News
             </a>
 
             <!-- Title -->
@@ -27,7 +27,6 @@
                     style="height: 500px; object-fit: cover;">
             </div>
 
-
             <!-- Content -->
             <!-- Subtitle / Description -->
             <div class="content">
@@ -46,11 +45,11 @@
                     text-align: justify;
                 }
 
-                .content h1, 
-                .content h2, 
-                .content h3, 
-                .content h4, 
-                .content h5, 
+                .content h1,
+                .content h2,
+                .content h3,
+                .content h4,
+                .content h5,
                 .content h6 {
                     margin-top: 1.5rem;
                     margin-bottom: 1rem;
@@ -58,7 +57,7 @@
                     color: #30445C;
                 }
 
-                .content ul, 
+                .content ul,
                 .content ol {
                     margin-bottom: 1.5rem;
                     margin-left: 2rem;
