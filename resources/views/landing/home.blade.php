@@ -310,22 +310,19 @@
         }
 
         .carousel.carousel-fade .carousel-item img {
-
-            /* HERO CAROUSEL: ensure all slides have equal visible area */
-            /* Add rounded corners to the carousel and clip overflow so images follow the radius */
-            #carouselExampleControls {
-                border-radius: 12px;
-                overflow: hidden;
-            }
-
-            .carousel {
-                border-radius: 12px;
-            }
-
             width: 100%;
             height: clamp(448px, 45vh, 640px);
             object-fit: cover;
             display: block;
+        }
+
+        #carouselExampleControls {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .carousel {
+            border-radius: 12px;
         }
 
         /* PRODUCT CARDS: unify image container and padding so all sides look equal */
@@ -398,6 +395,7 @@
             color: white;
             border-color: #30445C;
         }
+    </style>
 
     {{-- SECTION 4 --}}
     <section class="py-5 bg-white">
