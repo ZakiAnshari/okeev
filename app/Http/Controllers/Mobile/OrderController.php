@@ -13,10 +13,7 @@ use Xendit\Invoice\CreateInvoiceRequest;
 
 class OrderController extends Controller
 {
-    public function __construct()
-    {
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
-    }
+    // API key will be configured in each method to ensure proper initialization
 
     public function show($slug)
     {
@@ -35,7 +32,11 @@ class OrderController extends Controller
         ]);
 
         // 2️⃣ SET XENDIT API KEY
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
+        $apiKey = env('XENDIT_SECRET_KEY');
+        if (empty($apiKey)) {
+            throw new \Exception('Xendit API key is not configured. Please check your XENDIT_SECRET_KEY environment variable.');
+        }
+        Configuration::setXenditKey($apiKey);
 
         // 3️⃣ HITUNG TOTAL
         $qty        = $request->qty;
@@ -64,19 +65,27 @@ class OrderController extends Controller
         // ===================================================
         // 5️⃣ CREATE INVOICE KE XENDIT
         // ===================================================
-        $apiInstance = new InvoiceApi();
-        $invoice = $apiInstance->createInvoice(
-            new CreateInvoiceRequest([
-                'external_id' => $externalId,
-                'amount'      => (int) $grandTotal,
-                'currency'    => 'IDR',
-                'description' => 'Order ' . $product->model_name,
+        try {
+            $apiInstance = new InvoiceApi();
+            $apiInstance->setApiKey($apiKey);  // Explicitly set the API key on the instance
+            
+            $invoice = $apiInstance->createInvoice(
+                new CreateInvoiceRequest([
+                    'external_id' => $externalId,
+                    'amount'      => (int) $grandTotal,
+                    'currency'    => 'IDR',
+                    'description' => 'Order ' . $product->model_name,
 
-                // Redirect ke route mobile setelah bayar / gagal (pakai full URL)
-                'success_redirect_url' => route('mobile.payment.success', ['external_id' => $externalId], true),
-                'failure_redirect_url' => route('mobile.payment.failed', ['external_id' => $externalId], true),
-            ])
-        );
+                    // Redirect ke route mobile setelah bayar / gagal (pakai full URL)
+                    'success_redirect_url' => route('mobile.payment.success', ['external_id' => $externalId], true),
+                    'failure_redirect_url' => route('mobile.payment.failed', ['external_id' => $externalId], true),
+                ])
+            );
+        } catch (\Throwable $e) {
+            report($e);
+            \Log::error('Failed to create Xendit invoice for mobile', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Gagal membuat invoice pembayaran: ' . $e->getMessage());
+        }
 
         // 6️⃣ UPDATE invoice_url di order
         $order->update([
@@ -178,10 +187,17 @@ class OrderController extends Controller
 
         $externalId = 'INV-' . uniqid();
 
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
+        // Properly configure Xendit API key
+        $apiKey = env('XENDIT_SECRET_KEY');
+        if (empty($apiKey)) {
+            return response()->json(['error' => 'Xendit API key is not configured'], 500);
+        }
+        Configuration::setXenditKey($apiKey);
 
         try {
             $apiInstance = new InvoiceApi();
+            $apiInstance->setApiKey($apiKey);  // Explicitly set the API key on the instance
+            
             $invoice = $apiInstance->createInvoice(
                 new CreateInvoiceRequest([
                     'external_id' => $externalId,
@@ -194,6 +210,7 @@ class OrderController extends Controller
             );
         } catch (\Throwable $e) {
             report($e);
+            \Log::error('Failed to create Xendit invoice for mobile cart', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Failed to create invoice: ' . $e->getMessage()], 500);
         }
 

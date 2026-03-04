@@ -228,7 +228,7 @@
         $footer = \App\Models\HomeFooter::first();
     @endphp
 
-    <footer style="background-color: #F9F9F9;" class="pt-5">
+    <footer style="background-color: #F9F9F9;@if (request()->routeIs('payment.success', 'payment.failed', 'mobile.payment.success', 'mobile.payment.failed')) display:none;@endif" class="pt-5">
         <div class="container">
             <div class="row pb-4">
                 <div class="col-md-4 mb-4">

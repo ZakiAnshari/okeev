@@ -1,4 +1,4 @@
-<header class="header navbar-area">
+<header class="header navbar-area" @if (request()->routeIs('payment.success', 'payment.failed', 'mobile.payment.success', 'mobile.payment.failed')) style="display:none;" @endif>
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-12">

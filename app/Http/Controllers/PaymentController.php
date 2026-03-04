@@ -43,6 +43,7 @@ class PaymentController extends Controller
     {
         // 🔐 Validasi external_id dari Xendit
         $externalId = $request->query('external_id');
+        $platform = $request->query('platform');
 
         if (!$externalId) {
             return redirect()->route('cart')->with('error', 'Invalid payment reference');
@@ -65,6 +66,11 @@ class PaymentController extends Controller
                 'status' => 'Completed'
             ]);
             $justCompleted = true;
+        }
+        
+        // Jika datang dari mobile, redirect ke mobile success page
+        if ($platform === 'mobile') {
+            return redirect()->route('mobile.payment.success', ['external_id' => $externalId]);
         }
 
         // RealRashid SweetAlert notification (flash ke session)
@@ -107,6 +113,7 @@ class PaymentController extends Controller
     {
         // 🔐 Validasi external_id dari Xendit
         $externalId = $request->query('external_id');
+        $platform = $request->query('platform');
 
         if (!$externalId) {
             return redirect()->route('cart')->with('error', 'Invalid payment reference');
@@ -132,6 +139,11 @@ class PaymentController extends Controller
             $justFailed = true;
             // Keep session alert for normal flows
             Alert::error('Pembayaran Gagal', 'Pembayaran gagal atau dibatalkan. Silahkan coba lagi.');
+        }
+        
+        // Jika datang dari mobile, redirect ke mobile failed page
+        if ($platform === 'mobile') {
+            return redirect()->route('mobile.payment.failed', ['external_id' => $externalId]);
         }
 
         // kategori header

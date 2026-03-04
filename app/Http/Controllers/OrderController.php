@@ -17,11 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
-
-    public function __construct()
-    {
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
-    }
+    // API key is configured in each method to ensure proper initialization
 
     public function show(Product $product)
     {
@@ -76,19 +72,34 @@ class OrderController extends Controller
         $externalId = 'INV-' . uniqid();
 
         // 3️⃣ SET API KEY XENDIT
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
+        $apiKey = env('XENDIT_SECRET_KEY');
+        if (empty($apiKey)) {
+            throw new \Exception('Xendit API key is not configured. Please check your XENDIT_SECRET_KEY environment variable.');
+        }
+        Configuration::setXenditKey($apiKey);
 
         // 4️⃣ CREATE INVOICE (tangani error agar tidak silent fail)
         try {
+            $apiKey = env('XENDIT_SECRET_KEY');
+            if (empty($apiKey)) {
+                throw new \Exception('Xendit API key is not configured.');
+            }
+            
             $apiInstance = new InvoiceApi();
+            $apiInstance->setApiKey($apiKey);  // Explicitly set the API key on the instance
+            
+            // Deteksi apakah user mengakses dari mobile
+            $isMobile = $request->header('User-Agent') && preg_match('/(mobile|android|iphone|ipad|phone)/i', $request->header('User-Agent'));
+            $platform = $isMobile ? 'mobile' : 'web';
+            
             $invoice = $apiInstance->createInvoice(
                 new CreateInvoiceRequest([
                     'external_id'          => $externalId,
                     'amount'               => (int) $grandTotal,
                     'currency'             => 'IDR',
                     'description'          => 'Order ' . $product->model_name,
-                    'success_redirect_url' => route('payment.success', ['external_id' => $externalId]),
-                    'failure_redirect_url' => route('payment.failed', ['external_id' => $externalId]),
+                    'success_redirect_url' => $isMobile ? route('mobile.payment.success', ['external_id' => $externalId], true) : route('payment.success', ['external_id' => $externalId, 'platform' => $platform]),
+                    'failure_redirect_url' => $isMobile ? route('mobile.payment.failed', ['external_id' => $externalId], true) : route('payment.failed', ['external_id' => $externalId, 'platform' => $platform]),
                 ])
             );
         } catch (\Throwable $e) {
@@ -164,22 +175,38 @@ class OrderController extends Controller
 
         $externalId = 'INV-' . uniqid();
 
-        Configuration::setXenditKey(env('XENDIT_SECRET_KEY'));
+        // Properly configure Xendit API key
+        $apiKey = env('XENDIT_SECRET_KEY');
+        if (empty($apiKey)) {
+            \Log::error('Xendit API key is not configured', ['available_env_keys' => array_keys($_ENV)]);
+            return response()->json(['error' => 'Xendit API key is not configured'], 500);
+        }
+        
+        // Debug log the key (without exposing full key in production)
+        \Log::info('Setting Xendit API key', ['key_starts_with' => substr($apiKey, 0, 10)]);
+        Configuration::setXenditKey($apiKey);
 
         try {
+            // Deteksi apakah user mengakses dari mobile
+            $isMobile = $request->header('User-Agent') && preg_match('/(mobile|android|iphone|ipad|phone)/i', $request->header('User-Agent'));
+            $platform = $isMobile ? 'mobile' : 'web';
+            
             $apiInstance = new InvoiceApi();
+            $apiInstance->setApiKey($apiKey);  // Explicitly set the API key on the instance
+            
             $invoice = $apiInstance->createInvoice(
                 new CreateInvoiceRequest([
                     'external_id' => $externalId,
                     'amount' => (int) $grandTotal,
                     'currency' => 'IDR',
                     'description' => 'Order (cart)',
-                    'success_redirect_url' => route('payment.success', ['external_id' => $externalId]),
-                    'failure_redirect_url' => route('payment.failed', ['external_id' => $externalId]),
+                    'success_redirect_url' => $isMobile ? route('mobile.payment.success', ['external_id' => $externalId], true) : route('payment.success', ['external_id' => $externalId, 'platform' => $platform]),
+                    'failure_redirect_url' => $isMobile ? route('mobile.payment.failed', ['external_id' => $externalId], true) : route('payment.failed', ['external_id' => $externalId, 'platform' => $platform]),
                 ])
             );
         } catch (\Throwable $e) {
             report($e);
+            \Log::error('Failed to create Xendit invoice', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Failed to create invoice: ' . $e->getMessage()], 500);
         }
 

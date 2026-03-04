@@ -92,6 +92,11 @@
             transform: translate(20%, -20%);
         }
 
+        /* Sembunyikan scrollbar Chrome/Safari */
+        .overflow-auto::-webkit-scrollbar {
+            display: none;
+        }
+
         /* center the cart icon inside the navbar bottom */
         .navbar-bottom .icon-btn.position-relative {
             display: flex !important;
@@ -503,7 +508,7 @@
                 </div>
 
                 <!-- Category Tabs -->
-                <div class="overflow-auto mb-3 d-flex justify-content-center" style="-webkit-overflow-scrolling: touch; padding: 0 20px;">
+                <div class="overflow-auto mb-3 d-flex justify-content-center" style="-webkit-overflow-scrolling: touch; padding: 0 20px; scrollbar-width: none; -ms-overflow-style: none;">
                     <ul class="nav d-flex justify-content-center" role="tablist" style="gap:0px; padding:0; margin:0; list-style:none; flex-wrap:nowrap;margin-left: 50px;">
                         <li class="nav-item" style="flex:0 0 auto;">
                             <a href="#" class="nav-link active px-0 fw-bold" data-filter="in-stock" style="color:#30445C; border:0; border-bottom:3px solid #30445C; padding-bottom:6px; white-space:nowrap;">In Stock</a>
@@ -548,7 +553,7 @@
                                         <h6 class="mb-1" style="font-weight: 600;">{{ $product->brand->name_brand ?? '-' }}</h6>
                                         <p class="text-semibold" style="margin-bottom: 0; font-weight: 600;">{{ $product->model_name }}</p>
                                         <div class="p-0">
-                                            <hr style="margin: 8px 0;">
+                                            <hr style="">
                                             <div class="row g-2">
                                                 <!-- Row 1: Miles, Electric, Seats -->
                                                 <div class="col-4 text-center">
@@ -604,7 +609,7 @@
                                             </div>
 
                                         </div>
-                                        <hr style="margin: 8px 0;">
+                                        <hr style="">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="vehicle-price" style="font-weight: 600; color: #d32f2f;">
                                                 IDR {{ number_format($product->price, 0, ',', '.') }}
