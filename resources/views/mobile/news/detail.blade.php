@@ -295,7 +295,7 @@
 
     <div class="container">
         <div class="header">
-            <div class="container header-container">
+            <div class=" header-container">
                 <a href="{{ route('newss.show') }}" class="back-btn-img">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
                 </a>
@@ -349,46 +349,61 @@
         }
 
         // =============================================
-        // LIKE — pakai event delegation
+        // SATU event listener untuk semua klik
         // =============================================
         document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.btn-like');
-            if (!btn) return;
 
-            const newsId = btn.dataset.id;
-            const key = 'liked_' + newsId;
-            const isLiked = localStorage.getItem(key) === '1';
+            // --- LIKE ---
+            const likeBtn = e.target.closest('.btn-like');
+            if (likeBtn) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            if (isLiked) {
-                localStorage.removeItem(key);
-                btn.classList.remove('liked');
-                showToast('Like dibatalkan.');
-            } else {
-                localStorage.setItem(key, '1');
-                btn.classList.add('liked');
-                showToast('❤️ Kamu menyukai artikel ini!');
+                const newsId = likeBtn.dataset.id;
+                if (!newsId) {
+                    console.warn('btn-like tidak punya data-id');
+                    return;
+                }
+
+                const key = 'liked_' + newsId;
+                const isLiked = localStorage.getItem(key) === '1';
+
+                if (isLiked) {
+                    localStorage.removeItem(key);
+                    likeBtn.classList.remove('liked');
+                    showToast('Like dibatalkan.');
+                } else {
+                    localStorage.setItem(key, '1');
+                    likeBtn.classList.add('liked');
+                    showToast('❤️ Kamu menyukai artikel ini!');
+                }
+                return;
             }
-        });
 
-        // =============================================
-        // SHARE — pakai event delegation
-        // =============================================
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.btn-share');
-            if (!btn) return;
+            // --- SHARE ---
+            const shareBtn = e.target.closest('.btn-share');
+            if (shareBtn) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            const url = btn.dataset.url;
-            const title = btn.dataset.title;
+                const url = shareBtn.dataset.url;
+                const title = shareBtn.dataset.title;
+                if (!url) {
+                    console.warn('btn-share tidak punya data-url');
+                    return;
+                }
 
-            if (navigator.share) {
-                navigator.share({
-                        title: title,
-                        text: title,
-                        url: url
-                    })
-                    .catch(() => openShareMenu(url, title));
-            } else {
-                openShareMenu(url, title);
+                if (navigator.share) {
+                    navigator.share({
+                            title: title,
+                            text: title,
+                            url: url
+                        })
+                        .catch(() => openShareMenu(url, title));
+                } else {
+                    openShareMenu(url, title);
+                }
+                return;
             }
         });
 
@@ -434,13 +449,14 @@
             ];
 
             items.forEach(item => {
-                const btn = document.createElement('button');
-                btn.textContent = item.label;
-                btn.onclick = () => {
+                const b = document.createElement('button');
+                b.textContent = item.label;
+                b.onclick = (e) => {
+                    e.stopPropagation();
                     if (item.action) item.action();
                     menu.remove();
                 };
-                menu.appendChild(btn);
+                menu.appendChild(b);
             });
 
             document.body.appendChild(menu);

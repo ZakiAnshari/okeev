@@ -33,7 +33,6 @@
             align-items: center;
             justify-content: center;
             padding: 16px;
-            /* background-color: white; */
             border-bottom: 1px solid #e0e0e0;
             position: sticky;
             top: 0;
@@ -58,16 +57,20 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
             display: block;
         }
 
         .news-card:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transform: translateY(-4px);
+        }
+
+        /* Hanya gambar yang bisa diklik ke detail */
+        .news-image-link {
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         .news-image {
@@ -81,6 +84,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-image-link:hover .news-image img {
+            transform: scale(1.05);
         }
 
         .news-content {
@@ -123,6 +131,9 @@
             padding: 4px;
             color: #999;
             transition: color 0.3s ease;
+            /* Pastikan klik tidak bubbling ke parent */
+            position: relative;
+            z-index: 10;
         }
 
         .action-btn:hover {
@@ -132,6 +143,12 @@
         .action-btn svg {
             width: 16px;
             height: 16px;
+            pointer-events: none;
+            /* klik selalu ke button, bukan svg */
+        }
+
+        .action-btn.bookmarked {
+            color: var(--primary-blue);
         }
 
         .bottom-nav {
@@ -149,7 +166,6 @@
             margin: 0 auto;
             display: flex;
             justify-content: space-around;
-            /* padding: 12px 0; */
         }
 
         .nav-item {
@@ -163,10 +179,7 @@
             color: #999;
         }
 
-        .nav-item:hover {
-            color: var(--light-green);
-        }
-
+        .nav-item:hover,
         .nav-item.active {
             color: var(--light-green);
         }
@@ -176,33 +189,92 @@
             height: 24px;
             margin-bottom: 4px;
         }
+
+        /* Toast */
+        .toast-notify {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast-notify.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Share Menu */
+        .share-menu {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border: 1px solid #eee;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            padding: 8px;
+            border-radius: 10px;
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 180px;
+        }
+
+        .share-menu button {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: none;
+            background: #f7f7f7;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            transition: background 0.15s;
+        }
+
+        .share-menu button:hover {
+            background: #ebebeb;
+        }
     </style>
+
     <div class="container">
         <div class="header">
             <div class="header-title">News</div>
         </div>
 
         <div class="news-grid">
-            <!-- News Cards -->
             @forelse($news->where('status', 'published') as $item)
-                <a href="{{ route('newssdetail.show', $item->slug) }}" class="news-card">
-                    <div class="news-image">
-                        <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}">
-                    </div>
+                {{-- card bukan <a>, hanya gambar yang jadi link --}}
+                <div class="news-card">
+                    <a href="{{ route('newssdetail.show', $item->slug) }}" class="news-image-link">
+                        <div class="news-image">
+                            <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}">
+                        </div>
+                    </a>
                     <div class="news-content">
                         <div class="news-title">{{ $item->title }}</div>
                         <div class="news-footer">
                             <span
                                 class="news-date">{{ \Carbon\Carbon::parse($item->published_at)->format('M d, Y') }}</span>
                             <div class="news-actions">
-                                <button class="action-btn" onclick="shareNews(event, {{ $item->id }})"
-                                    data-url="{{ route('News.detail', $item->slug) }}" data-title="{{ $item->title }}">
+                                <button class="action-btn btn-share" data-url="{{ route('newssdetail.show', $item->slug) }}"
+                                    data-title="{{ $item->title }}">
                                     <svg fill="currentColor" viewBox="0 0 24 24">
                                         <path
                                             d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
                                     </svg>
                                 </button>
-                                <button class="action-btn" onclick="bookmarkNews(event, {{ $item->id }})">
+                                <button class="action-btn btn-bookmark" data-id="{{ $item->id }}">
                                     <svg fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z" />
                                     </svg>
@@ -210,7 +282,7 @@
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
             @empty
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #999;">
                     <p>Tidak ada news untuk saat ini</p>
@@ -218,97 +290,149 @@
             @endforelse
         </div>
     </div>
-    <script>
-        // ===== SHARE NEWS =====
-        function shareNews(event, id) {
-            event.stopPropagation();
 
-            const btn = event.currentTarget;
+    <script>
+        // =============================================
+        // TOAST
+        // =============================================
+        function showToast(message) {
+            let t = document.querySelector('.toast-notify');
+            if (!t) {
+                t = document.createElement('div');
+                t.className = 'toast-notify';
+                document.body.appendChild(t);
+            }
+            t.textContent = message;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        // =============================================
+        // SHARE — event delegation
+        // =============================================
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-share');
+            if (!btn) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
             const url = btn.dataset.url;
             const title = btn.dataset.title;
 
             if (navigator.share) {
-                // Web Share API (mobile/browser yang support)
                 navigator.share({
-                    title: title,
-                    url: url
-                }).catch(() => {});
+                        title: title,
+                        text: title,
+                        url: url
+                    })
+                    .catch(() => openShareMenu(url, title));
             } else {
-                // Fallback: copy link ke clipboard
-                navigator.clipboard.writeText(url).then(() => {
-                    showToast('Link berhasil disalin!');
-                }).catch(() => {
-                    // Fallback manual jika clipboard tidak support
-                    const el = document.createElement('textarea');
-                    el.value = url;
-                    document.body.appendChild(el);
-                    el.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(el);
-                    showToast('Link berhasil disalin!');
-                });
+                openShareMenu(url, title);
             }
+        });
+
+        function openShareMenu(url, title) {
+            const old = document.querySelector('.share-menu');
+            if (old) old.remove();
+
+            const menu = document.createElement('div');
+            menu.className = 'share-menu';
+
+            const items = [{
+                    label: '📱 WhatsApp',
+                    action: () => window.open('https://wa.me/?text=' + encodeURIComponent((title ? title + '\n' : '') +
+                        url), '_blank')
+                },
+                {
+                    label: '✈️ Telegram',
+                    action: () => window.open('https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' +
+                        encodeURIComponent(title || ''), '_blank')
+                },
+                {
+                    label: '📋 Salin Link',
+                    action: () => {
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(url).then(() => showToast('Link berhasil disalin!'));
+                        } else {
+                            const ta = document.createElement('textarea');
+                            ta.value = url;
+                            document.body.appendChild(ta);
+                            ta.select();
+                            try {
+                                document.execCommand('copy');
+                                showToast('Link berhasil disalin!');
+                            } catch {}
+                            document.body.removeChild(ta);
+                        }
+                    }
+                },
+                {
+                    label: '✕ Tutup',
+                    action: null
+                }
+            ];
+
+            items.forEach(item => {
+                const b = document.createElement('button');
+                b.textContent = item.label;
+                b.onclick = () => {
+                    if (item.action) item.action();
+                    menu.remove();
+                };
+                menu.appendChild(b);
+            });
+
+            document.body.appendChild(menu);
+
+            setTimeout(() => {
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!menu.contains(e.target)) {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }, 100);
         }
 
-        // ===== BOOKMARK NEWS =====
-        function bookmarkNews(event, id) {
-            event.stopPropagation();
+        // =============================================
+        // BOOKMARK — event delegation
+        // =============================================
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-bookmark');
+            if (!btn) return;
 
-            const btn = event.currentTarget;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const id = parseInt(btn.dataset.id);
             const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
             const index = bookmarks.indexOf(id);
 
             if (index === -1) {
-                // Belum di-bookmark → tambahkan
                 bookmarks.push(id);
                 localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
                 btn.classList.add('bookmarked');
-                showToast('Berita disimpan!');
+                showToast('📌 Berita disimpan!');
             } else {
-                // Sudah di-bookmark → hapus
                 bookmarks.splice(index, 1);
                 localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
                 btn.classList.remove('bookmarked');
-                showToast('Bookmark dihapus!');
+                showToast('Bookmark dihapus.');
             }
-        }
+        });
 
-        // ===== INIT BOOKMARK STATE (panggil saat halaman load) =====
-        function initBookmarks() {
+        // =============================================
+        // INIT — restore state bookmark saat halaman load
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
             const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-            document.querySelectorAll('[onclick^="bookmarkNews"]').forEach(btn => {
-                const onclickAttr = btn.getAttribute('onclick');
-                const idMatch = onclickAttr.match(/bookmarkNews\(event,\s*(\d+)\)/);
-                if (idMatch) {
-                    const id = parseInt(idMatch[1]);
-                    if (bookmarks.includes(id)) {
-                        btn.classList.add('bookmarked');
-                    }
+            document.querySelectorAll('.btn-bookmark[data-id]').forEach(btn => {
+                if (bookmarks.includes(parseInt(btn.dataset.id))) {
+                    btn.classList.add('bookmarked');
                 }
             });
-        }
-
-        // ===== TOAST NOTIFICATION =====
-        function showToast(message) {
-            let toast = document.getElementById('toast-notif');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'toast-notif';
-                toast.style.cssText = `
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #333; color: #fff; padding: 10px 20px;
-            border-radius: 8px; z-index: 9999; font-size: 14px;
-            transition: opacity 0.3s ease;
-        `;
-                document.body.appendChild(toast);
-            }
-            toast.textContent = message;
-            toast.style.opacity = '1';
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => toast.style.opacity = '0', 2500);
-        }
-
-        // Jalankan saat DOM siap
-        document.addEventListener('DOMContentLoaded', initBookmarks);
+        });
     </script>
 @endsection

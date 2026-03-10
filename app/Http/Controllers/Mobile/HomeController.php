@@ -246,17 +246,17 @@ class HomeController extends Controller
     {
         $userId = Auth::id();
         $homeContact = HomeContact::first();
-        
+
         $notifOrders = [];
         $notifTestdrives = [];
         $notifCount = 0;
-        
+
         if ($userId) {
             // Get recent orders for this user
             $notifOrders = Order::where('user_id', $userId)
                 ->where(function ($q) {
                     $q->whereIn('status', ['PENDING', 'Failed', 'Completed'])
-                      ->orWhereIn('status_transaksi', ['PENDING', 'Failed', 'Completed']);
+                        ->orWhereIn('status_transaksi', ['PENDING', 'Failed', 'Completed']);
                 })
                 ->whereRaw("LOWER(COALESCE(status,'')) != 'cancelled'")
                 ->whereRaw("LOWER(COALESCE(status_transaksi,'')) != 'cancelled'")
@@ -264,7 +264,7 @@ class HomeController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->take(10)
                 ->get();
-            
+
             // Get recent test drives (all, since no user_id in testdrive table)
             // Filter by user email or name if available
             $user = Auth::user();
@@ -272,16 +272,16 @@ class HomeController extends Controller
                 ->where(function ($q) use ($user) {
                     if ($user) {
                         $q->where('email', $user->email)
-                          ->orWhere('telp', $user->phone ?? '');
+                            ->orWhere('telp', $user->phone ?? '');
                     }
                 })
                 ->orderBy('created_at', 'desc')
                 ->take(10)
                 ->get();
-            
+
             $notifCount = $notifOrders->count() + $notifTestdrives->count();
         }
-        
+
         return view('mobile.notifikasi.index', compact('homeContact', 'notifOrders', 'notifTestdrives', 'notifCount'));
     }
 
@@ -342,10 +342,10 @@ class HomeController extends Controller
             ->where(function ($q) use ($query) {
                 if (!empty($query)) {
                     $q->where('model_name', 'like', '%' . $query . '%')
-                      ->orWhere('description', 'like', '%' . $query . '%')
-                      ->orWhereHas('brand', function ($subQ) use ($query) {
-                          $subQ->where('name_brand', 'like', '%' . $query . '%');
-                      });
+                        ->orWhere('description', 'like', '%' . $query . '%')
+                        ->orWhereHas('brand', function ($subQ) use ($query) {
+                            $subQ->where('name_brand', 'like', '%' . $query . '%');
+                        });
                 }
             });
 
@@ -384,37 +384,47 @@ class HomeController extends Controller
             // Validate input
             $validated = $request->validate([
                 'first_name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . Auth::id(),
-                'contact' => 'required|string|max:255',
-                'city' => 'nullable|string|max:255',
-                'image_provile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'email'      => 'required|email|unique:users,email,' . Auth::id(),
+                'contact'    => 'required|string|max:255',
+                'city'       => 'nullable|string|max:255',
             ]);
 
             $user = Auth::user();
 
             // Update user data
             $user->first_name = $validated['first_name'];
-            $user->email = $validated['email'];
-            $user->contact = $validated['contact'];
-            $user->city = $validated['city'] ?? $user->city;
+            $user->email      = $validated['email'];
+            $user->contact    = $validated['contact'];
+            $user->city       = $validated['city'] ?? $user->city;
 
-            // Handle image upload
-            if ($request->hasFile('image_provile')) {
-                // Delete old image if exists
+            // Handle foto dari kompres (base64 hidden input)
+            if ($request->filled('image_provile_compressed')) {
+                $base64    = $request->input('image_provile_compressed');
+                $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64));
+                $filename  = 'profile_' . $user->id . '_' . time() . '.jpg';
+                $path      = 'profiles/' . $filename;
+
+                // Hapus foto lama jika ada
                 if ($user->image_provile && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->image_provile)) {
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($user->image_provile);
                 }
 
-                // Store new image
-                $imagePath = $request->file('image_provile')->store('profiles', 'public');
-                $user->image_provile = $imagePath;
+                // Simpan foto baru
+                \Illuminate\Support\Facades\Storage::disk('public')->put($path, $imageData);
+                $user->image_provile = $path;
+
+                // Fallback: jika JS gagal, pakai upload biasa
+            } elseif ($request->hasFile('image_provile')) {
+                if ($user->image_provile && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->image_provile)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($user->image_provile);
+                }
+                $user->image_provile = $request->file('image_provile')->store('profiles', 'public');
             }
 
             $user->save();
 
             Alert::success('Success', 'Profil berhasil diperbarui');
             return redirect()->route('profilm.show');
-
         } catch (\Exception $e) {
             Alert::error('Error', 'Gagal memperbarui profil: ' . $e->getMessage());
             return back();

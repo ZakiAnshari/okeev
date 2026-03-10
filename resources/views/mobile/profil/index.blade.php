@@ -355,8 +355,8 @@
 
                     <div class="profile-pic">
                         <img src="{{ Auth::user()->image_provile
-                                ? asset('storage/' . Auth::user()->image_provile)
-                                : asset('front_end/assets/images/hero/mobil.png') }}"
+                            ? asset('storage/' . Auth::user()->image_provile)
+                            : asset('front_end/assets/images/hero/mobil.png') }}"
                             alt="Profile">
                     </div>
 
@@ -386,7 +386,8 @@
 
 
                 <div class="button-group">
-                    <button class="btn btn-edit" style="border-radius: 20px" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    <button class="btn btn-edit" style="border-radius: 20px" data-bs-toggle="modal"
+                        data-bs-target="#editProfileModal">
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
@@ -423,70 +424,138 @@
 
         <!-- Edit Profile Modal -->
         @auth
-        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('profilestorem.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="first_name" class="form-label">First Name</label>
-                                <input type="text" class="form-control @error('first_name') is-invalid @enderror" 
-                                    id="first_name" name="first_name" 
-                                    value="{{ old('first_name', Auth::user()->first_name ?? '') }}" required>
-                                @error('first_name')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" 
-                                    id="email" name="email" 
-                                    value="{{ old('email', Auth::user()->email ?? '') }}" required>
-                                @error('email')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="contact" class="form-label">Contact</label>
-                                <input type="text" class="form-control @error('contact') is-invalid @enderror" 
-                                    id="contact" name="contact" 
-                                    value="{{ old('contact', Auth::user()->contact ?? '') }}" required>
-                                @error('contact')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="city" class="form-label">City / Address</label>
-                                <input type="text" class="form-control @error('city') is-invalid @enderror" 
-                                    id="city" name="city" 
-                                    value="{{ old('city', Auth::user()->city ?? '') }}">
-                                @error('city')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="image_provile" class="form-label">Profile Picture</label>
-                                <input type="file" class="form-control @error('image_provile') is-invalid @enderror" 
-                                    id="image_provile" name="image_provile" accept="image/*">
-                                <small class="text-muted">Leave blank if you don't want to change</small>
-                                @error('image_provile')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                            </div>
-                        </form>
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('profilestorem.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="first_name" class="form-label">First Name</label>
+                                    <input type="text" class="form-control @error('first_name') is-invalid @enderror"
+                                        id="first_name" name="first_name"
+                                        value="{{ old('first_name', Auth::user()->first_name ?? '') }}" required>
+                                    @error('first_name')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        id="email" name="email" value="{{ old('email', Auth::user()->email ?? '') }}"
+                                        required>
+                                    @error('email')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="contact" class="form-label">Contact</label>
+                                    <input type="text" class="form-control @error('contact') is-invalid @enderror"
+                                        id="contact" name="contact" value="{{ old('contact', Auth::user()->contact ?? '') }}"
+                                        required>
+                                    @error('contact')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">City / Address</label>
+                                    <input type="text" class="form-control @error('city') is-invalid @enderror"
+                                        id="city" name="city" value="{{ old('city', Auth::user()->city ?? '') }}">
+                                    @error('city')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image_provile" class="form-label">Profile Picture</label>
+                                    <input type="file" class="form-control @error('image_provile') is-invalid @enderror"
+                                        id="image_provile" name="image_provile" accept="image/*">
+                                    <small class="text-muted">Leave blank if you don't want to change</small>
+
+                                    {{-- Preview hasil kompres --}}
+                                    <div id="preview-wrapper" style="display:none; margin-top:10px;">
+                                        <img id="preview-img"
+                                            style="max-width:120px; border-radius:8px; border:1px solid #ddd;">
+                                        <div id="compress-info" style="font-size:12px; color:#888; margin-top:4px;"></div>
+                                    </div>
+
+                                    {{-- Input hidden yang dikirim ke server --}}
+                                    <input type="hidden" name="image_provile_compressed" id="image_provile_compressed">
+
+                                    @error('image_provile')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <script>
+                                    document.getElementById('image_provile').addEventListener('change', function(e) {
+                                        const file = e.target.files[0];
+                                        if (!file) return;
+
+                                        const MAX_SIZE_KB = 500; // target maksimal ukuran (KB)
+                                        const MAX_WIDTH = 800; // maksimal lebar (px)
+                                        const QUALITY = 0.8; // kualitas jpeg (0.0 - 1.0)
+
+                                        const originalKB = (file.size / 1024).toFixed(1);
+
+                                        const reader = new FileReader();
+                                        reader.onload = function(event) {
+                                            const img = new Image();
+                                            img.onload = function() {
+                                                // Hitung ukuran baru
+                                                let width = img.width;
+                                                let height = img.height;
+
+                                                if (width > MAX_WIDTH) {
+                                                    height = Math.round((height * MAX_WIDTH) / width);
+                                                    width = MAX_WIDTH;
+                                                }
+
+                                                // Gambar ke canvas
+                                                const canvas = document.createElement('canvas');
+                                                canvas.width = width;
+                                                canvas.height = height;
+                                                const ctx = canvas.getContext('2d');
+                                                ctx.drawImage(img, 0, 0, width, height);
+
+                                                // Kompres dengan turunkan quality sampai target tercapai
+                                                let quality = QUALITY;
+                                                let base64 = canvas.toDataURL('image/jpeg', quality);
+                                                let compressedKB = (base64.length * 0.75 / 1024).toFixed(1);
+
+                                                while (compressedKB > MAX_SIZE_KB && quality > 0.1) {
+                                                    quality -= 0.05;
+                                                    base64 = canvas.toDataURL('image/jpeg', quality);
+                                                    compressedKB = (base64.length * 0.75 / 1024).toFixed(1);
+                                                }
+
+                                                // Simpan ke input hidden
+                                                document.getElementById('image_provile_compressed').value = base64;
+
+                                                // Tampilkan preview
+                                                document.getElementById('preview-img').src = base64;
+                                                document.getElementById('preview-wrapper').style.display = 'block';
+                                                document.getElementById('compress-info').textContent =
+                                                    `Sebelum: ${originalKB} KB → Sesudah: ${compressedKB} KB`;
+                                            };
+                                            img.src = event.target.result;
+                                        };
+                                        reader.readAsDataURL(file);
+                                    });
+                                </script>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endauth
 
 
