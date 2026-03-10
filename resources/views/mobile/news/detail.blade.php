@@ -24,7 +24,6 @@
         .container {
             max-width: 480px;
             margin: 0 auto;
-            /* background-color: white; */
             min-height: 100vh;
         }
 
@@ -64,16 +63,6 @@
         .back-icon {
             width: 24px;
             height: 24px;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-            padding: 8px;
-            margin-right: 16px;
         }
 
         .header-title {
@@ -140,7 +129,6 @@
         }
 
         .article-body ul {
-            /* margin-left: 20px; */
             margin-bottom: 16px;
         }
 
@@ -177,7 +165,6 @@
             margin: 0 auto;
             display: flex;
             justify-content: space-around;
-            /* padding: 12px 0; */
         }
 
         .nav-item {
@@ -191,10 +178,7 @@
             color: #999;
         }
 
-        .nav-item:hover {
-            color: var(--light-green);
-        }
-
+        .nav-item:hover,
         .nav-item.active {
             color: var(--light-green);
         }
@@ -209,6 +193,7 @@
             font-size: 11px;
         }
 
+        /* Action Buttons */
         .action-buttons {
             display: flex;
             gap: 16px;
@@ -222,11 +207,9 @@
             border-radius: 8px;
             font-size: 20px;
             cursor: pointer;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             transition: background-color 0.2s ease, transform 0.1s ease;
         }
 
@@ -241,9 +224,11 @@
         .btn-action i {
             font-size: 22px;
             color: #9e9e9e;
+            pointer-events: none;
+            /* Agar klik tidak landing di icon, tapi di button */
         }
 
-        /* Liked state */
+        /* Like aktif */
         .btn-action.liked {
             background-color: #e6f0ff;
             border: 1px solid rgba(26, 115, 232, 0.15);
@@ -253,12 +238,12 @@
             color: #1a73e8;
         }
 
-        /* Toast notification */
+        /* Toast */
         .toast-notify {
             position: fixed;
             top: 72px;
             right: 16px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
             padding: 10px 14px;
             border-radius: 8px;
@@ -267,6 +252,7 @@
             opacity: 0;
             transform: translateY(-8px);
             transition: opacity 0.18s ease, transform 0.18s ease;
+            pointer-events: none;
         }
 
         .toast-notify.show {
@@ -274,34 +260,41 @@
             transform: translateY(0);
         }
 
-        /* Simple share menu (fallback) */
+        /* Share Menu */
         .share-menu {
-            position: absolute;
+            position: fixed;
+            top: 100px;
+            right: 20px;
             background: #fff;
             border: 1px solid #eee;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
             padding: 8px;
-            border-radius: 8px;
+            border-radius: 10px;
             z-index: 9998;
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 160px;
         }
 
         .share-menu button {
-            padding: 8px 10px;
+            padding: 10px 14px;
             border-radius: 6px;
             border: none;
             background: #f7f7f7;
             cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            transition: background 0.15s;
         }
 
-        .header {
-            height: 56px;
-            /* tinggi header */
+        .share-menu button:hover {
+            background: #ebebeb;
         }
     </style>
+
     <div class="container">
-        <div class="header ">
+        <div class="header">
             <div class="container header-container">
                 <a href="{{ route('newss.show') }}" class="back-btn-img">
                     <img src="{{ asset('front_end/assets/images/logo/mobile/Vector.png') }}" alt="Back" class="back-icon">
@@ -309,35 +302,28 @@
                 <div class="header-title">Detail News</div>
             </div>
         </div>
-        {{-- <div class="header">
-            <a href="{{ route('newss.show') }}" class="back-btn">←</a>
-
-            <div class="header-title absolute-center">Detail News</div>
-        </div> --}}
 
         <div class="article-content">
-            <h1 class="article-title"> {{ $news->title }}</h1>
+            <h1 class="article-title">{{ $news->title }}</h1>
+
             <div class="article-meta">
                 <span>By <a href="#" class="author-link">{{ $news->author }}</a></span>
                 <span>•</span>
                 <span>Published: {{ \Carbon\Carbon::parse($news->published_at)->format('M d, Y') }}</span>
             </div>
+
             <div class="action-buttons mb-3">
-                <button type="button" class="btn-action btn-like" onclick="handleLike(event, {{ $news->id }})" title="Like this article">
+                <button type="button" class="btn-action btn-like" data-id="{{ $news->id }}" title="Like this article">
                     <i class="bx bx-like"></i>
                 </button>
 
-                <button type="button" class="btn-action btn-share" onclick="handleShare(event, {!! json_encode(route('newssdetail.show', $news->slug)) !!}, {!! json_encode($news->title) !!})" title="Share this article">
+                <button type="button" class="btn-action btn-share" data-url="{{ route('newssdetail.show', $news->slug) }}"
+                    data-title="{{ $news->title }}" title="Share this article">
                     <i class="bx bx-share-alt"></i>
                 </button>
             </div>
 
-
-
-
-
-
-            <img src="{{ asset('storage/' . $news->thumbnail) }}" alt="Rivian R1T" class="article-image">
+            <img src="{{ asset('storage/' . $news->thumbnail) }}" alt="{{ $news->title }}" class="article-image">
 
             <div class="article-body">
                 {!! $news->content !!}
@@ -346,6 +332,9 @@
     </div>
 
     <script>
+        // =============================================
+        // TOAST
+        // =============================================
         function showToast(message) {
             let t = document.querySelector('.toast-notify');
             if (!t) {
@@ -356,119 +345,125 @@
             t.textContent = message;
             t.classList.add('show');
             clearTimeout(t._timeout);
-            t._timeout = setTimeout(() => t.classList.remove('show'), 1800);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
         }
 
-        function handleLike(event, newsId) {
-            event.preventDefault();
-            event.stopPropagation();
+        // =============================================
+        // LIKE — pakai event delegation
+        // =============================================
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-like');
+            if (!btn) return;
 
-            // Get the button that was clicked
-            let btn = event.target;
-            while (btn && !btn.classList.contains('btn-like')) {
-                btn = btn.parentElement;
-            }
-
-            if (!btn) {
-                console.log('Button not found');
-                return;
-            }
-
+            const newsId = btn.dataset.id;
             const key = 'liked_' + newsId;
             const isLiked = localStorage.getItem(key) === '1';
 
             if (isLiked) {
                 localStorage.removeItem(key);
                 btn.classList.remove('liked');
-                showToast('❤️ Like removed');
+                showToast('Like dibatalkan.');
             } else {
                 localStorage.setItem(key, '1');
                 btn.classList.add('liked');
-                showToast('❤️ Added to likes');
+                showToast('❤️ Kamu menyukai artikel ini!');
             }
-        }
+        });
 
-        function handleShare(event, url, title) {
-            event.preventDefault();
-            event.stopPropagation();
+        // =============================================
+        // SHARE — pakai event delegation
+        // =============================================
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-share');
+            if (!btn) return;
 
-            // Ensure url is properly formatted
-            let fullUrl = url;
-            if (!/^https?:\/\//i.test(fullUrl)) {
-                fullUrl = window.location.origin + (fullUrl.startsWith('/') ? '' : '/') + fullUrl;
-            }
+            const url = btn.dataset.url;
+            const title = btn.dataset.title;
 
             if (navigator.share) {
                 navigator.share({
-                    title: title || 'OKEEV News',
-                    text: title || '',
-                    url: fullUrl
-                }).catch(() => {
-                    openShareFallback(fullUrl, title);
-                });
+                        title: title,
+                        text: title,
+                        url: url
+                    })
+                    .catch(() => openShareMenu(url, title));
             } else {
-                openShareFallback(fullUrl, title);
+                openShareMenu(url, title);
             }
-        }
+        });
 
-        function openShareFallback(fullUrl, title) {
+        function openShareMenu(url, title) {
+            const old = document.querySelector('.share-menu');
+            if (old) old.remove();
+
             const menu = document.createElement('div');
             menu.className = 'share-menu';
-            menu.style.position = 'fixed';
-            menu.style.top = '100px';
-            menu.style.right = '20px';
-            menu.style.zIndex = '9998';
 
-            const waBtn = document.createElement('button');
-            waBtn.textContent = '📱 WhatsApp';
-            waBtn.onclick = () => {
-                const waUrl = 'https://wa.me/?text=' + encodeURIComponent((title ? title + '\n' : '') + fullUrl);
-                window.open(waUrl, '_blank');
-                if (menu.parentNode) menu.parentNode.removeChild(menu);
-            };
-
-            const tgBtn = document.createElement('button');
-            tgBtn.textContent = '✈️ Telegram';
-            tgBtn.onclick = () => {
-                const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(fullUrl) + '&text=' + encodeURIComponent(title || '');
-                window.open(tgUrl, '_blank');
-                if (menu.parentNode) menu.parentNode.removeChild(menu);
-            };
-
-            const copyBtn = document.createElement('button');
-            copyBtn.textContent = '📋 Copy Link';
-            copyBtn.onclick = () => {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(fullUrl).then(() => showToast('Link copied to clipboard!'));
-                } else {
-                    const ta = document.createElement('textarea');
-                    ta.value = fullUrl;
-                    document.body.appendChild(ta);
-                    ta.select();
-                    try {
-                        document.execCommand('copy');
-                        showToast('Link copied to clipboard!');
-                    } catch {
-                        alert('Could not copy: ' + fullUrl);
+            const items = [{
+                    label: '📱 WhatsApp',
+                    action: () => window.open('https://wa.me/?text=' + encodeURIComponent((title ? title + '\n' : '') +
+                        url), '_blank')
+                },
+                {
+                    label: '✈️ Telegram',
+                    action: () => window.open('https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' +
+                        encodeURIComponent(title || ''), '_blank')
+                },
+                {
+                    label: '📋 Salin Link',
+                    action: () => {
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(url).then(() => showToast('Link berhasil disalin!'));
+                        } else {
+                            const ta = document.createElement('textarea');
+                            ta.value = url;
+                            document.body.appendChild(ta);
+                            ta.select();
+                            try {
+                                document.execCommand('copy');
+                                showToast('Link berhasil disalin!');
+                            } catch {}
+                            document.body.removeChild(ta);
+                        }
                     }
-                    document.body.removeChild(ta);
+                },
+                {
+                    label: '✕ Tutup',
+                    action: null
                 }
-                if (menu.parentNode) menu.parentNode.removeChild(menu);
-            };
+            ];
 
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = '✕ Close';
-            closeBtn.style.background = '#f0f0f0';
-            closeBtn.onclick = () => {
-                if (menu.parentNode) menu.parentNode.removeChild(menu);
-            };
-
-            menu.appendChild(waBtn);
-            menu.appendChild(tgBtn);
-            menu.appendChild(copyBtn);
-            menu.appendChild(closeBtn);
+            items.forEach(item => {
+                const btn = document.createElement('button');
+                btn.textContent = item.label;
+                btn.onclick = () => {
+                    if (item.action) item.action();
+                    menu.remove();
+                };
+                menu.appendChild(btn);
+            });
 
             document.body.appendChild(menu);
+
+            setTimeout(() => {
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!menu.contains(e.target)) {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }, 100);
         }
+
+        // =============================================
+        // INIT — restore state like saat halaman load
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.btn-like[data-id]').forEach(btn => {
+                if (localStorage.getItem('liked_' + btn.dataset.id) === '1') {
+                    btn.classList.add('liked');
+                }
+            });
+        });
     </script>
 @endsection

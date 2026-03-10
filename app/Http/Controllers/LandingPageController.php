@@ -99,7 +99,38 @@ class LandingPageController extends Controller
             $query->where('category_id', request('category_id'));
         }
 
-        // Filter berdasarkan range harga
+        // Filter berdasarkan harga
+        if (request('price')) {
+            $query->where('price', '=', request('price'));
+        }
+
+        // Filter berdasarkan battery (kWh)
+        if (request('battery')) {
+            $query->where('battery', '=', request('battery'));
+        }
+
+        // Filter berdasarkan charging (kW)
+        if (request('charging')) {
+            $query->where('charging', '=', request('charging'));
+        }
+
+        // Filter berdasarkan drive type
+        if (request('drive_type')) {
+            $query->where('drive_type', '=', request('drive_type'));
+        }
+
+        // Filter berdasarkan seats/kursi
+        if (request('seats')) {
+            $query->where('seats', '=', request('seats'));
+        }
+
+        // Filter berdasarkan miles
+        if (request('miles')) {
+            $query->where('miles', '=', request('miles'));
+        }
+
+        // Filter lama untuk backward compatibility
+        // Filter berdasarkan range harga (lama)
         if (request('min_price')) {
             $query->where('price', '>=', request('min_price'));
         }
@@ -107,7 +138,7 @@ class LandingPageController extends Controller
             $query->where('price', '<=', request('max_price'));
         }
 
-        // Filter berdasarkan range KM
+        // Filter berdasarkan range KM (lama)
         if (request('min_km')) {
             $query->where('miles', '>=', request('min_km'));
         }
@@ -115,7 +146,7 @@ class LandingPageController extends Controller
             $query->where('miles', '<=', request('max_km'));
         }
 
-        // Filter berdasarkan range kWh
+        // Filter berdasarkan range kWh (lama)
         // Asumsi: kWh disimpan di table details dengan label 'kwh' atau 'battery_capacity'
         if (request('min_kwh') || request('max_kwh')) {
             $query->whereHas('details', function ($q) {

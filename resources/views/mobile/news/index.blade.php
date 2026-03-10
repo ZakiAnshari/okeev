@@ -176,7 +176,6 @@
             height: 24px;
             margin-bottom: 4px;
         }
-
     </style>
     <div class="container">
         <div class="header">
@@ -193,9 +192,11 @@
                     <div class="news-content">
                         <div class="news-title">{{ $item->title }}</div>
                         <div class="news-footer">
-                            <span class="news-date">{{ \Carbon\Carbon::parse($item->published_at)->format('M d, Y') }}</span>
+                            <span
+                                class="news-date">{{ \Carbon\Carbon::parse($item->published_at)->format('M d, Y') }}</span>
                             <div class="news-actions">
-                                <button class="action-btn" onclick="shareNews(event, {{ $item->id }})" data-url="{{ route('News.detail', $item->slug) }}" data-title="{{ $item->title }}">
+                                <button class="action-btn" onclick="shareNews(event, {{ $item->id }})"
+                                    data-url="{{ route('News.detail', $item->slug) }}" data-title="{{ $item->title }}">
                                     <svg fill="currentColor" viewBox="0 0 24 24">
                                         <path
                                             d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
@@ -217,5 +218,97 @@
             @endforelse
         </div>
     </div>
+    <script>
+        // ===== SHARE NEWS =====
+        function shareNews(event, id) {
+            event.stopPropagation();
 
+            const btn = event.currentTarget;
+            const url = btn.dataset.url;
+            const title = btn.dataset.title;
+
+            if (navigator.share) {
+                // Web Share API (mobile/browser yang support)
+                navigator.share({
+                    title: title,
+                    url: url
+                }).catch(() => {});
+            } else {
+                // Fallback: copy link ke clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('Link berhasil disalin!');
+                }).catch(() => {
+                    // Fallback manual jika clipboard tidak support
+                    const el = document.createElement('textarea');
+                    el.value = url;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                    showToast('Link berhasil disalin!');
+                });
+            }
+        }
+
+        // ===== BOOKMARK NEWS =====
+        function bookmarkNews(event, id) {
+            event.stopPropagation();
+
+            const btn = event.currentTarget;
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            const index = bookmarks.indexOf(id);
+
+            if (index === -1) {
+                // Belum di-bookmark → tambahkan
+                bookmarks.push(id);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+                btn.classList.add('bookmarked');
+                showToast('Berita disimpan!');
+            } else {
+                // Sudah di-bookmark → hapus
+                bookmarks.splice(index, 1);
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+                btn.classList.remove('bookmarked');
+                showToast('Bookmark dihapus!');
+            }
+        }
+
+        // ===== INIT BOOKMARK STATE (panggil saat halaman load) =====
+        function initBookmarks() {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            document.querySelectorAll('[onclick^="bookmarkNews"]').forEach(btn => {
+                const onclickAttr = btn.getAttribute('onclick');
+                const idMatch = onclickAttr.match(/bookmarkNews\(event,\s*(\d+)\)/);
+                if (idMatch) {
+                    const id = parseInt(idMatch[1]);
+                    if (bookmarks.includes(id)) {
+                        btn.classList.add('bookmarked');
+                    }
+                }
+            });
+        }
+
+        // ===== TOAST NOTIFICATION =====
+        function showToast(message) {
+            let toast = document.getElementById('toast-notif');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast-notif';
+                toast.style.cssText = `
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #333; color: #fff; padding: 10px 20px;
+            border-radius: 8px; z-index: 9999; font-size: 14px;
+            transition: opacity 0.3s ease;
+        `;
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.style.opacity = '0', 2500);
+        }
+
+        // Jalankan saat DOM siap
+        document.addEventListener('DOMContentLoaded', initBookmarks);
+    </script>
 @endsection

@@ -20,24 +20,6 @@
                 <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
                     data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
                     <i class="bi bi-funnel"></i> Filter Produk
-                    @php
-                        $activeFilters = 0;
-                        if (request('category_id')) {
-                            $activeFilters++;
-                        }
-                        if (request('min_price') || request('max_price')) {
-                            $activeFilters++;
-                        }
-                        if (request('min_km') || request('max_km')) {
-                            $activeFilters++;
-                        }
-                        if (request('min_kwh') || request('max_kwh')) {
-                            $activeFilters++;
-                        }
-                    @endphp
-                    @if ($activeFilters > 0)
-                        <span class="badge bg-danger ms-2">{{ $activeFilters }}</span>
-                    @endif
                 </button>
 
                 <!-- Sort Dropdown -->
@@ -45,12 +27,12 @@
                     <form method="GET" action="{{ route('landing.cars', $brand->slug) }}" class="d-inline">
                         <!-- Preserve existing filters -->
                         <input type="hidden" name="category_id" value="{{ request('category_id') }}">
-                        <input type="hidden" name="min_price" value="{{ request('min_price') }}">
-                        <input type="hidden" name="max_price" value="{{ request('max_price') }}">
-                        <input type="hidden" name="min_km" value="{{ request('min_km') }}">
-                        <input type="hidden" name="max_km" value="{{ request('max_km') }}">
-                        <input type="hidden" name="min_kwh" value="{{ request('min_kwh') }}">
-                        <input type="hidden" name="max_kwh" value="{{ request('max_kwh') }}">
+                        <input type="hidden" name="price" value="{{ request('price') }}">
+                        <input type="hidden" name="battery" value="{{ request('battery') }}">
+                        <input type="hidden" name="charging" value="{{ request('charging') }}">
+                        <input type="hidden" name="drive_type" value="{{ request('drive_type') }}">
+                        <input type="hidden" name="seats" value="{{ request('seats') }}">
+                        <input type="hidden" name="miles" value="{{ request('miles') }}">
 
                         <select class="form-select form-select-sm" name="sort" onchange="this.form.submit()"
                             style="min-width: 220px;">
@@ -74,66 +56,79 @@
                 <div class="card border-0 shadow-sm bg-light">
                     <div class="card-body">
                         <form method="GET" action="{{ route('landing.cars', $brand->slug) }}" class="row g-3">
-                            <!-- Filter Jenis Tipe Mobil -->
-                            {{-- <div class="col-lg-3 col-md-6">
-                                <label for="category" class="form-label fw-semibold">Tipe</label>
-                                <select class="form-select form-select-sm" id="category" name="category_id">
-                                    <option value="">-- Semua Tipe --</option>
-                                    @foreach ($productCategories as $cat)
-                                        @if ($cat->brands && $cat->brands->count() > 0)
-                                            <optgroup label="{{ $cat->name_category }}">
-                                                @foreach ($cat->brands as $brandItem)
-                                                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
-                                                        {{ $brandItem->name_brand }}
-                                                    </option>
-                                                @endforeach
-                                            </optgroup>
-                                        @else
-                                            <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
-                                                {{ $cat->name_category }}
-                                            </option>
-                                        @endif
-                                    @endforeach
+
+
+                            <!-- Filter Harga -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="price" class="form-label fw-semibold">Harga</label>
+                                <input type="text" class="form-control form-control-sm" id="price" name="price"
+                                    placeholder="0" value="{{ request('price') }}" inputmode="numeric"
+                                    oninput="formatRupiah(this)">
+                            </div>
+                            <script>
+                                function formatRupiah(input) {
+                                    let angka = input.value.replace(/[^,\d]/g, '').toString();
+                                    let split = angka.split(',');
+                                    let sisa = split[0].length % 3;
+                                    let rupiah = split[0].substr(0, sisa);
+                                    let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                                    if (ribuan) {
+                                        let separator = sisa ? '.' : '';
+                                        rupiah += separator + ribuan.join('.');
+                                    }
+
+                                    input.value = rupiah;
+                                }
+                            </script>
+
+                            <!-- Filter Baterai (kWh) -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="battery" class="form-label fw-semibold">Baterai (kWh)</label>
+                                <input type="number" class="form-control form-control-sm" id="battery" name="battery"
+                                    placeholder="Cari berdasarkan kWh" step="1" value="{{ request('battery') }}">
+                            </div>
+
+                            <!-- Filter Charging (kW) -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="charging" class="form-label fw-semibold">Charging (kW)</label>
+                                <input type="number" class="form-control form-control-sm" id="charging" name="charging"
+                                    placeholder="Cari berdasarkan kW" step="1" value="{{ request('charging') }}">
+                            </div>
+
+                            <!-- Filter Drive Type -->
+                            <div class="col-lg-3 col-md-6">
+                                <label for="drive_type" class="form-label fw-semibold">Jenis Drive</label>
+                                <select name="drive_type" id="drive_type" class="form-control form-control-sm">
+                                    <option value="">-- Semua Drive Type --</option>
+                                    <option value="FWD" {{ request('drive_type') == 'FWD' ? 'selected' : '' }}>
+                                        FWD (Front-Wheel Drive)
+                                    </option>
+                                    <option value="RWD" {{ request('drive_type') == 'RWD' ? 'selected' : '' }}>
+                                        RWD (Rear-Wheel Drive)
+                                    </option>
+                                    <option value="AWD" {{ request('drive_type') == 'AWD' ? 'selected' : '' }}>
+                                        AWD (All-Wheel Drive)
+                                    </option>
+                                    <option value="Dual Motor"
+                                        {{ request('drive_type') == 'Dual Motor' ? 'selected' : '' }}>
+                                        Dual Motor Performance
+                                    </option>
                                 </select>
-                            </div> --}}
-
-                            <!-- Filter Range Harga -->
-                            <div class="col-lg-3 col-md-6">
-                                <label for="min_price" class="form-label fw-semibold">Harga Minimum</label>
-                                <input type="number" class="form-control form-control-sm" id="min_price" name="min_price"
-                                    placeholder="0" step="1000000" value="{{ request('min_price') }}">
                             </div>
 
+                            <!-- Filter Seats -->
                             <div class="col-lg-3 col-md-6">
-                                <label for="max_price" class="form-label fw-semibold">Harga Maksimal</label>
-                                <input type="number" class="form-control form-control-sm" id="max_price" name="max_price"
-                                    placeholder="999999999" step="1000000" value="{{ request('max_price') }}">
+                                <label for="seats" class="form-label fw-semibold">Jumlah Kursi</label>
+                                <input type="number" class="form-control form-control-sm" id="seats" name="seats"
+                                    placeholder="Cari berdasarkan kursi" step="1" value="{{ request('seats') }}">
                             </div>
 
-                            <!-- Filter Range KM -->
+                            <!-- Filter Miles -->
                             <div class="col-lg-3 col-md-6">
-                                <label for="min_km" class="form-label fw-semibold">Jangkauan Minimum (KM)</label>
-                                <input type="number" class="form-control form-control-sm" id="min_km" name="min_km"
-                                    placeholder="0" step="10" value="{{ request('min_km') }}">
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <label for="max_km" class="form-label fw-semibold">Jangkauan Maksimal (KM)</label>
-                                <input type="number" class="form-control form-control-sm" id="max_km" name="max_km"
-                                    placeholder="1000" step="10" value="{{ request('max_km') }}">
-                            </div>
-
-                            <!-- Filter Range kWh -->
-                            <div class="col-lg-3 col-md-6">
-                                <label for="min_kwh" class="form-label fw-semibold">Kap. Baterai Min (kWh)</label>
-                                <input type="number" class="form-control form-control-sm" id="min_kwh" name="min_kwh"
-                                    placeholder="0" step="1" value="{{ request('min_kwh') }}">
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <label for="max_kwh" class="form-label fw-semibold">Kap. Baterai Max (kWh)</label>
-                                <input type="number" class="form-control form-control-sm" id="max_kwh" name="max_kwh"
-                                    placeholder="100" step="1" value="{{ request('max_kwh') }}">
+                                <label for="miles" class="form-label fw-semibold">Miles (Jarak Tempuh)</label>
+                                <input type="number" class="form-control form-control-sm" id="miles" name="miles"
+                                    placeholder="Cari berdasarkan miles" step="1" value="{{ request('miles') }}">
                             </div>
 
                             <!-- Buttons -->
@@ -143,7 +138,7 @@
                                 </button>
                                 <a href="{{ route('landing.cars', $brand->slug) }}"
                                     class="btn btn-outline-secondary btn-sm ms-2">
-                                    <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                    <i class="bi bi-arrow-clockwise"></i> Reset
                                 </a>
                             </div>
                         </form>
@@ -378,3 +373,36 @@
 
 
 @endsection
+
+<script>
+    // Format harga dengan separator titik
+    const priceInput = document.getElementById('price');
+
+    if (priceInput) {
+        // Format initial value jika ada
+        if (priceInput.value) {
+            const cleanValue = priceInput.value.replace(/\D/g, '');
+            priceInput.value = parseInt(cleanValue).toLocaleString('id-ID');
+        }
+
+        // Format ketika user mengetik
+        priceInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, ''); // Hapus semua non-digit
+            if (value) {
+                // Simpan cursor position
+                const cursorPos = this.selectionStart;
+                this.value = parseInt(value).toLocaleString('id-ID');
+            } else {
+                this.value = '';
+            }
+        });
+
+        // Hapus format sebelum submit
+        const filterForm = priceInput.closest('form');
+        if (filterForm) {
+            filterForm.addEventListener('submit', function(e) {
+                priceInput.value = priceInput.value.replace(/\D/g, '');
+            });
+        }
+    }
+</script>
